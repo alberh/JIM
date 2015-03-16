@@ -1,0 +1,113 @@
+===========
+ Modelo L =
+===========
+
+---------------------
+Instrucciones básicas
+---------------------
+
+V <- V + 1
+V <- V - 1
+V <- V
+IF V != 0 GOTO L
+
+-------------------
+Instrucciones extra
+-------------------
+
+V <- V'
+V <- V' + V''
+V <- V' - V''
+V <- V' * V''
+V <- V' / V''
+V <- V' % V''
+V <- MACRO(arg0, arg1, ..., argn)
+
+---------
+Gramática
+---------
+
+inicio -> sentencia
+
+sentencia -> etiqueta instruccion sentencia
+		  -> {}
+
+etiqueta -> '[' ETIQUETA ']'
+		 -> {}
+
+instruccion -> VARIABLE FLECHA instruccion2
+			-> IF VARIABLE DISTINTO '0' GOTO ETIQUETA
+
+instruccion2 -> VARIABLE restoOperacion
+			 -> IDMACRO '(' parametrosMacro ')'
+
+restoOperacion -> '+' operandos
+			   -> '-' operandos
+			   -> '*' VARIABLE
+			   -> '/' VARIABLE
+			   -> '%' VARIABLE
+			   -> {}
+
+operandos -> '1'
+		  -> VARIABLE
+
+parametrosMacro -> VARIABLE masParametrosMacro
+				-> {}
+
+masParametrosMacro -> ',' VARIABLE masParametrosMacro
+				   -> {}
+
+
+
+
+====================
+ Modelo While-Loop =
+====================
+
+---------------------
+Instrucciones básicas
+---------------------
+
+V <- 0
+V <- V + 1
+V <- V'
+LOOP V
+END
+
+-------------------
+Instrucciones extra
+-------------------
+
+V <- V' + V''
+V <- V' * V''
+V <- MACRO(arg0, arg1, ..., argn)
+
+---------
+Gramática
+---------
+
+inicio -> sentencia
+
+sentencia -> instruccion sentencia
+		  -> {}
+
+instruccion -> VARIABLE FLECHA instruccion2
+			-> LOOP VARIABLE
+			-> END
+
+instruccion2 -> VARIABLE restoOperacion
+			 -> '0'
+			 -> IDMACRO '(' parametrosMacro ')'
+
+restoOperacion -> '+' operandos
+			   -> '*' VARIABLE
+			   -> {}
+
+operandos -> '1'
+		  -> VARIABLE
+
+parametrosMacro -> VARIABLE masParametrosMacro
+				-> {}
+
+masParametrosMacro -> ',' VARIABLE masParametrosMacro
+				   -> {}
