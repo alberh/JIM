@@ -28,9 +28,9 @@ Gramática
 ---------
 
 inicio -> sentencia
+	   -> {}
 
 sentencia -> etiqueta instruccion sentencia
-		  -> {}
 
 etiqueta -> '[' ETIQUETA ']'
 		 -> {}
@@ -87,9 +87,9 @@ Gramática
 ---------
 
 inicio -> sentencia
+	   -> {}
 
 sentencia -> instruccion sentencia
-		  -> {}
 
 instruccion -> VARIABLE FLECHA instruccion2
 			-> LOOP VARIABLE
@@ -102,7 +102,7 @@ instruccion2 -> VARIABLE restoOperacion
 restoOperacion -> '+' operandos
 			   -> '*' VARIABLE
 			   -> {}
-
+			   
 operandos -> '1'
 		  -> VARIABLE
 
