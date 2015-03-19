@@ -118,3 +118,6 @@ Y <- Z2
  				- No se comprobará que las variables usadas en el código de la macro correspondan a las variables definidas en la entrada. La lista en realidad .
 
  	* Expansión de macros: Tomar número de la última variable local usada (por ejemplo, Z6) y sustituir todas las variables de la macro por las variables locales siguientes necesarias.
+
+- Pasar al inicio del programa a todos los ficheros que haya en el directorio de macros correspondiente al modelo seleccionado. Ir añadiendo todas las macros a una lista.
+

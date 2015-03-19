@@ -1,3 +1,27 @@
+
+====================
+ Analizador macros =
+====================
+
+-------
+ Idea -
+-------
+
+1) Deberá detectar el inicio de la cabecera.
+2) Crear objeto en lista de macros.
+	1. Almacenar nombre de la macro.
+	2. Almacenar código de la macro.
+	3. (Posible) Analizar código de la macro. No ejecutar. En caso de error sintáctico, añadir a lista de errores y eliminar objeto. Cuando se carguen todas las macros, mostrar lista de macros no cargadas debido a error.
+
+------------
+ Gramática -
+------------
+
+inicio -> sentencia
+	   -> {}
+
+sentencia -> '#' DEFMACRO IDMACRO CUERPO ENDMACRO
+
 ===========
  Modelo L =
 ===========
@@ -37,12 +61,10 @@ sentencia -> etiqueta instruccion sentencia
 etiqueta -> '[' ETIQUETA ']'
 		 -> {}
 
-instruccion -> VARIABLE restoInstruccion
+instruccion -> VARIABLE FLECHA finInstruccion
+			-> VARIABLE INCREMENTO
+			-> VARIABLE DECREMENTO
 			-> IF VARIABLE DISTINTO '0' GOTO ETIQUETA
-
-restoInstruccion -> FLECHA finInstruccion
-				 -> INCREMENTO
-				 -> DECREMENTO
 
 finInstruccion -> VARIABLE operacion
 			   -> NUMERO operacion
@@ -101,12 +123,10 @@ inicio -> sentencia
 
 sentencia -> instruccion sentencia
 
-instruccion -> VARIABLE restoInstruccion
+instruccion -> VARIABLE FLECHA finInstruccion
+			-> VARIABLE INCREMENTO
 			-> LOOP VARIABLE
 			-> END
-
-restoInstruccion -> FLECHA finInstruccion
-				 -> INCREMENTO
 
 finInstruccion -> VARIABLE operacion
 			   -> NUMERO operacion
@@ -162,13 +182,11 @@ inicio -> sentencia
 
 sentencia -> instruccion sentencia
 
-instruccion -> VARIABLE restoInstruccion
+instruccion -> VARIABLE FLECHA finInstruccion
+			-> VARIABLE INCREMENTO
+			-> VARIABLE DECREMENTO
 			-> WHILE VARIABLE DISTINTO '0'
 			-> END
-
-restoInstruccion -> FLECHA finInstruccion
-				 -> INCREMENTO
-				 -> DECREMENTO
 
 finInstruccion -> VARIABLE operacion
 			   -> NUMERO operacion
