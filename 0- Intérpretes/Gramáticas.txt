@@ -20,10 +20,9 @@
 inicio -> sentencia inicio
 	   -> {}
 
-sentencia -> DEFMACRO IDMACRO cuerpo
+sentencia -> DEFMACRO IDMACRO ENDMACRO
 
-cuerpo -> LINEA cuerpo
-	   -> ENDMACRO
+Después de IDMACRO se pasa a otro modo en el léxico, en el cual se van guardado todos los caracteres encontrados hasta que se encuentre el token ENDMACRO. Entonces se vuelve el cuerpo de la macro y se vuelve al modo original.
 
 ===========
  Modelo L =
