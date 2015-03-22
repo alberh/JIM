@@ -82,8 +82,7 @@ ReservedWords = "<-" | "IF" | "!=" | "GOTO" | "LOOP" | "END" | "WHILE" | "++" | 
 
 <CUERPO> {
 
-"endmacro"        { //System.out.println("Lexico: Encontrado ENDMACRO.\nContenido de la macro:\n" + contenido);
-                    yyparser.yylval = new MacrosParserVal( (Object)contenido );
+"endmacro"        { yyparser.yylval = new MacrosParserVal( (Object)contenido );
                     contenido = "";
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;
