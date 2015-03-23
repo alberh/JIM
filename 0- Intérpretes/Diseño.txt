@@ -1,4 +1,49 @@
 
+=========
+ Clases =
+=========
+
+ - Posible: Implementar clases usando un pool de recursos para no andar creando y destruyendo objetos
+ 			con cada ejecución.
+
+ - Variable
+ 	* public static void set(String id)
+ 	* public static void set(String id, int valor)
+ 	* public static Variable get(EVariable tipo) // Variable.ENTRADA, Variable.LOCAL
+ 	* public static Variable get(String id)
+ 	* public static void clear()
+ 	* private Variable(String id)
+ 	* private Variable(String id, int valor)
+ 	* public String id()
+ 	* public int valor()
+ 	* public void valor(int nuevoValor)
+
+ - Etiqueta
+ 	* public static void set(String id, int linea)
+ 	* public static Etiqueta get(String id)
+ 	* public statuc void clear()
+ 	* private Etiqueta(String id, int linea)
+ 	* public String id()
+ 	* public int linea()
+
+ - Bucle
+ 	* public static void set(int lineaInicio)
+ 	* public static void set(int lineaInicio, int lineaFin)
+ 	* public static Bucle check(int linea)
+ 	* public static void clear()
+
+ - Macro
+ 	* public static void set(String id, String cuerpo)
+ 	* public static String expandir(String id, String lineaLlamada)
+
+ - Acciones
+
+ - LAcciones
+
+ - LoopAcciones
+
+ - WhileAcciones
+
 ========================
  Común a los 3 modelos =
 ========================
