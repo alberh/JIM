@@ -3,17 +3,17 @@
 %%
 
 %byaccj
-%class LLex
+%class WhileLex
 
 %{
 
-  private LParser yyparser;
+  private WhileParser yyparser;
 
   /** constructor del analizador sintáctico
   *** acepta como parámetro el lector de caracteres a usar
   **/
 
-  public LLex(java.io.Reader r, LParser p) 
+  public WhileLex(java.io.Reader r, WhileParser p) 
   {
     this(r);
     linea_actual = 1;
@@ -43,7 +43,6 @@ WhiteSpace     = [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
 Comment = "#" {InputCharacter}* {LineTerminator}?
-Label = [lL][0-9]+
 InputVariable = [xX][0-9]+
 LocalVariable = [zZ][0-9]+
 OutputVariable = [yY]
@@ -53,32 +52,29 @@ Number = 0|[1-9]+[0-9]*
 %%
 {WhiteSpace}      { }
 {Comment}         { }
-{Label}           { yyparser.yylval = new LParserVal( yytext() ); // en las acciones, hashtable n etiqueta a n linea
-                    return LParser.ETIQUETA;
+{Variable}        { yyparser.yylval = new WhileParserVal( yytext() );
+                    return WhileParser.VARIABLE;
                   }
-{Variable}        { yyparser.yylval = new LParserVal( yytext() );
-                    return LParser.VARIABLE;
-                  }
-"<-"              { return LParser.FLECHA;
-                  }
-"++"              { return LParser.INCREMENTO;
-                  }
-"--"              { return LParser.DECREMENTO;
-                  }
-"if"|"IF"         { return LParser.IF;
+"while"|"WHILE"   { return WhileParser.WHILE;
                   }
 "!="{WhiteSpace}*"0"
-                  { return LParser.DISTINTO;
+                  { return WhileParser.DISTINTO;
                   }
-"goto"|"GOTO"     { return LParser.GOTO;
+"end"|"END"       { return WhileParser.END;
                   }
-[-+*/%,\[\]()]    { return yycharat(0);
+"<-"              { return WhileParser.FLECHA;
                   }
-{Number}          { yyparser.yylval = new LParserVal( Integer.parseInt(yytext()) );
-                    return LParser.NUMERO;
+"++"              { return WhileParser.INCREMENTO;
                   }
-{Identifier}      { yyparser.yylval = new LParserVal( yytext() );
-                    return LParser.IDMACRO;
+"--"              { return WhileParser.DECREMENTO;
+                  }
+[-+*/%,()]        { return yycharat(0);
+                  }
+{Number}          { yyparser.yylval = new WhileParserVal( Integer.parseInt(yytext()) );
+                    return WhileParser.NUMERO;
+                  }
+{Identifier}      { yyparser.yylval = new WhileParserVal( yytext() );
+                    return WhileParser.IDMACRO;
                   }
 {LineTerminator}  { linea_actual++;
                   }

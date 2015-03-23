@@ -3,17 +3,17 @@
 %%
 
 %byaccj
-%class LLex
+%class LoopLex
 
 %{
 
-  private LParser yyparser;
+  private LoopParser yyparser;
 
   /** constructor del analizador sintáctico
   *** acepta como parámetro el lector de caracteres a usar
   **/
 
-  public LLex(java.io.Reader r, LParser p) 
+  public LoopLex(java.io.Reader r, LoopParser p) 
   {
     this(r);
     linea_actual = 1;
@@ -43,7 +43,6 @@ WhiteSpace     = [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
 Comment = "#" {InputCharacter}* {LineTerminator}?
-Label = [lL][0-9]+
 InputVariable = [xX][0-9]+
 LocalVariable = [zZ][0-9]+
 OutputVariable = [yY]
@@ -53,32 +52,24 @@ Number = 0|[1-9]+[0-9]*
 %%
 {WhiteSpace}      { }
 {Comment}         { }
-{Label}           { yyparser.yylval = new LParserVal( yytext() ); // en las acciones, hashtable n etiqueta a n linea
-                    return LParser.ETIQUETA;
+{Variable}        { yyparser.yylval = new LoopParserVal( yytext() );
+                    return LoopParser.VARIABLE;
                   }
-{Variable}        { yyparser.yylval = new LParserVal( yytext() );
-                    return LParser.VARIABLE;
+"loop"|"LOOP"     { return LoopParser.LOOP;
                   }
-"<-"              { return LParser.FLECHA;
+"end"|"END"       { return LoopParser.END;
                   }
-"++"              { return LParser.INCREMENTO;
+"<-"              { return LoopParser.FLECHA;
                   }
-"--"              { return LParser.DECREMENTO;
+"++"              { return LoopParser.INCREMENTO;
                   }
-"if"|"IF"         { return LParser.IF;
+[+*,()]           { return yycharat(0);
                   }
-"!="{WhiteSpace}*"0"
-                  { return LParser.DISTINTO;
+{Number}          { yyparser.yylval = new LoopParserVal( Integer.parseInt(yytext()) );
+                    return LoopParser.NUMERO;
                   }
-"goto"|"GOTO"     { return LParser.GOTO;
-                  }
-[-+*/%,\[\]()]    { return yycharat(0);
-                  }
-{Number}          { yyparser.yylval = new LParserVal( Integer.parseInt(yytext()) );
-                    return LParser.NUMERO;
-                  }
-{Identifier}      { yyparser.yylval = new LParserVal( yytext() );
-                    return LParser.IDMACRO;
+{Identifier}      { yyparser.yylval = new LoopParserVal( yytext() );
+                    return LoopParser.IDMACRO;
                   }
 {LineTerminator}  { linea_actual++;
                   }
