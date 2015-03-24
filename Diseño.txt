@@ -1,0 +1,189 @@
+
+=========
+ Clases =
+=========
+
+ - Posible: Implementar clases usando un pool de recursos para no andar creando y destruyendo objetos
+ 			con cada ejecución.
+
+ - Variable
+ 	* public static void set(String id)
+ 	* public static void set(String id, int valor)
+ 	* public static Variable get(EVariable tipo) // Variable.ENTRADA, Variable.LOCAL, Variable.SALIDA
+ 	* public static Variable get(String id)
+ 	* public static void clear()
+
+ 	* private Variable(String id)
+ 	* private Variable(String id, int valor)
+
+ 	* public String id()
+ 	* public int valor()
+ 	* public void valor(int nuevoValor)
+
+ - Etiqueta
+ 	* public static void set(String id, int linea)
+ 	* public static Etiqueta get(String id)
+ 	* public static void clear()
+
+ 	* private Etiqueta(String id, int linea)
+
+ 	* public String id()
+ 	* public int linea()
+
+ - Bucle
+ 	* public static void set(int lineaInicio)
+ 	* public static Bucle get(int lineaInicio)
+ 	* public static Bucle check(int linea)
+ 	* public static void clear()
+ 	* public Bucle(int lineaInicio)
+ 	* public int lineaInicio()
+ 	* public int lineaFin()
+ 	* public void lineaFin(int lineaFin)
+
+ - Macro
+ 	* public static void set(String id, String cuerpo)
+ 	* public static String expandir(String id, String lineaLlamada)
+
+ - Acciones
+
+ - LAcciones
+
+ - LoopAcciones
+
+ - WhileAcciones
+
+========================
+ Común a los 3 modelos =
+========================
+
+
+----------
+ General -
+----------
+
+ - Al iniciar la aplicación, mostrar 3 botones para elegir uno de los modelos.
+ 	* Mostrar información sobre cada modelo.
+ 	* Mostrar estadísticas: número de veces abierto, número de ejecuciones, número de depuraciones, tiempo de uso.
+
+ - Al elegir uno de los modelos:
+ 	1) Cambiar a vista de editor.
+ 	2) Cargar macros del modelo (ver apartado macros).
+ 	3) Cargar último fichero abierto en caso de estar disponible.
+
+ - Al cerrar el programa, se comprueba si se está editando un fichero.
+ 	* En caso afirmativo:
+ 		· Si ha sido guardado, el programa se cierra.
+ 		· Si no ha sido guardado, se pregunta al usuario si quiere guardar.
+ 	* En cualquier caso:
+ 		· Se crea o sobreescribe un fichero de backup, en el directorio del intérprete, para mantener el código del usuario, en caso de pérdida o no haber sido guardado.
+
+  - Cuando se inicia el programa, se comprobará si se estuvo editando un fichero.
+  	* En caso afirmativo:
+  		· Se comprueba si sigue existiendo.
+  			= Si es así, se cargará en el editor y se sobreescribirá el fichero de backup.
+  			= Si no es así, se cargará, si existe, el fichero de backup en el editor y se "asociará" al fichero desaparecido. Así, en caso de pérdida el usuario tendrá la opción de guardar sobre el mismo directorio y nombre de fichero.
+  	* En caso negativo:
+  		· Se comprueba si existe fichero de backup, y se carga en caso afirmativo.
+
+ - # esto es un comentario
+
+-----------
+ Opciones -
+-----------
+
+ - Opción para mantener o no el fichero de backup.
+ - Editor:
+ 	* Mostrar número de línea.
+ 	* Tamaño del texto.
+ 	* Fuente.
+ 	* Autotabulaciones (cuando se abre un bucle).
+ 	* Posible: elegir entre tabulaciones o espacios, y número de espacios en ese caso.
+ 	* Poco probable: Colores.
+ 		· Palabras reservadas.
+ 		· Variables.
+ 		· Etiquetas.
+ 		· Comentarios.
+ - Configuración de teclas.
+ - Directorios:
+ 	* Directorios de macros por defecto para cada modelo.
+ 	* Posible: Directorios de macros definidas por el usuario para cada modelo.
+
+
+----------
+ Parsers -
+----------
+
+ - Mandar el código línea a línea, para poder llevar el número de la que está siendo ejecutada e informar al usuario en caso de error. Además, es necesario para el modo depuración o línea a línea.
+ - Al leer etiqueta de definición de macro:
+ 	* Cambiar a modo definición de macro.
+ 		· Cuando lee la cabecera de la macro, almacena su nombre.
+ 		· Añade todo el código que encuentra al código de la macro.
+ 		· Cuando encuentra la etiqueta de fin de definición de macro, vuelve al modo intérprete.
+
+-----------
+ Debugger -
+-----------
+
+ - 
+
+-----------
+ Interfaz -
+-----------
+
+ - Botón para realizar la expansión de las macros del código actual.
+ 	* No debe expandir el código de las macros definidas en el editor.
+
+---------
+ Macros -
+---------
+
+ - Las macros se definen como sigue:
+
+defmacro NombreMacro
+X1 <- X1 + 1
+LOOP X4
+	Z1++
+END
+...
+Y <- Z2
+endmacro
+
+ - Impedir nombres de macro como X1, Z1, Y, etc.
+ 
+ - Procedimiento al iniciar intérprete de un modelo:
+ 	* Leer directorio de macros por defecto.
+ 	* Leer directorio de macros de usuario.
+ 	
+ 	* Para cada fichero:
+ 		· Usar expresión regular para obtener nombre de la macro y número de parámetros.
+ 			= Posible: Mandar código de las macros a parsers para comprobar sintaxis. En caso de código mal, descartar esa macro e informar al usuario de todas las macros no cargadas (mostrar nombre, línea, etc).
+ 		· Almacenar código asociado a cada macro.
+ 	
+ 	* Tratamiento de macros:
+ 		· Teniendo en cuenta sólo la ejecución normal del programa:
+ 			Realizar expansión de macros y mandar resultado a los parsers. Almacenar números de línea de inicio y fin de la sección de cada macro, para poder al usuario si se produjera un error durante la ejecución del código de alguna.
+
+ 		· Teniendo en cuenta el modo depuración o línea a línea:
+ 			Procesar línea por línea. Al llegar a una macro:
+ 				- Si posible entrar a código macro: expandir, mostrar y depurar. Opción de salir de la macro: se enviaría el resto de código de la macro expandida a los parsers y se continuaría la depuración desde la línea siguiente a la llamada a la macro.
+ 				- Si no posible entrar a código macro: expandir y mandar el código a los parsers.
+ 		· En cualquier caso:
+ 			Al almacenar información de la macro:
+ 				- Almacenar el nombre de la macro y número de parámetros.
+ 				- No se comprobará que las variables usadas en el código de la macro correspondan a las variables definidas en la entrada. La lista en realidad .
+
+ 	* Expansión de macros: Tomar número de la última variable local usada (por ejemplo, Z6) y sustituir todas las variables de la macro por las variables locales siguientes necesarias.
+
+- Pasar al inicio del programa a todos los ficheros que haya en el directorio de macros correspondiente al modelo seleccionado. Ir añadiendo todas las macros a una lista.
+
+---------
+ Editor -
+---------
+
+ - Auto-tabulaciones:
+ 	* Opción para activar o desactivar.
+ 	* En L, comprobar mientras se escribe que:
+ 		· Cada línea comienza por una tabulación o por '['.
+ 		· Después de un ']', debe haber otra tabulación.
+ 	* En LOOP y en WHILE:
+ 		· Tras una línea de inicio de bucle, cada instrucción debe ir tabulada.

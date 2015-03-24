@@ -1,0 +1,211 @@
+
+====================
+ Analizador macros =
+====================
+
+-------
+ Idea -
+-------
+
+1) Deberá detectar el inicio de la cabecera.
+2) Crear objeto en lista de macros.
+	1. Almacenar nombre de la macro.
+	2. Almacenar código de la macro.
+	3. (Posible) Analizar código de la macro. No ejecutar. En caso de error sintáctico, añadir a lista de errores y eliminar objeto. Cuando se carguen todas las macros, mostrar lista de macros no cargadas debido a error.
+
+------------
+ Gramática -
+------------
+
+inicio -> sentencia inicio
+	   -> {}
+
+sentencia -> DEFMACRO IDMACRO ENDMACRO
+
+Después de IDMACRO se pasa a otro modo en el léxico, en el cual se van guardado todos los caracteres encontrados hasta que se encuentre el token ENDMACRO. Entonces se vuelve el cuerpo de la macro y se vuelve al modo original.
+
+===========
+ Modelo L =
+===========
+
+---------------------
+Instrucciones básicas
+---------------------
+
+V <- V + 1
+V <- V - 1
+V <- V
+IF V != 0 GOTO L
+
+-------------------
+Instrucciones extra
+-------------------
+
+V++
+V--
+V <- {N, V'}
+V <- {N, V'} {+,-,*,/,%} {N', V''}
+V <- MACRO(arg0, arg1, ..., argn)
+
+Asignación, suma, resta, producto, división y módulo de variables y números
+
+siendo N un natural
+
+---------
+Gramática
+---------
+
+inicio -> sentencia inicio
+	   -> {}
+
+sentencia -> etiqueta instruccion
+
+etiqueta -> '[' ETIQUETA ']'
+		 -> {}
+
+instruccion -> VARIABLE FLECHA finInstruccion
+			-> VARIABLE INCREMENTO
+			-> VARIABLE DECREMENTO
+			-> IF VARIABLE DISTINTO '0' GOTO ETIQUETA
+
+finInstruccion -> VARIABLE operacion
+			   -> NUMERO operacion
+			   -> IDMACRO '(' parametrosMacro ')'
+
+operacion -> '+' parametros
+		  -> '-' parametros
+		  -> '*' parametros
+		  -> '/' parametros
+		  -> '%' parametros
+		  -> {}
+
+parametros -> NUMERO
+		   -> VARIABLE
+
+parametrosMacro -> parametros masParametrosMacro
+				-> {}
+
+masParametrosMacro -> ',' parametros masParametrosMacro
+				   -> {}
+
+
+
+
+==============
+ Modelo Loop =
+==============
+
+---------------------
+Instrucciones básicas
+---------------------
+
+V <- 0
+V <- V + 1
+V <- V'
+LOOP V
+END
+
+-------------------
+Instrucciones extra
+-------------------
+
+V++
+V <- {N, V'}
+V <- {N, V'} {+, *} {N', V''}
+V <- MACRO(arg0, arg1, ..., argn)
+
+Asignación, suma y producto de variables y números
+
+---------
+Gramática
+---------
+
+inicio -> sentencia inicio
+	   -> {}
+
+sentencia -> instruccion
+
+instruccion -> VARIABLE FLECHA finInstruccion
+			-> VARIABLE INCREMENTO
+			-> LOOP VARIABLE
+			-> END
+
+finInstruccion -> VARIABLE operacion
+			   -> NUMERO operacion
+			   -> IDMACRO '(' parametrosMacro ')'
+
+operacion -> '+' parametros
+		  -> '*' parametros
+		  -> {}
+			   
+parametros -> NUMERO
+		   -> VARIABLE
+
+parametrosMacro -> parametros masParametrosMacro
+				-> {}
+
+masParametrosMacro -> ',' parametros masParametrosMacro
+				   -> {}
+
+
+
+===============
+ Modelo While =
+===============
+
+---------------------
+Instrucciones básicas
+---------------------
+
+V <- 0
+V <- V + 1
+V <- V'
+V--
+WHILE V != 0
+END
+
+-------------------
+Instrucciones extra
+-------------------
+
+V++
+V <- {N, V'}
+V <- {N, V'} {+,-,*,/,%} {N', V''}
+V <- MACRO(arg0, arg1, ..., argn)
+
+Asignación, suma, resta, producto y división de variables y números
+
+---------
+Gramática
+---------
+
+inicio -> sentencia inicio
+	   -> {}
+
+sentencia -> instruccion
+
+instruccion -> VARIABLE FLECHA finInstruccion
+			-> VARIABLE INCREMENTO
+			-> VARIABLE DECREMENTO
+			-> WHILE VARIABLE DISTINTO '0'
+			-> END
+
+finInstruccion -> VARIABLE operacion
+			   -> NUMERO operacion
+			   -> IDMACRO '(' parametrosMacro ')'
+
+operacion -> '+' parametros
+		  -> '-' parametros
+		  -> '*' parametros
+		  -> '/' parametros
+		  -> '%' parametros
+		  -> {}
+			   
+parametros -> NUMERO
+		   -> VARIABLE
+
+parametrosMacro -> parametros masParametrosMacro
+				-> {}
+
+masParametrosMacro -> ',' parametros masParametrosMacro
+				   -> {}
