@@ -1,19 +1,20 @@
-// fuente 'jflex' para
+
+package Interprete.Parsers.Loop;
 
 %%
 
 %byaccj
-%class WhileLex
+%class LoopLex
 
 %{
 
-  private WhileParser yyparser;
+  private LoopParser yyparser;
 
   /** constructor del analizador sintáctico
   *** acepta como parámetro el lector de caracteres a usar
   **/
 
-  public WhileLex(java.io.Reader r, WhileParser p) 
+  public LoopLex(java.io.Reader r, LoopParser p) 
   {
     this(r);
     linea_actual = 1;
@@ -52,29 +53,24 @@ Number = 0|[1-9]+[0-9]*
 %%
 {WhiteSpace}      { }
 {Comment}         { }
-{Variable}        { yyparser.yylval = new WhileParserVal( yytext() );
-                    return WhileParser.VARIABLE;
+{Variable}        { yyparser.yylval = new LoopParserVal( yytext() );
+                    return LoopParser.VARIABLE;
                   }
-"while"|"WHILE"   { return WhileParser.WHILE;
+"loop"|"LOOP"     { return LoopParser.LOOP;
                   }
-"!="{WhiteSpace}*"0"
-                  { return WhileParser.DISTINTO;
+"end"|"END"       { return LoopParser.END;
                   }
-"end"|"END"       { return WhileParser.END;
+"<-"              { return LoopParser.FLECHA;
                   }
-"<-"              { return WhileParser.FLECHA;
+"++"              { return LoopParser.INCREMENTO;
                   }
-"++"              { return WhileParser.INCREMENTO;
+[+*,()]           { return yycharat(0);
                   }
-"--"              { return WhileParser.DECREMENTO;
+{Number}          { yyparser.yylval = new LoopParserVal( Integer.parseInt(yytext()) );
+                    return LoopParser.NUMERO;
                   }
-[-+*/%,()]        { return yycharat(0);
-                  }
-{Number}          { yyparser.yylval = new WhileParserVal( Integer.parseInt(yytext()) );
-                    return WhileParser.NUMERO;
-                  }
-{Identifier}      { yyparser.yylval = new WhileParserVal( yytext() );
-                    return WhileParser.IDMACRO;
+{Identifier}      { yyparser.yylval = new LoopParserVal( yytext() );
+                    return LoopParser.IDMACRO;
                   }
 {LineTerminator}  { linea_actual++;
                   }

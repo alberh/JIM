@@ -1,4 +1,6 @@
 
+package Interprete.Parsers.AnalizadorMacros;
+
 import java.io.* ;
 
 class Main
@@ -36,7 +38,7 @@ class Main
 
   public static void main(String args[]) throws IOException 
   {
-      MacrosParser analizador = new MacrosParser(AbrirLector(args)) ;
+      Interprete.Parsers.AnalizadorMacros.MacrosParser analizador = new Interprete.Parsers.MacrosParser(AbrirLector(args)) ;
       analizador.yyparse();
   }   
 
