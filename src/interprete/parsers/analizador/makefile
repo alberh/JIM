@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../byaccj/yacc.linux -Jclass=MacrosParser -Jpackage=Interprete.Parsers.AnalizadorMacros
+BYACCJ = ../../../byaccj/yacc.linux -Jclass=MacrosParser #-Jpackage=Interprete.Parsers.AnalizadorMacros
 JAVAC  = javac
 
 .SUFFIXES:
@@ -8,7 +8,7 @@ JAVAC  = javac
 ejecuta: Main.class entrada.txt
 	java Main entrada.txt
 
-Main.class: MacrosLex.java MacrosParser.java MacrosParserVal.java Main.java Acc.java
+Main.class: MacrosLex.java MacrosParser.java MacrosParserVal.java Main.java MacrosAcciones.java
 	rm -f *.class
 	$(JAVAC) Main.java
 

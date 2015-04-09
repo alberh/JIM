@@ -1,5 +1,3 @@
-// fuente byaccj para una calculadora sencilla
- 
 
 %{
   import java.io.*;

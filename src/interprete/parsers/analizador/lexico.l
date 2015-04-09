@@ -1,5 +1,5 @@
 
-package Interprete.Parsers.AnalizadorMacros;
+//package Interprete.Parsers.AnalizadorMacros;
 
 %%
 
@@ -17,21 +17,25 @@ package Interprete.Parsers.AnalizadorMacros;
   public MacrosLex(java.io.Reader r, MacrosParser p) 
   {
     this(r);
+    numero_variables = 0;
     linea_actual = 1;
     yyparser = p;
     contenido = "";
   }
 
-  /** guarda el número de linea actual
-  **/
-
+  private int numero_variables;
+  private int numero_etiquetas;
   private int linea_actual;
 
-  /** devuelve el numero de linea donde está el último caracter leido
-  **/
+  public int numVariables() {
+    return numero_variables;
+  }
 
-  public int lineaActual()
-  {
+  public int numEtiquetas() {
+    return numero_etiquetas;
+  }
+
+  public int lineaActual() {
      return linea_actual;
   }
 
@@ -47,14 +51,11 @@ InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
-/*
-Comment = "#" {InputCharacter}* {LineTerminator}?
 Label = [lL][0-9]+
 InputVariable = [xX][0-9]+
 LocalVariable = [zZ][0-9]+
-OutputVariable = "Y"
-ReservedWords = "<-" | "IF" | "!=" | "GOTO" | "LOOP" | "END" | "WHILE" | "++" | "--"
-*/
+OutputVariable = [yY]
+Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
 
 %state CUERPO
@@ -82,6 +83,12 @@ ReservedWords = "<-" | "IF" | "!=" | "GOTO" | "LOOP" | "END" | "WHILE" | "++" | 
 } // YYINITIAL
 
 <CUERPO> {
+
+{Label}           { numero_etiquetas++;
+                  }
+
+{Variable}        { numero_variables++;
+                  }
 
 "endmacro"        { yyparser.yylval = new MacrosParserVal( (Object)contenido );
                     contenido = "";
