@@ -1,4 +1,4 @@
-
+/*
 package interprete.parsers.loopmodel;
 
 import java.io.* ;
@@ -41,5 +41,6 @@ class Main
       LoopParser analizador = new LoopParser(AbrirLector(args)) ;
       analizador.yyparse();
   }   
-*/
+
 }
+*/

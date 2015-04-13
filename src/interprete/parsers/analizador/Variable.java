@@ -1,5 +1,5 @@
 
-package Interprete;
+//package interprete;
 
 import java.util.Hashtable;
 
@@ -159,9 +159,7 @@ public class Variable {
  	
  	public void valor(int nuevoValor) {
  		
- 		this._valor = 0;
- 		if (nuevoValor > 0)
- 			this._valor = nuevoValor;
+		this._valor = Math.max(0, nuevoValor);
  	}
  	
  	@Override

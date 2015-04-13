@@ -1,6 +1,6 @@
 
-import Interprete.*;
-import Interprete.Variable.EVariable;
+import interprete.*;
+import interprete.Variable.EVariable;
 
 public class Main {
 	

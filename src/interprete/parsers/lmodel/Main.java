@@ -1,8 +1,4 @@
-
-package interprete.parsers.lmodel;
-
-import java.io.* ;
-
+/*
 class Main
 {
 
@@ -41,5 +37,6 @@ class Main
       LParser analizador = new LParser(AbrirLector(args)) ;
       analizador.yyparse();
   }   
-*/
+
 }
+*/

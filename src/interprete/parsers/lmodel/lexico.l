@@ -44,7 +44,7 @@ WhiteSpace     = [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
 Comment = "#" {InputCharacter}* {LineTerminator}?
-Label = [lL][0-9]+
+Label = [a-eA-E][0-9]+
 InputVariable = [xX][0-9]+
 LocalVariable = [zZ][0-9]+
 OutputVariable = [yY]

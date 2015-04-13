@@ -43,24 +43,36 @@ class Main
       MacrosParser analizador = new MacrosParser(AbrirLector(args)) ;
       analizador.yyparse();
 	*/
-      String nombre = "miMacro";
-      String cuerpo = "x1 <- 3\n"
-      				+ "y <- x5";
+      String nombre = "sumar";
+      String cuerpo = "IF X1 != 0 GOTO B7\n"
+              + "Z12++\n"
+              + "IF Z12 != 0 GOTO B8\n"
+              + "[B7] X1--\n"
+      				+ "X2++\n"
+      				+ "IF X1 != 0 GOTO B7\n"
+      				+ "[B8] Y <- X2\n";
 
       String salida = "z8";
 
       ArrayList<String> params = new ArrayList<>();
-      params.add("7");
-      params.add("x2");
-      params.add("z5");
+      params.add("3");
+      params.add("5");
+      /*
+      params.add("Z77");
+      params.add("9");
+      */
 
-      Macro.set(nombre, cuerpo);
+      Macro.set(nombre);
+      Macro.get(nombre).cuerpo(cuerpo);
       Macro m = Macro.get(nombre);
-      m.nuevaVariable("x1");
-      m.nuevaVariable("y");
-      m.nuevaVariable("x5");
+      m.nuevaVariable("X2");
+      m.nuevaVariable("X1");
+      m.nuevaVariable("Z12");
 
-      String s = Macro.expandir(nombre, salida, params);
+      m.nuevaEtiqueta("B7");
+      m.nuevaEtiqueta("B8");
+
+      String s = Macro.expandir(3, salida, nombre, params);
       System.out.println("Original:");
       System.out.print(salida + " <- " + nombre + ": ");
       params.forEach(p -> System.out.print(p + ", "));

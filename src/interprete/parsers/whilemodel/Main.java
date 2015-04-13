@@ -1,4 +1,4 @@
-
+/*
 package interprete.parsers.whilemodel;
 
 import java.io.* ;
@@ -41,5 +41,6 @@ class Main
       WhileParser analizador = new WhileParser(AbrirLector(args)) ;
       analizador.yyparse();
   }   
-*/
+
 }
+*/

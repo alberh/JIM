@@ -51,7 +51,7 @@ InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
-Label = [lL][0-9]+
+Label = [a-eA-E][0-9]+
 InputVariable = [xX][0-9]+
 LocalVariable = [zZ][0-9]+
 OutputVariable = [yY]
@@ -84,13 +84,17 @@ Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
 <CUERPO> {
 
-{Label}           { numero_etiquetas++;
+{Label}           { yyparser.yylval = new MacrosParserVal(yytext());
+                    contenido += yytext();
+                    return MacrosParser.ETIQUETA;
                   }
 
-{Variable}        { numero_variables++;
+{Variable}        { yyparser.yylval = new MacrosParserVal(yytext());
+                    contenido += yytext();
+                    return MacrosParser.VARIABLE;
                   }
 
-"endmacro"        { yyparser.yylval = new MacrosParserVal( (Object)contenido );
+"endmacro"        { yyparser.yylval = new MacrosParserVal(contenido);
                     contenido = "";
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;
