@@ -15,9 +15,12 @@ public class Macro {
 	private ArrayList<String> _locales = new ArrayList<>();
 	private ArrayList<String> _etiquetas = new ArrayList<>();
 	
- 	public static void set(String id) {
+ 	public static Macro set(String id) {
  		
- 		_macros.put(id, new Macro(id));
+ 		Macro macro = new Macro(id);
+ 		_macros.put(id, macro);
+
+ 		return macro;
  	}
 
  	public static Macro get(String id) {
@@ -39,7 +42,7 @@ public class Macro {
  		return 0;
  	}
 
- 	public static String expandir(int lineaLlamada, String vSalida, String idMacro, ArrayList<String> parametros) {
+ 	public static String expandir(String vSalida, String idMacro, ArrayList<String> parametros) {
 
  		Macro macro = Macro.get(idMacro);
  		String expansion = new String(macro.cuerpo());
@@ -81,7 +84,7 @@ public class Macro {
  			expansion = expansion.replace(etiqueta, nuevaEtiqueta.id());
  		}
 
- 		expansion = asignaciones + expansion.replace("Y", vSalida.toUpperCase());
+ 		expansion = asignaciones + expansion.replace("VY", vSalida.toUpperCase());
 
  		return expansion;
  	}
@@ -124,7 +127,14 @@ public class Macro {
  	public void nuevaVariable(String id) {
 
  		id = id.toUpperCase();
- 		char tipo = id.charAt(0);
+ 		char tipo;
+ 		if (id.length() > 1) {
+
+ 			tipo = id.charAt(1);
+ 		} else {
+
+ 			tipo = 'Y';
+ 		}
 		
 		switch (tipo) {
 			case 'X':
@@ -145,25 +155,46 @@ public class Macro {
 				break;
 				
 			default:
-				// Añadir número de línea
-				System.err.println("Error: Tipo de variable desconocido: '" + tipo + "'.");
+				System.err.println("Error: Tipo de variable '" + id + "' desconocido.");
 		}
  	}
 
  	public void nuevaEtiqueta(String id) {
 
- 		_etiquetas.add(id);
+ 		if (!_etiquetas.contains(id)) {
+
+ 			_etiquetas.add(id);
+ 		}
  	}
  	
  	@Override
  	public String toString() {
- 		
- 		return _id + "\n" + _cuerpo + "\n";
+ 		StringBuffer sb = new StringBuffer();
+
+ 		sb.append(_id + "\n");
+ 		sb.append(_cuerpo + "\n");
+
+ 		sb.append("Variables de entrada:");
+ 		for (int i = 0; i < _entrada.size(); ++i)
+ 			sb.append(_entrada.get(i) + " ");
+ 		sb.append("\n");
+
+ 		sb.append("Variables locales:");
+ 		for (int i = 0; i < _locales.size(); ++i)
+ 			sb.append(_locales.get(i) + " ");
+ 		sb.append("\n");
+
+ 		sb.append("Etiquetas:");
+ 		for (int i = 0; i < _etiquetas.size(); ++i)
+ 			sb.append(_etiquetas.get(i) + " ");
+ 		sb.append("\n");
+
+ 		return sb.toString();
  	}
- 	
- 	public static void pintar() {
+
+	public static void pintar() {
  		
- 		//_macros.forEach(s -> { System.out.println(s); });
+ 		_macros.forEach( (k, v) -> System.out.println(v) );
  	}
 	
 }

@@ -6,17 +6,21 @@ import java.util.ArrayList;
 import java.lang.Math;
 
 public class Macro {
-	
+
 	private static Hashtable<String, Macro> _macros = new Hashtable<>();
 	
 	private String _id;
 	private String _cuerpo;
-	// Se puede cambiar por un conjunto
-	private ArrayList<String> _variables = new ArrayList<>();
+	private ArrayList<String> _entrada = new ArrayList<>();
+	private ArrayList<String> _locales = new ArrayList<>();
+	private ArrayList<String> _etiquetas = new ArrayList<>();
 	
- 	public static void set(String id, String cuerpo) {
+ 	public static Macro set(String id) {
  		
- 		_macros.put(id, new Macro(id, cuerpo.toUpperCase()));
+ 		Macro macro = new Macro(id);
+ 		_macros.put(id, macro);
+
+ 		return macro;
  	}
 
  	public static Macro get(String id) {
@@ -29,42 +33,65 @@ public class Macro {
  		_macros.clear();
  	}
 
- 	public static String expandir(String idMacro, String vSalida, ArrayList<String> parametros) {
+ 	public static int ejecutar(String idMacro, String vSalida, ArrayList<String> parametros) {
+
+ 		// crear un nuevo parser para el lenguaje que sea, ejecutar y obtener el valor de Y
+
+ 		// otra opción: quitar este método y meter otro método dentro de cada parser que haga lo propio
+
+ 		return 0;
+ 	}
+
+ 	public static String expandir(String vSalida, String idMacro, ArrayList<String> parametros) {
 
  		Macro macro = Macro.get(idMacro);
  		String expansion = new String(macro.cuerpo());
- 		String asignaciones = "";
- 		ArrayList<String> variables = macro.variables();
+ 		String asignaciones = vSalida.toUpperCase() + " <- 0\n";
 
- 		// realizar asignaciones a nuevas variables locales desde todos los parametros usados en
- 		// la llamada a la macro, bien desde los valores directos o bien desde las variables pasadas.
- 		// según se vayan tomando nuevas variables locales, realizar en el cuerpo la sustitución
- 		for (int i = 0; i < parametros.size(); ++i) {
+ 		ArrayList<String> vEntrada = macro.variablesEntrada();
+ 		vEntrada.sort(null);
+
+ 		ArrayList<String> vLocales = macro.variablesLocales();
+ 		ArrayList<String> etiquetas = macro.etiquetas();
+
+ 		for (int i = 0; i < vEntrada.size(); ++i) {
+
+ 			String variable = vEntrada.get(i);
+ 			String nuevaVariable = Variable.get(Variable.EVariable.LOCAL).id();
+
+ 			expansion = expansion.replace(variable, nuevaVariable);
+
+ 			if (i < parametros.size()) {
+
+ 				asignaciones += nuevaVariable + " <- " + parametros.get(i) + "\n";
+ 			} else {
+
+ 				asignaciones += nuevaVariable + " <- 0\n";
+ 			}
+ 		}
+
+ 		for (String variable : vLocales) {
+
+ 			String nuevaVariable = Variable.get(Variable.EVariable.LOCAL).id();
+
+ 			expansion = expansion.replace(variable, nuevaVariable);
+ 		}
+
+ 		for (String etiqueta : etiquetas) {
+
+ 			Etiqueta nuevaEtiqueta = Etiqueta.get();
  			
-			String param = parametros.get(i).toUpperCase();
- 			String nuevaLocal = Variable.get(Variable.EVariable.LOCAL).id();
-
-			expansion = expansion.replace(param, nuevaLocal);
-			asignaciones += nuevaLocal + " <- " + param + "\n";
+ 			expansion = expansion.replace(etiqueta, nuevaEtiqueta.id());
  		}
 
- 		for (int i = 0; i < variables.size(); ++i) {
-
- 			String nuevaEntrada = Variable.get(Variable.EVariable.LOCAL).id();
-
- 			expansion = expansion.replace(variables.get(i), nuevaEntrada);
- 		}
-
- 		// sustituir variable de salida 'Y' por 'vSalida'
- 		expansion = asignaciones + expansion.replace("Y", vSalida.toUpperCase());
+ 		expansion = asignaciones + expansion.replace("VY", vSalida.toUpperCase());
 
  		return expansion;
  	}
- 		
- 	public Macro(String id, String cuerpo) {
+
+ 	public Macro(String id) {
 
  		this._id = id;
- 		this._cuerpo = cuerpo;
  	}
  	
  	public String id() {
@@ -77,30 +104,97 @@ public class Macro {
  		return _cuerpo;
  	}
 
- 	public ArrayList<String> variables() {
+ 	public void cuerpo(String cuerpo) {
 
- 		return _variables;
+ 		this._cuerpo = cuerpo.toUpperCase();
+ 	}
+
+ 	public ArrayList<String> variablesEntrada() {
+
+ 		return _entrada;
+ 	}
+
+ 	public ArrayList<String> variablesLocales() {
+
+ 		return _locales;
+ 	}
+
+ 	public ArrayList<String> etiquetas() {
+
+ 		return _etiquetas;
  	}
 
  	public void nuevaVariable(String id) {
 
  		id = id.toUpperCase();
+ 		char tipo;
+ 		if (id.length() > 1) {
 
- 		if (!_variables.contains(id) && !id.equals("Y")) {
+ 			tipo = id.charAt(1);
+ 		} else {
+
+ 			tipo = 'Y';
+ 		}
+		
+		switch (tipo) {
+			case 'X':
+				if (!_entrada.contains(id)) {
+					
+					_entrada.add(id);
+				}
+				break;
 			
-			_variables.add(id);
+			case 'Z':
+				if (!_locales.contains(id)) {
+					
+					_locales.add(id);
+				}
+				break;
+				
+			case 'Y':
+				break;
+				
+			default:
+				System.err.println("Error: Tipo de variable '" + id + "' desconocido.");
 		}
+ 	}
+
+ 	public void nuevaEtiqueta(String id) {
+
+ 		if (!_etiquetas.contains(id)) {
+
+ 			_etiquetas.add(id);
+ 		}
  	}
  	
  	@Override
  	public String toString() {
- 		
- 		return _id + "\n" + _cuerpo + "\n";
+ 		StringBuffer sb = new StringBuffer();
+
+ 		sb.append(_id + "\n");
+ 		sb.append(_cuerpo + "\n");
+
+ 		sb.append("Variables de entrada:");
+ 		for (int i = 0; i < _entrada.size(); ++i)
+ 			sb.append(_entrada.get(i) + " ");
+ 		sb.append("\n");
+
+ 		sb.append("Variables locales:");
+ 		for (int i = 0; i < _locales.size(); ++i)
+ 			sb.append(_locales.get(i) + " ");
+ 		sb.append("\n");
+
+ 		sb.append("Etiquetas:");
+ 		for (int i = 0; i < _etiquetas.size(); ++i)
+ 			sb.append(_etiquetas.get(i) + " ");
+ 		sb.append("\n");
+
+ 		return sb.toString();
  	}
- 	
- 	public static void pintar() {
+
+	public static void pintar() {
  		
- 		//_macros.forEach(s -> { System.out.println(s); });
+ 		_macros.forEach( (k, v) -> System.out.println(v) );
  	}
 	
 }

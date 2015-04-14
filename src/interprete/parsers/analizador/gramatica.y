@@ -15,19 +15,18 @@
 %%
 
 inicio :  sentencia inicio
-|  
+	   |
 ;
-
-sentencia : DEFMACRO IDMACRO { System.out.println("Macro: " + $2.obj.toString()); } /* cuerpo */ ENDMACRO { System.out.println("Cuerpo:\n" + $4.obj.toString()); }
-//sentencia : DEFMACRO IDMACRO { $<MacrosParserVal>$ = $2.obj.toString() } simbolos /* cuerpo */ ENDMACRO { System.out.println("Cuerpo:\n" + $4.obj.toString()); }
+sentencia : DEFMACRO IDMACRO { macro = Macro.set($2.obj.toString()); } simbolos ENDMACRO { macro.cuerpo($5.obj.toString()); }
 ;
-
-simbolos :	VARIABLE simbolos {}
-		 |	ETIQUETA simbolos {}
-		 |	{}
+simbolos :	VARIABLE simbolos { macro.nuevaVariable($1.obj.toString()); }
+		 |	ETIQUETA simbolos { macro.nuevaEtiqueta($1.obj.toString()); }
+		 |
 ;
 
 %%
+
+	private Macro macro;
 
 	/** referencia al analizador léxico
   **/

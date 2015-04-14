@@ -84,17 +84,17 @@ Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
 <CUERPO> {
 
-{Label}           { yyparser.yylval = new MacrosParserVal(yytext());
-                    contenido += yytext();
+{Label}           { yyparser.yylval = new MacrosParserVal( (Object)("L" + yytext()) );
+                    contenido += "L" + yytext();
                     return MacrosParser.ETIQUETA;
                   }
 
-{Variable}        { yyparser.yylval = new MacrosParserVal(yytext());
-                    contenido += yytext();
+{Variable}        { yyparser.yylval = new MacrosParserVal( (Object)("V" + yytext()) );
+                    contenido += "V" + yytext();
                     return MacrosParser.VARIABLE;
                   }
 
-"endmacro"        { yyparser.yylval = new MacrosParserVal(contenido);
+"endmacro"        { yyparser.yylval = new MacrosParserVal( (Object)contenido );
                     contenido = "";
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;

@@ -11,7 +11,7 @@ public class Etiqueta {
 	private String _id;
 	private int _linea;
 	
-	public static void set(String id, int linea) {
+	public static Etiqueta set(String id, int linea) {
 		
 		int indice = Integer.parseInt(id.substring(1, id.length()));
 		Etiqueta et = new Etiqueta(id.toUpperCase(), linea);
@@ -22,6 +22,8 @@ public class Etiqueta {
 
 			_ultima = indice;
 		}
+
+		return et;
 	}
 	
 	public static Etiqueta get(String id) {

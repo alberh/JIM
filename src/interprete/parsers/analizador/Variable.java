@@ -21,16 +21,17 @@ public class Variable {
 		SALIDA
 	}
 	
-	public static void set(String id) {
+	public static Variable set(String id) {
 		
-		set(id, 0);
+		return set(id, 0);
 	}
 	
- 	public static void set(String id, int valor) {
+ 	public static Variable set(String id, int valor) {
  		
  		id = id.toUpperCase();
  		char tipo = id.charAt(0);
  		int indice = -1;
+ 		Variable v = new Variable(id, valor);
  		
  		if (tipo != 'Y') {
  			
@@ -41,7 +42,7 @@ public class Variable {
 			case 'X':
 				if (!_entrada.containsKey(indice)) {
 					
-					_entrada.put(indice, new Variable(id, valor));
+					_entrada.put(indice, v);
 					
 					if (indice > _mayorEntrada) {
 						
@@ -53,7 +54,7 @@ public class Variable {
 			case 'Z':
 				if (!_locales.containsKey(indice)) {
 					
-					_locales.put(indice, new Variable(id, valor));
+					_locales.put(indice, v);
 					
 					if (indice > _mayorLocal) {
 						
@@ -63,13 +64,14 @@ public class Variable {
 				break;
 				
 			case 'Y':
-				_salida = new Variable("Y", valor);
+				_salida = v;
 				break;
 				
 			default:
-				// Añadir número de línea
 				System.err.println("Error: Tipo de variable desconocido: '" + tipo + "'.");
 		}
+
+		return v;
  	}
  	
  	public static Variable get(EVariable tipo) {
