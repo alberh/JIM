@@ -1,0 +1,15 @@
+
+defmacro PrimeraMacro
+[B1] IF X1 != 0 GOTO B2
+[B2] IF X2 != 0 GOTO B1
+Y++
+endmacro
+
+defmacro macro2
+X1++
+Z2--
+WHILE Z0 != 0
+	Z0--
+END
+Y <- X1
+endmacro

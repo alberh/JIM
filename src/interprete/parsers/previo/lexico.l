@@ -51,8 +51,7 @@ InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
-% E se queda fuera de las etiquetas. Será tratada en el sintáctico
-Label = [a-eA-E][0-9]+
+Label = [a-eA-E][0-9]+|[E]
 InputVariable = [xX][0-9]+
 LocalVariable = [zZ][0-9]+
 OutputVariable = [yY]

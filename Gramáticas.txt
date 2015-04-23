@@ -7,11 +7,12 @@
  Idea -
 -------
 
-1) Deberá detectar el inicio de la cabecera.
-2) Crear objeto en lista de macros.
-	1. Almacenar nombre de la macro.
-	2. Almacenar código de la macro.
-	3. (Posible) Analizar código de la macro. No ejecutar. En caso de error sintáctico, añadir a lista de errores y eliminar objeto. Cuando se carguen todas las macros, mostrar lista de macros no cargadas debido a error.
+1) Al leer la palabra defmacro, almacena el nombre de la macro y se pasa al modo cuerpo.
+2) En el modo cuerpo, se almacena todo el contenido de la macro como texto plano, almacenando a su vez
+   las variables y etiquetas que se van encontrando, a la par que son reemplazadas por la nomenclatura
+   interna, empleada para evitar problemas de reemplazos de variables no deseados a la hora de expandir
+   una macro.
+3) Cuando se lee la palabra endmacro, finaliza el modo cuerpo y se vuelve al modo inicial.
 
 ------------
  Gramática -
@@ -20,9 +21,11 @@
 inicio -> sentencia inicio
 	   -> {}
 
-sentencia -> DEFMACRO IDMACRO ENDMACRO
+sentencia -> DEFMACRO IDMACRO simbolos ENDMACRO
 
-Después de IDMACRO se pasa a otro modo en el léxico, en el cual se van guardado todos los caracteres encontrados hasta que se encuentre el token ENDMACRO. Entonces se vuelve el cuerpo de la macro y se vuelve al modo original.
+simbolos -> VARIABLE simbolos
+		 -> ETIQUETA simbolos
+		 -> {}
 
 ===========
  Modelo L =
@@ -46,6 +49,7 @@ V--
 V <- {N, V'}
 V <- {N, V'} {+,-,*,/,%} {N', V''}
 V <- MACRO(arg0, arg1, ..., argn)
+GOTO E
 
 Asignación, suma, resta, producto, división y módulo de variables y números
 
@@ -67,6 +71,7 @@ instruccion -> VARIABLE FLECHA finInstruccion
 			-> VARIABLE INCREMENTO
 			-> VARIABLE DECREMENTO
 			-> IF VARIABLE DISTINTO '0' GOTO ETIQUETA
+			-> GOTOE
 
 finInstruccion -> VARIABLE operacion
 			   -> NUMERO operacion

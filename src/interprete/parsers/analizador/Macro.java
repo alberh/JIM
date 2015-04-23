@@ -64,9 +64,6 @@ public class Macro {
  			if (i < parametros.size()) {
 
  				asignaciones += nuevaVariable + " <- " + parametros.get(i) + "\n";
- 			} else {
-
- 				asignaciones += nuevaVariable + " <- 0\n";
  			}
  		}
 
