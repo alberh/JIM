@@ -51,13 +51,13 @@ InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
-% E se queda fuera de las etiquetas. Será tratada en el sintáctico
-Label = [a-eA-E][0-9]+
-InputVariable = [xX][0-9]+
-LocalVariable = [zZ][0-9]+
+Label = [a-eA-E]([1-9]+[0-9]*)?
+InputVariable = [xX]([1-9]+[0-9]*)?
+LocalVariable = [zZ]([1-9]+[0-9]*)?
 OutputVariable = [yY]
 Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
+Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 
 %state CUERPO
 
@@ -84,6 +84,9 @@ Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 } // YYINITIAL
 
 <CUERPO> {
+
+{Reserved}        { contenido += ( yytext() );
+                  }
 
 {Label}           { yyparser.yylval = new MacrosParserVal( (Object)("L" + yytext()) );
                     contenido += "L" + yytext();

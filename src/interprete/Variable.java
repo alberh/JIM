@@ -9,8 +9,8 @@ public class Variable {
 	private static Hashtable<Integer, Variable> _locales = new Hashtable<>();
 	private static Variable _salida = new Variable("Y");
 	
-	private static int _mayorEntrada = -1;
-	private static int _mayorLocal = -1;
+	private static int _mayorEntrada = 0;
+	private static int _mayorLocal = 0;
 	
 	private int _valor;
 	private String _id;
@@ -30,12 +30,18 @@ public class Variable {
  		
  		id = id.toUpperCase();
  		char tipo = id.charAt(0);
- 		int indice = -1;
+ 		int indice = 1;
  		Variable v = new Variable(id, valor);
  		
  		if (tipo != 'Y') {
  			
- 			indice = Integer.parseInt(id.substring(1, id.length()));
+			if (id.length() == 1) {
+
+ 				id += "1";
+ 			} else {
+
+ 				indice = Integer.parseInt(id.substring(1, id.length()));
+ 			}
  		}
 		
 		switch (tipo) {
@@ -101,11 +107,17 @@ public class Variable {
  		id = id.toUpperCase();
  		char tipo = id.charAt(0);
  		Variable v = null;
- 		int indice = -1;
+ 		int indice = 1;
  		
  		if (tipo != 'Y') {
- 		
- 			indice = Integer.parseInt(id.substring(1, id.length()));
+ 			
+			if (id.length() == 1) {
+
+ 				id += "1";
+ 			} else {
+
+ 				indice = Integer.parseInt(id.substring(1, id.length()));
+ 			}
  		}
  		
  		switch (tipo) {

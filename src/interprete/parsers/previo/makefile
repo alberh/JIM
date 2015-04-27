@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../byaccj/yacc.linux -Jclass=MacrosParser #-Jpackage=Interprete.Parsers.AnalizadorMacros
+BYACCJ = ../../../byaccj/yacc.linux -Jclass=PrevioParser #-Jpackage=Interprete.Parsers.Previo
 JAVAC  = javac
 
 .SUFFIXES:
@@ -8,18 +8,18 @@ JAVAC  = javac
 ejecuta: Main.class entrada.txt
 	java Main entrada.txt
 
-Main.class: MacrosLex.java MacrosParser.java MacrosParserVal.java Main.java MacrosAcciones.java
+Main.class: PrevioLex.java PrevioParser.java PrevioParserVal.java Main.java PrevioAcciones.java
 	rm -f *.class
 	$(JAVAC) Main.java
 
-MacrosLex.java: lexico.l
+PrevioLex.java: lexico.l
 	$(JFLEX) lexico.l
 
-MacrosParser.java MacrosParserVal.java: gramatica.y
+PrevioParser.java PrevioParserVal.java: gramatica.y
 	$(BYACCJ) gramatica.y
-	sed s/'yyerror("syntax error")'/'yyerror("error sintactico",yystate,yychar)'/ MacrosParser.java >tmp.java
-	mv tmp.java MacrosParser.java
+	sed s/'yyerror("syntax error")'/'yyerror("error sintactico",yystate,yychar)'/ PrevioParser.java >tmp.java
+	mv tmp.java PrevioParser.java
 
 
 clean:
-	rm -f *~ *.class MacrosLex.java MacrosParser.java MacrosParserVal.java
+	rm -f *~ *.class PrevioLex.java PrevioParser.java PrevioParserVal.java

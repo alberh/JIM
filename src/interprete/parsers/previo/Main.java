@@ -39,7 +39,7 @@ class Main
 
   public static void pruebaParser(String[] args) {
 
-    MacrosParser analizador = new MacrosParser(AbrirLector(args)) ;
+    PrevioParser analizador = new PrevioParser(AbrirLector(args)) ;
     analizador.yyparse();
 
     Macro.pintar();

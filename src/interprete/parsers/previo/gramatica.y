@@ -1,7 +1,7 @@
 
 %{
 	import java.io.*;
-	%}
+%}
 
 
 // lista de tokens por orden de prioridad
@@ -30,13 +30,13 @@ simbolos :	VARIABLE simbolos { macro.nuevaVariable($1.obj.toString()); }
 
 	/** referencia al analizador léxico
   **/
-	private MacrosLex analex;
+	private PrevioLex analex;
 
   /** constructor: crea el analizador léxico (lexer)
   **/
-  public MacrosParser(Reader r) 
+  public PrevioParser(Reader r) 
   {
-	analex = new MacrosLex(r, this);
+	analex = new PrevioLex(r, this);
 	 //yydebug = true;
   }
 
@@ -49,7 +49,7 @@ simbolos :	VARIABLE simbolos { macro.nuevaVariable($1.obj.toString()); }
 
 	try 
 	{
-		yylval = new MacrosParserVal(0);
+		yylval = new PrevioParserVal(0);
 		yyl_return = analex.yylex();
 	}
 	catch (IOException e) 

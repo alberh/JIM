@@ -1,20 +1,20 @@
 
-//package Interprete.Parsers.AnalizadorMacros;
+//package Interprete.Parsers.Previo;
 
 %%
 
 %byaccj
-%class MacrosLex
+%class PrevioLex
 
 %{
 
-  private MacrosParser yyparser;
+  private PrevioParser yyparser;
 
   /** constructor del analizador sintáctico
   *** acepta como parámetro el lector de caracteres a usar
   **/
 
-  public MacrosLex(java.io.Reader r, MacrosParser p) 
+  public PrevioLex(java.io.Reader r, PrevioParser p) 
   {
     this(r);
     numero_variables = 0;
@@ -51,7 +51,7 @@ InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
-Label = [a-eA-E][0-9]+|[E]
+Label = [a-eA-E][0-9]?
 InputVariable = [xX][0-9]+
 LocalVariable = [zZ][0-9]+
 OutputVariable = [yY]
@@ -64,12 +64,12 @@ Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
 <YYINITIAL> {
 
-"defmacro"        { return MacrosParser.DEFMACRO;
+"defmacro"        { return PrevioParser.DEFMACRO;
                   }
 
-{Identifier}      { yyparser.yylval = new MacrosParserVal( (Object)yytext() );
+{Identifier}      { yyparser.yylval = new PrevioParserVal( (Object)yytext() );
                     yybegin(CUERPO);
-                    return MacrosParser.IDMACRO;
+                    return PrevioParser.IDMACRO;
                   }
 
 {LineTerminator}  { linea_actual++;
@@ -84,20 +84,20 @@ Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
 <CUERPO> {
 
-{Label}           { yyparser.yylval = new MacrosParserVal( (Object)("L" + yytext()) );
+{Label}           { yyparser.yylval = new PrevioParserVal( (Object)("L" + yytext()) );
                     contenido += "L" + yytext();
-                    return MacrosParser.ETIQUETA;
+                    return PrevioParser.ETIQUETA;
                   }
 
-{Variable}        { yyparser.yylval = new MacrosParserVal( (Object)("V" + yytext()) );
+{Variable}        { yyparser.yylval = new PrevioParserVal( (Object)("V" + yytext()) );
                     contenido += "V" + yytext();
-                    return MacrosParser.VARIABLE;
+                    return PrevioParser.VARIABLE;
                   }
 
-"endmacro"        { yyparser.yylval = new MacrosParserVal( (Object)contenido );
+"endmacro"        { yyparser.yylval = new PrevioParserVal( (Object)contenido );
                     contenido = "";
                     yybegin(YYINITIAL);
-                    return MacrosParser.ENDMACRO;
+                    return PrevioParser.ENDMACRO;
                   }
 
 {InputCharacter}

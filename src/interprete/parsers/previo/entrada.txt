@@ -1,15 +1,24 @@
 
-defmacro PrimeraMacro
+# cosas de L
+
 [B1] IF X1 != 0 GOTO B2
 [B2] IF X2 != 0 GOTO B1
 Y++
-endmacro
 
-defmacro macro2
-X1++
-Z2--
+# cosas de WHILE
+
+X7++
+Z3--
 WHILE Z0 != 0
 	Z0--
 END
 Y <- X1
-endmacro
+
+# cosas de LOOP
+
+X1--
+LOOP Z3
+	Z4++
+END
+Z3 <- X1
+X1 <- 0

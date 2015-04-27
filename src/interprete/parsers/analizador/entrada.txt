@@ -1,7 +1,7 @@
 
 defmacro PrimeraMacro
-[B1] IF X1 != 0 GOTO B2
-[B2] IF X2 != 0 GOTO B1
+[A] IF X1 != 0 GOTO B2
+[B2] IF X2 != 0 GOTO A
 Y++
 endmacro
 
