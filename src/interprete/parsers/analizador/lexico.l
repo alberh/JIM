@@ -88,13 +88,15 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 {Reserved}        { contenido += ( yytext() );
                   }
 
-{Label}           { yyparser.yylval = new MacrosParserVal( (Object)("L" + yytext()) );
-                    contenido += "L" + yytext();
+{Label}           { String id = Etiqueta.filtrar("L" + yytext());
+                    yyparser.yylval = new MacrosParserVal( (Object)id );
+                    contenido += id;
                     return MacrosParser.ETIQUETA;
                   }
 
-{Variable}        { yyparser.yylval = new MacrosParserVal( (Object)("V" + yytext()) );
-                    contenido += "V" + yytext();
+{Variable}        { String id = Variable.filtrar("V" + yytext());
+                    yyparser.yylval = new MacrosParserVal( (Object)id );
+                    contenido += id;
                     return MacrosParser.VARIABLE;
                   }
 

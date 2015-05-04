@@ -175,6 +175,26 @@ public class Variable {
  		
 		this._valor = Math.max(0, nuevoValor);
  	}
+
+ 	public static String filtrar(String id)
+ 	{
+ 		id = id.toUpperCase();
+
+ 		if (id.length() == 2) {
+ 			
+ 			if (id.charAt(1) == 'Y') {
+ 				
+ 				return id;
+ 			} else {
+ 				
+ 				return id + "1";
+ 			}
+ 			
+ 		} else {
+ 			
+ 			return id;
+ 		}
+ 	}
  	
  	@Override
  	public String toString() {

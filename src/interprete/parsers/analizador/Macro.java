@@ -42,6 +42,9 @@ public class Macro {
  		return 0;
  	}
 
+ 	/* ToDo: Añadir comprobación de salida del código de la macro según llamada a etiqueta E
+ 		y añadir marca de etiqueta en la línea final de la expansión
+ 	*/
  	public static String expandir(String vSalida, String idMacro, ArrayList<String> parametros) {
 
  		Macro macro = Macro.get(idMacro);
@@ -123,16 +126,8 @@ public class Macro {
 
  	public void nuevaVariable(String id) {
 
- 		id = id.toUpperCase();
- 		char tipo;
- 		if (id.length() > 1) {
-
- 			tipo = id.charAt(1);
- 		} else {
-
- 			tipo = 'Y';
- 		}
-		
+ 		char tipo = id.charAt(1);
+ 		
 		switch (tipo) {
 			case 'X':
 				if (!_entrada.contains(id)) {

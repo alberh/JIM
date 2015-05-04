@@ -1,15 +1,16 @@
 
 defmacro PrimeraMacro
-[A] IF X1 != 0 GOTO B2
-[B2] IF X2 != 0 GOTO A
+[C] IF X != 0 GOTO D
+[D1] IF X2 != 0 GOTO C1
+X1--
 Y++
 endmacro
 
 defmacro macro2
 X1++
 Z2--
-WHILE Z0 != 0
-	Z0--
+WHILE Z != 0
+	Z1--
 END
-Y <- X1
+Y <- X
 endmacro

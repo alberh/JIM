@@ -54,7 +54,7 @@ class Main
     //System.out.println("Última entrada: " + Variable.get(Variable.EVariable.ENTRADA).id());
     //System.out.println("Última local: " + Variable.get(Variable.EVariable.LOCAL).id());
 
-    String exp = Macro.expandir("Z3", "PrimeraMacro", params);
+    String exp = Macro.expandir("X", "PrimeraMacro", params);
     System.out.println("PrimeraMacro expandida:");
     System.out.println(exp);
 /*
@@ -84,12 +84,14 @@ class Main
     Macro.set(nombre);
     Macro.get(nombre).cuerpo(cuerpo);
     Macro m = Macro.get(nombre);
+    /*
     m.nuevaVariable("X2");
     m.nuevaVariable("X1");
     m.nuevaVariable("Z12");
 
     m.nuevaEtiqueta("B7");
     m.nuevaEtiqueta("B8");
+    */
 
     String s = Macro.expandir(salida, nombre, params);
     System.out.println("Original:");
