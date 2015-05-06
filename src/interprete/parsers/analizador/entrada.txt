@@ -1,7 +1,10 @@
 
+# hola esto es un comentario y no importa si lo dejo aquí
+
 defmacro PrimeraMacro
 [C] IF X != 0 GOTO D
 [D1] IF X2 != 0 GOTO C1
+#incluso dentro de las macros wei jiajiajiajiajia
 X1--
 Y++
 endmacro

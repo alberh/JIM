@@ -47,7 +47,6 @@
 
 
 LineTerminator = \r|\n|\r\n
-InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
@@ -57,19 +56,32 @@ LocalVariable = [zZ][0-9]+
 OutputVariable = [yY]
 Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
-
-%state CUERPO
+Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 
 %%
 
-<YYINITIAL> {
+"#".*             { }
 
-"defmacro"        { return PrevioParser.DEFMACRO;
+{Reserved}        { }
+
+"["               { yyparser.yylval = new PrevioParserVal( yytext().charAt(0) );
+                    return PrevioParser.ABRE_CORCHETES;
                   }
 
-{Identifier}      { yyparser.yylval = new PrevioParserVal( (Object)yytext() );
-                    yybegin(CUERPO);
-                    return PrevioParser.IDMACRO;
+"]"               { yyparser.yylval = new PrevioParserVal( yytext().charAt(0) );
+                    return PrevioParser.CIERRA_CORCHETES;
+                  }
+
+{Label}           { String id = Etiqueta.filtrar("L" + yytext());
+                    yyparser.yylval = new PrevioParserVal( (Object)id );
+                    contenido += id;
+                    return PrevioParser.ETIQUETA;
+                  }
+
+{Variable}        { String id = Variable.filtrar("V" + yytext());
+                    yyparser.yylval = new PrevioParserVal( (Object)id );
+                    contenido += id;
+                    return PrevioParser.VARIABLE;
                   }
 
 {LineTerminator}  { linea_actual++;
@@ -77,35 +89,5 @@ Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
 {WhiteSpace}      { }
 
-.                 { yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido"); 
+.                 { /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
                   }
-
-} // YYINITIAL
-
-<CUERPO> {
-
-{Label}           { yyparser.yylval = new PrevioParserVal( (Object)("L" + yytext()) );
-                    contenido += "L" + yytext();
-                    return PrevioParser.ETIQUETA;
-                  }
-
-{Variable}        { yyparser.yylval = new PrevioParserVal( (Object)("V" + yytext()) );
-                    contenido += "V" + yytext();
-                    return PrevioParser.VARIABLE;
-                  }
-
-"endmacro"        { yyparser.yylval = new PrevioParserVal( (Object)contenido );
-                    contenido = "";
-                    yybegin(YYINITIAL);
-                    return PrevioParser.ENDMACRO;
-                  }
-
-{InputCharacter}
-                  { contenido += ( yytext().charAt(0) );
-                  }
-
-{LineTerminator}  { contenido += ( yytext().charAt(0) );
-                    linea_actual++;
-                  }
-
-} // CUERPO

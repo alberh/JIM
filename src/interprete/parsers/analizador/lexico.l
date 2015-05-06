@@ -65,6 +65,9 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 
 <YYINITIAL> {
 
+"#".*             { linea_actual++;
+                  }
+
 "defmacro"        { return MacrosParser.DEFMACRO;
                   }
 
@@ -84,6 +87,9 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 } // YYINITIAL
 
 <CUERPO> {
+
+"#".*             { linea_actual++;
+                  }
 
 {Reserved}        { contenido += ( yytext() );
                   }

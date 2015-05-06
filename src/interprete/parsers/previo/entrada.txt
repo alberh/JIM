@@ -2,10 +2,12 @@
 # cosas de L
 
 [B1] IF X1 != 0 GOTO B2
-[B2] IF X2 != 0 GOTO B1
+[B2] IF X2 != 0 GOTO B
 Y++
 
 # cosas de WHILE
+
+[B5] IF X2 != 0 GOTO B6
 
 X7++
 Z3--
@@ -20,5 +22,5 @@ X1--
 LOOP Z3
 	Z4++
 END
-Z3 <- X1
+Z3 <- X
 X1 <- 0

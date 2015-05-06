@@ -6,22 +6,18 @@
 
 // lista de tokens por orden de prioridad
 
-%token DEFMACRO   // comienzo de la declaración de una macro
-%token IDMACRO    // identificador de la macro
 %token VARIABLE
 %token ETIQUETA
-%token ENDMACRO   // fin de la declaración de una macro
+%token ABRE_CORCHETES
+%token CIERRA_CORCHETES
 
 %%
 
 inicio :  sentencia inicio
 	   |
 ;
-sentencia : DEFMACRO IDMACRO { macro = Macro.set($2.obj.toString()); } simbolos ENDMACRO { macro.cuerpo($5.obj.toString()); }
-;
-simbolos :	VARIABLE simbolos { macro.nuevaVariable($1.obj.toString()); }
-		 |	ETIQUETA simbolos { macro.nuevaEtiqueta($1.obj.toString()); }
-		 |
+sentencia :	VARIABLE { Variable.set($1.obj.toString()); } sentencia
+		  |	ABRE_CORCHETES ETIQUETA CIERRA_CORCHETES { Etiqueta.set($2.obj.toString(), analex.lineaActual()); } sentencia
 ;
 
 %%

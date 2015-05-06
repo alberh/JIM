@@ -9,8 +9,8 @@ public class Variable {
 	private static Hashtable<Integer, Variable> _locales = new Hashtable<>();
 	private static Variable _salida = new Variable("Y");
 	
-	private static int _mayorEntrada = -1;
-	private static int _mayorLocal = -1;
+	private static int _mayorEntrada = 0;
+	private static int _mayorLocal = 0;
 	
 	private int _valor;
 	private String _id;
@@ -29,13 +29,19 @@ public class Variable {
  	public static Variable set(String id, int valor) {
  		
  		id = id.toUpperCase();
- 		char tipo = id.charAt(0);
- 		int indice = -1;
+ 		char tipo = id.charAt(1);
+ 		int indice = 1;
  		Variable v = new Variable(id, valor);
  		
  		if (tipo != 'Y') {
  			
- 			indice = Integer.parseInt(id.substring(1, id.length()));
+			if (id.length() == 1) {
+
+ 				id += "1";
+ 			} else {
+
+ 				indice = Integer.parseInt(id.substring(2, id.length()));
+ 			}
  		}
 		
 		switch (tipo) {
@@ -99,13 +105,19 @@ public class Variable {
  	public static Variable get(String id) {
  		
  		id = id.toUpperCase();
- 		char tipo = id.charAt(0);
+ 		char tipo = id.charAt(1);
  		Variable v = null;
- 		int indice = -1;
+ 		int indice = 1;
  		
  		if (tipo != 'Y') {
- 		
- 			indice = Integer.parseInt(id.substring(1, id.length()));
+ 			
+			if (id.length() == 1) {
+
+ 				id += "1";
+ 			} else {
+
+ 				indice = Integer.parseInt(id.substring(1, id.length()));
+ 			}
  		}
  		
  		switch (tipo) {
@@ -162,6 +174,26 @@ public class Variable {
  	public void valor(int nuevoValor) {
  		
 		this._valor = Math.max(0, nuevoValor);
+ 	}
+
+ 	public static String filtrar(String id)
+ 	{
+ 		id = id.toUpperCase();
+
+ 		if (id.length() == 2) {
+ 			
+ 			if (id.charAt(1) == 'Y') {
+ 				
+ 				return id;
+ 			} else {
+ 				
+ 				return id + "1";
+ 			}
+ 			
+ 		} else {
+ 			
+ 			return id;
+ 		}
  	}
  	
  	@Override

@@ -55,8 +55,16 @@ class Main
     //System.out.println("Última local: " + Variable.get(Variable.EVariable.LOCAL).id());
 
     String exp = Macro.expandir("X", "PrimeraMacro", params);
-    System.out.println("PrimeraMacro expandida:");
-    System.out.println(exp);
+
+    if (exp != null) {
+
+      System.out.println("PrimeraMacro expandida:");
+      System.out.println(exp);
+    } else {
+
+      System.out.println("Error al expandir la macro.");
+    }
+    
 /*
     String exp = Macro.expandir("Z4", "macro2", params);
     System.out.println("macro2 expandida:");

@@ -14,12 +14,18 @@ public class Etiqueta {
 	public static Etiqueta set(String id, int linea) {
 		
 		id = id.toUpperCase();
+
+		if (_etiquetas.containsKey(id)) {
+
+			return _etiquetas.get(id);
+		}
+
 		char letra = id.charAt(1);
 		int indice = 1;
 
 		if (id.length() > 2) { // contamos con la letra L añadida antes del identificador
 
-			indice = Integer.parseInt(id.substring(1, id.length()));
+			indice = Integer.parseInt(id.substring(2, id.length()));
 		} else if (id.length() == 1) {
 
 			id += "1";
@@ -38,8 +44,6 @@ public class Etiqueta {
 	}
 	
 	public static Etiqueta get(String id) {
-		
-		System.out.println("Llamada a Etiqueta::set(String) con id = " + id);
 
 		id = id.toUpperCase();
 

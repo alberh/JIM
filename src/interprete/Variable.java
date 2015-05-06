@@ -29,7 +29,7 @@ public class Variable {
  	public static Variable set(String id, int valor) {
  		
  		id = id.toUpperCase();
- 		char tipo = id.charAt(0);
+ 		char tipo = id.charAt(1);
  		int indice = 1;
  		Variable v = new Variable(id, valor);
  		
@@ -40,7 +40,7 @@ public class Variable {
  				id += "1";
  			} else {
 
- 				indice = Integer.parseInt(id.substring(1, id.length()));
+ 				indice = Integer.parseInt(id.substring(2, id.length()));
  			}
  		}
 		
@@ -105,7 +105,7 @@ public class Variable {
  	public static Variable get(String id) {
  		
  		id = id.toUpperCase();
- 		char tipo = id.charAt(0);
+ 		char tipo = id.charAt(1);
  		Variable v = null;
  		int indice = 1;
  		

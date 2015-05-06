@@ -48,6 +48,12 @@ public class Macro {
  	public static String expandir(String vSalida, String idMacro, ArrayList<String> parametros) {
 
  		Macro macro = Macro.get(idMacro);
+
+ 		if (macro == null) {
+
+ 			return null;
+ 		}
+
  		String expansion = new String(macro.cuerpo());
  		String asignaciones = vSalida.toUpperCase() + " <- 0\n";
 
