@@ -28,20 +28,14 @@ public class Variable {
 	
  	public static Variable set(String id, int valor) {
  		
- 		id = id.toUpperCase();
- 		char tipo = id.charAt(1);
+ 		id = filtrar(id);
+ 		char tipo = id.charAt(0);
  		int indice = 1;
  		Variable v = new Variable(id, valor);
  		
  		if (tipo != 'Y') {
  			
-			if (id.length() == 1) {
-
- 				id += "1";
- 			} else {
-
- 				indice = Integer.parseInt(id.substring(2, id.length()));
- 			}
+			indice = Integer.parseInt(id.substring(1, id.length()));
  		}
 		
 		switch (tipo) {
@@ -104,20 +98,14 @@ public class Variable {
  	
  	public static Variable get(String id) {
  		
- 		id = id.toUpperCase();
- 		char tipo = id.charAt(1);
+ 		id = filtrar(id);
+ 		char tipo = id.charAt(0);
  		Variable v = null;
  		int indice = 1;
  		
  		if (tipo != 'Y') {
  			
-			if (id.length() == 1) {
-
- 				id += "1";
- 			} else {
-
- 				indice = Integer.parseInt(id.substring(1, id.length()));
- 			}
+			indice = Integer.parseInt(id.substring(1, id.length()));
  		}
  		
  		switch (tipo) {
@@ -176,13 +164,13 @@ public class Variable {
 		this._valor = Math.max(0, nuevoValor);
  	}
 
- 	public static String filtrar(String id)
- 	{
+ 	public static String filtrar(String id) {
+
  		id = id.toUpperCase();
 
- 		if (id.length() == 2) {
+ 		if (id.length() == 1) {
  			
- 			if (id.charAt(1) == 'Y') {
+ 			if (id.charAt(0) == 'Y') {
  				
  				return id;
  			} else {

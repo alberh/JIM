@@ -1,5 +1,5 @@
 
-package Interprete.Parsers.L;
+//package Interprete.Parsers.L;
 
 %%
 
@@ -41,20 +41,28 @@ package Interprete.Parsers.L;
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 WhiteSpace     = [ \t\f]
-Identifier = [:jletter:] [:jletterdigit:]*
+
+Identifier = [a-zA-Z]{2} [a-zA-Z]*
+//Identifier = [:jletter:]{-}[a-eA-ExXyYzZ] [:jletterdigit:]*
+//Identifier = ^((?!([a-eA-ExXzZyY]([1-9]+[0-9]*)?)).)*$
+//^((?!([a-eA-ExXzZyY]([1-9]+[0-9]*)?)).)*$
+//^((?!hede).)*$
+//Identifier = ^((?!([a-eA-ExXzZyY]([1-9]+[0-9]*)?)).)*$
+//Identifier = ^(?)(?!([a-eA-ExXzZyY]([1-9]+[0-9]*)?)) [:jletter:] [:jletterdigit:]*
 
 Comment = "#" {InputCharacter}* {LineTerminator}?
-Label = [a-eA-E][0-9]+
-InputVariable = [xX][0-9]+
-LocalVariable = [zZ][0-9]+
+Label = [a-eA-E]([1-9]+[0-9]*)?
+InputVariable = [xX]([1-9]+[0-9]*)?
+LocalVariable = [zZ]([1-9]+[0-9]*)?
 OutputVariable = [yY]
 Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 Number = 0|[1-9]+[0-9]*
 
 %%
-{WhiteSpace}      { }
+{WhiteSpace}      { linea_actual++;
+                  }
 {Comment}         { }
-{Label}           { yyparser.yylval = new LParserVal( yytext() ); // en las acciones, hashtable n etiqueta a n linea
+{Label}           { yyparser.yylval = new LParserVal( yytext() );
                     return LParser.ETIQUETA;
                   }
 {Variable}        { yyparser.yylval = new LParserVal( yytext() );
@@ -66,17 +74,17 @@ Number = 0|[1-9]+[0-9]*
                   }
 "--"              { return LParser.DECREMENTO;
                   }
-"if"|"IF"         { return LParser.IF;
-                  }
 "!="{WhiteSpace}*"0"
                   { return LParser.DISTINTO;
-                  }
-"goto"|"GOTO"     { return LParser.GOTO;
                   }
 [-+*/%,\[\]()]    { return yycharat(0);
                   }
 {Number}          { yyparser.yylval = new LParserVal( Integer.parseInt(yytext()) );
                     return LParser.NUMERO;
+                  }
+"if"|"IF"         { return LParser.IF;
+                  }
+"goto"|"GOTO"     { return LParser.GOTO;
                   }
 {Identifier}      { yyparser.yylval = new LParserVal( yytext() );
                     return LParser.IDMACRO;

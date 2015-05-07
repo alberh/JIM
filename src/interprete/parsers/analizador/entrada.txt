@@ -9,7 +9,7 @@ X1--
 Y++
 endmacro
 
-defmacro macro2
+defmacro macrodos
 X1++
 Z2--
 WHILE Z != 0

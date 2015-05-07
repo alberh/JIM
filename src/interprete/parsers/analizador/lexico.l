@@ -49,8 +49,9 @@
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
-Identifier = [:jletter:] [:jletterdigit:]*
+Identifier = [a-zA-Z]{2} [a-zA-Z]*
 
+Comment = "#" {InputCharacter}* {LineTerminator}?
 Label = [a-eA-E]([1-9]+[0-9]*)?
 InputVariable = [xX]([1-9]+[0-9]*)?
 LocalVariable = [zZ]([1-9]+[0-9]*)?
@@ -65,8 +66,7 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 
 <YYINITIAL> {
 
-"#".*             { linea_actual++;
-                  }
+{Comment}         { }
 
 "defmacro"        { return MacrosParser.DEFMACRO;
                   }
@@ -94,15 +94,15 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 {Reserved}        { contenido += ( yytext() );
                   }
 
-{Label}           { String id = Etiqueta.filtrar("L" + yytext());
-                    yyparser.yylval = new MacrosParserVal( (Object)id );
-                    contenido += id;
+{Label}           { String id = Etiqueta.filtrar(yytext());
+                    yyparser.yylval = new MacrosParserVal( (Object)("L" + id) );
+                    contenido += "L" + id;
                     return MacrosParser.ETIQUETA;
                   }
 
-{Variable}        { String id = Variable.filtrar("V" + yytext());
-                    yyparser.yylval = new MacrosParserVal( (Object)id );
-                    contenido += id;
+{Variable}        { String id = Variable.filtrar(yytext());
+                    yyparser.yylval = new MacrosParserVal( (Object)("V" + id) );
+                    contenido += "V" + id;
                     return MacrosParser.VARIABLE;
                   }
 

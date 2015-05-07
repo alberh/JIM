@@ -13,23 +13,15 @@ public class Etiqueta {
 	
 	public static Etiqueta set(String id, int linea) {
 		
-		id = id.toUpperCase();
+		id = filtrar(id);
 
 		if (_etiquetas.containsKey(id)) {
 
 			return _etiquetas.get(id);
 		}
 
-		char letra = id.charAt(1);
-		int indice = 1;
-
-		if (id.length() > 2) { // contamos con la letra L añadida antes del identificador
-
-			indice = Integer.parseInt(id.substring(2, id.length()));
-		} else if (id.length() == 1) {
-
-			id += "1";
-		}
+		char letra = id.charAt(0);
+		int indice = Integer.parseInt(id.substring(1, id.length()));
 
 		Etiqueta et = new Etiqueta(id, linea);
 		
@@ -45,14 +37,7 @@ public class Etiqueta {
 	
 	public static Etiqueta get(String id) {
 
-		id = id.toUpperCase();
-
-		if (id.length() == 2) {
-
-			id += "1";
-		}
-		
-		return _etiquetas.get(id);
+		return _etiquetas.get(filtrar(id));
 	}
 
 	public static Etiqueta get() {
@@ -88,7 +73,7 @@ public class Etiqueta {
 
 		id = id.toUpperCase();
 
- 		if (id.length() == 2) {
+ 		if (id.length() == 1) {
  			
  			return id + "1";
  		} else {

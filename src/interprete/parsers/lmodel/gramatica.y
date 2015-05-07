@@ -36,6 +36,7 @@ instruccion : VARIABLE FLECHA {System.out.print("Variable (" + $1.sval + ") <- "
             | VARIABLE INCREMENTO {System.out.println("Variable (" + $1.sval + ") ++");}
             | VARIABLE DECREMENTO {System.out.println("Variable (" + $1.sval + ") --");}
             | IF VARIABLE DISTINTO GOTO ETIQUETA {System.out.println("If Variable (" + $2.sval + ") != 0 goto etiqueta (" + $5.sval + ")");}
+            | GOTO ETIQUETA {System.out.println("Goto Etiqueta ("+ $2.sval + ")");}
 ;
 
 finInstruccion :  VARIABLE {System.out.print("Variable (" + $1.sval + ")");} operacion

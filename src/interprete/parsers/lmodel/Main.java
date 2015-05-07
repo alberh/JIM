@@ -1,4 +1,6 @@
-/*
+
+import java.io.*;
+
 class Main
 {
 
@@ -31,7 +33,7 @@ class Main
   }
 
   /***************************************************************************/
-/*
+
   public static void main(String args[]) throws IOException 
   {
       LParser analizador = new LParser(AbrirLector(args)) ;
@@ -39,4 +41,3 @@ class Main
   }   
 
 }
-*/

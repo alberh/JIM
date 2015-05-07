@@ -50,9 +50,10 @@ LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
 Identifier = [:jletter:] [:jletterdigit:]*
 
-Label = [a-eA-E][0-9]?
-InputVariable = [xX][0-9]+
-LocalVariable = [zZ][0-9]+
+Comment = "#" {InputCharacter}* {LineTerminator}?
+Label = [a-eA-E]([1-9]+[0-9]*)?
+InputVariable = [xX]([1-9]+[0-9]*)?
+LocalVariable = [zZ]([1-9]+[0-9]*)?
 OutputVariable = [yY]
 Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
@@ -60,7 +61,7 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 
 %%
 
-"#".*             { }
+{Comment}         { }
 
 {Reserved}        { }
 

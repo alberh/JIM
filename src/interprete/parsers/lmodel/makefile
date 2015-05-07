@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../byaccj/yacc.linux -Jclass=LParser -Jpackage=Interprete.Parsers.L
+BYACCJ = ../../../byaccj/yacc.linux -Jclass=LParser #-Jpackage=Interprete.Parsers.L
 JAVAC  = javac
 
 .SUFFIXES:
@@ -8,7 +8,7 @@ JAVAC  = javac
 ejecuta: Main.class entrada.txt
 	java Main entrada.txt
 
-Main.class: LLex.java LParser.java LParserVal.java Main.java Acc.java
+Main.class: LLex.java LParser.java LParserVal.java Main.java LAcciones.java
 	rm -f *.class
 	$(JAVAC) Main.java
 

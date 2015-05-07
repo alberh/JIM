@@ -54,7 +54,7 @@ class Main
     //System.out.println("Última entrada: " + Variable.get(Variable.EVariable.ENTRADA).id());
     //System.out.println("Última local: " + Variable.get(Variable.EVariable.LOCAL).id());
 
-    String exp = Macro.expandir("X", "PrimeraMacro", params);
+    String exp = Macro.expandir("X3", "PrimeraMacro", params);
 
     if (exp != null) {
 
