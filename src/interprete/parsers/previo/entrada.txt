@@ -5,17 +5,6 @@
 [B2] IF X2 != 0 GOTO B
 Y++
 
-# cosas de WHILE
-
-[B5] IF X2 != 0 GOTO B6
-
-X7++
-Z3--
-WHILE Z0 != 0
-	Z0--
-END
-Y <- X1
-
 # cosas de LOOP
 
 X1--
@@ -24,3 +13,12 @@ LOOP Z3
 END
 Z3 <- X
 X1 <- 0
+
+# cosas de WHILE
+
+X7++
+Z3--
+WHILE Z0 != 0
+	Z0--
+END
+Y <- X1

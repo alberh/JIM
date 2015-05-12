@@ -1,5 +1,5 @@
 
-package interprete;
+//package interprete;
 
 import java.util.Hashtable;
 import java.util.Stack;
@@ -53,4 +53,16 @@ public class Bucle {
 		
 		return _lineaFin;
 	}
+
+	@Override
+	public String toString() {
+
+		return "(" + _lineaInicio + ", " + _lineaFin + ")";
+	}
+
+	public static void pintar() {
+
+		System.out.println("Bucles");
+ 		_bucles.forEach( (k, v) -> System.out.println(v) );
+ 	}
 }

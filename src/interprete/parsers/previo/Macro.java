@@ -191,7 +191,8 @@ public class Macro {
  	}
 
 	public static void pintar() {
- 		
+		
+		System.out.println("Macros");
  		_macros.forEach( (k, v) -> System.out.println(v) );
  	}
 	

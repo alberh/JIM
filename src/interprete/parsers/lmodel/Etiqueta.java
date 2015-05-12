@@ -89,7 +89,8 @@ public class Etiqueta {
 	}
 	
 	public static void pintar()  {
-		
+
+		System.out.println("Etiquetas");
 		System.out.println(_etiquetas);
 	}
 }

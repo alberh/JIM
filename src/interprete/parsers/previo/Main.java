@@ -44,6 +44,8 @@ class Main
 
     Variable.pintar();
     Etiqueta.pintar();
+    Macro.pintar();
+    Bucle.pintar();
   }
 
   public static void main(String[] args) throws IOException {

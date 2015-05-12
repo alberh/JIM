@@ -43,12 +43,6 @@ InputCharacter = [^\r\n]
 WhiteSpace     = [ \t\f]
 
 Identifier = [a-zA-Z]{2} [a-zA-Z]*
-//Identifier = [:jletter:]{-}[a-eA-ExXyYzZ] [:jletterdigit:]*
-//Identifier = ^((?!([a-eA-ExXzZyY]([1-9]+[0-9]*)?)).)*$
-//^((?!([a-eA-ExXzZyY]([1-9]+[0-9]*)?)).)*$
-//^((?!hede).)*$
-//Identifier = ^((?!([a-eA-ExXzZyY]([1-9]+[0-9]*)?)).)*$
-//Identifier = ^(?)(?!([a-eA-ExXzZyY]([1-9]+[0-9]*)?)) [:jletter:] [:jletterdigit:]*
 
 Comment = "#" {InputCharacter}* {LineTerminator}?
 Label = [a-eA-E]([1-9]+[0-9]*)?
@@ -79,7 +73,7 @@ Number = 0|[1-9]+[0-9]*
                   }
 [-+*/%,\[\]()]    { return yycharat(0);
                   }
-{Number}          { yyparser.yylval = new LParserVal( Integer.parseInt(yytext()) );
+{Number}          { yyparser.yylval = new LParserVal( yytext() );
                     return LParser.NUMERO;
                   }
 "if"|"IF"         { return LParser.IF;
@@ -91,5 +85,5 @@ Number = 0|[1-9]+[0-9]*
                   }
 {LineTerminator}  { linea_actual++;
                   }
-.                 { yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido"); 
+.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + linea_actual + ".");
                   }

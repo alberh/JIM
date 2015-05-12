@@ -47,8 +47,10 @@
 
 
 LineTerminator = \r|\n|\r\n
-WhiteSpace     = {LineTerminator} | [ \t\f]
-Identifier = [:jletter:] [:jletterdigit:]*
+InputCharacter = [^\r\n]
+WhiteSpace     = [ \t\f]
+
+Identifier = [a-zA-Z]{2} [a-zA-Z]*
 
 Comment = "#" {InputCharacter}* {LineTerminator}?
 Label = [a-eA-E]([1-9]+[0-9]*)?
@@ -56,39 +58,47 @@ InputVariable = [xX]([1-9]+[0-9]*)?
 LocalVariable = [zZ]([1-9]+[0-9]*)?
 OutputVariable = [yY]
 Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
-
-Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
+Number = 0|[1-9]+[0-9]*
 
 %%
 
+{WhiteSpace}      { linea_actual++;
+                  }
 {Comment}         { }
-
-{Reserved}        { }
-
-"["               { yyparser.yylval = new PrevioParserVal( yytext().charAt(0) );
-                    return PrevioParser.ABRE_CORCHETES;
-                  }
-
-"]"               { yyparser.yylval = new PrevioParserVal( yytext().charAt(0) );
-                    return PrevioParser.CIERRA_CORCHETES;
-                  }
-
-{Label}           { String id = Etiqueta.filtrar("L" + yytext());
-                    yyparser.yylval = new PrevioParserVal( (Object)id );
-                    contenido += id;
+{Label}           { yyparser.yylval = new PrevioParserVal( yytext() );
                     return PrevioParser.ETIQUETA;
                   }
-
-{Variable}        { String id = Variable.filtrar("V" + yytext());
-                    yyparser.yylval = new PrevioParserVal( (Object)id );
-                    contenido += id;
+{Variable}        { yyparser.yylval = new PrevioParserVal( yytext() );
                     return PrevioParser.VARIABLE;
                   }
-
+"<-"              { return PrevioParser.FLECHA;
+                  }
+"++"              { return PrevioParser.INCREMENTO;
+                  }
+"--"              { return PrevioParser.DECREMENTO;
+                  }
+"!="{WhiteSpace}*"0"
+                  { return PrevioParser.DISTINTO;
+                  }
+[-+*/%,\[\]()]    { return yycharat(0);
+                  }
+{Number}          { yyparser.yylval = new PrevioParserVal( yytext() );
+                    return PrevioParser.NUMERO;
+                  }
+"if"|"IF"         { return PrevioParser.IF;
+                  }
+"goto"|"GOTO"     { return PrevioParser.GOTO;
+                  }
+"while"|"WHILE"   { return PrevioParser.WHILE;
+                  }
+"loop"|"LOOP"     { return PrevioParser.LOOP;
+                  }
+"end"|"END"       { return PrevioParser.END;
+                  }
+{Identifier}      { yyparser.yylval = new PrevioParserVal( yytext() );
+                    return PrevioParser.IDMACRO;
+                  }
 {LineTerminator}  { linea_actual++;
                   }
-
-{WhiteSpace}      { }
-
-.                 { /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
+.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + linea_actual + ".");
                   }

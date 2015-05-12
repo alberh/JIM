@@ -23,9 +23,9 @@ class LAcciones {
     
   }
 
-  public static void operacion(char operador, Object op1, Object op2) {
+  public static String operacion(char operador, Object op1, Object op2) {
 
-    
+    return "";
   }
   
   /*

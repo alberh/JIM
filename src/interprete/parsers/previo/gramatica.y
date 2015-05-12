@@ -6,18 +6,71 @@
 
 // lista de tokens por orden de prioridad
 
-%token VARIABLE
 %token ETIQUETA
-%token ABRE_CORCHETES
-%token CIERRA_CORCHETES
+%token VARIABLE
+%token FLECHA
+%token INCREMENTO
+%token DECREMENTO
+%token IF
+%token DISTINTO
+%token GOTO
+%token NUMERO
+%token IDMACRO
+%token WHILE
+%token LOOP
+%token END
+
+%token <sval> ETIQUETA VARIABLE IDMACRO
+%token <sval> NUMERO
+
+%type <sval> operacion
+%type <sval> etiqueta finInstruccion parametros parametrosMacro masParametrosMacro
+
+%left dentroBucle
 
 %%
 
 inicio :  sentencia inicio
-	   |
+       |
 ;
-sentencia :	VARIABLE { Variable.set($1.obj.toString()); } sentencia
-		  |	ABRE_CORCHETES ETIQUETA CIERRA_CORCHETES { Etiqueta.set($2.obj.toString(), analex.lineaActual()); } sentencia
+
+sentencia : etiqueta instruccion
+;
+
+etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, analex.lineaActual()); }
+         |
+;
+
+instruccion : VARIABLE FLECHA { Variable.set($1); }
+            | VARIABLE INCREMENTO { Variable.set($1); }
+            | VARIABLE DECREMENTO { Variable.set($1); }
+            | IF VARIABLE DISTINTO GOTO ETIQUETA { Variable.set($2); }
+            | GOTO ETIQUETA { }
+            | LOOP VARIABLE { Bucle.abrir(analex.lineaActual()); }
+            | WHILE VARIABLE DISTINTO { Bucle.abrir(analex.lineaActual()); }
+            | END { Bucle.cerrar(analex.lineaActual()); }
+;
+finInstruccion :  VARIABLE { Variable.set($1); }
+               |  NUMERO
+               |  operacion
+               |  IDMACRO { Macro.set($1); } '(' parametrosMacro ')'
+;
+operacion	   :  parametros '+' parametros
+			   |  parametros '-' parametros
+			   |  parametros '*' parametros
+			   |  parametros '/' parametros
+			   |  parametros '%' parametros
+;
+parametros :  NUMERO
+           |  VARIABLE { Variable.set($1); }
+;
+
+parametrosMacro : parametros masParametrosMacro
+                |
+;
+
+masParametrosMacro :  ',' parametros masParametrosMacro
+                   |
 ;
 
 %%
