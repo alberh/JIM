@@ -1,16 +1,34 @@
 
-package interprete.parsers.lmodel;
+//package interprete.parsers.lmodel;
 
-import java.util.Hashtable ;
+class LAcciones {
+
+  public static void asignacion(String variable, Object valor) {
 
 
-class LAcciones
-{
-  // tabla con las variables definidas y sus valores
-  private static Hashtable<String,Object> variables = new Hashtable<String,Object>() ;
-             // documentacion sobre 'Hashtable' aqui:
-             // http://java.sun.com/j2se/1.4.2/docs/api/java/util/Hashtable.html
+  }
 
+  public static void incremento(String variable) {
+
+
+  }
+
+  public static void decremento(String variable) {
+
+    
+  }
+
+  public static void salto(String etiqueta) {
+
+    
+  }
+
+  public static void operacion(char operador, Object op1, Object op2) {
+
+    
+  }
+  
+  /*
   // cambia o inicializa el valor de una variable
   // (ident debe ser String)
   public static void Asignacion(Object ident, Object valor)
@@ -105,5 +123,5 @@ class LAcciones
           }
       }
   } 
-
-} // class Acc
+  */
+}
