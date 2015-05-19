@@ -24,53 +24,51 @@
 %token <sval> NUMERO
 
 %type <sval> operacion
-%type <sval> etiqueta finInstruccion parametros parametrosMacro masParametrosMacro
-
-%left dentroBucle
+%type <sval> inicio sentencia etiqueta finInstruccion parametros parametrosMacro masParametrosMacro
 
 %%
 
-inicio :  sentencia inicio
-       |
+inicio :  sentencia { $$ = $1; } inicio
+       | { $$ = null; }
 ;
 
-sentencia : etiqueta instruccion
+sentencia : etiqueta instruccion { ; }
 ;
 
 etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, analex.lineaActual()); }
-         |
+         | { ; }
 ;
 
-instruccion : VARIABLE FLECHA { Variable.set($1); }
+instruccion : VARIABLE FLECHA finInstruccion { Variable.set($1); }
             | VARIABLE INCREMENTO { Variable.set($1); }
             | VARIABLE DECREMENTO { Variable.set($1); }
             | IF VARIABLE DISTINTO GOTO ETIQUETA { Variable.set($2); }
-            | GOTO ETIQUETA { }
-            | LOOP VARIABLE { Bucle.abrir(analex.lineaActual()); }
-            | WHILE VARIABLE DISTINTO { Bucle.abrir(analex.lineaActual()); }
+            | GOTO ETIQUETA { ; }
+            | LOOP VARIABLE { Variable.set($2); Bucle.abrir(analex.lineaActual()); }
+            | WHILE VARIABLE DISTINTO { Variable.set($2); Bucle.abrir(analex.lineaActual()); }
             | END { Bucle.cerrar(analex.lineaActual()); }
 ;
 finInstruccion :  VARIABLE { Variable.set($1); }
-               |  NUMERO
-               |  operacion
+               |  NUMERO { ; }
+               |  operacion { ; }
                |  IDMACRO { Macro.set($1); } '(' parametrosMacro ')'
 ;
-operacion	   :  parametros '+' parametros
-			   |  parametros '-' parametros
-			   |  parametros '*' parametros
-			   |  parametros '/' parametros
-			   |  parametros '%' parametros
+operacion	   :  parametros '+' parametros { ; }
+			   |  parametros '-' parametros { ; }
+			   |  parametros '*' parametros { ; }
+			   |  parametros '/' parametros { ; }
+			   |  parametros '%' parametros { ; }
 ;
-parametros :  NUMERO
+parametros :  NUMERO { ; }
            |  VARIABLE { Variable.set($1); }
 ;
 
-parametrosMacro : parametros masParametrosMacro
-                |
+parametrosMacro : parametros masParametrosMacro { ; }
+                | { ; }
 ;
 
-masParametrosMacro :  ',' parametros masParametrosMacro
-                   |
+masParametrosMacro :  ',' parametros masParametrosMacro { ; }
+                   | { ; }
 ;
 
 %%

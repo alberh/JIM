@@ -62,9 +62,9 @@ Number = 0|[1-9]+[0-9]*
 
 %%
 
-{WhiteSpace}      { linea_actual++;
+{WhiteSpace}      { }
+{Comment}         { linea_actual++;
                   }
-{Comment}         { }
 {Label}           { yyparser.yylval = new PrevioParserVal( yytext() );
                     return PrevioParser.ETIQUETA;
                   }
