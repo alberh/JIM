@@ -167,10 +167,10 @@ public class Macro {
  	
  	@Override
  	public String toString() {
- 		StringBuffer sb = new StringBuffer();
+ 		StringBuilder sb = new StringBuilder();
 
- 		sb.append(_id + "\n");
- 		sb.append(_cuerpo + "\n");
+ 		sb.append("ID: " + _id + "\n");
+ 		sb.append("Cuerpo: " + _cuerpo + "\n");
 
  		sb.append("Variables de entrada:");
  		for (int i = 0; i < _entrada.size(); ++i)
