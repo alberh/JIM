@@ -1,14 +1,14 @@
 JFLEX  = jflex 
-BYACCJ = ../../../byaccj/yacc.linux -Jclass=LoopParser -Jpackage=Interprete.Parsers.Loop
+BYACCJ = ../../../byaccj/yacc.linux -Jclass=LoopParser -Jpackage=interprete.parsers.loopmodel;
 JAVAC  = javac
 
-.SUFFIXES:
-.PHONY: ejecuta
+#.SUFFIXES:
+#.PHONY: ejecuta
 
-ejecuta: Main.class entrada.txt
-	java Main entrada.txt
+#ejecuta: Main.class entrada.txt
+#	java Main entrada.txt
 
-Main.class: LoopLex.java LoopParser.java LoopParserVal.java Main.java Acc.java
+Main.class: LoopLex.java LoopParser.java LoopParserVal.java LoopAcciones.java
 	rm -f *.class
 	$(JAVAC) Main.java
 
@@ -19,7 +19,6 @@ LoopParser.java LoopParserVal.java: gramatica.y
 	$(BYACCJ) gramatica.y
 	sed s/'yyerror("syntax error")'/'yyerror("error sintactico",yystate,yychar)'/ LoopParser.java >tmp.java
 	mv tmp.java LoopParser.java
-
 
 clean:
 	rm -f *~ *.class LoopLex.java LoopParser.java LoopParserVal.java

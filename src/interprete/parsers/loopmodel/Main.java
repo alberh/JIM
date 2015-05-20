@@ -1,6 +1,6 @@
-/*
-package interprete.parsers.loopmodel;
 
+package interprete.parsers.loopmodel;
+/*
 import java.io.* ;
 
 class Main

@@ -1,5 +1,5 @@
 
-//package interprete;
+package interprete;
 
 import java.util.Hashtable;
 import java.util.ArrayList;

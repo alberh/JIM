@@ -1,0 +1,3 @@
+
+Analizador de macros
+	* Identificar identificadores de macro dentro de una macro e impedir su definición.

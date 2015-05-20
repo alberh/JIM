@@ -1,5 +1,5 @@
 
-package Interprete.Parsers.Loop;
+package interprete.parsers.loopmodel;
 
 %%
 

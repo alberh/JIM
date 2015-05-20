@@ -1,12 +1,7 @@
-// fuente byaccj para una calculadora sencilla
- 
 
 %{
   import java.io.*;
 %}
-
-
-// lista de tokens por orden de prioridad
 
 %token VARIABLE
 %token FLECHA

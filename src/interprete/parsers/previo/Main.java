@@ -1,9 +1,9 @@
 
-//package interprete.parsers.analizador;
-
+package interprete.parsers.previo;
+/*
 import java.io.* ;
 import java.util.ArrayList;
-
+/*
 class Main
 {
 
@@ -36,7 +36,7 @@ class Main
   }
 
   /***************************************************************************/
-
+/*
   public static void pruebaParser(String[] args) {
 
     PrevioParser analizador = new PrevioParser(AbrirLector(args)) ;
@@ -54,5 +54,4 @@ class Main
   }   
 
 }
-
-
+*/

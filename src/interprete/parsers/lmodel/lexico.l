@@ -1,5 +1,5 @@
 
-//package Interprete.Parsers.L;
+package interprete.parsers.lmodel;
 
 %%
 
@@ -53,9 +53,9 @@ Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 Number = 0|[1-9]+[0-9]*
 
 %%
-{WhiteSpace}      { linea_actual++;
+{WhiteSpace}      { }
+{Comment}         { linea_actual++;
                   }
-{Comment}         { }
 {Label}           { yyparser.yylval = new LParserVal( yytext() );
                     return LParser.ETIQUETA;
                   }

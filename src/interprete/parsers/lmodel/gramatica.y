@@ -1,12 +1,8 @@
-// fuente byaccj para una calculadora sencilla
- 
 
 %{
   import java.io.*;
+  import interprete.*;
 %}
-
-
-// lista de tokens por orden de prioridad
 
 %token ETIQUETA
 %token VARIABLE
@@ -27,15 +23,15 @@
 
 %%
 
-inicio :  sentencia inicio
-       |
+inicio :  sentencia inicio { ; }
+       | { ; }
 ;
 
-sentencia : etiqueta instruccion
+sentencia : etiqueta instruccion { ; }
 ;
 
 etiqueta :  '[' ETIQUETA ']' { System.out.println("Etiqueta " + $2); }
-         | {}
+         | { ; }
 ;
 
 instruccion : VARIABLE FLECHA {System.out.print("Variable (" + $1 + ") <- ");} finInstruccion { LAcciones.asignacion($1, $4); }
@@ -55,16 +51,16 @@ operacion	   :  parametros '+' parametros { $$ = LAcciones.operacion('+', $1, $3
 			   |  parametros '/' parametros { $$ = LAcciones.operacion('/', $1, $3); System.out.println($1 + " / " + $3); }
 			   |  parametros '%' parametros { $$ = LAcciones.operacion('%', $1, $3); System.out.println($1 + " % " + $3); }
 ;
-parametros :  NUMERO  { $$ = $1; }
-           |  VARIABLE { $$ = $1; }
+parametros :  NUMERO  { $$.sval = $1.sval; }
+           |  VARIABLE { $$.sval = $1.sval; }
 ;
 
 parametrosMacro : parametros {$$ = $1; System.out.println("Parámetro: " + $1);} masParametrosMacro
-                | { $$ = ""; }
+                | { ; }
 ;
 
 masParametrosMacro :  ',' parametros {$$ = $2; System.out.println("Parámetro: " + $2);} masParametrosMacro
-                   | { $$ = ""; }
+                   | { ; }
 ;
 
 %%

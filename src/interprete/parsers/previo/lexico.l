@@ -1,9 +1,10 @@
 
-//package Interprete.Parsers.Previo;
+package interprete.parsers.previo;
 
 %%
 
 %byaccj
+%public
 %class PrevioLex
 
 %{

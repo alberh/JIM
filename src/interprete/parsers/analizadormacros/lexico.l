@@ -1,5 +1,5 @@
 
-//package Interprete.Parsers.AnalizadorMacros;
+package interprete.parsers.analizadormacros;
 
 %%
 

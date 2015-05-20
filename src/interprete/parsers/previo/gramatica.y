@@ -1,6 +1,7 @@
 
 %{
 	import java.io.*;
+	import interprete.*;
 %}
 
 
@@ -31,14 +32,11 @@
 inicio :  sentencia { $$ = $1; } inicio
        | { $$ = null; }
 ;
-
 sentencia : etiqueta instruccion { ; }
 ;
-
 etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, analex.lineaActual()); }
          | { ; }
 ;
-
 instruccion : VARIABLE FLECHA finInstruccion { Variable.set($1); }
             | VARIABLE INCREMENTO { Variable.set($1); }
             | VARIABLE DECREMENTO { Variable.set($1); }
@@ -86,6 +84,11 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 	analex = new PrevioLex(r, this);
 	 //yydebug = true;
   }
+
+public int parse() {
+	
+	return this.yyparse();
+}
 
   /** esta función se invoca por el analizador cuando necesita el 
   *** siguiente token del analizador léxico

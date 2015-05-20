@@ -1,14 +1,14 @@
 JFLEX  = jflex 
-BYACCJ = ../../../byaccj/yacc.linux -Jclass=PrevioParser #-Jpackage=Interprete.Parsers.Previo
+BYACCJ = ../../../byaccj/yacc.linux -Jclass=PrevioParser -Jpackage=interprete.parsers.previo
 JAVAC  = javac
 
-.SUFFIXES:
-.PHONY: ejecuta
+#.SUFFIXES:
+#.PHONY: ejecuta
 
-ejecuta: Main.class entrada.txt
-	java Main entrada.txt
+#ejecuta: Main.class entrada.txt
+#	java Main entrada.txt
 
-Main.class: PrevioLex.java PrevioParser.java PrevioParserVal.java Main.java PrevioAcciones.java
+Main.class: PrevioLex.java PrevioParser.java PrevioParserVal.java PrevioAcciones.java
 	rm -f *.class
 	$(JAVAC) Main.java
 

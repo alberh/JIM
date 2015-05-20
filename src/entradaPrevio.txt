@@ -1,0 +1,41 @@
+
+# cosas de L
+
+[B] IF X != 0 GOTO B2
+[B2] IF X2 != 0 GOTO B
+Y++
+
+# blah blah
+
+[B1] X <- fibo(5)
+[C] Y--
+
+# cosas de LOOP
+
+X3--
+LOOP Z1
+	Z2++
+
+	Z3 <- pow(2, 3)
+
+	LOOP X
+		Z3--
+	END
+END
+Z4 <- X5
+X6 <- 0
+
+# cosas de WHILE
+
+X7++
+Z4--
+WHILE Z5 != 0
+	Z5--
+	# comentarios en el bucle
+	WHILE Y != 0
+		Z1++
+		Y--
+	END
+	Z--
+END
+Y <- X1

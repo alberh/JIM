@@ -1,5 +1,5 @@
 
-package Interprete.Parsers.While;
+package interprete.parsers.whilemodel;
 
 %%
 

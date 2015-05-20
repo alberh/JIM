@@ -1,34 +1,34 @@
 
-//package interprete.parsers.lmodel;
+package interprete.parsers.lmodel;
 
-class LAcciones {
+public class LAcciones {
 
-  public static void asignacion(String variable, Object valor) {
-
-
-  }
-
-  public static void incremento(String variable) {
+	public static void asignacion(String variable, Object valor) {
 
 
-  }
+	}
 
-  public static void decremento(String variable) {
+	public static void incremento(String variable) {
 
-    
-  }
 
-  public static void salto(String etiqueta) {
+	}
 
-    
-  }
+	public static void decremento(String variable) {
 
-  public static String operacion(char operador, Object op1, Object op2) {
 
-    return "";
-  }
-  
-  /*
+	}
+
+	public static void salto(String etiqueta) {
+
+
+	}
+
+	public static String operacion(char operador, Object op1, Object op2) {
+
+		return "";
+	}
+
+	/*
   // cambia o inicializa el valor de una variable
   // (ident debe ser String)
   public static void Asignacion(Object ident, Object valor)
@@ -123,5 +123,5 @@ class LAcciones {
           }
       }
   } 
-  */
+	 */
 }
