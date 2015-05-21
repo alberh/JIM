@@ -73,6 +73,7 @@ public class Main {
 	}
 
 	private static Reader AbrirLector(String args[]) {
+
 		Reader lector = null;
 
 		if (args.length > 0) {

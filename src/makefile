@@ -30,4 +30,4 @@ Main.class: Main.java
 	$(JAVAC) Main.java
 
 clean:
-	rm -f *~ *.class interprete/*.class
+	rm -f *~ *.class interprete/*.class interprete/parsers/*.class
