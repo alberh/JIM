@@ -71,8 +71,6 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 
 %%
 
-	private Macro macro;
-
 	/** referencia al analizador léxico
   **/
 	private PrevioLex analex;

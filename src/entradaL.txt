@@ -1,0 +1,44 @@
+
+# comentario, instrucciones básicas y etiquetas . [] * (^#@ #½ ¬) y sigue ...
+[A4]	X1 <- X1 + 1
+
+		X2 <- X2 + 1
+		X2 <- X2 + 1
+		X2 <- X2 - 1
+
+		Z <- Z1 + 1
+		Z <- z
+		IF Z5 != 0 GOTO E4
+
+# instrucciones adicionales
+# incremento
+[B1]	X3++
+
+# asignación de número y decremento
+		x4 <- 7
+		X4--
+
+# asignación de números y productos en todos los órdenes de operadores posibles
+		z5 <- 3
+		z6 <- 8
+		x66 <- Z5 * Z
+		x67 <- 7 * 3
+		x68 <- z * 2
+		x69 <- 5 * z6
+
+# asignación de variables, suma y resta
+		x5 <- z5
+		z6 <- 33
+		x6 <- x5 + x
+		x7 <- x66 - 3
+		
+# goto
+		goto a4
+		goto e
+
+# división y resto
+		x8 <- 88 / 11
+		x9 <- 88 % 10
+
+# llamada a macros
+		y <- fibo(x1, x2, 3, z444, y, 4, 0)

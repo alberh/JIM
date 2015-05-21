@@ -172,17 +172,17 @@ public class Macro {
  		sb.append("ID: " + _id + "\n");
  		sb.append("Cuerpo: " + _cuerpo + "\n");
 
- 		sb.append("Variables de entrada:");
+ 		sb.append("\tVariables de entrada:");
  		for (int i = 0; i < _entrada.size(); ++i)
  			sb.append(_entrada.get(i) + " ");
  		sb.append("\n");
 
- 		sb.append("Variables locales:");
+ 		sb.append("\tVariables locales:");
  		for (int i = 0; i < _locales.size(); ++i)
  			sb.append(_locales.get(i) + " ");
  		sb.append("\n");
 
- 		sb.append("Etiquetas:");
+ 		sb.append("\tEtiquetas:");
  		for (int i = 0; i < _etiquetas.size(); ++i)
  			sb.append(_etiquetas.get(i) + " ");
  		sb.append("\n");
@@ -194,6 +194,7 @@ public class Macro {
 		
 		System.out.println("Macros");
  		_macros.forEach( (k, v) -> System.out.println(v) );
+ 		System.out.println();
  	}
 	
 }

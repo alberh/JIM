@@ -10,6 +10,7 @@ import interprete.Macro;
 import interprete.Variable;
 import interprete.Variable.EVariable;
 import interprete.parsers.previo.*;
+import interprete.parsers.lmodel.*;
 
 public class Main {
 
@@ -18,22 +19,57 @@ public class Main {
 	public static void main(String[] args) {
 
 		bienvenida();
-		pruebasPrevio();
+
+		pruebasL();
+
+		// pruebasPrevio();
 		// pruebasVariables();
 		// pruebasEtiquetas();
+	}
+
+	public static void ejecutarPrevio(String[] args) {
+
+		System.out.println("Ejecutando previo");
+		System.out.println("=================");
+
+		PrevioParser analizador = new PrevioParser(AbrirLector(args)) ;
+	    analizador.parse();
+	}
+
+	public static void muestraMemoria() {
+
+		System.out.println("====================");
+		System.out.println("Estado de la memoria");
+		System.out.println("====================");
+		Variable.pintar();
+	    Etiqueta.pintar();
+	    Macro.pintar();
+	    Bucle.pintar();
+	    System.out.println("====================");
+	}
+
+	public static void pruebasL() {
+
+		String[] args = { "entradaL.txt" };
+
+		ejecutarPrevio(args);
+
+		System.out.println();
+		System.out.println("Ejecutando pruebas de L");
+		System.out.println("=======================");
+
+		LParser lparser = new LParser(AbrirLector(args));
+		lparser.parse();
+
+		muestraMemoria();
 	}
 
 	public static void pruebasPrevio() {
 
 		String[] args = { "entradaPrevio.txt" };
 
-		PrevioParser analizador = new PrevioParser(AbrirLector(args)) ;
-	    analizador.parse();
-
-	    Variable.pintar();
-	    Etiqueta.pintar();
-	    Macro.pintar();
-	    Bucle.pintar();
+		ejecutarPrevio(args);
+		muestraMemoria();
 	}
 
 	private static Reader AbrirLector(String args[]) {
@@ -63,10 +99,10 @@ public class Main {
 
 	public static void bienvenida() {
 
-		System.out.println();
 		System.out.println("JIM - Intérprete de Modelos");
 		System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
 		System.out.println("Versión " + _mayorVersion + "." + _minorVersion);
+		System.out.println();
 	}
 
 	public static void pruebasVariables() {

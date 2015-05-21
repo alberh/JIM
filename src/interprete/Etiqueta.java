@@ -92,5 +92,6 @@ public class Etiqueta {
 
 		System.out.println("Etiquetas");
 		System.out.println(_etiquetas);
+		System.out.println();
 	}
 }

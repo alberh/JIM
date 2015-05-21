@@ -62,7 +62,8 @@ public class Bucle {
 
 	public static void pintar() {
 
-		System.out.println("Bucles");
+		System.out.println("Bucles:");
  		_bucles.forEach( (k, v) -> System.out.println(v) );
+ 		System.out.println();
  	}
 }

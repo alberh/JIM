@@ -1,32 +1,98 @@
 
 package interprete.parsers.lmodel;
 
+import interprete.*;
+
 public class LAcciones {
 
-	public static void asignacion(String variable, Object valor) {
+	public static void asignacion(Object lvalue, Object rvalue) {
+
+    Variable variable = obtenerVariable(lvalue);
+    int valor = obtenerValor(rvalue);
+
+    variable.valor(valor);
+	}
+
+	public static void incremento(Object lvalue) {
+
+    obtenerVariable(lvalue).incremento();
+	}
+
+	public static void decremento(Object lvalue) {
+
+    obtenerVariable(lvalue).decremento();
+	}
+
+	public static void salto(Object etiqueta) {
 
 
 	}
 
-	public static void incremento(String variable) {
+	public static int operacion(char operador, Object op1, Object op2) {
 
+    int v1, v2;
 
+    v1 = obtenerValor(op1);
+    v2 = obtenerValor(op2);
+
+    switch (operador) {
+
+      case '+':
+        return v1 + v2;
+
+      case '-':
+        int res = v1 - v2;
+        return res >= 0 ? res : 0;
+
+      case '*':
+        return v1 * v2;
+
+      case '/':
+        if (v2 == 0) {
+
+          // tratamiento de errores
+          return 0;
+        }
+
+        return v1 / v2;
+
+      case '%':
+        if (v2 == 0) {
+
+          // tratamiento de errores
+          return 0;
+        }
+
+        return v1 % v2;
+
+      default:
+        // informar de error
+        return 0;
+    }
 	}
 
-	public static void decremento(String variable) {
+  private static Variable obtenerVariable(Object id) {
 
+    // tratamiento de errores
+    return Variable.get(id.toString());
+  }
 
-	}
+  private static int obtenerValor(Object o) {
 
-	public static void salto(String etiqueta) {
+    // falta debido a no haber implementado aún el tratamiento de macros
+    if (o == null) {
 
+      return 999;
+    }
 
-	}
+    if (o.getClass() == Integer.class) {
 
-	public static String operacion(char operador, Object op1, Object op2) {
+      return ((Integer)o).intValue();
+    } else {
 
-		return "";
-	}
+      return Variable.get((String)o).valor();
+    }
+  }
 
 	/*
   // cambia o inicializa el valor de una variable

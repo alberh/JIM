@@ -4,6 +4,7 @@ package interprete.parsers.lmodel;
 %%
 
 %byaccj
+%public
 %class LLex
 
 %{
@@ -73,7 +74,7 @@ Number = 0|[1-9]+[0-9]*
                   }
 [-+*/%,\[\]()]    { return yycharat(0);
                   }
-{Number}          { yyparser.yylval = new LParserVal( yytext() );
+{Number}          { yyparser.yylval = new LParserVal( Integer.parseInt(yytext()) );
                     return LParser.NUMERO;
                   }
 "if"|"IF"         { return LParser.IF;

@@ -164,6 +164,19 @@ public class Variable {
 		this._valor = Math.max(0, nuevoValor);
  	}
 
+ 	public void incremento() {
+
+ 		this._valor++;
+ 	}
+
+ 	public void decremento() {
+
+ 		if (this._valor > 0) {
+ 			
+ 			this._valor--;
+ 		}
+ 	}
+
  	public static String filtrar(String id) {
 
  		id = id.toUpperCase();
@@ -192,12 +205,17 @@ public class Variable {
  	
  	public static void pintar() {
  		
- 		System.out.println("Entrada");
+ 		System.out.println("Variables de entrada");
  		System.out.println(_entrada);
- 		System.out.println("Locales");
+ 		System.out.println();
+
+ 		System.out.println("Variables locales");
  		System.out.println(_locales);
- 		System.out.println("Salida");
+ 		System.out.println();
+
+ 		System.out.println("Variable de salida");
  		System.out.println(_salida);
+ 		System.out.println();
  	}
 	
 }
