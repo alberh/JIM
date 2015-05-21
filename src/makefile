@@ -10,12 +10,12 @@ all:
 	make Main.class
 	
 cleanall:
-	make clean
 	cd interprete/parsers/previo; make clean
 	cd interprete/parsers/analizadormacros; make clean
 	cd interprete/parsers/lmodel; make clean
 	cd interprete/parsers/loopmodel; make clean
 	cd interprete/parsers/whilemodel; make clean
+	make clean
 
 l:
 	cd interprete/parsers/lmodel; make

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import interprete.Programa;
 import interprete.Bucle;
 import interprete.Etiqueta;
 import interprete.Macro;

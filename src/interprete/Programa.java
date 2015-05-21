@@ -1,7 +1,11 @@
 
 package interprete;
 
-import java.io.Reader;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import interprete.*;
 
@@ -10,11 +14,11 @@ public class Programa {
 	private static ArrayList<String> _lineas = new ArrayList();
 	private static int _lineaActual;
 
-	private Programa() { }
-
 	public enum TipoModelos { L, LOOP, WHILE };
 
-	public static void cargar(String nombrePrograma, TipoModelos modelo) {
+	private Programa() { }
+
+	public static void cargar(String nombrePrograma, TipoModelos modelo) throws Exception {
 
 		String rutaUsuario = System.getProperty("user.dir");
 		String rutaBase = rutaUsuario + "/codigos/L/";
@@ -42,8 +46,6 @@ public class Programa {
 			}
 
 			_lineaActual = numeroLineas();
-		}
-
 		} catch(IOException exc) {
 			
 			throw new Exception("No se pudo abrir el fichero \"" + rutaFichero + "\".\nCausa: " + exc.getMessage(), exc);
@@ -116,7 +118,7 @@ public class Programa {
 		}
 	}
 
-	public static bool lineaValida(int numeroLinea) {
+	public static boolean lineaValida(int numeroLinea) {
 
 		return numeroLinea >= 1 && numeroLinea < numeroLineas();
 	}
@@ -131,7 +133,7 @@ public class Programa {
 		return _lineas;
 	}
 
-	public static bool finalizado() {
+	public static boolean finalizado() {
 
 		return numeroLineaActual() == numeroLineas();
 	}
