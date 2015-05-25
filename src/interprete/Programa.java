@@ -56,6 +56,22 @@ public class Programa {
 		A LA INTERFAZ PARSER Y CREAR UN NUEVO LECTOR PARA CADA LÍNEA
 		*/
 
+		/*
+		Añadir dos líneas del código al principio y así ir siempre una por adelantado,
+		de forma que el buffer ...
+		*/
+
+		/*
+		Almacenar las posiciones de los comienzos de línea en el buffer según se van almacenando
+		dichas líneas en Programa. Cuando haya un salto debido a una sentencia de salto condicional,
+		incondicional o bucle, se obtendrá la posición de la línea destino del salto y se cambiará
+		la posición del lector en el buffer.
+
+		Métodos a usar:
+			- mark(): para marcar el inicio del buffer nada más comenzar el código
+			- reset(): pone la posición del lector en la última marca (si no hay marca -> excepción)
+			- skip(long n): salta caracteres
+		*/
 
 		// Crear instancia del buffer
 		_lineaReader = new StringBuilder();
