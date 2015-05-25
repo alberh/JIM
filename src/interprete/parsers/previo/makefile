@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../byaccj/yacc.linux -Jclass=PrevioParser -Jpackage=interprete.parsers.previo
+BYACCJ = ../../../byaccj/yacc.linux -Jclass=PrevioParser -Jpackage=interprete.parsers.previo -Jimplements=IParser
 JAVAC  = javac
 
 #.SUFFIXES:

@@ -2,6 +2,7 @@
 %{
 	import java.io.*;
 	import interprete.*;
+	import interprete.parsers.IParser;
 %}
 
 
@@ -83,10 +84,10 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 	 //yydebug = true;
   }
 
-public int parse() {
+  public int parse() {
 	
-	return this.yyparse();
-}
+    return this.yyparse();
+  }
 
   /** esta función se invoca por el analizador cuando necesita el 
   *** siguiente token del analizador léxico

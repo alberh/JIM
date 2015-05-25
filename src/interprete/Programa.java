@@ -2,12 +2,17 @@
 package interprete;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringBuilder;
 import java.util.ArrayList;
 
 import interprete.*;
+import interprete.parsers.*;
+import interprete.parsers.analizadormacros.*;
+import interprete.parsers.previo.*;
+import interprete.parsers.lmodel.*;
 
 public class Programa {
 
@@ -15,10 +20,70 @@ public class Programa {
 	private static int _lineaActual;
 
 	public enum TipoModelos { L, LOOP, WHILE };
+	
+	private static TipoModelos _modelo;
+	private static IParser _parser;
+	
+	private static StringBuilder _lineaReader;
+	private static StringReader _reader;
 
 	private Programa() { }
 
+	public static void cargar(BufferedReader br, TipoModelos modelo) {
+
+		String linea;
+
+		try {
+
+			while ((linea = br.readLine()) != null) {
+
+				_lineas.add(linea);
+			}
+			br.close();
+		} catch (IOException ex) {
+
+			System.err.println("Error en el volcado del programa a memoria.");
+			System.exit(1);
+		}
+
+		_lineaActual = numeroLineas();
+
+		_modelo = modelo;
+
+
+		/*
+		QUIZÁ LO QUE HAGA FALTA ES AÑADIR UN MÉTODO PARA CAMBIAR EL READER
+		A LA INTERFAZ PARSER Y CREAR UN NUEVO LECTOR PARA CADA LÍNEA
+		*/
+
+
+		// Crear instancia del buffer
+		_lineaReader = new StringBuilder();
+		_reader = new StringReader(_lineaReader);
+
+		switch (_modelo) {
+
+			case L:
+				_parser = new LParser(_reader);
+				break;
+
+			case LOOP:
+				//_parser = new LoopParser(bf);
+				break;
+
+			case WHILE:
+				//_parser = new WhileParser(bf);
+				break;
+		}
+	}
+
+	/*
 	public static void cargar(String nombrePrograma, TipoModelos modelo) throws Exception {
+
+		/* CAMBIOS:
+		 *	Comprobar existencia de directorios al inicio del programa y crear los que falten.
+		 *	Basar la ruta hacia estos directorios en un fichero de propiedades y la clase
+		 *	encargada de cargar y gestionar éstas propiedades y su volcado al fichero.
 
 		String rutaUsuario = System.getProperty("user.dir");
 		String rutaBase = rutaUsuario + "/codigos/L/";
@@ -51,6 +116,7 @@ public class Programa {
 			throw new Exception("No se pudo abrir el fichero \"" + rutaFichero + "\".\nCausa: " + exc.getMessage(), exc);
 		}
 	}
+	*/
 
 	public static void iniciar() {
 
@@ -136,5 +202,13 @@ public class Programa {
 	public static boolean finalizado() {
 
 		return numeroLineaActual() == numeroLineas();
+	}
+
+	public static void imprimirEstado() {
+
+		Variable.pintar();
+	    Etiqueta.pintar();
+	    Macro.pintar();
+	    Bucle.pintar();
 	}
 }

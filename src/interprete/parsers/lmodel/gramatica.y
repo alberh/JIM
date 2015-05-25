@@ -2,6 +2,7 @@
 %{
   import java.io.*;
   import interprete.*;
+  import interprete.parsers.IParser;
 %}
 
 %token ETIQUETA
@@ -35,8 +36,8 @@ etiqueta : '[' ETIQUETA ']' { $$ = $2; System.out.println("Etiqueta " + $2); }
 instruccion : VARIABLE FLECHA { System.out.print("Variable (" + $1 + ") <- "); } finInstruccion { LAcciones.asignacion($1, $4); }
             | VARIABLE INCREMENTO { LAcciones.incremento($1); System.out.println("Variable (" + $1 + ") ++");}
             | VARIABLE DECREMENTO { LAcciones.decremento($1); System.out.println("Variable (" + $1 + ") --");}
-            | IF VARIABLE DISTINTO GOTO ETIQUETA {System.out.println("If Variable (" + $2 + ") != 0 goto etiqueta (" + $5 + ")");}
-            | GOTO ETIQUETA { LAcciones.salto($2); System.out.println("Goto Etiqueta ("+ $2 + ")");}
+            | IF VARIABLE DISTINTO GOTO ETIQUETA { LAcciones.saltoCondicional($2, $5); System.out.println("If Variable (" + $2 + ") != 0 goto etiqueta (" + $5 + ")");}
+            | GOTO ETIQUETA { LAcciones.saltoIncondicional($2); System.out.println("Goto Etiqueta ("+ $2 + ")");}
 ;
 finInstruccion :  VARIABLE { $$ = $1; System.out.println("Variable (" + $1 + ")");}
                |  NUMERO { $$ = $1; System.out.println("Numero (" + $1 + ")");}
@@ -76,7 +77,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; System.out.println("Parámetro: "
   }
 
   public int parse() {
-  
+    
     return this.yyparse();
   }
 

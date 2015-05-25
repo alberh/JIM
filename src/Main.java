@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.BufferedReader;
 
 import interprete.Programa;
 import interprete.Bucle;
@@ -23,37 +24,40 @@ public class Main {
 
 		pruebasL();
 
-		// pruebasPrevio();
+		// pruebasprevioParser();
 		// pruebasVariables();
 		// pruebasEtiquetas();
 	}
 
-	public static void ejecutarPrevio(String[] args) {
+	public static void previoParser(String[] args) {
 
-		System.out.println("Ejecutando previo");
+		System.out.println("Ejecutando previoParser");
 		System.out.println("=================");
 
 		PrevioParser analizador = new PrevioParser(AbrirLector(args)) ;
 	    analizador.parse();
 	}
 
-	public static void muestraMemoria() {
+	public static void pruebasL() {
+
+		String[] args = { "entradaL.txt" };
+		Programa.cargar(AbrirLector(args), Programa.TipoModelos.L);
 
 		System.out.println("====================");
 		System.out.println("Estado de la memoria");
 		System.out.println("====================");
-		Variable.pintar();
-	    Etiqueta.pintar();
-	    Macro.pintar();
-	    Bucle.pintar();
-	    System.out.println("====================");
-	}
 
-	public static void pruebasL() {
+		Programa.imprimirEstado();
 
-		String[] args = { "entradaL.txt" };
+		System.out.println("====================");
 
-		ejecutarPrevio(args);
+
+
+
+
+		
+		/*
+		previoParser(args);
 
 		System.out.println();
 		System.out.println("Ejecutando pruebas de L");
@@ -62,41 +66,35 @@ public class Main {
 		LParser lparser = new LParser(AbrirLector(args));
 		lparser.parse();
 
-		muestraMemoria();
+		*/
 	}
 
-	public static void pruebasPrevio() {
+	public static void pruebasprevioParser() {
 
-		String[] args = { "entradaPrevio.txt" };
+		String[] args = { "entradaprevioParser.txt" };
 
-		ejecutarPrevio(args);
-		muestraMemoria();
+		previoParser(args);
+		Programa.imprimirEstado();
 	}
 
-	private static Reader AbrirLector(String args[]) {
+	private static BufferedReader AbrirLector(String args[]) {
 
-		Reader lector = null;
+		BufferedReader lector = null;
 
-		if (args.length > 0) {
-			
-			try {
+		try {
 				
-				lector = new FileReader(args[0]);
-			} catch( IOException exc ) {
-				
-				System.err.println("imposible abrir archivo '"+args[0]+"'");
-				System.err.println("causa: "+exc.getMessage());
-				System.exit(1);
-			}
-
-			System.out.println("leyendo archivo '"+args[0]+"'");
-		} else {
+			lector = new BufferedReader(new FileReader(args[0]));
+		} catch( IOException exc ) {
 			
-			lector = new InputStreamReader(System.in);
-			System.out.println("leyendo entrada estándard (terminar con ctrl-d)");
+			/*
+			System.err.println("imposible abrir archivo '"+args[0]+"'");
+			System.err.println("causa: "+exc.getMessage());
+			*/
+			System.err.println("Error al abrir el lector.");
+			System.exit(1);
 		}
 
-		return lector ;
+		return lector;
 	}
 
 	public static void bienvenida() {

@@ -1,7 +1,8 @@
 
 %{
 	import java.io.*;
-	%}
+	import interprete.parsers.IParser;
+%}
 
 
 // lista de tokens por orden de prioridad
@@ -38,6 +39,11 @@ simbolos :	VARIABLE simbolos { macro.nuevaVariable($1.obj.toString()); }
   {
 	analex = new MacrosLex(r, this);
 	 //yydebug = true;
+  }
+
+  public int parse() {
+		
+	return this.yyparse();
   }
 
   /** esta función se invoca por el analizador cuando necesita el 
