@@ -182,7 +182,7 @@ public class Programa {
 			_lineaActual = n;
 		} else {
 
-			_lineaActual = numeroLineas() + 1;
+			terminar();
 		}
 	}
 
@@ -225,12 +225,12 @@ public class Programa {
 
 	public static void terminar() {
 
-		numeroLineaActual(0);
+		_lineaActual = numeroLineas() + 1;
 	}
 
 	public static boolean finalizado() {
 
-		return numeroLineaActual() > numeroLineas();
+		return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
 	}
 
 	public static void imprimirEstado() {

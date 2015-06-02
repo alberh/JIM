@@ -28,7 +28,7 @@ public class Main {
 		// pruebasVariables();
 		// pruebasEtiquetas();
 	}
-
+/*
 	public static void previoParser(String[] args) {
 
 		System.out.println("Ejecutando previoParser");
@@ -37,11 +37,11 @@ public class Main {
 		PrevioParser analizador = new PrevioParser(AbrirLector(args)) ;
 	    analizador.parse();
 	}
-
+*/
 	public static void pruebasL() {
 
-		String[] args = { "sumaL.txt" }; // "entradaL.txt" };
-		Programa.cargar(AbrirLector(args), Programa.TipoModelos.L);
+		String programa = "entradaL.txt";
+		Programa.cargar(AbrirLector(programa), Programa.TipoModelos.L);
 
 		int[] parametros = { 2, 6 };
 		// Programa.iniciar();
@@ -59,20 +59,8 @@ public class Main {
 
 
 		// Programa.imprimirPrograma();
-		
-		/*
-		previoParser(args);
-
-		System.out.println();
-		System.out.println("Ejecutando pruebas de L");
-		System.out.println("=======================");
-
-		LParser lparser = new LParser(AbrirLector(args));
-		lparser.parse();
-
-		*/
 	}
-
+/*
 	public static void pruebasprevioParser() {
 
 		String[] args = { "entradaprevioParser.txt" };
@@ -80,14 +68,14 @@ public class Main {
 		previoParser(args);
 		Programa.imprimirEstado();
 	}
-
-	private static BufferedReader AbrirLector(String args[]) {
+*/
+	private static BufferedReader AbrirLector(String programa) {
 
 		BufferedReader lector = null;
 
 		try {
 				
-			lector = new BufferedReader(new FileReader(args[0]));
+			lector = new BufferedReader(new FileReader(programa));
 		} catch( IOException exc ) {
 			
 			/*
@@ -108,7 +96,7 @@ public class Main {
 		System.out.println("Versión " + _mayorVersion + "." + _minorVersion);
 		System.out.println();
 	}
-
+/*
 	public static void pruebasVariables() {
 
 		Variable.set("x33");
@@ -161,4 +149,5 @@ public class Main {
 		Etiqueta.pintar();
 		System.out.println();
 	}
+	*/
 }
