@@ -5,7 +5,7 @@ all:
 	cd interprete/parsers/previo; make
 	cd interprete/parsers/analizadormacros; make
 	cd interprete/parsers/lmodel; make
-	#cd interprete/parsers/loopmodel; make
+	cd interprete/parsers/loopmodel; make
 	#cd interprete/parsers/whilemodel; make
 	make Main.class
 	

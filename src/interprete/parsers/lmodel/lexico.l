@@ -25,20 +25,6 @@ import interprete.parsers.AnalizadorLexico;
     yyparser = p;
   }
 
-  /** guarda el número de linea actual
-  **/
-
-  private int linea_actual;
-
-  /** devuelve el numero de linea donde está el último caracter leido
-  **/
-
-  public int lineaActual()
-  {
-     return linea_actual;
-  }
-  
-
 %}
 
 
@@ -58,8 +44,7 @@ Number = 0|[1-9]+[0-9]*
 
 %%
 {WhiteSpace}      { }
-{Comment}         { linea_actual++;
-                  }
+{Comment}         { }
 {Label}           { yyparser.yylval = new LParserVal( yytext() );
                     return LParser.ETIQUETA;
                   }
@@ -87,7 +72,6 @@ Number = 0|[1-9]+[0-9]*
 {Identifier}      { yyparser.yylval = new LParserVal( yytext() );
                     return LParser.IDMACRO;
                   }
-{LineTerminator}  { linea_actual++;
-                  }
+{LineTerminator}  { }
 .                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + linea_actual + ".");
                   }

@@ -13,6 +13,7 @@ import interprete.parsers.*;
 import interprete.parsers.analizadormacros.*;
 import interprete.parsers.previo.*;
 import interprete.parsers.lmodel.*;
+import interprete.parsers.loopmodel.*;
 
 public class Programa {
 
@@ -58,7 +59,7 @@ public class Programa {
 				break;
 
 			case LOOP:
-				//_parser = new LoopParser(bf);
+				_parser = new LoopParser( new BufferedReader(new StringReader("")) );
 				break;
 
 			case WHILE:
@@ -114,6 +115,7 @@ public class Programa {
 		PrevioParser previoParser = new PrevioParser( new BufferedReader(new StringReader("")) );
 
 		_lineaActual = 0;
+		PrevioLex lex = (PrevioLex)previoParser.analizadorLexico();
 
 		if (numeroLineas() > 0) {
 
@@ -121,8 +123,6 @@ public class Programa {
 
 			do {
 
-				// añadir línea al buffer del parser
-				PrevioLex lex = (PrevioLex)previoParser.analizadorLexico();
 				lex.lineaActual(_lineaActual);
 
 				try {
@@ -143,7 +143,26 @@ public class Programa {
 
 		System.out.println("Ejecutando...");
 
+		switch (_modelo) {
+
+			case L:
+				ejecutarL();
+				break;
+
+			case LOOP:
+				ejecutarLoop();
+				break;
+
+			case WHILE:
+				//_parser = new WhileParser(bf);
+				break;
+		}
+	}
+
+	private static void ejecutarL() {
+
 		_lineaActual = 0;
+		LLex lex = (LLex)_parser.analizadorLexico();
 
 		if (numeroLineas() > 0) {
 
@@ -152,9 +171,35 @@ public class Programa {
 			do {
 
 				System.out.println(_lineaActual + ": " + linea);
+				lex.lineaActual(_lineaActual);
 
-				// añadir línea al buffer del parser
-				LLex lex = (LLex)_parser.analizadorLexico();
+				try {
+					
+					lex.yyclose();
+				} catch (Exception ex) { }
+				lex.yyreset( new BufferedReader(new StringReader(linea)) );
+
+
+				_parser.parse();
+
+				linea = lineaSiguiente();
+			} while (!finalizado());
+		}
+	}
+
+	private static void ejecutarLoop() {
+
+		_lineaActual = 0;
+		LoopLex lex = (LoopLex)_parser.analizadorLexico();
+
+		if (numeroLineas() > 0) {
+
+			String linea = lineaSiguiente();
+
+			do {
+
+				System.out.println(_lineaActual + ": " + linea);
+				lex.lineaActual(_lineaActual);
 
 				try {
 					

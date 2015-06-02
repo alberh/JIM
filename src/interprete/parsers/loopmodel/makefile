@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../byaccj/yacc.linux -Jclass=LoopParser -Jpackage=interprete.parsers.loopmodel;
+BYACCJ = ../../../byaccj/yacc.linux -Jclass=LoopParser -Jpackage=interprete.parsers.loopmodel -Jimplements=IParser #-Jnodebug
 JAVAC  = javac
 
 #.SUFFIXES:

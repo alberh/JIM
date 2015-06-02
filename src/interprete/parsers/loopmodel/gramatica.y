@@ -2,6 +2,8 @@
 
 %{
   import java.io.*;
+  import interprete.*;
+  import interprete.parsers.*;
 %}
 
 
@@ -15,38 +17,42 @@
 %token LOOP
 %token END
 
+%token <sval> VARIABLE IDMACRO
+%token <ival> NUMERO
+
+%type <obj> parametros finInstruccion
+%type <ival> operacion
+%type <obj> inicio instruccion parametrosMacro masParametrosMacro
+
 %%
 
-inicio :  instruccion inicio
-       |
+inicio :  instruccion { $$ = $1; } inicio
+       | { $$ = new LoopParserVal(); }
 ;
-
-instruccion : VARIABLE FLECHA {System.out.print("Variable (" + $1.sval + ") <- ");} finInstruccion
-            | VARIABLE INCREMENTO {System.out.println("Variable (" + $1.sval + ") ++");}
-            | LOOP VARIABLE {System.out.println("LOOP Variable (" + $2.sval + ")");}
-            | END {System.out.println("END");}
+instruccion : VARIABLE FLECHA finInstruccion { LoopAcciones.asignacion($1, $3); }
+            | VARIABLE INCREMENTO { LoopAcciones.incremento($1); }
+            | LOOP VARIABLE { LoopAcciones.abreBucle($2, analex.lineaActual()); }
+            | END { LoopAcciones.cierraBucle(analex.lineaActual()); }
 ;
-
-finInstruccion :  VARIABLE {System.out.print("Variable (" + $1.sval + ")");} operacion
-               |  NUMERO {System.out.print("Numero (" + $1.ival + ")");} operacion
-               |  IDMACRO {System.out.println("Macro (" + $1.sval + ")");} '(' parametrosMacro ')'
+finInstruccion :  VARIABLE { $$ = $1; }
+               |  NUMERO { $$ = $1; }
+               |  operacion { $$ = $1; }
+               |  IDMACRO { $$ = new LoopParserVal(); } '(' parametrosMacro ')' { /* Tratamiento de macros */ }
 ;
-
-operacion : '+' {System.out.print(" + ");} parametros
-          | '*' {System.out.print(" * ");} parametros
-          | {System.out.println();}
+operacion    :  parametros '+' parametros { $$ = LoopAcciones.operacion('+', $1, $3); }
+             |  parametros '-' parametros { $$ = LoopAcciones.operacion('-', $1, $3); }
+             |  parametros '*' parametros { $$ = LoopAcciones.operacion('*', $1, $3); }
+             |  parametros '/' parametros { $$ = LoopAcciones.operacion('/', $1, $3); }
+             |  parametros '%' parametros { $$ = LoopAcciones.operacion('%', $1, $3); }
 ;
-
-parametros :  NUMERO  { System.out.println("Numero: " + $1.ival); }
-           |  VARIABLE { $$.sval = $1.sval; System.out.println("Variable: " + $1.sval); }
+parametros :  NUMERO  { $$ = $1; }
+           |  VARIABLE { $$ = $1; }
 ;
-
-parametrosMacro : parametros {$$.sval = $1.sval; System.out.println("Parámetro: " + $1.sval);} masParametrosMacro
-                |
+parametrosMacro : parametros {$$ = $1; } masParametrosMacro
+                | { $$ = new LoopParserVal(); }
 ;
-
-masParametrosMacro :  ',' parametros {$$.sval = $2.sval; System.out.println("Parámetro: " + $2.sval);} masParametrosMacro
-                   |
+masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
+                   | { $$ = new LoopParserVal(); }
 ;
 
 %%
@@ -61,6 +67,16 @@ masParametrosMacro :  ',' parametros {$$.sval = $2.sval; System.out.println("Par
   {
      analex = new LoopLex(r, this);
      //yydebug = true;
+  }
+
+  public int parse() {
+    
+    return this.yyparse();
+  }
+
+  public AnalizadorLexico analizadorLexico() {
+
+    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 

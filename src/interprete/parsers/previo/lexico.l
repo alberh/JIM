@@ -29,7 +29,6 @@ import interprete.parsers.AnalizadorLexico;
 
   private int numero_variables;
   private int numero_etiquetas;
-  private int linea_actual;
 
   public int numVariables() {
     return numero_variables;
@@ -37,15 +36,6 @@ import interprete.parsers.AnalizadorLexico;
 
   public int numEtiquetas() {
     return numero_etiquetas;
-  }
-
-  public int lineaActual() {
-     return linea_actual;
-  }
-
-  public void lineaActual(int nuevaLinea) {
-
-    linea_actual = nuevaLinea;
   }
 
   private String contenido;
