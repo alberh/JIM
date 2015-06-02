@@ -1,11 +1,14 @@
 
 package interprete.parsers.previo;
 
+import interprete.parsers.AnalizadorLexico;
+
 %%
 
 %byaccj
 %public
 %class PrevioLex
+%extends AnalizadorLexico
 
 %{
 
@@ -40,6 +43,10 @@ package interprete.parsers.previo;
      return linea_actual;
   }
 
+  public void lineaActual(int nuevaLinea) {
+
+    linea_actual = nuevaLinea;
+  }
 
   private String contenido;
   

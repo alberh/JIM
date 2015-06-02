@@ -2,6 +2,7 @@
 General
 	* Clase para guardar y cargar configuración del programa.
 	* Modelos.
+	* Eliminar cuenta de líneas desde los parsers.
 
 Analizador de macros
 	* Identificar identificadores de macro dentro de una macro e impedir su definición.

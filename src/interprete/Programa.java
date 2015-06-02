@@ -5,8 +5,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringBuilder;
 import java.util.ArrayList;
+import java.nio.CharBuffer;
 
 import interprete.*;
 import interprete.parsers.*;
@@ -17,15 +17,14 @@ import interprete.parsers.lmodel.*;
 public class Programa {
 
 	private static ArrayList<String> _lineas = new ArrayList();
+	private static BufferedReader _reader;
+	private static StringReader _stringReader;
 	private static int _lineaActual;
 
 	public enum TipoModelos { L, LOOP, WHILE };
 	
 	private static TipoModelos _modelo;
 	private static IParser _parser;
-	
-	private static StringBuilder _lineaReader;
-	private static StringReader _reader;
 
 	private Programa() { }
 
@@ -33,13 +32,15 @@ public class Programa {
 
 		String linea;
 
+		_reader = br;
+
 		try {
 
-			while ((linea = br.readLine()) != null) {
+			while ((linea = _reader.readLine()) != null) {
 
 				_lineas.add(linea);
 			}
-			br.close();
+			_reader.close();
 		} catch (IOException ex) {
 
 			System.err.println("Error en el volcado del programa a memoria.");
@@ -50,37 +51,10 @@ public class Programa {
 
 		_modelo = modelo;
 
-
-		/*
-		QUIZÁ LO QUE HAGA FALTA ES AÑADIR UN MÉTODO PARA CAMBIAR EL READER
-		A LA INTERFAZ PARSER Y CREAR UN NUEVO LECTOR PARA CADA LÍNEA
-		*/
-
-		/*
-		Añadir dos líneas del código al principio y así ir siempre una por adelantado,
-		de forma que el buffer ...
-		*/
-
-		/*
-		Almacenar las posiciones de los comienzos de línea en el buffer según se van almacenando
-		dichas líneas en Programa. Cuando haya un salto debido a una sentencia de salto condicional,
-		incondicional o bucle, se obtendrá la posición de la línea destino del salto y se cambiará
-		la posición del lector en el buffer.
-
-		Métodos a usar:
-			- mark(): para marcar el inicio del buffer nada más comenzar el código
-			- reset(): pone la posición del lector en la última marca (si no hay marca -> excepción)
-			- skip(long n): salta caracteres
-		*/
-
-		// Crear instancia del buffer
-		_lineaReader = new StringBuilder();
-		_reader = new StringReader(_lineaReader);
-
 		switch (_modelo) {
 
 			case L:
-				_parser = new LParser(_reader);
+				_parser = new LParser( new BufferedReader(new StringReader("")) );
 				break;
 
 			case LOOP:
@@ -92,6 +66,203 @@ public class Programa {
 				break;
 		}
 	}
+
+	public static void iniciar() {
+
+		iniciar(null);
+	}
+
+	public static void iniciar(int[] parametros) {
+
+		// Reiniciar variables, etiquetas, bucles y macros
+		reiniciar();
+		// Cargar macros
+		// ...
+		// Pasar previo
+		previo();
+		// Asignar variables de entrada
+		if (parametros != null) {
+
+			asignarVariablesEntrada(parametros);
+		}
+		// Lanzar
+		ejecutar();
+	}
+
+	private static void asignarVariablesEntrada(int[] parametros) {
+
+		for (int i = 0; i < parametros.length; ++i) {
+
+ 			Variable.set("X" + (i + 1), parametros[i]);
+ 		}
+	}
+
+	private static void reiniciar() {
+
+		System.out.println("Limpiando...");
+
+		Variable.clear();
+		Bucle.clear();
+		Etiqueta.clear();
+		Macro.clear();
+	}
+
+	private static void previo() {
+
+		System.out.println("Pasando previo...");
+
+		PrevioParser previoParser = new PrevioParser( new BufferedReader(new StringReader("")) );
+
+		_lineaActual = 0;
+
+		if (numeroLineas() > 0) {
+
+			String linea = lineaSiguiente();
+
+			do {
+
+				// añadir línea al buffer del parser
+				PrevioLex lex = (PrevioLex)previoParser.analizadorLexico();
+				lex.lineaActual(_lineaActual);
+
+				try {
+					
+					lex.yyclose();
+				} catch (Exception ex) { }
+				lex.yyreset( new BufferedReader(new StringReader(linea)) );
+
+
+				previoParser.parse();
+
+				linea = lineaSiguiente();
+			} while (!finalizado());
+		}
+	}
+
+	private static void ejecutar() {
+
+		System.out.println("Ejecutando...");
+
+		_lineaActual = 0;
+
+		if (numeroLineas() > 0) {
+
+			String linea = lineaSiguiente();
+
+			do {
+
+				System.out.println(_lineaActual + ": " + linea);
+
+				// añadir línea al buffer del parser
+				LLex lex = (LLex)_parser.analizadorLexico();
+
+				try {
+					
+					lex.yyclose();
+				} catch (Exception ex) { }
+				lex.yyreset( new BufferedReader(new StringReader(linea)) );
+
+
+				_parser.parse();
+
+				linea = lineaSiguiente();
+			} while (!finalizado());
+		}
+	}
+
+	public static int numeroLineaActual() {
+
+		return _lineaActual;
+	}
+
+	public static void numeroLineaActual(int n) {
+
+		if (lineaValida(n)) {
+
+			_lineaActual = n;
+		} else {
+
+			_lineaActual = numeroLineas() + 1;
+		}
+	}
+
+	public static String lineaActual() {
+
+		return finalizado() ? null : _lineas.get(_lineaActual - 1);
+	}
+
+	public static String lineaSiguiente() {
+
+		numeroLineaActual(_lineaActual + 1);
+		return lineaActual();
+	}
+
+	public static String linea(int n) {
+
+		if (lineaValida(n)) {
+
+			return _lineas.get(n);
+		} else {
+
+			return null;
+		}
+	}
+
+	public static boolean lineaValida(int numeroLinea) {
+
+		return numeroLinea >= 1 && numeroLinea <= numeroLineas();
+	}
+
+	public static int numeroLineas() {
+
+		return _lineas.size();
+	}
+
+	public static ArrayList<String> lineas() {
+
+		return _lineas;
+	}
+
+	public static void terminar() {
+
+		numeroLineaActual(0);
+	}
+
+	public static boolean finalizado() {
+
+		return numeroLineaActual() > numeroLineas();
+	}
+
+	public static void imprimirEstado() {
+
+		Variable.pintar();
+	    Etiqueta.pintar();
+	    Macro.pintar();
+	    Bucle.pintar();
+	}
+
+	public static void imprimirPrograma() {
+
+		for (int i = 0; i < _lineas.size(); ++i) {
+
+			System.out.println((i + 1) + ": " + _lineas.get(i));
+		}
+
+		System.out.println(numeroLineas() + " líneas.");
+	}
+
+	public static int resultado() {
+
+		return Variable.get("Y").valor();
+	}
+
+
+
+
+
+
+
+
 
 	/*
 	public static void cargar(String nombrePrograma, TipoModelos modelo) throws Exception {
@@ -133,98 +304,4 @@ public class Programa {
 		}
 	}
 	*/
-
-	public static void iniciar() {
-
-		// Reiniciar variables, etiquetas, bucles y macros
-		// Cargar macros
-		// Pasar previo
-		ejecutar();
-
-		// Informar fin programa y resultado
-	}
-
-	private static void ejecutar() {
-
-		_lineaActual = 0;
-
-		if (numeroLineas() > 0) {
-
-			String linea = lineaSiguiente();
-
-			do {
-
-				// añadir línea al buffer del parser
-				// parser.parse();
-
-				linea = lineaSiguiente();
-			} while (!finalizado());
-		}
-	}
-
-	public static int numeroLineaActual() {
-
-		return _lineaActual;
-	}
-
-	public static void numeroLineaActual(int n) {
-
-		if (lineaValida(n)) {
-
-			_lineaActual = n;
-		} else {
-
-			_lineaActual = numeroLineas();
-		}
-	}
-
-	public static String lineaActual() {
-
-		return finalizado() ? null : _lineas.get(_lineaActual);
-	}
-
-	public static String lineaSiguiente() {
-
-		numeroLineaActual(_lineaActual + 1);
-		return lineaActual();
-	}
-
-	public static String linea(int n) {
-
-		if (lineaValida(n)) {
-
-			return _lineas.get(n);
-		} else {
-
-			return null;
-		}
-	}
-
-	public static boolean lineaValida(int numeroLinea) {
-
-		return numeroLinea >= 1 && numeroLinea < numeroLineas();
-	}
-
-	public static int numeroLineas() {
-
-		return _lineas.size();
-	}
-
-	public static ArrayList<String> lineas() {
-
-		return _lineas;
-	}
-
-	public static boolean finalizado() {
-
-		return numeroLineaActual() == numeroLineas();
-	}
-
-	public static void imprimirEstado() {
-
-		Variable.pintar();
-	    Etiqueta.pintar();
-	    Macro.pintar();
-	    Bucle.pintar();
-	}
 }

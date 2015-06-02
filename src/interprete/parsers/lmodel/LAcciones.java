@@ -10,7 +10,7 @@ public class LAcciones extends Acciones {
 
     Variable v = obtenerVariable(idVariable);
 
-    if (v.valor() == 0) {
+    if (v.valor() != 0) {
 
       saltoIncondicional(idEtiqueta);
     }
@@ -22,11 +22,12 @@ public class LAcciones extends Acciones {
 
     if (et == null) {
 
-      // Gestión de errores.
-      return ;
-    }
+      Programa.terminar();
+    } else {
 
-    Programa.numeroLineaActual(et.linea());
+      // el -1 es para que cuando se llame a Programa.lineaSiguiente() no se salte la línea a la que queremos ir
+      Programa.numeroLineaActual(et.linea() - 1);
+    }
 	}
 
   protected static Etiqueta obtenerEtiqueta(Object id) {

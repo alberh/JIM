@@ -2,6 +2,7 @@
 package interprete;
 
 import java.util.Hashtable;
+import java.util.ArrayList;
 
 public class Variable {
 	
@@ -40,7 +41,7 @@ public class Variable {
 		
 		switch (tipo) {
 			case 'X':
-				if (!_entrada.containsKey(indice)) {
+				//if (!_entrada.containsKey(indice)) {
 					
 					_entrada.put(indice, v);
 					
@@ -48,11 +49,11 @@ public class Variable {
 						
 						_mayorEntrada = indice;
 					}
-				}
+				//}
 				break;
 			
 			case 'Z':
-				if (!_locales.containsKey(indice)) {
+				// if (!_locales.containsKey(indice)) {
 					
 					_locales.put(indice, v);
 					
@@ -60,7 +61,7 @@ public class Variable {
 						
 						_mayorLocal = indice;
 					}
-				}
+				// }
 				break;
 				
 			case 'Y':

@@ -1,6 +1,5 @@
-
 # comentario, instrucciones básicas y etiquetas . [] * (^#@ #½ ¬) y sigue ...
-[A4]	X1 <- X1 + 1
+[A]	X1 <- X1 + 1
 
 		X2 <- X2 + 1
 		X2 <- X2 + 1
@@ -19,7 +18,7 @@
 		X4--
 
 # asignación de números y productos en todos los órdenes de operadores posibles
-		z5 <- 3
+[e4]	z5 <- 3
 		z6 <- 8
 		x66 <- Z5 * Z
 		x67 <- 7 * 3
@@ -31,14 +30,18 @@
 		z6 <- 33
 		x6 <- x5 + x
 		x7 <- x66 - 3
-		
-# goto
-		goto a4
-		goto e
 
 # división y resto
 		x8 <- 88 / 11
 		x9 <- 88 % 10
 
-# llamada a macros
+# goto
+		goto a4
+		goto e
+
+# llamada a macros (no se va a ejecutar por el salto)
 		y <- fibo(x1, x2, 3, z444, y, 4, 0)
+
+[a4] y <- 5
+
+y++

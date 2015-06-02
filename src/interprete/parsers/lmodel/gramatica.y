@@ -2,7 +2,7 @@
 %{
   import java.io.*;
   import interprete.*;
-  import interprete.parsers.IParser;
+  import interprete.parsers.*;
 %}
 
 %token ETIQUETA
@@ -30,35 +30,35 @@ inicio :  sentencia { $$ = $1; } inicio
 ;
 sentencia : etiqueta instruccion { $$ = new LParserVal(); }
 ;
-etiqueta : '[' ETIQUETA ']' { $$ = $2; System.out.println("Etiqueta " + $2); }
+etiqueta : '[' ETIQUETA ']' { $$ = $2; /*System.out.println("Etiqueta " + $2);*/ }
          | { $$ = new LParserVal(); }
 ;
-instruccion : VARIABLE FLECHA { System.out.print("Variable (" + $1 + ") <- "); } finInstruccion { LAcciones.asignacion($1, $4); }
-            | VARIABLE INCREMENTO { LAcciones.incremento($1); System.out.println("Variable (" + $1 + ") ++");}
-            | VARIABLE DECREMENTO { LAcciones.decremento($1); System.out.println("Variable (" + $1 + ") --");}
-            | IF VARIABLE DISTINTO GOTO ETIQUETA { LAcciones.saltoCondicional($2, $5); System.out.println("If Variable (" + $2 + ") != 0 goto etiqueta (" + $5 + ")");}
-            | GOTO ETIQUETA { LAcciones.saltoIncondicional($2); System.out.println("Goto Etiqueta ("+ $2 + ")");}
+instruccion : VARIABLE FLECHA { /*System.out.print("Variable (" + $1 + ") <- ");*/ } finInstruccion { LAcciones.asignacion($1, $4); }
+            | VARIABLE INCREMENTO { LAcciones.incremento($1); /*System.out.println("Variable (" + $1 + ") ++");*/}
+            | VARIABLE DECREMENTO { LAcciones.decremento($1); /*System.out.println("Variable (" + $1 + ") --");*/}
+            | IF VARIABLE DISTINTO GOTO ETIQUETA { LAcciones.saltoCondicional($2, $5); /*System.out.println("If Variable (" + $2 + ") != 0 goto etiqueta (" + $5 + ")");*/}
+            | GOTO ETIQUETA { LAcciones.saltoIncondicional($2); /*System.out.println("Goto Etiqueta ("+ $2 + ")");*/}
 ;
-finInstruccion :  VARIABLE { $$ = $1; System.out.println("Variable (" + $1 + ")");}
-               |  NUMERO { $$ = $1; System.out.println("Numero (" + $1 + ")");}
+finInstruccion :  VARIABLE { $$ = $1; /*System.out.println("Variable (" + $1 + ")");*/}
+               |  NUMERO { $$ = $1; /*System.out.println("Numero (" + $1 + ")");*/}
                |  operacion { $$ = $1; }
-               |  IDMACRO { $$ = new LParserVal(); System.out.println("Macro (" + $1 + ")");} '(' parametrosMacro ')' { /* Tratamiento de macros */ }
+               |  IDMACRO { $$ = new LParserVal(); /*System.out.println("Macro (" + $1 + ")");*/} '(' parametrosMacro ')' { /* Tratamiento de macros */ }
 ;
-operacion	   :  parametros '+' parametros { $$ = LAcciones.operacion('+', $1, $3); System.out.println($1 + " + " + $3); }
-			       |  parametros '-' parametros { $$ = LAcciones.operacion('-', $1, $3); System.out.println($1 + " - " + $3); }
-			       |  parametros '*' parametros { $$ = LAcciones.operacion('*', $1, $3); System.out.println($1 + " * " + $3); }
-			       |  parametros '/' parametros { $$ = LAcciones.operacion('/', $1, $3); System.out.println($1 + " / " + $3); }
-			       |  parametros '%' parametros { $$ = LAcciones.operacion('%', $1, $3); System.out.println($1 + " % " + $3); }
+operacion	   :  parametros '+' parametros { $$ = LAcciones.operacion('+', $1, $3); /*System.out.println($1 + " + " + $3);*/ }
+			       |  parametros '-' parametros { $$ = LAcciones.operacion('-', $1, $3); /*System.out.println($1 + " - " + $3);*/ }
+			       |  parametros '*' parametros { $$ = LAcciones.operacion('*', $1, $3); /*System.out.println($1 + " * " + $3);*/ }
+			       |  parametros '/' parametros { $$ = LAcciones.operacion('/', $1, $3); /*System.out.println($1 + " / " + $3);*/ }
+			       |  parametros '%' parametros { $$ = LAcciones.operacion('%', $1, $3); /*System.out.println($1 + " % " + $3);*/ }
 ;
 parametros :  NUMERO  { $$ = $1; }
            |  VARIABLE { $$ = $1; }
 ;
 
-parametrosMacro : parametros {$$ = $1; System.out.println("Parámetro: " + $1);} masParametrosMacro
+parametrosMacro : parametros {$$ = $1; /*System.out.println("Parámetro: " + $1);*/} masParametrosMacro
                 | { $$ = new LParserVal(); }
 ;
 
-masParametrosMacro :  ',' parametros {$$ = $2; System.out.println("Parámetro: " + $2);} masParametrosMacro
+masParametrosMacro :  ',' parametros {$$ = $2; /*System.out.println("Parámetro: " + $2);*/} masParametrosMacro
                    | { $$ = new LParserVal(); }
 ;
 
@@ -79,6 +79,11 @@ masParametrosMacro :  ',' parametros {$$ = $2; System.out.println("Parámetro: "
   public int parse() {
     
     return this.yyparse();
+  }
+
+  public AnalizadorLexico analizadorLexico() {
+
+    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 

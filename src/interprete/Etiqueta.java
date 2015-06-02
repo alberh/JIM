@@ -37,7 +37,14 @@ public class Etiqueta {
 	
 	public static Etiqueta get(String id) {
 
-		return _etiquetas.get(filtrar(id));
+		Etiqueta et = null;
+
+		try {
+
+			et = _etiquetas.get(filtrar(id));
+		} catch (Exception ex) { }
+
+		return et;
 	}
 
 	public static Etiqueta get() {

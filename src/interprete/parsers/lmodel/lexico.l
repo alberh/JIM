@@ -1,11 +1,14 @@
 
 package interprete.parsers.lmodel;
 
+import interprete.parsers.AnalizadorLexico;
+
 %%
 
 %byaccj
 %public
 %class LLex
+%extends AnalizadorLexico
 
 %{
 

@@ -80,12 +80,22 @@ public class Acciones {
       return 999;
     }
 
+    int valor = 0;
+
     if (o.getClass() == Integer.class) {
 
-      return ((Integer)o).intValue();
+      valor = ((Integer)o).intValue();
     } else {
 
-      return Variable.get((String)o).valor();
+      try {
+
+         valor = Variable.get((String)o).valor();
+      } catch (Exception ex) {
+
+        System.err.println("Error: La variable " + o + " no está inicializada internamente (falta pasar previo).");
+      }
     }
+
+    return valor;
   }
 }

@@ -40,8 +40,12 @@ public class Main {
 
 	public static void pruebasL() {
 
-		String[] args = { "entradaL.txt" };
+		String[] args = { "sumaL.txt" }; // "entradaL.txt" };
 		Programa.cargar(AbrirLector(args), Programa.TipoModelos.L);
+
+		int[] parametros = { 2, 6 };
+		// Programa.iniciar();
+		Programa.iniciar(parametros);
 
 		System.out.println("====================");
 		System.out.println("Estado de la memoria");
@@ -51,10 +55,10 @@ public class Main {
 
 		System.out.println("====================");
 
+		System.out.println("Resultado: " + Programa.resultado());
 
 
-
-
+		// Programa.imprimirPrograma();
 		
 		/*
 		previoParser(args);
