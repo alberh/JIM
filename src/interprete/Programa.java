@@ -14,6 +14,7 @@ import interprete.parsers.analizadormacros.*;
 import interprete.parsers.previo.*;
 import interprete.parsers.lmodel.*;
 import interprete.parsers.loopmodel.*;
+import interprete.parsers.whilemodel.*;
 
 public class Programa {
 
@@ -63,7 +64,7 @@ public class Programa {
 				break;
 
 			case WHILE:
-				//_parser = new WhileParser(bf);
+				_parser = new WhileParser( new BufferedReader(new StringReader("")) );
 				break;
 		}
 	}
@@ -154,7 +155,7 @@ public class Programa {
 				break;
 
 			case WHILE:
-				//_parser = new WhileParser(bf);
+				ejecutarWhile();
 				break;
 		}
 	}
@@ -191,6 +192,34 @@ public class Programa {
 
 		_lineaActual = 0;
 		LoopLex lex = (LoopLex)_parser.analizadorLexico();
+
+		if (numeroLineas() > 0) {
+
+			String linea = lineaSiguiente();
+
+			do {
+
+				System.out.println(_lineaActual + ": " + linea);
+				lex.lineaActual(_lineaActual);
+
+				try {
+					
+					lex.yyclose();
+				} catch (Exception ex) { }
+				lex.yyreset( new BufferedReader(new StringReader(linea)) );
+
+
+				_parser.parse();
+
+				linea = lineaSiguiente();
+			} while (!finalizado());
+		}
+	}
+
+	private static void ejecutarWhile() {
+
+		_lineaActual = 0;
+		WhileLex lex = (WhileLex)_parser.analizadorLexico();
 
 		if (numeroLineas() > 0) {
 

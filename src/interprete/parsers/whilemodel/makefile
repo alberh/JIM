@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../byaccj/yacc.linux -Jclass=WhileParser -Jpackage=interprete.parsers.whilemodel
+BYACCJ = ../../../byaccj/yacc.linux -Jclass=WhileParser -Jpackage=interprete.parsers.whilemodel -Jimplements=IParser #-Jnodebug
 JAVAC  = javac
 
 #.SUFFIXES:

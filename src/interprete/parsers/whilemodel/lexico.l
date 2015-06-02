@@ -1,10 +1,14 @@
 
 package interprete.parsers.whilemodel;
 
+import interprete.parsers.AnalizadorLexico;
+
 %%
 
 %byaccj
+%public
 %class WhileLex
+%extends AnalizadorLexico
 
 %{
 
@@ -20,19 +24,6 @@ package interprete.parsers.whilemodel;
     linea_actual = 1;
     yyparser = p;
   }
-
-  /** guarda el número de linea actual
-  **/
-
-  private int linea_actual;
-
-  /** devuelve el numero de linea donde está el último caracter leido
-  **/
-
-  public int lineaActual()
-  {
-     return linea_actual;
-  }
   
 
 %}
@@ -41,11 +32,12 @@ package interprete.parsers.whilemodel;
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 WhiteSpace     = [ \t\f]
-Identifier = [:jletter:] [:jletterdigit:]*
+
+Identifier = [a-zA-Z]{2} [a-zA-Z]*
 
 Comment = "#" {InputCharacter}* {LineTerminator}?
-InputVariable = [xX][0-9]+
-LocalVariable = [zZ][0-9]+
+InputVariable = [xX]([1-9]+[0-9]*)?
+LocalVariable = [zZ]([1-9]+[0-9]*)?
 OutputVariable = [yY]
 Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 Number = 0|[1-9]+[0-9]*
@@ -77,7 +69,6 @@ Number = 0|[1-9]+[0-9]*
 {Identifier}      { yyparser.yylval = new WhileParserVal( yytext() );
                     return WhileParser.IDMACRO;
                   }
-{LineTerminator}  { linea_actual++;
-                  }
+{LineTerminator}  { }
 .                 { yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido"); 
                   }

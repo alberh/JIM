@@ -2,9 +2,13 @@
 X1 <- 0
 x2 <- x2 + 1
 z5 <- x1
-z3 <- 5
-LOOP z3
-	z2 <- z2 + 1
+z3 <- 1
+x33 <- 3
+LOOP x33
+	LOOP z3
+		z2 <- z2 + 1
+	END
+	z3++
 END
 
 # instrucciones adicionales

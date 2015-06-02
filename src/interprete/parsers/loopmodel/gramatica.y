@@ -6,9 +6,6 @@
   import interprete.parsers.*;
 %}
 
-
-// lista de tokens por orden de prioridad
-
 %token VARIABLE
 %token FLECHA
 %token INCREMENTO
@@ -40,10 +37,7 @@ finInstruccion :  VARIABLE { $$ = $1; }
                |  IDMACRO { $$ = new LoopParserVal(); } '(' parametrosMacro ')' { /* Tratamiento de macros */ }
 ;
 operacion    :  parametros '+' parametros { $$ = LoopAcciones.operacion('+', $1, $3); }
-             |  parametros '-' parametros { $$ = LoopAcciones.operacion('-', $1, $3); }
              |  parametros '*' parametros { $$ = LoopAcciones.operacion('*', $1, $3); }
-             |  parametros '/' parametros { $$ = LoopAcciones.operacion('/', $1, $3); }
-             |  parametros '%' parametros { $$ = LoopAcciones.operacion('%', $1, $3); }
 ;
 parametros :  NUMERO  { $$ = $1; }
            |  VARIABLE { $$ = $1; }

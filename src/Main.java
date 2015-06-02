@@ -23,7 +23,8 @@ public class Main {
 		bienvenida();
 
 		// pruebasL();
-		pruebasLoop();
+		// pruebasLoop();
+		pruebasWhile();
 
 		// pruebasprevioParser();
 		// pruebasVariables();
@@ -66,6 +67,29 @@ public class Main {
 
 		String programa = "entradaLoop.txt";
 		Programa.cargar(AbrirLector(programa), Programa.TipoModelos.LOOP);
+
+		int[] parametros = { 2, 6 };
+		// Programa.iniciar();
+		Programa.iniciar(parametros);
+
+		System.out.println("====================");
+		System.out.println("Estado de la memoria");
+		System.out.println("====================");
+
+		Programa.imprimirEstado();
+
+		System.out.println("====================");
+
+		System.out.println("Resultado: " + Programa.resultado());
+
+
+		// Programa.imprimirPrograma();
+	}
+
+	public static void pruebasWhile() {
+
+		String programa = "entradaWhile.txt";
+		Programa.cargar(AbrirLector(programa), Programa.TipoModelos.WHILE);
 
 		int[] parametros = { 2, 6 };
 		// Programa.iniciar();
