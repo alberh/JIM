@@ -1,11 +1,15 @@
 # comentario, instrucciones básicas y etiquetas
-X1 <- 0
-x2 <- x2 + 1
+z <- 0
+z2 <- Z2 + 1
 z5 <- x1
-z3 <- 5
-WHILE z3 != 0
-	Z3--
+WHILE x1 != 0
+	x1--
 	z7 <- z7 + 1
+	while x2 != 0
+		x2--
+		z7 <- z7 + 1
+	end
+	x2 <- x2 + 1
 END
 
 # instrucciones adicionales

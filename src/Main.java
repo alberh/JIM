@@ -22,9 +22,38 @@ public class Main {
 
 		bienvenida();
 
-		// pruebasL();
-		// pruebasLoop();
-		pruebasWhile();
+		if (args.length > 0) {
+
+			String modelo = args[0];
+			int[] parametros = null;
+
+			if (args.length > 1) {
+
+				parametros = new int[args.length - 1];
+				
+				int cont = 0;
+				for (int i = 1; i < args.length; ++i) {
+
+					parametros[cont++] = Integer.parseInt(args[i]);
+				}
+			}
+
+			if (modelo.equalsIgnoreCase("l")) {
+
+				pruebasL(parametros);
+			} else if (modelo.equalsIgnoreCase("loop")) {
+
+				pruebasLoop(parametros);
+			} else if (modelo.equalsIgnoreCase("while")) {
+
+				pruebasWhile(parametros);
+			}
+		} else {
+
+			// pruebasL();
+			// pruebasLoop();
+			// pruebasWhile();
+		}
 
 		// pruebasprevioParser();
 		// pruebasVariables();
@@ -40,12 +69,12 @@ public class Main {
 	    analizador.parse();
 	}
 */
-	public static void pruebasL() {
+	public static void pruebasL(int[] parametros) {
 
-		String programa = "entradaL.txt";
+		String programa = "ejemplos/entradaL.txt";
 		Programa.cargar(AbrirLector(programa), Programa.TipoModelos.L);
 
-		int[] parametros = { 2, 6 };
+		// int[] parametros = { 2, 6 };
 		// Programa.iniciar();
 		Programa.iniciar(parametros);
 
@@ -63,12 +92,12 @@ public class Main {
 		// Programa.imprimirPrograma();
 	}
 
-	public static void pruebasLoop() {
+	public static void pruebasLoop(int[] parametros) {
 
-		String programa = "entradaLoop.txt";
+		String programa = "ejemplos/entradaLoop.txt";
 		Programa.cargar(AbrirLector(programa), Programa.TipoModelos.LOOP);
 
-		int[] parametros = { 2, 6 };
+		// int[] parametros = { 2, 6 };
 		// Programa.iniciar();
 		Programa.iniciar(parametros);
 
@@ -86,12 +115,12 @@ public class Main {
 		// Programa.imprimirPrograma();
 	}
 
-	public static void pruebasWhile() {
+	public static void pruebasWhile(int[] parametros) {
 
-		String programa = "entradaWhile.txt";
+		String programa = "ejemplos/entradaWhile.txt";
 		Programa.cargar(AbrirLector(programa), Programa.TipoModelos.WHILE);
 
-		int[] parametros = { 2, 6 };
+		// int[] parametros = { 3, 3 };
 		// Programa.iniciar();
 		Programa.iniciar(parametros);
 
