@@ -14,4 +14,7 @@ public abstract class AnalizadorLexico {
 
     	linea_actual = nuevaLinea;
   	}
+
+  	public abstract void yyreset(java.io.Reader reader);
+  	public abstract void yyclose() throws java.io.IOException;
 }

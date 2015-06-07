@@ -145,82 +145,8 @@ public class Programa {
 
 		System.out.println("Ejecutando...");
 
-		switch (_modelo) {
-
-			case L:
-				ejecutarL();
-				break;
-
-			case LOOP:
-				ejecutarLoop();
-				break;
-
-			case WHILE:
-				ejecutarWhile();
-				break;
-		}
-	}
-
-	private static void ejecutarL() {
-
 		_lineaActual = 0;
-		LLex lex = (LLex)_parser.analizadorLexico();
-
-		if (numeroLineas() > 0) {
-
-			String linea = lineaSiguiente();
-
-			do {
-
-				System.out.println(_lineaActual + ": " + linea);
-				lex.lineaActual(_lineaActual);
-
-				try {
-					
-					lex.yyclose();
-				} catch (Exception ex) { }
-				lex.yyreset( new BufferedReader(new StringReader(linea)) );
-
-
-				_parser.parse();
-
-				linea = lineaSiguiente();
-			} while (!finalizado());
-		}
-	}
-
-	private static void ejecutarLoop() {
-
-		_lineaActual = 0;
-		LoopLex lex = (LoopLex)_parser.analizadorLexico();
-
-		if (numeroLineas() > 0) {
-
-			String linea = lineaSiguiente();
-
-			do {
-
-				System.out.println(_lineaActual + ": " + linea);
-				lex.lineaActual(_lineaActual);
-
-				try {
-					
-					lex.yyclose();
-				} catch (Exception ex) { }
-				lex.yyreset( new BufferedReader(new StringReader(linea)) );
-
-
-				_parser.parse();
-
-				linea = lineaSiguiente();
-			} while (!finalizado());
-		}
-	}
-
-	private static void ejecutarWhile() {
-
-		_lineaActual = 0;
-		WhileLex lex = (WhileLex)_parser.analizadorLexico();
+		AnalizadorLexico lex = _parser.analizadorLexico();
 
 		if (numeroLineas() > 0) {
 
