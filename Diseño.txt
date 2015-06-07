@@ -1,4 +1,35 @@
 
+Cambios pensados el 7/6/2015
+
+ - Añadir a gramática L más funciones extendidas: divide a, etc
+ - Añadir expresiones lógicas y utilizar en condiciones de saltos y bucles
+
+ - Al almacenar macros, añadir comprobación de llamadas recursivas
+ - Añadir expansión de macros a los parsers
+
+ - Clase para gestión de errores
+ 	* Alterar léxico / gramática para utilizarla
+ 	* Casos como en las variables, donde no debe indicarse el índice 0 y al hacerlo da un error sintático
+ 		-> aceptarlo en el léxico y comprobar semánticamente
+
+ - Clase para gestionar la configuración de la aplicación
+ 	* Directorios de macros de cada modelo
+
+ - Clase para gestión de logs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 =========
  Clases =
 =========
