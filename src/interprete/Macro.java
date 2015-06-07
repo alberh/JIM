@@ -33,18 +33,6 @@ public class Macro {
  		_macros.clear();
  	}
 
- 	public static int ejecutar(String idMacro, String vSalida, ArrayList<String> parametros) {
-
- 		// crear un nuevo parser para el lenguaje que sea, ejecutar y obtener el valor de Y
-
- 		// otra opción: quitar este método y meter otro método dentro de cada parser que haga lo propio
-
- 		return 0;
- 	}
-
- 	/* ToDo: Añadir comprobación de salida del código de la macro según llamada a etiqueta E
- 		y añadir marca de etiqueta en la línea final de la expansión
- 	*/
  	public static String expandir(String vSalida, String idMacro, ArrayList<String> parametros) {
 
  		Macro macro = Macro.get(idMacro);

@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.io.BufferedReader;
 
 import interprete.Programa;
+import interprete.Configuracion;
 import interprete.Bucle;
 import interprete.Etiqueta;
 import interprete.Macro;
@@ -15,8 +16,6 @@ import interprete.parsers.previo.*;
 import interprete.parsers.lmodel.*;
 
 public class Main {
-
-	private static final int _mayorVersion = 0, _minorVersion = 1;
 
 	public static void main(String[] args) {
 
@@ -170,7 +169,7 @@ public class Main {
 
 		System.out.println("JIM - Intérprete de Modelos");
 		System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
-		System.out.println("Versión " + _mayorVersion + "." + _minorVersion);
+		System.out.println("Versión " + Configuracion.version());
 		System.out.println();
 	}
 /*

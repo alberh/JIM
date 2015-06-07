@@ -3,11 +3,10 @@
 package interprete;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.File;
 import java.util.ArrayList;
-import java.nio.CharBuffer;
 
 import interprete.*;
 import interprete.parsers.*;
@@ -80,6 +79,9 @@ public class Programa {
 		// Reiniciar variables, etiquetas, bucles y macros
 		reiniciar();
 		// Cargar macros
+		comprobarDirectoriosMacros();
+		// ...
+		// Expandir macros
 		// ...
 		// Pasar previo
 		previo();
@@ -89,7 +91,7 @@ public class Programa {
 			asignarVariablesEntrada(parametros);
 		}
 		// Lanzar
-		ejecutar();
+		// ejecutar();
 	}
 
 	private static void asignarVariablesEntrada(int[] parametros) {
@@ -170,6 +172,46 @@ public class Programa {
 			} while (!finalizado());
 		}
 	}
+
+	private static void comprobarDirectoriosMacros() {
+
+		/* macros/
+		 * ...l/
+		 * ...loop/
+		 * ...while/
+		 */
+
+		comprobarDirectorio(new File("macros", "l"));
+		comprobarDirectorio(new File("macros", "loop"));
+		comprobarDirectorio(new File("macros", "while"));
+	}
+
+	private static void comprobarDirectorio(File directorio) {
+
+		if (!directorio.exists()) {
+
+			boolean creados = directorio.mkdirs();
+
+			if (!creados) {
+
+				// gestión de errores
+			}
+		} else {
+
+			// es un directorio
+			if (!directorio.isDirectory()) {
+
+				// gestión de errores
+			}
+
+			if (!directorio.canRead()) {
+
+				// gestión de errores
+			}
+		}
+	}
+
+
 
 	public static int numeroLineaActual() {
 
@@ -256,53 +298,4 @@ public class Programa {
 
 		return Variable.get("Y").valor();
 	}
-
-
-
-
-
-
-
-
-
-	/*
-	public static void cargar(String nombrePrograma, TipoModelos modelo) throws Exception {
-
-		/* CAMBIOS:
-		 *	Comprobar existencia de directorios al inicio del programa y crear los que falten.
-		 *	Basar la ruta hacia estos directorios en un fichero de propiedades y la clase
-		 *	encargada de cargar y gestionar éstas propiedades y su volcado al fichero.
-
-		String rutaUsuario = System.getProperty("user.dir");
-		String rutaBase = rutaUsuario + "/codigos/L/";
-		
-		File f = new File(rutaBase);
-		if (!f.exists() && f.isDirectory()) {
-
-			f.mkdirs();
-		}
-
-		String rutaFichero = rutaBase + nombrePrograma;
-
-		f = new File(rutaFichero);
-		if (!f.exists() && !f.isDirectory()) {
-
-			throw new Exception("No se encuentra el fichero \"" + rutaFichero + "\".");
-		}
-
-		try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-			
-			String linea;
-			while ((linea = br.readLine()) != null) {
-
-				_lineas.add(linea);
-			}
-
-			_lineaActual = numeroLineas();
-		} catch(IOException exc) {
-			
-			throw new Exception("No se pudo abrir el fichero \"" + rutaFichero + "\".\nCausa: " + exc.getMessage(), exc);
-		}
-	}
-	*/
 }
