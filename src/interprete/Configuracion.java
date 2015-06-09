@@ -19,18 +19,27 @@ public abstract class Configuracion {
 		if (!ficheroConfig.exists()) {
 
 			crearFicheroConfiguracion(ficheroConfig);
+		} else {
+
+			try (FileReader fr = new FileReader(ficheroConfig)) {
+
+				_propiedades.load(fr);
+
+				if (_propiedades.stringPropertyNames().size() != 3) {
+					// Asigna las propiedades que no estén en el fichero de configuración
+					_propiedades.setProperty("rutaMacrosL", _propiedades.getProperty("rutaMacrosL", "/macros/l"));
+					_propiedades.setProperty("rutaMacrosLoop", _propiedades.getProperty("rutaMacrosLoop", "/macros/loop"));
+					_propiedades.setProperty("rutaMacrosWhile", _propiedades.getProperty("rutaMacrosWhile", "/macros/while"));
+
+					guardar();
+				}
+			} catch (Exception ex) { }
 		}
-
-		try (FileReader fr = new FileReader(ficheroConfig)) {
-
-			_propiedades.getProperty("rutaMacrosL");
-			_propiedades.getProperty("rutaMacrosLoop");
-			_propiedades.getProperty("rutaMacrosWhile");
-		} catch (Exception ex) { }
 	}
 
 	private static void crearFicheroConfiguracion(File ficheroConfig) {
 
+		System.out.println("entra a crear el fichero");
 		try (FileWriter fw = new FileWriter(ficheroConfig)) {
 
 			ficheroConfig.createNewFile();
@@ -53,25 +62,19 @@ public abstract class Configuracion {
 
 		if (!ficheroConfig.exists()) {
 
-			try {
-				
-				ficheroConfig.createNewFile();
-			} catch (IOException ex) {
+			crearFicheroConfiguracion(ficheroConfig);
+		} else {
 
-				// ...
-				return;
-			}
+			try (FileWriter fw = new FileWriter(ficheroConfig)) {
+
+				_propiedades.store(fw, null);
+			} catch (Exception ex) { }
 		}
-
-		try (FileWriter fw = new FileWriter(ficheroConfig)) {
-
-			_propiedades.store(fw, null);
-		} catch (Exception ex) { }
 	}
 
 	public static String rutaMacrosL() {
 
-		return _propiedades.getProperty("rutaMacrosL", "/macros/l");
+		return _propiedades.getProperty("rutaMacrosL");
 	}
 
 	public static void rutaMacrosL(String nuevaRuta) {
@@ -81,7 +84,7 @@ public abstract class Configuracion {
 
 	public static String rutaMacrosLoop() {
 
-		return _propiedades.getProperty("rutaMacrosLoop", "/macros/loop");
+		return _propiedades.getProperty("rutaMacrosLoop");
 	}
 
 	public static void rutaMacrosLoop(String nuevaRuta) {
@@ -91,7 +94,7 @@ public abstract class Configuracion {
 
 	public static String rutaMacrosWhile() {
 
-		return _propiedades.getProperty("rutaMacrosWhile", "/macros/while");
+		return _propiedades.getProperty("rutaMacrosWhile");
 	}
 
 	public static void rutaMacrosWhile(String nuevaRuta) {

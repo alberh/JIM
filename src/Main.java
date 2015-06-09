@@ -20,6 +20,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		bienvenida();
+		Configuracion.cargar();
 
 		if (args.length > 0) {
 
@@ -49,7 +50,7 @@ public class Main {
 			}
 		} else {
 
-			// pruebasL();
+			pruebasL(null);
 			// pruebasLoop();
 			// pruebasWhile();
 		}
@@ -71,53 +72,28 @@ public class Main {
 	public static void pruebasL(int[] parametros) {
 
 		String programa = "ejemplos/entradaL.txt";
-		Programa.cargar(AbrirLector(programa), Programa.TipoModelos.L);
+		Programa.cargar(programa, Programa.TipoModelos.L);
 
-		// int[] parametros = { 2, 6 };
-		// Programa.iniciar();
-		Programa.iniciar(parametros);
-
-		System.out.println("====================");
-		System.out.println("Estado de la memoria");
-		System.out.println("====================");
-
-		Programa.imprimirEstado();
-
-		System.out.println("====================");
-
-		System.out.println("Resultado: " + Programa.resultado());
-
-
-		// Programa.imprimirPrograma();
+		restoPrueba(parametros);
 	}
 
 	public static void pruebasLoop(int[] parametros) {
 
 		String programa = "ejemplos/entradaLoop.txt";
-		Programa.cargar(AbrirLector(programa), Programa.TipoModelos.LOOP);
+		Programa.cargar(programa, Programa.TipoModelos.LOOP);
 
-		// int[] parametros = { 2, 6 };
-		// Programa.iniciar();
-		Programa.iniciar(parametros);
-
-		System.out.println("====================");
-		System.out.println("Estado de la memoria");
-		System.out.println("====================");
-
-		Programa.imprimirEstado();
-
-		System.out.println("====================");
-
-		System.out.println("Resultado: " + Programa.resultado());
-
-
-		// Programa.imprimirPrograma();
+		restoPrueba(parametros);
 	}
 
 	public static void pruebasWhile(int[] parametros) {
 
 		String programa = "ejemplos/entradaWhile.txt";
-		Programa.cargar(AbrirLector(programa), Programa.TipoModelos.WHILE);
+		Programa.cargar(programa, Programa.TipoModelos.WHILE);
+
+		restoPrueba(parametros);
+	}
+
+	private static void restoPrueba(int[] parametros) {
 
 		// int[] parametros = { 3, 3 };
 		// Programa.iniciar();
@@ -133,7 +109,6 @@ public class Main {
 
 		System.out.println("Resultado: " + Programa.resultado());
 
-
 		// Programa.imprimirPrograma();
 	}
 /*
@@ -145,26 +120,6 @@ public class Main {
 		Programa.imprimirEstado();
 	}
 */
-	private static BufferedReader AbrirLector(String programa) {
-
-		BufferedReader lector = null;
-
-		try {
-				
-			lector = new BufferedReader(new FileReader(programa));
-		} catch( IOException exc ) {
-			
-			/*
-			System.err.println("imposible abrir archivo '"+args[0]+"'");
-			System.err.println("causa: "+exc.getMessage());
-			*/
-			System.err.println("Error al abrir el lector.");
-			System.exit(1);
-		}
-
-		return lector;
-	}
-
 	public static void bienvenida() {
 
 		System.out.println("JIM - Intérprete de Modelos");
