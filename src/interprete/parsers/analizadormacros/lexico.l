@@ -1,10 +1,18 @@
 
 package interprete.parsers.analizadormacros;
 
+import interprete.parsers.AnalizadorLexico;
+import interprete.Variable;
+import interprete.Etiqueta;
+
+import java.lang.StringBuilder;
+
 %%
 
 %byaccj
+%public
 %class MacrosLex
+%extends AnalizadorLexico
 
 %{
 
@@ -17,30 +25,12 @@ package interprete.parsers.analizadormacros;
   public MacrosLex(java.io.Reader r, MacrosParser p) 
   {
     this(r);
-    numero_variables = 0;
-    linea_actual = 1;
     yyparser = p;
-    contenido = "";
-  }
-
-  private int numero_variables;
-  private int numero_etiquetas;
-  private int linea_actual;
-
-  public int numVariables() {
-    return numero_variables;
-  }
-
-  public int numEtiquetas() {
-    return numero_etiquetas;
-  }
-
-  public int lineaActual() {
-     return linea_actual;
+    contenido = new StringBuilder();
   }
 
 
-  private String contenido;
+  private StringBuilder contenido;
   
 
 %}
@@ -48,7 +38,8 @@ package interprete.parsers.analizadormacros;
 
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
-WhiteSpace     = {LineTerminator} | [ \t\f]
+WhiteSpace     = [ \t\f]
+
 Identifier = [a-zA-Z]{2} [a-zA-Z]*
 
 Comment = "#" {InputCharacter}* {LineTerminator}?
@@ -67,20 +58,15 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 <YYINITIAL> {
 
 {Comment}         { }
-
 "defmacro"        { return MacrosParser.DEFMACRO;
                   }
-
-{Identifier}      { yyparser.yylval = new MacrosParserVal( (Object)yytext() );
+{Identifier}      { yyparser.yylval = new MacrosParserVal(yytext());
+                    System.out.println("Entrando en modo cuerpo");
+                    contenido.setLength(0);
                     yybegin(CUERPO);
                     return MacrosParser.IDMACRO;
                   }
-
-{LineTerminator}  { linea_actual++;
-                  }
-
 {WhiteSpace}      { }
-
 .                 { yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido"); 
                   }
 
@@ -88,36 +74,27 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 
 <CUERPO> {
 
-"#".*             { linea_actual++;
+"#".*             { }
+{Reserved}        { contenido.append(yytext());
                   }
-
-{Reserved}        { contenido += ( yytext() );
-                  }
-
 {Label}           { String id = Etiqueta.filtrar(yytext());
-                    yyparser.yylval = new MacrosParserVal( (Object)("L" + id) );
-                    contenido += "L" + id;
+                    yyparser.yylval = new MacrosParserVal("L" + id);
+                    contenido.append("L" + id);
                     return MacrosParser.ETIQUETA;
                   }
-
 {Variable}        { String id = Variable.filtrar(yytext());
-                    yyparser.yylval = new MacrosParserVal( (Object)("V" + id) );
-                    contenido += "V" + id;
+                    yyparser.yylval = new MacrosParserVal("V" + id);
+                    contenido.append("V" + id);
                     return MacrosParser.VARIABLE;
                   }
-
-"endmacro"        { yyparser.yylval = new MacrosParserVal( (Object)contenido );
-                    contenido = "";
+"endmacro"        { yyparser.yylval = new MacrosParserVal(contenido.toString());
+                    System.out.println("Saliendo de modo cuerpo");
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;
                   }
-
-{InputCharacter}
-                  { contenido += ( yytext().charAt(0) );
+{InputCharacter}  { contenido.append(yytext());
                   }
-
-{LineTerminator}  { contenido += ( yytext().charAt(0) );
-                    linea_actual++;
+{LineTerminator}  { contenido.append(yytext());
                   }
 
 } // CUERPO

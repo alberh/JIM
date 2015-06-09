@@ -29,10 +29,4 @@ public class LAcciones extends Acciones {
       Programa.numeroLineaActual(et.linea() - 1);
     }
 	}
-
-  protected static Etiqueta obtenerEtiqueta(Object id) {
-
-    // tratamiento de errores
-    return Etiqueta.get(id.toString());
-  }
 }

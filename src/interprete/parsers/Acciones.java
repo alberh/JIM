@@ -99,4 +99,10 @@ public class Acciones {
 
     return valor;
   }
+
+  protected static Etiqueta obtenerEtiqueta(Object id) {
+
+    // tratamiento de errores
+    return Etiqueta.get(id.toString());
+  }
 }

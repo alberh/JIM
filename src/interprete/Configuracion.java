@@ -26,10 +26,11 @@ public abstract class Configuracion {
 				_propiedades.load(fr);
 
 				if (_propiedades.stringPropertyNames().size() != 3) {
+					
 					// Asigna las propiedades que no estén en el fichero de configuración
-					_propiedades.setProperty("rutaMacrosL", _propiedades.getProperty("rutaMacrosL", "/macros/l"));
-					_propiedades.setProperty("rutaMacrosLoop", _propiedades.getProperty("rutaMacrosLoop", "/macros/loop"));
-					_propiedades.setProperty("rutaMacrosWhile", _propiedades.getProperty("rutaMacrosWhile", "/macros/while"));
+					_propiedades.setProperty("rutaMacrosL", _propiedades.getProperty("rutaMacrosL", "macros/l"));
+					_propiedades.setProperty("rutaMacrosLoop", _propiedades.getProperty("rutaMacrosLoop", "macros/loop"));
+					_propiedades.setProperty("rutaMacrosWhile", _propiedades.getProperty("rutaMacrosWhile", "macros/while"));
 
 					guardar();
 				}
@@ -44,9 +45,9 @@ public abstract class Configuracion {
 
 			ficheroConfig.createNewFile();
 			
-			_propiedades.setProperty("rutaMacrosL", "/macros/l");
-			_propiedades.setProperty("rutaMacrosLoop", "/macros/loop");
-			_propiedades.setProperty("rutaMacrosWhile", "/macros/while");
+			_propiedades.setProperty("rutaMacrosL", "macros/l");
+			_propiedades.setProperty("rutaMacrosLoop", "macros/loop");
+			_propiedades.setProperty("rutaMacrosWhile", "macros/while");
 
 			_propiedades.store(fw, null);
 		} catch (IOException ex) {

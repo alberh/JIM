@@ -1,7 +1,8 @@
 
 %{
 	import java.io.*;
-	import interprete.parsers.IParser;
+  	import interprete.*;
+  	import interprete.parsers.*;
 %}
 
 
@@ -13,21 +14,21 @@
 %token ETIQUETA
 %token ENDMACRO   // fin de la declaración de una macro
 
+%token <sval> VARIABLE ETIQUETA IDMACRO ENDMACRO
+
 %%
 
 inicio :  sentencia inicio
 	   |
 ;
-sentencia : DEFMACRO IDMACRO { macro = Macro.set($2.obj.toString()); } simbolos ENDMACRO { macro.cuerpo($5.obj.toString()); }
+sentencia : DEFMACRO IDMACRO { MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.defineCuerpo($5); }
 ;
-simbolos :	VARIABLE simbolos { macro.nuevaVariable($1.obj.toString()); }
-		 |	ETIQUETA simbolos { macro.nuevaEtiqueta($1.obj.toString()); }
+simbolos :	VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
+		 |	ETIQUETA { MacrosAcciones.nuevaEtiqueta($1); } simbolos
 		 |
 ;
 
 %%
-
-	private Macro macro;
 
 	/** referencia al analizador léxico
   **/
@@ -42,8 +43,13 @@ simbolos :	VARIABLE simbolos { macro.nuevaVariable($1.obj.toString()); }
   }
 
   public int parse() {
-		
-	return this.yyparse();
+    
+    return this.yyparse();
+  }
+
+  public AnalizadorLexico analizadorLexico() {
+
+    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 
