@@ -21,7 +21,6 @@ import interprete.parsers.AnalizadorLexico;
   public LLex(java.io.Reader r, LParser p) 
   {
     this(r);
-    linea_actual = 1;
     yyparser = p;
   }
 
@@ -73,5 +72,5 @@ Number = 0|[1-9]+[0-9]*
                     return LParser.IDMACRO;
                   }
 {LineTerminator}  { }
-.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + linea_actual + ".");
+.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + _lineaActual + ".");
                   }

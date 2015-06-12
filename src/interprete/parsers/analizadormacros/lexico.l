@@ -26,12 +26,10 @@ import java.lang.StringBuilder;
   {
     this(r);
     yyparser = p;
-    contenido = new StringBuilder();
+    _contenido = new StringBuilder();
   }
 
-
-  private StringBuilder contenido;
-  
+  private StringBuilder _contenido;
 
 %}
 
@@ -61,13 +59,13 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 "defmacro"        { return MacrosParser.DEFMACRO;
                   }
 {Identifier}      { yyparser.yylval = new MacrosParserVal(yytext());
-                    System.out.println("Entrando en modo cuerpo");
-                    contenido.setLength(0);
+                    _contenido.setLength(0);
                     yybegin(CUERPO);
                     return MacrosParser.IDMACRO;
                   }
+{LineTerminator}  { }
 {WhiteSpace}      { }
-.                 { yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido"); 
+.                 { /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
                   }
 
 } // YYINITIAL
@@ -75,26 +73,25 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 <CUERPO> {
 
 "#".*             { }
-{Reserved}        { contenido.append(yytext());
+{Reserved}        { _contenido.append(yytext());
                   }
 {Label}           { String id = Etiqueta.filtrar(yytext());
                     yyparser.yylval = new MacrosParserVal("L" + id);
-                    contenido.append("L" + id);
+                    _contenido.append("L" + id);
                     return MacrosParser.ETIQUETA;
                   }
 {Variable}        { String id = Variable.filtrar(yytext());
                     yyparser.yylval = new MacrosParserVal("V" + id);
-                    contenido.append("V" + id);
+                    _contenido.append("V" + id);
                     return MacrosParser.VARIABLE;
                   }
-"endmacro"        { yyparser.yylval = new MacrosParserVal(contenido.toString());
-                    System.out.println("Saliendo de modo cuerpo");
+"endmacro"        { yyparser.yylval = new MacrosParserVal(_contenido.toString());
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;
                   }
-{InputCharacter}  { contenido.append(yytext());
+{InputCharacter}  { _contenido.append(yytext());
                   }
-{LineTerminator}  { contenido.append(yytext());
+{LineTerminator}  { _contenido.append(yytext());
                   }
 
 } // CUERPO

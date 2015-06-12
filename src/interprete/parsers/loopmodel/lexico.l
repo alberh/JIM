@@ -21,7 +21,6 @@ import interprete.parsers.AnalizadorLexico;
   public LoopLex(java.io.Reader r, LoopParser p) 
   {
     this(r);
-    linea_actual = 1;
     yyparser = p;
   }
   

@@ -17,6 +17,22 @@ cleanall:
 	cd interprete/parsers/whilemodel; make clean
 	make clean
 
+macros:
+	cd interprete/parsers/analizadormacros; make
+	make Main.class
+
+cleanmacros:
+	make clean
+	cd interprete/parsers/analizadormacros; make clean
+
+previo:
+	cd interprete/parsers/previo; make
+	make Main.class
+
+cleanprevio:
+	make clean
+	cd interprete/parsers/previo; make clean
+
 l:
 	cd interprete/parsers/lmodel; make
 	make Main.class

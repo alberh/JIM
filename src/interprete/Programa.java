@@ -1,12 +1,12 @@
-// DIA 24
 
 package interprete;
 
-import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import java.nio.file.Files;
@@ -25,14 +25,12 @@ import interprete.parsers.whilemodel.*;
 public class Programa {
 
 	private static ArrayList<String> _lineas;
-	private static BufferedReader _reader;
-	private static StringReader _stringReader;
 	private static int _lineaActual;
+	private static IParser _parser;
+	private static String _programa;
 
 	public enum TipoModelos { L, LOOP, WHILE };
-	
 	private static TipoModelos _modelo;
-	private static IParser _parser;
 
 	private Programa() { }
 
@@ -41,9 +39,9 @@ public class Programa {
 		try {
 
 			_lineas = new ArrayList(Files.readAllLines(Paths.get(programa)));
-
 			_lineaActual = numeroLineas();
 
+			_programa = programa;
 			_modelo = modelo;
 
 			switch (_modelo) {
@@ -77,27 +75,30 @@ public class Programa {
 		// Reiniciar variables, etiquetas, bucles y macros
 		System.out.println("Limpiando...");
 		reiniciar();
+
 		// Cargar macros del modelo (ToDo: almacenar macros por modelo y cargarlas una vez al iniciar programa? (qué pasa con nuevas macros?))
 		System.out.println("Comprobando directorios de macros...");
 		comprobarDirectoriosMacros();
+
 		System.out.println("Cargando macros...");
-
-		// QUE CARGARMACROS Y PREVIO FUNCIONEN COMO EN EL EJEMPLO, CON BUFFER Y TO PA DENTRO (NO HACE FALTA CONTROLAR LINEAS)
-
 		cargarMacros();
+
 		// Expandir macros
 		// ...
+
 		// Pasar previo
 		System.out.println("Pasando previo...");
 		previo();
+
 		// Asignar variables de entrada
 		if (parametros != null) {
 
 			asignarVariablesEntrada(parametros);
 		}
+
 		// Lanzar
 		System.out.println("Ejecutando...");
-		//ejecutar(_parser);
+		ejecutar(_parser);
 	}
 
 	private static void asignarVariablesEntrada(int[] parametros) {
@@ -118,58 +119,34 @@ public class Programa {
 
 	public static void cargarMacros() {
 
-		ArrayList<String> copiaLineas = _lineas;
-		String ruta = null;
-
-		switch (_modelo) {
-
-				case L:
-					ruta = Configuracion.rutaMacrosL();
-					break;
-
-				case LOOP:
-					ruta = Configuracion.rutaMacrosLoop();
-					break;
-
-				case WHILE:
-					ruta = Configuracion.rutaMacrosWhile();
-					break;
-			}
-
 		try {
 
-			Stream<Path> streamListaFicheros = Files.list(Paths.get(ruta));
+			Stream<Path> streamListaFicheros = Files.list(Paths.get(obtenerRutaModelo()));
 
-			//if (streamListaFicheros.count() > 0) {
+			streamListaFicheros.forEach(
 
+				p -> {
 
+					String fichero = p.getFileName().toString();
+					System.out.println("Leyendo fichero de macros \"" + fichero + "\"");
 
-				streamListaFicheros.forEach(
+					try {
+						
+						String rutaFichero = obtenerRutaModelo() + "/" + fichero;
+						MacrosParser macrosParser = new MacrosParser(new FileReader(rutaFichero));
+						macrosParser.parse();
+					} catch (IOException ex) {
 
-					p -> {
-						System.out.println("Leyendo fichero de macros \"" + p.getFileName() + "\"");
-
-						try {
-							_lineas = new ArrayList(Files.readAllLines(p));
-							_lineaActual = numeroLineas();
-
-							ejecutar(new MacrosParser(null));
-						} catch (IOException ex) {
-
-							// gestión de errores
-							System.err.println("Error en el volcado del programa a memoria.");
-							System.exit(1);
-						}
+						// gestión de errores
+						System.err.println("Error en el volcado del programa a memoria.");
+						System.exit(1);
 					}
-				);
-			//} else {
-
-			//	System.out.println("No se han encontrado ficheros en " + ruta + ".");
-			//}
+				}
+			);
 		} catch (NotDirectoryException ex) {
 
 			// gestión de errores
-			System.err.println(ruta + "no es un directorio.");
+			System.err.println(obtenerRutaModelo() + "no es un directorio.");
 			System.exit(1);
 		} catch (IOException ex) {
 
@@ -177,8 +154,28 @@ public class Programa {
 			System.err.println("Error al obtener lista de ficheros.");
 			System.exit(1);
 		}
+	}
 
-		_lineas = copiaLineas;
+	private static String obtenerRutaModelo() {
+
+		String ruta = null;
+
+		switch (_modelo) {
+
+			case L:
+				ruta = Configuracion.rutaMacrosL();
+				break;
+
+			case LOOP:
+				ruta = Configuracion.rutaMacrosLoop();
+				break;
+
+			case WHILE:
+				ruta = Configuracion.rutaMacrosWhile();
+				break;
+		}
+
+		return ruta;
 	}
 
 	private static void comprobarDirectoriosMacros() {
@@ -221,9 +218,15 @@ public class Programa {
 
 	private static void previo() {
 
-		PrevioParser previoParser = new PrevioParser(null);
+		try {
+			
+			PrevioParser previoParser = new PrevioParser(new FileReader(_programa));
+			previoParser.parse();
+		} catch (FileNotFoundException ex) {
 
-		ejecutar(previoParser);
+			// gestión de errores
+			System.err.println("error en previo");
+		}
 	}
 
 	private static void ejecutar(IParser parser) {

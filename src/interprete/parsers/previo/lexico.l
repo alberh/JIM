@@ -21,23 +21,23 @@ import interprete.parsers.AnalizadorLexico;
   public PrevioLex(java.io.Reader r, PrevioParser p) 
   {
     this(r);
-    numero_variables = 0;
-    linea_actual = 1;
     yyparser = p;
     contenido = "";
+    _lineaActual = 1;
   }
 
-  private int numero_variables;
-  private int numero_etiquetas;
+  protected int _lineaActual;
 
-  public int numVariables() {
-    return numero_variables;
+  public int lineaActual() {
+
+    return _lineaActual;
   }
+/*
+  public void lineaActual(int nuevaLinea) {
 
-  public int numEtiquetas() {
-    return numero_etiquetas;
+    _lineaActual = nuevaLinea;
   }
-
+*/
   private String contenido;
   
 
@@ -61,8 +61,7 @@ Number = 0|[1-9]+[0-9]*
 %%
 
 {WhiteSpace}      { }
-{Comment}         { linea_actual++;
-                  }
+{Comment}         { }
 {Label}           { yyparser.yylval = new PrevioParserVal( yytext() );
                     return PrevioParser.ETIQUETA;
                   }
@@ -96,7 +95,6 @@ Number = 0|[1-9]+[0-9]*
 {Identifier}      { yyparser.yylval = new PrevioParserVal( yytext() );
                     return PrevioParser.IDMACRO;
                   }
-{LineTerminator}  { linea_actual++;
-                  }
+{LineTerminator}  { }
 .                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + linea_actual + ".");
                   }

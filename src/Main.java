@@ -1,4 +1,12 @@
 
+/* Día 24 de junio reunión con Tomeu
+ * Revisar conteo de líneas en analex
+ * Mirar de cambiar clase abstracta AnalizadorLexico a Interfaz
+ * Eliminar de parsers de modelos y analizador de macros la utilización de métodos de conteo de líenas,
+ * que se realiza directamente desde Programa
+ */
+
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

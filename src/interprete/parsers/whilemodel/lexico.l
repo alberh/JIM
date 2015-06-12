@@ -21,7 +21,6 @@ import interprete.parsers.AnalizadorLexico;
   public WhileLex(java.io.Reader r, WhileParser p) 
   {
     this(r);
-    linea_actual = 1;
     yyparser = p;
   }
   

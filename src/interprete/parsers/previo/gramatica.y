@@ -30,7 +30,7 @@
 
 %%
 
-inicio :  sentencia { $$ = $1; } inicio
+inicio : sentencia { $$ = $1; } inicio
        | { $$ = null; }
 ;
 sentencia : etiqueta instruccion { ; }
