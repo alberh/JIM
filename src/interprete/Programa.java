@@ -221,6 +221,8 @@ public class Programa {
 		ejecutar(new PrevioParser(null));
 	}
 
+	// private static void ejecutar()
+
 	private static void ejecutar(IParser parser) {
 
 		_lineaActual = 0;
@@ -232,7 +234,8 @@ public class Programa {
 
 			do {
 
-				System.out.println(_lineaActual + ": " + linea);
+				// System.out.println(_lineaActual + ": " + linea);
+				System.out.println(estadoMemoria());
 
 				try {
 					
@@ -245,7 +248,59 @@ public class Programa {
 				linea = lineaSiguiente();
 			} while (!finalizado());
 		}
-	}	
+	}
+
+	public static String estadoMemoria() {
+
+		boolean comaAlFinal = false;
+		StringBuilder sb = new StringBuilder();
+		sb.append("(" + _lineaActual + ", <");
+
+		ArrayList<Variable> variables = Variable.variablesEntrada();
+		if (variables.size() > 0) {
+
+			comaAlFinal = true;
+			concatenarVariables(variables, sb);
+		}
+
+		if (comaAlFinal) {
+
+			sb.append(", ");
+		}
+
+		variables = Variable.variablesLocales();
+		if (variables.size() > 0) {
+
+			comaAlFinal = true;
+			concatenarVariables(variables, sb);
+		}
+
+		if (comaAlFinal) {
+
+			sb.append(", ");
+		}
+		concatenarVariable(Variable.variableSalida(), sb);
+
+		sb.append(">)");
+
+		return sb.toString();
+	}
+
+	private static void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {
+
+		concatenarVariable(variables.get(0), sb);
+
+		for (int i = 1; i < variables.size(); ++i) {
+
+			sb.append(", ");
+			concatenarVariable(variables.get(i), sb);
+		}
+	}
+
+	private static void concatenarVariable(Variable variable, StringBuilder sb) {
+
+		sb.append(variable.id() + " = " + variable.valor());
+	}
 
 	public static int numeroLineaActual() {
 

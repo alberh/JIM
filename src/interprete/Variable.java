@@ -3,6 +3,16 @@ package interprete;
 
 import java.util.Hashtable;
 import java.util.ArrayList;
+import java.util.Comparator;
+
+class ComparadorVariables implements Comparator<Variable> {
+
+	@Override
+	public int compare(Variable v1, Variable v2) {
+		
+		return v1.id().compareToIgnoreCase(v2.id());
+	}
+}
 
 public class Variable {
 	
@@ -125,6 +135,25 @@ public class Variable {
  		}
  		
  		return v;
+ 	}
+
+ 	public static ArrayList<Variable> variablesEntrada() {
+
+ 		ArrayList<Variable> variables = new ArrayList<Variable>(_entrada.values());
+ 		variables.sort(new ComparadorVariables());
+ 		return variables;
+ 	}
+
+ 	public static ArrayList<Variable> variablesLocales() {
+
+ 		ArrayList<Variable> variables = new ArrayList<Variable>(_locales.values());
+ 		variables.sort(new ComparadorVariables());
+ 		return variables;
+ 	}
+
+ 	public static Variable variableSalida() {
+
+ 		return _salida;
  	}
  	
  	public static void clear() {
