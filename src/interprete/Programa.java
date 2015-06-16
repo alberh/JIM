@@ -241,7 +241,7 @@ public class Programa {
 			do {
 
 				System.out.println(_lineaActual + ": " + linea);
-				lex.lineaActual(_lineaActual);
+				// lex.lineaActual(_lineaActual);
 
 				try {
 					
@@ -325,9 +325,19 @@ public class Programa {
 	public static void imprimirEstado() {
 
 		Variable.pintar();
-	    Etiqueta.pintar();
-	    Macro.pintar();
-	    Bucle.pintar();
+
+		if (_modelo == TipoModelos.L) {
+
+	    	Etiqueta.pintar();
+		} else {
+
+	    	Bucle.pintar();
+		}
+	}
+
+	public static void imprimirMacros() {
+
+		Macro.pintar();
 	}
 
 	public static void imprimirPrograma() {

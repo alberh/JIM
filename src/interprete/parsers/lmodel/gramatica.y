@@ -108,7 +108,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
   **/
   public void yyerror (String descripcion, int yystate, int token) 
   {
-     System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+     // System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
      System.err.println ("Token leído : "+yyname[token]);
      System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -150,7 +150,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
 
   public void yyerror (String descripcion) 
   {
-     System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+     //System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
      //System.err.println ("Token leido : "+yyname[token]);
    
   }

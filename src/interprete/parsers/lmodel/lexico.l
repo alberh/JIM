@@ -72,5 +72,5 @@ Number = 0|[1-9]+[0-9]*
                     return LParser.IDMACRO;
                   }
 {LineTerminator}  { }
-.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + _lineaActual + ".");
+.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido.");
                   }

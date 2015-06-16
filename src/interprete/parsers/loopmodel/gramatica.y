@@ -28,8 +28,8 @@ inicio :  instruccion { $$ = $1; } inicio
 ;
 instruccion : VARIABLE FLECHA finInstruccion { LoopAcciones.asignacion($1, $3); }
             | VARIABLE INCREMENTO { LoopAcciones.incremento($1); }
-            | LOOP VARIABLE { LoopAcciones.abreBucle($2, analex.lineaActual()); }
-            | END { LoopAcciones.cierraBucle(analex.lineaActual()); }
+            | LOOP VARIABLE { LoopAcciones.abreBucle($2, Programa.numeroLineaActual() /*analex.lineaActual()*/); }
+            | END { LoopAcciones.cierraBucle(Programa.numeroLineaActual() /*analex.lineaActual()*/); }
 ;
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
@@ -97,7 +97,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
   **/
   public void yyerror (String descripcion, int yystate, int token) 
   {
-     System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+     //System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
      System.err.println ("Token leído : "+yyname[token]);
      System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -139,7 +139,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
 
   public void yyerror (String descripcion) 
   {
-     System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+     //System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
      //System.err.println ("Token leido : "+yyname[token]);
    
   }

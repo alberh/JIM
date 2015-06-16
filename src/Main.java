@@ -2,8 +2,11 @@
 /* Día 24 de junio reunión con Tomeu
  * Revisar conteo de líneas en analex
  * Mirar de cambiar clase abstracta AnalizadorLexico a Interfaz
- * Eliminar de parsers de modelos y analizador de macros la utilización de métodos de conteo de líenas,
+ * Eliminar de parsers de modelos y analizador de macros la utilización de métodos de conteo de líneas,
  * que se realiza directamente desde Programa
+ *
+ * Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
+ * mayor que, etc...
  */
 
 

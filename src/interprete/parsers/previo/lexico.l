@@ -61,7 +61,8 @@ Number = 0|[1-9]+[0-9]*
 %%
 
 {WhiteSpace}      { }
-{Comment}         { }
+{Comment}         { _lineaActual++;
+                  }
 {Label}           { yyparser.yylval = new PrevioParserVal( yytext() );
                     return PrevioParser.ETIQUETA;
                   }
@@ -95,6 +96,7 @@ Number = 0|[1-9]+[0-9]*
 {Identifier}      { yyparser.yylval = new PrevioParserVal( yytext() );
                     return PrevioParser.IDMACRO;
                   }
-{LineTerminator}  { }
-.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + linea_actual + ".");
+{LineTerminator}  { _lineaActual++;
+                  }
+.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + _lineaActual + ".");
                   }

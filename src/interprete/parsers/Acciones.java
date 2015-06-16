@@ -92,6 +92,7 @@ public class Acciones {
          valor = Variable.get((String)o).valor();
       } catch (Exception ex) {
 
+        // Gestión errores
         System.err.println("Error: La variable " + o + " no está inicializada internamente"
                           + " (Probablemente debido a que no se ha ejecutado el analizado previo).");
       }

@@ -30,8 +30,8 @@ inicio :  instruccion { $$ = $1; } inicio
 instruccion : VARIABLE FLECHA finInstruccion { WhileAcciones.asignacion($1, $3); }
             | VARIABLE INCREMENTO { WhileAcciones.incremento($1); }
             | VARIABLE DECREMENTO { WhileAcciones.decremento($1); }
-            | WHILE VARIABLE DISTINTO { WhileAcciones.abreBucle($2, analex.lineaActual()); }
-            | END { WhileAcciones.cierraBucle(analex.lineaActual()); }
+            | WHILE VARIABLE DISTINTO { WhileAcciones.abreBucle($2, Programa.numeroLineaActual() /*analex.lineaActual()*/); }
+            | END { WhileAcciones.cierraBucle(Programa.numeroLineaActual() /*analex.lineaActual()*/); }
 ;
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
@@ -102,7 +102,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
   **/
   public void yyerror (String descripcion, int yystate, int token) 
   {
-     System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+     //System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
      System.err.println ("Token leído : "+yyname[token]);
      System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -144,7 +144,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
 
   public void yyerror (String descripcion) 
   {
-     System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+     //System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
      //System.err.println ("Token leido : "+yyname[token]);
    
   }
