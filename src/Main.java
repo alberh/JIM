@@ -15,12 +15,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.BufferedReader;
 
-import interprete.Programa;
-import interprete.Configuracion;
-import interprete.Bucle;
-import interprete.Etiqueta;
-import interprete.Macro;
-import interprete.Variable;
+import interprete.*;
 import interprete.Variable.EVariable;
 import interprete.parsers.previo.*;
 import interprete.parsers.lmodel.*;

@@ -160,17 +160,17 @@ public class Macro {
  		sb.append("ID: " + _id + "\n");
  		sb.append("Cuerpo: " + _cuerpo + "\n");
 
- 		sb.append("\tVariables de entrada:");
+ 		sb.append("Variables de entrada: ");
  		for (int i = 0; i < _entrada.size(); ++i)
  			sb.append(_entrada.get(i) + " ");
  		sb.append("\n");
 
- 		sb.append("\tVariables locales:");
+ 		sb.append("Variables locales: ");
  		for (int i = 0; i < _locales.size(); ++i)
  			sb.append(_locales.get(i) + " ");
  		sb.append("\n");
 
- 		sb.append("\tEtiquetas:");
+ 		sb.append("Etiquetas: ");
  		for (int i = 0; i < _etiquetas.size(); ++i)
  			sb.append(_etiquetas.get(i) + " ");
  		sb.append("\n");
