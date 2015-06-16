@@ -28,8 +28,8 @@ inicio :  instruccion { $$ = $1; } inicio
 ;
 instruccion : VARIABLE FLECHA finInstruccion { LoopAcciones.asignacion($1, $3); }
             | VARIABLE INCREMENTO { LoopAcciones.incremento($1); }
-            | LOOP VARIABLE { LoopAcciones.abreBucle($2, Programa.numeroLineaActual() /*analex.lineaActual()*/); }
-            | END { LoopAcciones.cierraBucle(Programa.numeroLineaActual() /*analex.lineaActual()*/); }
+            | LOOP VARIABLE { LoopAcciones.abreBucle($2, Programa.numeroLineaActual()); }
+            | END { LoopAcciones.cierraBucle(Programa.numeroLineaActual()); }
 ;
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }

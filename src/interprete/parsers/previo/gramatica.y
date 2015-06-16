@@ -35,7 +35,7 @@ inicio : sentencia { $$ = $1; } inicio
 ;
 sentencia : etiqueta instruccion { ; }
 ;
-etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, analex.lineaActual()); }
+etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, Programa.numeroLineaActual()); }
          | { ; }
 ;
 instruccion : VARIABLE FLECHA finInstruccion { Variable.set($1); }
@@ -43,14 +43,14 @@ instruccion : VARIABLE FLECHA finInstruccion { Variable.set($1); }
             | VARIABLE DECREMENTO { Variable.set($1); }
             | IF VARIABLE DISTINTO GOTO ETIQUETA { Variable.set($2); }
             | GOTO ETIQUETA { ; }
-            | LOOP VARIABLE { Variable.set($2); Bucle.abrir(analex.lineaActual()); }
-            | WHILE VARIABLE DISTINTO { Variable.set($2); Bucle.abrir(analex.lineaActual()); }
-            | END { Bucle.cerrar(analex.lineaActual()); }
+            | LOOP VARIABLE { Variable.set($2); Bucle.abrir(Programa.numeroLineaActual()); }
+            | WHILE VARIABLE DISTINTO { Variable.set($2); Bucle.abrir(Programa.numeroLineaActual()); }
+            | END { Bucle.cerrar(Programa.numeroLineaActual()); }
 ;
 finInstruccion :  VARIABLE { Variable.set($1); }
                |  NUMERO { ; }
                |  operacion { ; }
-               |  IDMACRO { Macro.set($1); } '(' parametrosMacro ')'
+               |  IDMACRO {  } '(' parametrosMacro ')'
 ;
 operacion	   :  parametros '+' parametros { ; }
 			   |  parametros '-' parametros { ; }
@@ -118,7 +118,7 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
   **/
   public void yyerror (String descripcion, int yystate, int token) 
   {
-	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+	//System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
 	System.err.println ("Token leído : "+yyname[token]);
 	System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -160,7 +160,7 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 
   public void yyerror (String descripcion) 
   {
-	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+	//System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
 	 //System.err.println ("Token leido : "+yyname[token]);
 	
   }

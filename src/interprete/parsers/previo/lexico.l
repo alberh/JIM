@@ -23,23 +23,9 @@ import interprete.parsers.AnalizadorLexico;
     this(r);
     yyparser = p;
     contenido = "";
-    _lineaActual = 1;
   }
 
-  protected int _lineaActual;
-
-  public int lineaActual() {
-
-    return _lineaActual;
-  }
-/*
-  public void lineaActual(int nuevaLinea) {
-
-    _lineaActual = nuevaLinea;
-  }
-*/
   private String contenido;
-  
 
 %}
 
@@ -61,8 +47,7 @@ Number = 0|[1-9]+[0-9]*
 %%
 
 {WhiteSpace}      { }
-{Comment}         { _lineaActual++;
-                  }
+{Comment}         { }
 {Label}           { yyparser.yylval = new PrevioParserVal( yytext() );
                     return PrevioParser.ETIQUETA;
                   }
@@ -96,7 +81,6 @@ Number = 0|[1-9]+[0-9]*
 {Identifier}      { yyparser.yylval = new PrevioParserVal( yytext() );
                     return PrevioParser.IDMACRO;
                   }
-{LineTerminator}  { _lineaActual++;
-                  }
-.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido en línea " + _lineaActual + ".");
+{LineTerminator}  { }
+.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido.");
                   }

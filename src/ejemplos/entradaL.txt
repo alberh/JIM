@@ -40,7 +40,7 @@
 		goto e
 
 # llamada a macros (no se va a ejecutar por el salto)
-		y <- fibo(x1, x2, 3, z444, y, 4, 0)
+		y <- pow(x1, x2, 3, z444, y, 4, 0)
 
 [a4] y <- 5
 

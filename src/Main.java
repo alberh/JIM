@@ -1,9 +1,8 @@
 
 /* Día 24 de junio reunión con Tomeu
- * Revisar conteo de líneas en analex
- * Mirar de cambiar clase abstracta AnalizadorLexico a Interfaz
- * Eliminar de parsers de modelos y analizador de macros la utilización de métodos de conteo de líneas,
- * que se realiza directamente desde Programa
+ * Cambiar clase abstracta AnalizadorLexico a Interfaz
+ * Añadir PrevioAcciones
+ * Añadir a PrevioParser la funcionalidad de expandir macros. Para ello, adaptar Macro.expandir.
  *
  * Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
  * mayor que, etc...
@@ -66,20 +65,19 @@ public class Main {
 			// pruebasWhile();
 		}
 
-		// pruebasprevioParser();
+		// pruebaspruebaPrevioParser();
 		// pruebasVariables();
 		// pruebasEtiquetas();
 	}
-/*
-	public static void previoParser(String[] args) {
 
-		System.out.println("Ejecutando previoParser");
-		System.out.println("=================");
+	public static void bienvenida() {
 
-		PrevioParser analizador = new PrevioParser(AbrirLector(args)) ;
-	    analizador.parse();
+		System.out.println("JIM - Intérprete de Modelos");
+		System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
+		System.out.println("Versión " + Configuracion.version());
+		System.out.println();
 	}
-*/
+
 	public static void pruebasL(int[] parametros) {
 
 		String programa = "ejemplos/entradaL.txt";
@@ -106,37 +104,19 @@ public class Main {
 
 	private static void restoPrueba(int[] parametros) {
 
-		// int[] parametros = { 3, 3 };
-		// Programa.iniciar();
 		Programa.iniciar(parametros);
 
 		System.out.println("====================");
 		System.out.println("Estado de la memoria");
 		System.out.println("====================");
 
-		Programa.imprimirEstado();
+		Programa.imprimirComponentes();
 
 		System.out.println("====================");
 
 		System.out.println("Resultado: " + Programa.resultado());
 
 		// Programa.imprimirPrograma();
-	}
-/*
-	public static void pruebasprevioParser() {
-
-		String[] args = { "entradaprevioParser.txt" };
-
-		previoParser(args);
-		Programa.imprimirEstado();
-	}
-*/
-	public static void bienvenida() {
-
-		System.out.println("JIM - Intérprete de Modelos");
-		System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
-		System.out.println("Versión " + Configuracion.version());
-		System.out.println();
 	}
 /*
 	public static void pruebasVariables() {
@@ -191,5 +171,23 @@ public class Main {
 		Etiqueta.pintar();
 		System.out.println();
 	}
-	*/
+
+	// RE-HACER LAS DOS SIGUIENTES
+	public static void pruebaPrevioParser(String[] args) {
+
+		System.out.println("Ejecutando pruebaPrevioParser");
+		System.out.println("=================");
+
+		pruebaPrevioParser analizador = new pruebaPrevioParser(AbrirLector(args)) ;
+	    analizador.parse();
+	}
+
+	public static void pruebaspruebaPrevioParser() {
+
+		String[] args = { "entradapruebaPrevioParser.txt" };
+
+		pruebaPrevioParser(args);
+		Programa.imprimirEstado();
+	}
+*/
 }

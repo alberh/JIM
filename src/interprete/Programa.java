@@ -218,15 +218,7 @@ public class Programa {
 
 	private static void previo() {
 
-		try {
-			
-			PrevioParser previoParser = new PrevioParser(new FileReader(_programa));
-			previoParser.parse();
-		} catch (FileNotFoundException ex) {
-
-			// gestión de errores
-			System.err.println("error en previo");
-		}
+		ejecutar(new PrevioParser(null));
 	}
 
 	private static void ejecutar(IParser parser) {
@@ -241,7 +233,6 @@ public class Programa {
 			do {
 
 				System.out.println(_lineaActual + ": " + linea);
-				// lex.lineaActual(_lineaActual);
 
 				try {
 					
@@ -249,15 +240,12 @@ public class Programa {
 				} catch (Exception ex) { }
 				lex.yyreset(new BufferedReader(new StringReader(linea)));
 
-
 				parser.parse();
 
 				linea = lineaSiguiente();
 			} while (!finalizado());
 		}
-	}
-
-	
+	}	
 
 	public static int numeroLineaActual() {
 
@@ -322,7 +310,7 @@ public class Programa {
 		return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
 	}
 
-	public static void imprimirEstado() {
+	public static void imprimirComponentes() {
 
 		Variable.pintar();
 
@@ -333,9 +321,6 @@ public class Programa {
 
 	    	Bucle.pintar();
 		}
-	}
-
-	public static void imprimirMacros() {
 
 		Macro.pintar();
 	}
