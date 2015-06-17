@@ -39,6 +39,7 @@ public class Macro {
 
  		if (macro == null) {
 
+ 			// gestión de errores
  			return null;
  		}
 

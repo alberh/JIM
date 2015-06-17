@@ -1,3 +1,5 @@
+y <- pow(x1, x2, 3, z444, y, 4, 0)
+
 # comentario, instrucciones básicas y etiquetas . [] * (^#@ #½ ¬) y sigue ...
 [A]	X1 <- X1 + 1
 

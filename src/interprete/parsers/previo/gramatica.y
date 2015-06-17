@@ -26,7 +26,7 @@
 %token <sval> NUMERO
 
 %type <sval> operacion
-%type <sval> inicio sentencia etiqueta finInstruccion parametros parametrosMacro masParametrosMacro
+%type <sval> inicio sentencia etiqueta finInstruccion operando parametros parametrosMacro masParametrosMacro
 
 %%
 
@@ -38,34 +38,35 @@ sentencia : etiqueta instruccion { ; }
 etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, Programa.numeroLineaActual()); }
          | { ; }
 ;
-instruccion : VARIABLE FLECHA finInstruccion { Variable.set($1); }
-            | VARIABLE INCREMENTO { Variable.set($1); }
-            | VARIABLE DECREMENTO { Variable.set($1); }
+instruccion : VARIABLE FLECHA finInstruccion { PrevioAcciones.definirVariableYMantener($1); }
+            | VARIABLE INCREMENTO { PrevioAcciones.definirVariable($1); }
+            | VARIABLE DECREMENTO { PrevioAcciones.definirVariable($1); }
             | IF VARIABLE DISTINTO GOTO ETIQUETA { Variable.set($2); }
             | GOTO ETIQUETA { ; }
-            | LOOP VARIABLE { Variable.set($2); Bucle.abrir(Programa.numeroLineaActual()); }
-            | WHILE VARIABLE DISTINTO { Variable.set($2); Bucle.abrir(Programa.numeroLineaActual()); }
+            | LOOP VARIABLE { PrevioAcciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }
+            | WHILE VARIABLE DISTINTO { PrevioAcciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }
             | END { Bucle.cerrar(Programa.numeroLineaActual()); }
 ;
-finInstruccion :  VARIABLE { Variable.set($1); }
+finInstruccion :  VARIABLE { PrevioAcciones.definirVariable($1); }
                |  NUMERO { ; }
                |  operacion { ; }
-               |  IDMACRO {  } '(' parametrosMacro ')'
+               |  IDMACRO { PrevioAcciones.prepararParaExpandir($1); } '(' parametrosMacro ')'
 ;
-operacion	   :  parametros '+' parametros { ; }
-			   |  parametros '-' parametros { ; }
-			   |  parametros '*' parametros { ; }
-			   |  parametros '/' parametros { ; }
-			   |  parametros '%' parametros { ; }
+operacion	   :  operando '+' operando { ; }
+			   |  operando '-' operando { ; }
+			   |  operando '*' operando { ; }
+			   |  operando '/' operando { ; }
+			   |  operando '%' operando { ; }
 ;
-parametros :  NUMERO { ; }
-           |  VARIABLE { Variable.set($1); }
+operando :  NUMERO { ; }
+           |  VARIABLE { PrevioAcciones.definirVariable($1); }
 ;
-
+parametros :  NUMERO { PrevioAcciones.prepararParametro($1); }
+           	|  VARIABLE { PrevioAcciones.definirVariable($1); PrevioAcciones.prepararParametro($1); }
+;
 parametrosMacro : parametros masParametrosMacro { ; }
                 | { ; }
 ;
-
 masParametrosMacro :  ',' parametros masParametrosMacro { ; }
                    | { ; }
 ;

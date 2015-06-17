@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import java.nio.file.Files;
@@ -83,8 +84,16 @@ public class Programa {
 		System.out.println("Cargando macros...");
 		cargarMacros();
 
+		System.out.println("Programa antes de la expansión");
+		imprimirPrograma();
+		System.out.println();
+
 		// Expandir macros
-		// ...
+		PrevioAcciones.expandir();
+
+		System.out.println("Programa después de la expansión");
+		imprimirPrograma();
+		System.out.println();
 
 		// Pasar previo
 		System.out.println("Pasando previo...");
@@ -221,7 +230,11 @@ public class Programa {
 		ejecutar(new PrevioParser(null));
 	}
 
-	// private static void ejecutar()
+	public static void insertarExpansion(int linea, String expansion) {
+
+		_lineas.remove(linea - 1);
+		_lineas.addAll(linea - 1, Arrays.asList(expansion.split("\n")));
+	}
 
 	private static void ejecutar(IParser parser) {
 
@@ -235,7 +248,7 @@ public class Programa {
 			do {
 
 				// System.out.println(_lineaActual + ": " + linea);
-				System.out.println(estadoMemoria());
+				// System.out.println(estadoMemoria());
 
 				try {
 					
@@ -266,6 +279,7 @@ public class Programa {
 		if (comaAlFinal) {
 
 			sb.append(", ");
+			comaAlFinal = false;
 		}
 
 		variables = Variable.variablesLocales();
