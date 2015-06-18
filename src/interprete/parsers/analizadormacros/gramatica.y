@@ -24,7 +24,8 @@ inicio :  sentencia inicio
 sentencia : DEFMACRO IDMACRO { MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.defineCuerpo($5); }
 ;
 simbolos :	VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
-		 |	ETIQUETA { MacrosAcciones.nuevaEtiqueta($1); } simbolos
+		 |	'[' ETIQUETA ']' { MacrosAcciones.nuevaEtiqueta($1); } simbolos
+		 |	ETIQUETA { MacrosAcciones.nuevaEtiquetaSalto($1); } simbolos
 		 |
 ;
 

@@ -54,6 +54,11 @@ public class Etiqueta {
 
 		return etiqueta;
 	}
+
+	public static String ultimaEtiqueta() {
+
+		return "A" + _ultimaA
+	}
 	
 	public static void clear() {
 		

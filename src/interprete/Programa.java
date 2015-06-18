@@ -84,6 +84,10 @@ public class Programa {
 		System.out.println("Cargando macros...");
 		cargarMacros();
 
+		// Pasar previo
+		System.out.println("Pasando previo...");
+		previo();
+
 		System.out.println("Programa antes de la expansión");
 		imprimirPrograma();
 		System.out.println();
@@ -94,10 +98,6 @@ public class Programa {
 		System.out.println("Programa después de la expansión");
 		imprimirPrograma();
 		System.out.println();
-
-		// Pasar previo
-		System.out.println("Pasando previo...");
-		previo();
 
 		// Asignar variables de entrada
 		if (parametros != null) {

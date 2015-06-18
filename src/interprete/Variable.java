@@ -79,6 +79,7 @@ public class Variable {
 				break;
 				
 			default:
+				// gestión de errores
 				System.err.println("Error: Tipo de variable desconocido: '" + tipo + "'.");
 		}
 
@@ -162,8 +163,8 @@ public class Variable {
  		_locales.clear();
  		_salida = new Variable("Y");
  		
- 		_mayorEntrada = -1;
- 		_mayorLocal = -1;
+ 		_mayorEntrada = 0;
+ 		_mayorLocal = 0;
  	}
 
  	private Variable(String id) {

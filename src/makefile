@@ -1,6 +1,9 @@
 
 JAVAC = javac
 
+simple:
+	make Main.class
+
 all:
 	cd interprete/parsers/previo; make
 	cd interprete/parsers/analizadormacros; make

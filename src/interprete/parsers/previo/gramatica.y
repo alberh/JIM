@@ -38,7 +38,7 @@ sentencia : etiqueta instruccion { ; }
 etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, Programa.numeroLineaActual()); }
          | { ; }
 ;
-instruccion : VARIABLE FLECHA finInstruccion { PrevioAcciones.definirVariableYMantener($1); }
+instruccion : VARIABLE { PrevioAcciones.definirVariableYMantener($1); } FLECHA finInstruccion
             | VARIABLE INCREMENTO { PrevioAcciones.definirVariable($1); }
             | VARIABLE DECREMENTO { PrevioAcciones.definirVariable($1); }
             | IF VARIABLE DISTINTO GOTO ETIQUETA { Variable.set($2); }

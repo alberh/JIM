@@ -56,8 +56,6 @@ public class PrevioAcciones extends Acciones {
                                                    contenedorExpansion.idMacro,
                                                    contenedorExpansion.parametros);
 
-        System.out.println("No la expande");
-
         if (resultadoExpansion != null) {
 
           Programa.insertarExpansion(contenedorExpansion.linea, resultadoExpansion);
