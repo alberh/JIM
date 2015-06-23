@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.ArrayList;
 import java.lang.Math;
 
+
 public class Macro {
 
 	private static Hashtable<String, Macro> _macros = new Hashtable<>();

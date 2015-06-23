@@ -43,10 +43,18 @@ l:
 cleanl:
 	make clean
 	cd interprete/parsers/lmodel; make clean
+	make cleandoc
 
 Main.class: Main.java
 	rm -f *.class
 	$(JAVAC) Main.java
 
+javadoc:
+	mkdir -p doc
+	javadoc -d doc *.java -subpackages interprete
+
 clean:
-	rm -f *~ *.class *.html stylesheet.css interprete/*.class interprete/*.html interprete/parsers/*.class interprete/parsers/*.html
+	rm -f *~ *.class interprete/*.class interprete/parsers/*.class
+
+cleandoc:
+	rm -rf doc
