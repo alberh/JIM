@@ -2,7 +2,10 @@
 /* Día 24 de junio reunión con Tomeu
  * Cambiar clase abstracta AnalizadorLexico a Interfaz
  * Añadir PrevioAcciones
- * Añadir a PrevioParser la funcionalidad de expandir macros. Para ello, adaptar Macro.expandir.
+ *
+ * Sobre expansión de macros:
+ * PRIMERO EXPANDIR MACROS Y LUEGO SUSTITUIR VARIABLES. ASÍ SE PUEDEN IR EXPANDIENDO LAS LLAMADAS INTERNAS A MACROS
+ * SEGÚN SE VAN ENCONTRADO POR EL PREVIO, Y POR ÚLTIMO SE ASIGNAN LAS VARIABLES QUE QUEDEN.
  *
  * Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
  * mayor que, etc...
@@ -105,7 +108,7 @@ public class Main {
 		System.out.println("Estado de la memoria");
 		System.out.println("====================");
 
-		Programa.imprimirComponentes();
+		// Programa.imprimirComponentes();
 
 		System.out.println("====================");
 

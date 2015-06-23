@@ -44,15 +44,15 @@ public class Macro {
  			return null;
  		}
 
+ 		vSalida = vSalida.toUpperCase();
+
  		String expansion = new String(macro.cuerpo());
- 		String asignaciones = vSalida.toUpperCase() + " <- 0\n";
+ 		String asignaciones = vSalida + " <- 0\n";
 
  		ArrayList<String> vEntrada = macro.variablesEntrada();
  		vEntrada.sort(null);
 
  		ArrayList<String> vLocales = macro.variablesLocales();
- 		ArrayList<String> etiquetas = macro.etiquetas();
- 		ArrayList<String> etiquetasSalto = macro.etiquetasSalto();
 
  		for (int i = 0; i < vEntrada.size(); ++i) {
 
@@ -74,44 +74,52 @@ public class Macro {
  			expansion = expansion.replace(variable, nuevaVariable);
  		}
 
- 		/* Reempaza las etiquetas que marcan un objetivo de salto
+ 		/* Se obtiene una nueva variable local y se reemplaza todas las referencias a la variable de salida Y
+ 		 * por esta nueva variable
  		 */
- 		Hashtable<String, String> etiquetasReemplazadas = new Hashtable<>();
- 		for (String etiqueta : etiquetas) {
+ 		String variableSalidaLocal = Variable.get(Variable.EVariable.LOCAL).id();
+		expansion = asignaciones + expansion.replace("VY", variableSalidaLocal);
 
- 			Etiqueta nuevaEtiqueta = Etiqueta.get();
- 			etiquetasReemplazadas.put(etiqueta, nuevaEtiqueta);
- 			
- 			expansion = expansion.replace(etiqueta, nuevaEtiqueta.id());
- 		}
+ 		if (Programa.modelo() == Programa.TipoModelos.L) {
 
- 		/* Reemplaza todas las etiquetas que indican un salto
- 		 */
- 		Etiqueta etiquetaSalida = Etiqueta.get();
- 		for (String etiqueta : etiquetasSalto) {
-
- 			if (etiquetasReemplazadas.contains(etiqueta)) {
-
- 				expansion = expansion.replace(etiqueta, etiquetasReemplazadas.get(etiqueta));
- 			} else {
-
- 				expansion = expansion.replace(etiqueta, etiquetaSalida.id());
- 			}
- 		}
-
- 		/* Reemplaza la variable de salida en todas sus apariciones por la variable a la que se asignó
- 		 * el resultado de la macro que se está expandiendo
- 		 */
-		expansion = asignaciones + expansion.replace("VY", vSalida.toUpperCase());
-
-		/* Insertamos en la última línea la etiqueta designada como etiqueta de salida de la macro
-		 */
-		String[] lineas = expansion.split("\n");
-		lineas[lineas.length - 1] = etiquetaSalida.id() + "\t" + lineas[lineas.length - 1];
-
-		expansion = 
-
+ 			ArrayList<String> etiquetas = macro.etiquetas();
+ 			ArrayList<String> etiquetasSalto = macro.etiquetasSalto();
  		
+	 		/* Reempaza las etiquetas que marcan un objetivo de salto
+	 		 */
+	 		Hashtable<String, String> etiquetasReemplazadas = new Hashtable<>();
+	 		for (String etiqueta : etiquetas) {
+
+	 			String nuevaEtiqueta = Etiqueta.get().id();
+	 			etiquetasReemplazadas.put(etiqueta, nuevaEtiqueta);
+	 			
+	 			expansion = expansion.replace(etiqueta, nuevaEtiqueta);
+	 		}
+
+	 		/* Reemplaza todas las etiquetas que son objetivo de un salto
+	 		 */
+	 		String etiquetaSalida = Etiqueta.get().id();
+	 		for (String etiqueta : etiquetasSalto) {
+
+	 			if (etiquetasReemplazadas.contains(etiqueta)) {
+
+	 				expansion = expansion.replace(etiqueta, etiquetasReemplazadas.get(etiqueta));
+	 			} else {
+
+	 				expansion = expansion.replace(etiqueta, etiquetaSalida);
+	 			}
+	 		}
+
+	 		/* Añadimos una última línea con la etiqueta designada como etiqueta de salida de la macro
+			 * y la asignación a la variable de salida indicada por el usuario
+			 */
+			expansion = expansion + "\n[" + etiquetaSalida + "] " + vSalida + " <- " + variableSalidaLocal;
+	 	} else {
+
+	 		/* Añadimos una última línea con la asignación a la variable de salida indicada por el usuario
+			 */
+			expansion = expansion + vSalida + " <- " + variableSalidaLocal;
+	 	}
 
  		return expansion;
  	}

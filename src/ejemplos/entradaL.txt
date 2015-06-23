@@ -1,4 +1,4 @@
-y <- pow(x1, x2, 3, z444, y, 4, 0)
+y <- multwo(x1)
 
 # comentario, instrucciones básicas y etiquetas . [] * (^#@ #½ ¬) y sigue ...
 [A]	X1 <- X1 + 1
@@ -8,7 +8,7 @@ y <- pow(x1, x2, 3, z444, y, 4, 0)
 		X2 <- X2 - 1
 
 		Z <- Z1 + 1
-		Z <- z
+		Z <- z38 + 1
 		IF Z5 != 0 GOTO E4
 
 # instrucciones adicionales
@@ -42,7 +42,7 @@ y <- pow(x1, x2, 3, z444, y, 4, 0)
 		goto e
 
 # llamada a macros (no se va a ejecutar por el salto)
-		y <- pow(x1, x2, 3, z444, y, 4, 0)
+		y <- multwo(x1)
 
 [a4] y <- 5
 

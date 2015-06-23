@@ -57,7 +57,7 @@ public class Etiqueta {
 
 	public static String ultimaEtiqueta() {
 
-		return "A" + _ultimaA
+		return "A" + _ultimaA;
 	}
 	
 	public static void clear() {

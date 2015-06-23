@@ -47,7 +47,7 @@ LocalVariable = [zZ]([1-9]+[0-9]*)?
 OutputVariable = [yY]
 Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
 
-Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
+Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 
 %state CUERPO
 
@@ -73,6 +73,9 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 <CUERPO> {
 
 "#".*             { }
+"goto"|"GOTO"     { _contenido.append(yytext());
+                    return MacrosParser.GOTO;
+                  }
 {Reserved}        { _contenido.append(yytext());
                   }
 {Label}           { String id = Etiqueta.filtrar(yytext());
@@ -85,9 +88,12 @@ Reserved = "if"|"IF"|"goto"|"GOTO"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                     _contenido.append("V" + id);
                     return MacrosParser.VARIABLE;
                   }
-"endmacro"        { yyparser.yylval = new MacrosParserVal(_contenido.toString());
+"endmacro"        { yyparser.yylval = new MacrosParserVal(_contenido.toString().toUpperCase());
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;
+                  }
+[\[\]]            { _contenido.append(yytext());
+                    return yycharat(0);
                   }
 {InputCharacter}  { _contenido.append(yytext());
                   }

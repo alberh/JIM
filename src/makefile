@@ -49,4 +49,4 @@ Main.class: Main.java
 	$(JAVAC) Main.java
 
 clean:
-	rm -f *~ *.class interprete/*.class interprete/parsers/*.class
+	rm -f *~ *.class *.html stylesheet.css interprete/*.class interprete/*.html interprete/parsers/*.class interprete/parsers/*.html

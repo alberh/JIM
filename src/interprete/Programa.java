@@ -99,6 +99,10 @@ public class Programa {
 		imprimirPrograma();
 		System.out.println();
 
+		// Se vuelve a pasar el previo para establecer las nuevas variables y etiquetas tras la expansión de macros
+		System.out.println("Se vuelve a pasar previo...");
+		previo();
+
 		// Asignar variables de entrada
 		if (parametros != null) {
 
@@ -187,6 +191,11 @@ public class Programa {
 		return ruta;
 	}
 
+	public static TipoModelos modelo() {
+
+		return _modelo;
+	}
+
 	private static void comprobarDirectoriosMacros() {
 
 		/* macros/
@@ -232,6 +241,8 @@ public class Programa {
 
 	public static void insertarExpansion(int linea, String expansion) {
 
+		System.out.println("Expandiendo en línea " + linea);
+
 		_lineas.remove(linea - 1);
 		_lineas.addAll(linea - 1, Arrays.asList(expansion.split("\n")));
 	}
@@ -247,7 +258,7 @@ public class Programa {
 
 			do {
 
-				// System.out.println(_lineaActual + ": " + linea);
+				System.out.println(_lineaActual + ": " + linea);
 				// System.out.println(estadoMemoria());
 
 				try {

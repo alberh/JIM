@@ -8,17 +8,17 @@ import interprete.parsers.Acciones;
 
 class ContenedorParametrosExpansion {
 
-  public static int linea;
-  public static String idVariableSalida;
-  public static String idMacro;
-  public static ArrayList<String> parametros;
+  public int linea;
+  public String idVariableSalida;
+  public String idMacro;
+  public ArrayList<String> parametros;
 }
 
 public class PrevioAcciones extends Acciones {
 
   private static String _idUltimaVariable;
-  private static ContenedorParametrosExpansion _contenedorExpansion;
   private static ArrayList<ContenedorParametrosExpansion> _expansiones = new ArrayList<>();
+  private static ContenedorParametrosExpansion _ultimaExpansion;
 
   public static void definirVariable(Object idVariable) {
 
@@ -32,18 +32,18 @@ public class PrevioAcciones extends Acciones {
 
   public static void prepararParaExpandir(Object idMacro) {
 
-    _contenedorExpansion = new ContenedorParametrosExpansion();
-    _expansiones.add(_contenedorExpansion);
+    _ultimaExpansion = new ContenedorParametrosExpansion();
+    _expansiones.add(_ultimaExpansion);
 
-    _contenedorExpansion.linea = Programa.numeroLineaActual();
-    _contenedorExpansion.idVariableSalida = _idUltimaVariable;
-    _contenedorExpansion.idMacro = idMacro.toString();
-    _contenedorExpansion.parametros = new ArrayList<String>();
+    _ultimaExpansion.linea = Programa.numeroLineaActual();
+    _ultimaExpansion.idVariableSalida = _idUltimaVariable;
+    _ultimaExpansion.idMacro = idMacro.toString();
+    _ultimaExpansion.parametros = new ArrayList<String>();
   }
 
   public static void prepararParametro(Object parametro) {
 
-    _contenedorExpansion.parametros.add(parametro.toString());
+    _ultimaExpansion.parametros.add(parametro.toString());
   }
 
   public static void expandir() {

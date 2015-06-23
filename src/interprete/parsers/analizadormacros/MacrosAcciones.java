@@ -23,6 +23,11 @@ public class MacrosAcciones extends Acciones {
     _macro.nuevaEtiqueta(idEtiqueta.toString());
   }
 
+  public static void nuevaEtiquetaSalto(Object idEtiqueta) {
+
+    _macro.nuevaEtiquetaSalto(idEtiqueta.toString());
+  }
+
   public static void defineCuerpo(Object cuerpoMacro) {
 
     _macro.cuerpo(cuerpoMacro.toString());

@@ -11,6 +11,7 @@
 %token DEFMACRO   // comienzo de la declaración de una macro
 %token IDMACRO    // identificador de la macro
 %token VARIABLE
+%token GOTO
 %token ETIQUETA
 %token ENDMACRO   // fin de la declaración de una macro
 
@@ -24,8 +25,8 @@ inicio :  sentencia inicio
 sentencia : DEFMACRO IDMACRO { MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.defineCuerpo($5); }
 ;
 simbolos :	VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
-		 |	'[' ETIQUETA ']' { MacrosAcciones.nuevaEtiqueta($1); } simbolos
-		 |	ETIQUETA { MacrosAcciones.nuevaEtiquetaSalto($1); } simbolos
+		 |	'[' ETIQUETA ']' { MacrosAcciones.nuevaEtiqueta($2); } simbolos
+		 |	GOTO ETIQUETA { MacrosAcciones.nuevaEtiquetaSalto($2); } simbolos
 		 |
 ;
 
