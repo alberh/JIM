@@ -27,6 +27,7 @@ public class PrevioAcciones extends Acciones {
 
   public static void definirVariableYMantener(Object idVariable) {
 
+    Variable.set(idVariable.toString());
     _idUltimaVariable = idVariable.toString();
   }
 

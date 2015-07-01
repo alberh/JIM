@@ -26,7 +26,7 @@ public class LAcciones extends Acciones {
     } else {
 
       // el -1 es para que cuando se llame a Programa.lineaSiguiente() no se salte la línea a la que queremos ir
-      Programa.numeroLineaActual(et.linea() - 1);
+      Programa.salto(et.linea());
     }
 	}
 }

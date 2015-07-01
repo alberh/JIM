@@ -1,49 +1,6 @@
-y <- multwo(x1)
-
-# comentario, instrucciones básicas y etiquetas . [] * (^#@ #½ ¬) y sigue ...
-[A]	X1 <- X1 + 1
-
-		X2 <- X2 + 1
-		X2 <- X2 + 1
-		X2 <- X2 - 1
-
-		Z <- Z1 + 1
-		Z <- z38 + 1
-		IF Z5 != 0 GOTO E4
-
-# instrucciones adicionales
-# incremento
-[B1]	X3++
-
-# asignación de número y decremento
-		x4 <- 7
-		X4--
-
-# asignación de números y productos en todos los órdenes de operadores posibles
-[e4]	z5 <- 3
-		z6 <- 8
-		x66 <- Z5 * Z
-		x67 <- 7 * 3
-		x68 <- z * 2
-		x69 <- 5 * z6
-
-# asignación de variables, suma y resta
-		x5 <- z5
-		z6 <- 33
-		x6 <- x5 + x
-		x7 <- x66 - 3
-
-# división y resto
-		x8 <- 88 / 11
-		x9 <- 88 % 10
-
-# goto
-		goto a4
-		goto e
-
-# llamada a macros (no se va a ejecutar por el salto)
-		y <- multwo(x1)
-
-[a4] y <- 5
-
-y++
+[A]	X1--
+Y++
+IF X1 != 0 GOTO A1
+[A2] X2 <- X2 - 1
+Y <- Y + 1
+IF X2 != 0 GOTO A2

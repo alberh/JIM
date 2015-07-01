@@ -1,3 +1,7 @@
+while x1 != 0
+	y++
+	x1--
+end
 # comentario, instrucciones básicas y etiquetas
 z <- 0
 z2 <- Z2 + 1

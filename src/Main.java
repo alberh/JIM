@@ -7,8 +7,26 @@
  * PRIMERO EXPANDIR MACROS Y LUEGO SUSTITUIR VARIABLES. ASÍ SE PUEDEN IR EXPANDIENDO LAS LLAMADAS INTERNAS A MACROS
  * SEGÚN SE VAN ENCONTRADO POR EL PREVIO, Y POR ÚLTIMO SE ASIGNAN LAS VARIABLES QUE QUEDEN.
  *
+ * Se añade al analizador de macros reconocimiento de llamadas a macros.
+ *  - Se guarda la variable que almacenará el valor del resultado de la ejecución de la macro,
+ *    el identificador de la macro y los parámetros utilizados en la llamada.
+ * Para no pasar el previo dos veces, se registran las nuevas variables y etiquetas desde el método de expansión de macros.
+ * Se saca del método de expansión de macros a otros métodos lo necesario para poder generalizar este algoritmo y usarlo así
+ * en las expansiones de las macros dentro de otras macros.
+ *  - El orden sería: una vez sustituídas las variables y etiquetas de una macro durante su expansión, se procede a expandir
+ *    las macros. Proceso recursivo.
+ *
  * Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
  * mayor que, etc...
+
+Apuntes cita con Salguero:
+	Parser y Analizadorlexico como clases base. Importante jerarquía
+	Preparar memoria, importancia a diagramas.
+	Resaltado de código en el editor
+	Mirar plataforma Rodin
+	Mirar licencias jflex y byacc/j. Pensar en licencia para el TFG.
+	Planificación: tiempos memoria, diseño, programación, etc
+
  */
 
 
@@ -55,9 +73,12 @@ public class Main {
 			} else if (modelo.equalsIgnoreCase("while")) {
 
 				pruebasWhile(parametros);
+			} else if (modelo.equalsIgnoreCase("expansion")) {
+
+				pruebaExpansion(parametros);
 			}
 		} else {
-
+			
 			pruebasL(null);
 			// pruebasLoop();
 			// pruebasWhile();
@@ -74,6 +95,14 @@ public class Main {
 		System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
 		System.out.println("Versión " + Configuracion.version());
 		System.out.println();
+	}
+
+	public static void pruebaExpansion(int[] parametros) {
+
+		String programa = "ejemplos/entradaExp.txt";
+		Programa.cargar(programa, Programa.TipoModelos.L);
+
+		restoPrueba(parametros);
 	}
 
 	public static void pruebasL(int[] parametros) {

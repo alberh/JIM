@@ -21,6 +21,6 @@ public class WhileAcciones extends Acciones {
 
   		Bucle bucle = Bucle.getPorLineaFin(lineaCierre);
 
-    	Programa.numeroLineaActual(bucle.lineaInicio() - 1);
+    	Programa.salto(bucle.lineaInicio());
   	}
 }

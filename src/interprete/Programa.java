@@ -29,6 +29,7 @@ public class Programa {
 	private static int _lineaActual;
 	private static IParser _parser;
 	private static String _programa;
+	private static boolean _salto;
 
 	public enum TipoModelos { L, LOOP, WHILE };
 	private static TipoModelos _modelo;
@@ -87,6 +88,7 @@ public class Programa {
 		// Pasar previo
 		System.out.println("Pasando previo...");
 		previo();
+		imprimirComponentes();
 
 		System.out.println("Programa antes de la expansión");
 		imprimirPrograma();
@@ -102,6 +104,8 @@ public class Programa {
 		// Se vuelve a pasar el previo para establecer las nuevas variables y etiquetas tras la expansión de macros
 		System.out.println("Se vuelve a pasar previo...");
 		previo();
+		imprimirComponentes();
+		System.out.println();
 
 		// Asignar variables de entrada
 		if (parametros != null) {
@@ -250,6 +254,7 @@ public class Programa {
 	private static void ejecutar(IParser parser) {
 
 		_lineaActual = 0;
+		_salto = false;
 		AnalizadorLexico lex = parser.analizadorLexico();
 
 		if (numeroLineas() > 0) {
@@ -269,7 +274,15 @@ public class Programa {
 
 				parser.parse();
 
-				linea = lineaSiguiente();
+				if (!_salto) {
+
+					linea = lineaSiguiente();
+				} else {
+
+					linea = lineaActual();
+					_salto = false;
+				}
+				
 			} while (!finalizado());
 		}
 	}
@@ -388,6 +401,12 @@ public class Programa {
 	public static boolean finalizado() {
 
 		return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
+	}
+
+	public static void salto(int linea) {
+
+		numeroLineaActual(linea);
+		_salto = true;
 	}
 
 	public static void imprimirComponentes() {
