@@ -51,27 +51,23 @@ public class Variable {
 		
 		switch (tipo) {
 			case 'X':
-				//if (!_entrada.containsKey(indice)) {
+				
+				_entrada.put(indice, v);
+				
+				if (indice > _mayorEntrada) {
 					
-					_entrada.put(indice, v);
-					
-					if (indice > _mayorEntrada) {
-						
-						_mayorEntrada = indice;
-					}
-				//}
+					_mayorEntrada = indice;
+				}
 				break;
 			
 			case 'Z':
-				// if (!_locales.containsKey(indice)) {
+				
+				_locales.put(indice, v);
+				
+				if (indice > _mayorLocal) {
 					
-					_locales.put(indice, v);
-					
-					if (indice > _mayorLocal) {
-						
-						_mayorLocal = indice;
-					}
-				// }
+					_mayorLocal = indice;
+				}
 				break;
 				
 			case 'Y':

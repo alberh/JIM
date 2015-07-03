@@ -88,7 +88,7 @@ public class Programa {
 		// Pasar previo
 		System.out.println("Pasando previo...");
 		previo();
-		imprimirComponentes();
+		System.out.println();
 
 		System.out.println("Programa antes de la expansión");
 		imprimirPrograma();

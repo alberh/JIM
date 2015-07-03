@@ -6,14 +6,6 @@ import java.util.ArrayList;
 import interprete.*;
 import interprete.parsers.Acciones;
 
-class ContenedorParametrosExpansion {
-
-  public int linea;
-  public String idVariableSalida;
-  public String idMacro;
-  public ArrayList<String> parametros;
-}
-
 public class PrevioAcciones extends Acciones {
 
   private static String _idUltimaVariable;

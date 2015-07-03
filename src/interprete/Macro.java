@@ -5,7 +5,6 @@ import java.util.Hashtable;
 import java.util.ArrayList;
 import java.lang.Math;
 
-
 public class Macro {
 
 	private static Hashtable<String, Macro> _macros = new Hashtable<>();
@@ -16,6 +15,7 @@ public class Macro {
 	private ArrayList<String> _locales = new ArrayList<>();
 	private ArrayList<String> _etiquetas = new ArrayList<>();
 	private ArrayList<String> _etiquetasSalto = new ArrayList<>();
+	private ArrayList<ContenedorParametrosExpansion> _llamadasMacros = new ArrayList<>();
 	
  	public static Macro set(String id) {
  		
@@ -206,6 +206,11 @@ public class Macro {
 
  			_etiquetasSalto.add(id);
  		}
+ 	}
+
+ 	public void nuevaLlamadaMacro(ContenedorParametrosExpansion cpe) {
+
+ 		_llamadasMacros.add(cpe);
  	}
  	
  	@Override
