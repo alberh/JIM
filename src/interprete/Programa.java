@@ -102,8 +102,10 @@ public class Programa {
 		System.out.println();
 
 		// Se vuelve a pasar el previo para establecer las nuevas variables y etiquetas tras la expansión de macros
+		/*
 		System.out.println("Se vuelve a pasar previo...");
 		previo();
+		*/
 		imprimirComponentes();
 		System.out.println();
 
