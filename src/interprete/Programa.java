@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import java.nio.file.Files;
@@ -90,11 +89,13 @@ public class Programa {
 		previo();
 		System.out.println();
 
+		/*
 		System.out.println("Programa antes de la expansión");
 		imprimirPrograma();
 		System.out.println();
-
+		*/
 		// Expandir macros
+		System.out.println("Expandiendo macros...");
 		PrevioAcciones.expandir();
 
 		System.out.println("Programa después de la expansión");
@@ -102,12 +103,13 @@ public class Programa {
 		System.out.println();
 
 		// Se vuelve a pasar el previo para establecer las nuevas variables y etiquetas tras la expansión de macros
-		/*
-		System.out.println("Se vuelve a pasar previo...");
+		System.out.println("Segunda pasada del previo...");
 		previo();
-		*/
+
+		/*
 		imprimirComponentes();
 		System.out.println();
+		*/
 
 		// Asignar variables de entrada
 		if (parametros != null) {
@@ -245,15 +247,20 @@ public class Programa {
 		ejecutar(new PrevioParser(null));
 	}
 
-	public static void insertarExpansion(int linea, String expansion) {
+	public static void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
 
 		System.out.println("Expandiendo en línea " + linea);
 
 		_lineas.remove(linea - 1);
-		_lineas.addAll(linea - 1, Arrays.asList(expansion.split("\n")));
+		_lineas.addAll(linea - 1, lineasExpansion);
 	}
 
 	private static void ejecutar(IParser parser) {
+
+		ejecutar(parser, false);
+	}
+
+	private static void ejecutar(IParser parser, boolean traza) {
 
 		_lineaActual = 0;
 		_salto = false;
@@ -265,8 +272,11 @@ public class Programa {
 
 			do {
 
-				System.out.println(_lineaActual + ": " + linea);
-				// System.out.println(estadoMemoria());
+				if (traza) {
+
+					System.out.println(_lineaActual + ": " + linea);
+					// System.out.println(estadoMemoria());
+				}
 
 				try {
 					

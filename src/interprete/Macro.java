@@ -13,6 +13,7 @@ public class Macro {
 	private String _cuerpo;
 	private ArrayList<String> _entrada = new ArrayList<>();
 	private ArrayList<String> _locales = new ArrayList<>();
+
 	private ArrayList<String> _etiquetas = new ArrayList<>();
 	private ArrayList<String> _etiquetasSalto = new ArrayList<>();
 	private ArrayList<ContenedorParametrosExpansion> _llamadasMacros = new ArrayList<>();

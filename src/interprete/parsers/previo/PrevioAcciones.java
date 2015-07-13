@@ -1,6 +1,7 @@
 
 package interprete.parsers.previo;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 
 import interprete.*;
@@ -39,7 +40,15 @@ public class PrevioAcciones extends Acciones {
     _ultimaExpansion.parametros.add(parametro.toString());
   }
 
+  private static int incrementoLineas;
+
+  private static int getIncrementoLineas() { return incrementoLineas; }
+  private static void addIncremento(int n) { incrementoLineas += n; }
+  private static void setIncremento(int n) { incrementoLineas = n; }
+
   public static void expandir() {
+
+    setIncremento(0);
 
     _expansiones.forEach(
 
@@ -51,7 +60,11 @@ public class PrevioAcciones extends Acciones {
 
         if (resultadoExpansion != null) {
 
-          Programa.insertarExpansion(contenedorExpansion.linea, resultadoExpansion);
+          ArrayList<String> lineasExpansion = new ArrayList<>(Arrays.asList(resultadoExpansion.split("\n")));
+          Programa.insertarExpansion(contenedorExpansion.linea + getIncrementoLineas(), lineasExpansion);
+
+          // incrementoLineas += lineasExpansion.size();
+          addIncremento(lineasExpansion.size() - 1);
         } else {
 
           // gestión de errores
