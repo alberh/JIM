@@ -1,4 +1,3 @@
-
 package interprete.parsers.previo;
 
 import java.util.Arrays;
@@ -9,67 +8,85 @@ import interprete.parsers.Acciones;
 
 public class PrevioAcciones extends Acciones {
 
-  private static String _idUltimaVariable;
-  private static ArrayList<ContenedorParametrosExpansion> _expansiones = new ArrayList<>();
-  private static ContenedorParametrosExpansion _ultimaExpansion;
+    private static String _idUltimaVariable;
+    private static ArrayList<ContenedorParametrosExpansion> _expansiones = new ArrayList<>();
+    private static ContenedorParametrosExpansion _ultimaExpansion;
 
-  public static void definirVariable(Object idVariable) {
+    public static void definirVariable(Object idVariable) {
 
-    Variable.set(idVariable.toString());
-  }
+        Variable.set(idVariable.toString());
+    }
 
-  public static void definirVariableYMantener(Object idVariable) {
+    public static void definirVariableYMantener(Object idVariable) {
 
-    Variable.set(idVariable.toString());
-    _idUltimaVariable = idVariable.toString();
-  }
+        Variable.set(idVariable.toString());
+        _idUltimaVariable = idVariable.toString();
+    }
+    
+    public static int llamadasAMacros() {
+        return _expansiones.size();
+    }
 
-  public static void prepararParaExpandir(Object idMacro) {
+    public static void prepararParaExpandir(Object idMacro) {
 
-    _ultimaExpansion = new ContenedorParametrosExpansion();
-    _expansiones.add(_ultimaExpansion);
+        _ultimaExpansion = new ContenedorParametrosExpansion();
+        _expansiones.add(_ultimaExpansion);
 
-    _ultimaExpansion.linea = Programa.numeroLineaActual();
-    _ultimaExpansion.idVariableSalida = _idUltimaVariable;
-    _ultimaExpansion.idMacro = idMacro.toString();
-    _ultimaExpansion.parametros = new ArrayList<String>();
-  }
+        _ultimaExpansion.linea = Programa.numeroLineaActual();
+        _ultimaExpansion.idVariableSalida = _idUltimaVariable;
+        _ultimaExpansion.idMacro = idMacro.toString();
+        _ultimaExpansion.variablesEntrada = new ArrayList<String>();
+    }
 
-  public static void prepararParametro(Object parametro) {
+    public static void prepararVariableEntrada(Object parametro) {
 
-    _ultimaExpansion.parametros.add(parametro.toString());
-  }
+        _ultimaExpansion.variablesEntrada.add(parametro.toString());
+    }
 
-  private static int incrementoLineas;
+    private static int incrementoLineas;
 
-  private static int getIncrementoLineas() { return incrementoLineas; }
-  private static void addIncremento(int n) { incrementoLineas += n; }
-  private static void setIncremento(int n) { incrementoLineas = n; }
+    private static int getIncrementoLineas() {
+        return incrementoLineas;
+    }
 
-  public static void expandir() {
+    private static void addIncremento(int n) {
+        incrementoLineas += n;
+    }
 
-    setIncremento(0);
+    private static void setIncremento(int n) {
+        incrementoLineas = n;
+    }
 
-    _expansiones.forEach(
+    public static void expandir() {
 
-      contenedorExpansion -> {
+        setIncremento(0);
 
-        String resultadoExpansion = Macro.expandir(contenedorExpansion.idVariableSalida,
-                                                   contenedorExpansion.idMacro,
-                                                   contenedorExpansion.parametros);
+        _expansiones.forEach(
+                contenedorExpansion -> {
 
-        if (resultadoExpansion != null) {
+                    String resultadoExpansion = Macro.expandir(contenedorExpansion.idVariableSalida,
+                            contenedorExpansion.idMacro,
+                            contenedorExpansion.variablesEntrada
+                    );
 
-          ArrayList<String> lineasExpansion = new ArrayList<>(Arrays.asList(resultadoExpansion.split("\n")));
-          Programa.insertarExpansion(contenedorExpansion.linea + getIncrementoLineas(), lineasExpansion);
+                    if (resultadoExpansion != null) {
 
-          // incrementoLineas += lineasExpansion.size();
-          addIncremento(lineasExpansion.size() - 1);
-        } else {
+                        ArrayList<String> lineasExpansion = new ArrayList<>(
+                                Arrays.asList(resultadoExpansion.split("\n"))
+                        );
 
-          // gestión de errores
-        }
-      }
-    );
-  }
+                        Programa.insertarExpansion(
+                                contenedorExpansion.linea + getIncrementoLineas(),
+                                lineasExpansion
+                        );
+
+                        addIncremento(lineasExpansion.size() - 1);
+                    } else {
+                        System.err.println(Macro.errorEnExpansion());
+                    }
+                }
+        );
+        
+        _expansiones.clear();
+    }
 }

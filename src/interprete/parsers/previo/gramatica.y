@@ -61,8 +61,8 @@ operacion	   :  operando '+' operando { ; }
 operando :  NUMERO { ; }
            |  VARIABLE { PrevioAcciones.definirVariable($1); }
 ;
-parametros :  NUMERO { PrevioAcciones.prepararParametro($1); }
-           	|  VARIABLE { PrevioAcciones.definirVariable($1); PrevioAcciones.prepararParametro($1); }
+parametros :  NUMERO { PrevioAcciones.prepararVariableEntrada($1); }
+           	|  VARIABLE { PrevioAcciones.definirVariable($1); PrevioAcciones.prepararVariableEntrada($1); }
 ;
 parametrosMacro : parametros masParametrosMacro { ; }
                 | { ; }

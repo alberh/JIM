@@ -1,4 +1,3 @@
-
 package interprete;
 
 import java.io.BufferedReader;
@@ -6,7 +5,6 @@ import java.io.StringReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import java.nio.file.Files;
@@ -14,7 +12,6 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.NotDirectoryException;
 
-import interprete.*;
 import interprete.parsers.*;
 import interprete.parsers.analizadormacros.*;
 import interprete.parsers.previo.*;
@@ -24,430 +21,475 @@ import interprete.parsers.whilemodel.*;
 
 public class Programa {
 
-	private static ArrayList<String> _lineas;
-	private static int _lineaActual;
-	private static IParser _parser;
-	private static String _programa;
-	private static boolean _salto;
+    private static ArrayList<String> _lineas;
+    private static int _lineaActual;
+    private static IParser _parser;
+    private static boolean _salto;
 
-	public enum TipoModelos { L, LOOP, WHILE };
-	private static TipoModelos _modelo;
+    public enum Modelos {
 
-	private Programa() { }
+        L, LOOP, WHILE
+    };
+    private static Modelos _modelo;
 
-	public static void cargar(String programa, TipoModelos modelo) {
+    private Programa() {
+    }
 
-		try {
+    public static void cargar(String programa, Modelos modelo) {
 
-			_lineas = new ArrayList(Files.readAllLines(Paths.get(programa)));
-			_lineaActual = numeroLineas();
+        try {
 
-			_programa = programa;
-			_modelo = modelo;
+            _lineas = new ArrayList(Files.readAllLines(Paths.get(programa)));
+            _lineaActual = numeroLineas();
 
-			switch (_modelo) {
+            _modelo = modelo;
+
+            switch (_modelo) {
+
+                case L:
+                    _parser = new LParser(null);
+                    break;
+
+                case LOOP:
+                    _parser = new LoopParser(null);
+                    break;
+
+                case WHILE:
+                    _parser = new WhileParser(null);
+                    break;
+            }
+        } catch (IOException ex) {
+
+            System.err.println("Error en el volcado del programa a memoria.");
+            // System.exit(1);
+        }
+    }
+
+    public static void iniciar() {
+
+        iniciar(null);
+    }
+
+    public static void iniciar(int[] parametros) {
+
+        // Reiniciar variables, etiquetas, bucles y macros
+        System.out.println("Limpiando...");
+        limpiar();
 
-				case L:
-					_parser = new LParser(null);
-					break;
+        // Cargar macros del modelo
+        System.out.println("Comprobando directorios de macros...");
+        comprobarDirectoriosMacros();
 
-				case LOOP:
-					_parser = new LoopParser(null);
-					break;
+        System.out.println("Cargando macros...");
+        cargarMacros();
 
-				case WHILE:
-					_parser = new WhileParser(null);
-					break;
-			}
-		} catch (IOException ex) {
+        // Pasar previo
+        System.out.println("Pasando previo...");
+        previo();
 
-			System.err.println("Error en el volcado del programa a memoria.");
-			System.exit(1);
-		}
-	}
+        /*
+         System.out.println("Programa antes de la expansión");
+         imprimirPrograma();
+         System.out.println();
+         */
+        // Expandir macros
+        System.out.println("Expandiendo macros...");
+        PrevioAcciones.expandir();
 
-	public static void iniciar() {
+        /*
+         System.out.println("Programa después de la expansión");
+         imprimirPrograma();
+         System.out.println();
+         */
+        // Se vuelve a pasar el previo para establecer las nuevas variables y
+        // etiquetas tras la expansión de macros
+        System.out.println("Segunda pasada del previo...");
+        previo();
 
-		iniciar(null);
-	}
+        /*
+         imprimirComponentes();
+         System.out.println();
+         */
+        // Asignar variables de entrada
+        if (parametros != null) {
 
-	public static void iniciar(int[] parametros) {
+            asignarVariablesEntrada(parametros);
+        }
 
-		// Reiniciar variables, etiquetas, bucles y macros
-		System.out.println("Limpiando...");
-		reiniciar();
+        // Lanzar
+        System.out.println("Ejecutando...");
+        ejecutar(_parser);
+    }
 
-		// Cargar macros del modelo (ToDo: almacenar macros por modelo y cargarlas una vez al iniciar programa? (qué pasa con nuevas macros?))
-		System.out.println("Comprobando directorios de macros...");
-		comprobarDirectoriosMacros();
+    public static void iniciarExpansionMacros() {
 
-		System.out.println("Cargando macros...");
-		cargarMacros();
+        // Reiniciar variables, etiquetas, bucles y macros
+        System.out.println("Limpiando...");
+        limpiar();
 
-		// Pasar previo
-		System.out.println("Pasando previo...");
-		previo();
-		System.out.println();
+        // Cargar macros del modelo
+        System.out.println("Comprobando directorios de macros...");
+        comprobarDirectoriosMacros();
 
-		/*
-		System.out.println("Programa antes de la expansión");
-		imprimirPrograma();
-		System.out.println();
-		*/
-		// Expandir macros
-		System.out.println("Expandiendo macros...");
-		PrevioAcciones.expandir();
+        System.out.println("Cargando macros...");
+        cargarMacros();
 
-		System.out.println("Programa después de la expansión");
-		imprimirPrograma();
-		System.out.println();
+        // Pasar previo
+        System.out.println("Pasando previo...");
+        previo();
 
-		// Se vuelve a pasar el previo para establecer las nuevas variables y etiquetas tras la expansión de macros
-		System.out.println("Segunda pasada del previo...");
-		previo();
+        /*
+         System.out.println("Programa antes de la expansión");
+         imprimirPrograma();
+         System.out.println();
+         */
+        int llamadas = PrevioAcciones.llamadasAMacros();
+        if (llamadas > 0) {
+            // Expandir macros
+            System.out.println("Expandiendo macros...");
+            PrevioAcciones.expandir();
 
-		/*
-		imprimirComponentes();
-		System.out.println();
-		*/
+            System.out.println("Se han expandido " + llamadas + " llamadas a macros.");
+        } else {
+            System.out.println("No hay llamadas a macros en el código.");
+        }
+    }
 
-		// Asignar variables de entrada
-		if (parametros != null) {
+    private static void asignarVariablesEntrada(int[] parametros) {
 
-			asignarVariablesEntrada(parametros);
-		}
+        for (int i = 0; i < parametros.length; ++i) {
 
-		// Lanzar
-		System.out.println("Ejecutando...");
-		ejecutar(_parser);
-	}
+            Variable.set("X" + (i + 1), parametros[i]);
+        }
+    }
 
-	private static void asignarVariablesEntrada(int[] parametros) {
+    private static void limpiar() {
 
-		for (int i = 0; i < parametros.length; ++i) {
+        Variable.clear();
+        Bucle.clear();
+        Etiqueta.clear();
+        Macro.clear();
+    }
 
- 			Variable.set("X" + (i + 1), parametros[i]);
- 		}
-	}
+    public static void cargarMacros() {
 
-	private static void reiniciar() {
+        try {
 
-		Variable.clear();
-		Bucle.clear();
-		Etiqueta.clear();
-		Macro.clear();
-	}
+            Stream<Path> streamListaFicheros = Files.list(Paths.get(obtenerRutaModelo()));
 
-	public static void cargarMacros() {
+            streamListaFicheros.forEach(
+                    p -> {
 
-		try {
+                        String fichero = p.getFileName().toString();
+                        System.out.println("Leyendo fichero de macros \"" + fichero + "\"");
 
-			Stream<Path> streamListaFicheros = Files.list(Paths.get(obtenerRutaModelo()));
+                        try {
 
-			streamListaFicheros.forEach(
+                            String rutaFichero = obtenerRutaModelo() + "/" + fichero;
+                            MacrosParser macrosParser = new MacrosParser(new FileReader(rutaFichero));
+                            macrosParser.parse();
+                        } catch (IOException ex) {
 
-				p -> {
+                            // gestión de errores
+                            System.err.println("Error en el volcado del programa a memoria.");
+                            System.exit(1);
+                        }
+                    }
+            );
+        } catch (NotDirectoryException ex) {
 
-					String fichero = p.getFileName().toString();
-					System.out.println("Leyendo fichero de macros \"" + fichero + "\"");
+            // gestión de errores
+            System.err.println(obtenerRutaModelo() + "no es un directorio.");
+            System.exit(1);
+        } catch (IOException ex) {
 
-					try {
-						
-						String rutaFichero = obtenerRutaModelo() + "/" + fichero;
-						MacrosParser macrosParser = new MacrosParser(new FileReader(rutaFichero));
-						macrosParser.parse();
-					} catch (IOException ex) {
+            // gestión de errores
+            System.err.println("Error al obtener lista de ficheros.");
+            System.exit(1);
+        }
+    }
 
-						// gestión de errores
-						System.err.println("Error en el volcado del programa a memoria.");
-						System.exit(1);
-					}
-				}
-			);
-		} catch (NotDirectoryException ex) {
+    private static String obtenerRutaModelo() {
 
-			// gestión de errores
-			System.err.println(obtenerRutaModelo() + "no es un directorio.");
-			System.exit(1);
-		} catch (IOException ex) {
+        String ruta = null;
 
-			// gestión de errores
-			System.err.println("Error al obtener lista de ficheros.");
-			System.exit(1);
-		}
-	}
+        switch (_modelo) {
 
-	private static String obtenerRutaModelo() {
+            case L:
+                ruta = Configuracion.rutaMacrosL();
+                break;
 
-		String ruta = null;
+            case LOOP:
+                ruta = Configuracion.rutaMacrosLoop();
+                break;
 
-		switch (_modelo) {
+            case WHILE:
+                ruta = Configuracion.rutaMacrosWhile();
+                break;
+        }
 
-			case L:
-				ruta = Configuracion.rutaMacrosL();
-				break;
+        return ruta;
+    }
 
-			case LOOP:
-				ruta = Configuracion.rutaMacrosLoop();
-				break;
+    public static Modelos modelo() {
 
-			case WHILE:
-				ruta = Configuracion.rutaMacrosWhile();
-				break;
-		}
+        return _modelo;
+    }
 
-		return ruta;
-	}
+    private static void comprobarDirectoriosMacros() {
 
-	public static TipoModelos modelo() {
+        /* macros/
+         * ...l/
+         * ...loop/
+         * ...while/
+         */
+        comprobarDirectorio(new File(Configuracion.rutaMacrosL()));
+        comprobarDirectorio(new File(Configuracion.rutaMacrosLoop()));
+        comprobarDirectorio(new File(Configuracion.rutaMacrosWhile()));
+    }
 
-		return _modelo;
-	}
+    private static void comprobarDirectorio(File directorio) {
 
-	private static void comprobarDirectoriosMacros() {
+        System.out.println(directorio.getAbsolutePath());
 
-		/* macros/
-		 * ...l/
-		 * ...loop/
-		 * ...while/
-		 */
+        if (!directorio.exists()) {
 
-		comprobarDirectorio(new File(Configuracion.rutaMacrosL()));
-		comprobarDirectorio(new File(Configuracion.rutaMacrosLoop()));
-		comprobarDirectorio(new File(Configuracion.rutaMacrosWhile()));
-	}
+            boolean creados = directorio.mkdirs();
 
-	private static void comprobarDirectorio(File directorio) {
+            if (!creados) {
 
-		if (!directorio.exists()) {
+                // gestión de errores
+            }
+        } else {
 
-			boolean creados = directorio.mkdirs();
+            // es un directorio
+            if (!directorio.isDirectory()) {
 
-			if (!creados) {
+                // gestión de errores
+            }
 
-				// gestión de errores
-			}
-		} else {
+            if (!directorio.canRead()) {
 
-			// es un directorio
-			if (!directorio.isDirectory()) {
+                // gestión de errores
+            }
+        }
+    }
 
-				// gestión de errores
-			}
+    private static void previo() {
 
-			if (!directorio.canRead()) {
+        ejecutar(new PrevioParser(null));
+    }
 
-				// gestión de errores
-			}
-		}
-	}
+    public static void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
 
-	private static void previo() {
+        System.out.println("Expandiendo en línea " + linea);
 
-		ejecutar(new PrevioParser(null));
-	}
+        _lineas.remove(linea - 1);
+        _lineas.addAll(linea - 1, lineasExpansion);
+    }
 
-	public static void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
+    private static void ejecutar(IParser parser) {
 
-		System.out.println("Expandiendo en línea " + linea);
+        ejecutar(parser, false);
+    }
 
-		_lineas.remove(linea - 1);
-		_lineas.addAll(linea - 1, lineasExpansion);
-	}
+    private static void ejecutar(IParser parser, boolean traza) {
 
-	private static void ejecutar(IParser parser) {
+        _lineaActual = 0;
+        _salto = false;
+        AnalizadorLexico lex = parser.analizadorLexico();
 
-		ejecutar(parser, false);
-	}
+        if (numeroLineas() > 0) {
 
-	private static void ejecutar(IParser parser, boolean traza) {
+            String linea = lineaSiguiente();
 
-		_lineaActual = 0;
-		_salto = false;
-		AnalizadorLexico lex = parser.analizadorLexico();
+            do {
 
-		if (numeroLineas() > 0) {
+                if (traza) {
 
-			String linea = lineaSiguiente();
+                    System.out.println(_lineaActual + ": " + linea);
+                    // System.out.println(estadoMemoria());
+                }
 
-			do {
+                try {
 
-				if (traza) {
+                    lex.yyclose();
+                } catch (Exception ex) {
+                }
+                lex.yyreset(new BufferedReader(new StringReader(linea)));
 
-					System.out.println(_lineaActual + ": " + linea);
-					// System.out.println(estadoMemoria());
-				}
+                parser.parse();
 
-				try {
-					
-					lex.yyclose();
-				} catch (Exception ex) { }
-				lex.yyreset(new BufferedReader(new StringReader(linea)));
+                if (!_salto) {
 
-				parser.parse();
+                    linea = lineaSiguiente();
+                } else {
 
-				if (!_salto) {
+                    linea = lineaActual();
+                    _salto = false;
+                }
 
-					linea = lineaSiguiente();
-				} else {
+            } while (!finalizado());
+        }
+    }
 
-					linea = lineaActual();
-					_salto = false;
-				}
-				
-			} while (!finalizado());
-		}
-	}
+    public static String estadoMemoria() {
 
-	public static String estadoMemoria() {
+        boolean comaAlFinal = false;
+        StringBuilder sb = new StringBuilder();
+        sb.append("(" + _lineaActual + ", <");
 
-		boolean comaAlFinal = false;
-		StringBuilder sb = new StringBuilder();
-		sb.append("(" + _lineaActual + ", <");
+        ArrayList<Variable> variables = Variable.variablesEntrada();
+        if (variables.size() > 0) {
 
-		ArrayList<Variable> variables = Variable.variablesEntrada();
-		if (variables.size() > 0) {
+            comaAlFinal = true;
+            concatenarVariables(variables, sb);
+        }
 
-			comaAlFinal = true;
-			concatenarVariables(variables, sb);
-		}
+        if (comaAlFinal) {
 
-		if (comaAlFinal) {
+            sb.append(", ");
+            comaAlFinal = false;
+        }
 
-			sb.append(", ");
-			comaAlFinal = false;
-		}
+        variables = Variable.variablesLocales();
+        if (variables.size() > 0) {
 
-		variables = Variable.variablesLocales();
-		if (variables.size() > 0) {
+            comaAlFinal = true;
+            concatenarVariables(variables, sb);
+        }
 
-			comaAlFinal = true;
-			concatenarVariables(variables, sb);
-		}
+        if (comaAlFinal) {
 
-		if (comaAlFinal) {
+            sb.append(", ");
+        }
+        concatenarVariable(Variable.variableSalida(), sb);
 
-			sb.append(", ");
-		}
-		concatenarVariable(Variable.variableSalida(), sb);
+        sb.append(">)");
 
-		sb.append(">)");
+        return sb.toString();
+    }
 
-		return sb.toString();
-	}
+    private static void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {
 
-	private static void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {
+        concatenarVariable(variables.get(0), sb);
 
-		concatenarVariable(variables.get(0), sb);
+        for (int i = 1; i < variables.size(); ++i) {
 
-		for (int i = 1; i < variables.size(); ++i) {
+            sb.append(", ");
+            concatenarVariable(variables.get(i), sb);
+        }
+    }
 
-			sb.append(", ");
-			concatenarVariable(variables.get(i), sb);
-		}
-	}
+    private static void concatenarVariable(Variable variable, StringBuilder sb) {
 
-	private static void concatenarVariable(Variable variable, StringBuilder sb) {
+        sb.append(variable.id() + " = " + variable.valor());
+    }
 
-		sb.append(variable.id() + " = " + variable.valor());
-	}
+    public static int numeroLineaActual() {
 
-	public static int numeroLineaActual() {
+        return _lineaActual;
+    }
 
-		return _lineaActual;
-	}
+    public static void numeroLineaActual(int n) {
 
-	public static void numeroLineaActual(int n) {
+        if (lineaValida(n)) {
 
-		if (lineaValida(n)) {
+            _lineaActual = n;
+        } else {
 
-			_lineaActual = n;
-		} else {
+            terminar();
+        }
+    }
 
-			terminar();
-		}
-	}
+    public static String lineaActual() {
 
-	public static String lineaActual() {
+        return finalizado() ? null : _lineas.get(_lineaActual - 1);
+    }
 
-		return finalizado() ? null : _lineas.get(_lineaActual - 1);
-	}
+    public static String lineaSiguiente() {
 
-	public static String lineaSiguiente() {
+        numeroLineaActual(_lineaActual + 1);
+        return lineaActual();
+    }
 
-		numeroLineaActual(_lineaActual + 1);
-		return lineaActual();
-	}
+    public static String linea(int n) {
 
-	public static String linea(int n) {
+        if (lineaValida(n)) {
 
-		if (lineaValida(n)) {
+            return _lineas.get(n);
+        } else {
 
-			return _lineas.get(n);
-		} else {
+            return null;
+        }
+    }
 
-			return null;
-		}
-	}
+    public static boolean lineaValida(int numeroLinea) {
 
-	public static boolean lineaValida(int numeroLinea) {
+        return numeroLinea >= 1 && numeroLinea <= numeroLineas();
+    }
 
-		return numeroLinea >= 1 && numeroLinea <= numeroLineas();
-	}
+    public static int numeroLineas() {
 
-	public static int numeroLineas() {
+        return _lineas.size();
+    }
 
-		return _lineas.size();
-	}
+    public static ArrayList<String> lineas() {
 
-	public static ArrayList<String> lineas() {
+        return _lineas;
+    }
 
-		return _lineas;
-	}
+    public static void terminar() {
 
-	public static void terminar() {
+        _lineaActual = numeroLineas() + 1;
+    }
 
-		_lineaActual = numeroLineas() + 1;
-	}
+    public static boolean finalizado() {
 
-	public static boolean finalizado() {
+        return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
+    }
 
-		return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
-	}
+    public static void salto(int linea) {
 
-	public static void salto(int linea) {
+        numeroLineaActual(linea);
+        _salto = true;
+    }
 
-		numeroLineaActual(linea);
-		_salto = true;
-	}
+    public static void imprimirComponentes() {
 
-	public static void imprimirComponentes() {
+        Variable.pintar();
 
-		Variable.pintar();
+        if (_modelo == Modelos.L) {
 
-		if (_modelo == TipoModelos.L) {
+            Etiqueta.pintar();
+        } else {
 
-	    	Etiqueta.pintar();
-		} else {
+            Bucle.pintar();
+        }
 
-	    	Bucle.pintar();
-		}
+        Macro.pintar();
+    }
 
-		Macro.pintar();
-	}
+    public static void imprimirPrograma() {
 
-	public static void imprimirPrograma() {
+        for (int i = 0; i < _lineas.size(); ++i) {
 
-		for (int i = 0; i < _lineas.size(); ++i) {
+            System.out.println((i + 1) + ": " + _lineas.get(i));
+        }
 
-			System.out.println((i + 1) + ": " + _lineas.get(i));
-		}
+        System.out.println(numeroLineas() + " líneas.");
+    }
 
-		System.out.println(numeroLineas() + " líneas.");
-	}
+    public static String obtenerPrograma() {
+        StringBuilder sb = new StringBuilder();
 
-	public static int resultado() {
+        _lineas.forEach(linea -> sb.append(linea).append("\n"));
 
-		return Variable.get("Y").valor();
-	}
+        return sb.toString();
+    }
+
+    public static int resultado() {
+
+        return Variable.get("Y").valor();
+    }
 }

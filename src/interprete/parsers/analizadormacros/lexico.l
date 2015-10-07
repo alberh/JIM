@@ -88,9 +88,16 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                     _contenido.append("V" + id);
                     return MacrosParser.VARIABLE;
                   }
-"endmacro"        { yyparser.yylval = new MacrosParserVal(_contenido.toString().toUpperCase());
+"defmacro"		  { // ilegal. definición de macro dentro de definición de macro
+				  }
+"endmacro"        { yyparser.yylval = new MacrosParserVal(_contenido.toString());
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;
+                  }
+{Identifier}      { String id = yytext();
+                    yyparser.yylval = new MacrosParserVal(id);
+                    _contenido.append(id);
+                    return MacrosParser.IDMACRO;
                   }
 [\[\]]            { _contenido.append(yytext());
                     return yycharat(0);

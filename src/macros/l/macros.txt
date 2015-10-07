@@ -1,0 +1,11 @@
+defmacro mul
+y <- x1 * x2
+endmacro
+
+defmacro multwo
+y <- mul(x1, 2)
+endmacro
+
+defmacro addfive
+y <- x1 + 5
+endmacro
