@@ -1,0 +1,22 @@
+# comentario, instrucciones básicas y etiquetas
+X1 <- 0
+x2 <- x2 + 1
+z5 <- x1
+z3 <- 1
+x33 <- 3
+LOOP x33
+	LOOP z3
+		z2 <- z2 + 1
+	END
+	z3++
+END
+
+# instrucciones adicionales
+x1++
+z2 <- 5
+x <- 33
+y <- 2 + 3
+z1 <- x2 * 7
+x <- 3 + y
+x1 <- x2 * z7
+# Y <- unamacro(x1, y, 7, z33)

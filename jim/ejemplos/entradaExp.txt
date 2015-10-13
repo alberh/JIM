@@ -1,0 +1,9 @@
+#Expansión de macro mul
+Y <- 0
+Z1 <- X1
+Z2 <- X2
+
+	Z3 <- Z1 * Z2
+
+[A5] Y <- Z3
+#Fin expansión de macro mul
