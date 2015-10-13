@@ -3,8 +3,6 @@ BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=WhileParser -Jpackage=org.albe
 JAVAC = javac -d /home/alberto/Programación/tfg-int-rpretes/JIM/build/classes/main -classpath /home/alberto/Programación/tfg-int-rpretes/JIM/src/main/java/org
 
 all: WhileLex.java WhileParser.java WhileParserVal.java
-	# rm -f *.class
-	# $(JAVAC) *.java
 
 WhileLex.java: lexico.l
 	$(JFLEX) lexico.l

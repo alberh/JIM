@@ -2,9 +2,7 @@ JFLEX  = jflex
 BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=MacrosParser -Jpackage=org.alberto.interprete.parsers.analizadormacros -Jimplements=IParser
 JAVAC = javac -d /home/alberto/Programación/tfg-int-rpretes/JIM/build/classes/main -classpath /home/alberto/Programación/tfg-int-rpretes/JIM/src/main/java
 
-Main.class: MacrosLex.java MacrosParser.java MacrosParserVal.java
-	# rm -f *.class
-	# $(JAVAC) *.java
+all: MacrosLex.java MacrosParser.java MacrosParserVal.java
 
 MacrosLex.java: lexico.l
 	$(JFLEX) lexico.l

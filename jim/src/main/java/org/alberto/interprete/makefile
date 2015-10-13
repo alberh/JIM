@@ -2,7 +2,7 @@
 JAVAC = javac -d ../../../../../../build/classes/main -classpath ../../..
 
 all:
-	rm -f *.class; $(JAVAC) *.java
+	$(JAVAC) *.java
 
 consola:
 	make Main.class

@@ -9,23 +9,23 @@ all:
 
 analizadormacros:
 	cd org/alberto/interprete/parsers/analizadormacros; make
-	make
+	cd org/alberto/interprete; make all
 
 previo:
 	cd org/alberto/interprete/parsers/previo; make
-	make
+	cd org/alberto/interprete; make all
 
 l:
 	cd org/alberto/interprete/parsers/lmodel; make
-	make
+	cd org/alberto/interprete; make all
 
 loop:
 	cd org/alberto/interprete/parsers/loopmodel; make
-	make Main.class
+	cd org/alberto/interprete; make all
 
 while:
 	cd org/alberto/interprete/parsers/whilemodel; make
-	make Main.class
+	cd org/alberto/interprete; make all
 
 javadoc:
 	cd ..; mkdir -p doc; javadoc -d doc org/alberto/interprete/*.java -subpackages gui:parsers
@@ -40,27 +40,7 @@ cleanall:
 	make clean
 
 clean:
-	cd org/alberto/interprete; make clean
-
-cleanprevio:
-	make clean
-	cd org/alberto/interprete/parsers/previo; make clean
-
-cleananalizadormacros:
-	make clean
-	cd org/alberto/interprete/parsers/analizadormacros; make clean
-
-cleanl:
-	make clean
-	cd org/alberto/interprete/parsers/lmodel; make clean
-
-cleanloop:
-	make clean
-	cd org/alberto/interprete/parsers/loopmodel; make clean
-
-cleanwhile:
-	make clean
-	cd org/alberto/interprete/parsers/whilemodel; make clean
+	cd ../../../build/classes/main; rm -rf *
 
 cleanjavadoc:
 	rm -rf ../doc

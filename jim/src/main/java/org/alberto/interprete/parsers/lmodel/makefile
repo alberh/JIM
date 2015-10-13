@@ -2,9 +2,7 @@ JFLEX  = jflex
 BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=LParser -Jpackage=org.alberto.interprete.parsers.lmodel -Jimplements=IParser #-Jnodebug
 JAVAC = javac -d /home/alberto/Programación/tfg-int-rpretes/JIM/build/classes/main -classpath /home/alberto/Programación/tfg-int-rpretes/JIM/src/main/java/org
 
-Main.class: LLex.java LParser.java LParserVal.java
-	# rm -f *.class
-	# $(JAVAC) *.java
+all: LLex.java LParser.java LParserVal.java
 
 LLex.java: lexico.l
 	$(JFLEX) lexico.l

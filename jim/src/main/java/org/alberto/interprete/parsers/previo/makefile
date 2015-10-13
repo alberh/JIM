@@ -3,8 +3,6 @@ BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=PrevioParser -Jpackage=org.alb
 JAVAC = javac -d /home/alberto/Programación/tfg-int-rpretes/JIM/build/classes/main -classpath /home/alberto/Programación/tfg-int-rpretes/JIM/src/main/java/org
 
 all: PrevioLex.java PrevioParser.java PrevioParserVal.java
-	# rm -f *.class
-	# $(JAVAC) *.java
 
 PrevioLex.java: lexico.l
 	$(JFLEX) lexico.l

@@ -3,8 +3,6 @@ BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=LoopParser -Jpackage=org.alber
 JAVAC = javac -d /home/alberto/Programación/tfg-int-rpretes/JIM/build/classes/main -classpath /home/alberto/Programación/tfg-int-rpretes/JIM/src/main/java/org
 
 all: LoopLex.java LoopParser.java LoopParserVal.java
-	# rm -f *.class
-	# $(JAVAC) *.java
 
 LoopLex.java: lexico.l
 	$(JFLEX) lexico.l
