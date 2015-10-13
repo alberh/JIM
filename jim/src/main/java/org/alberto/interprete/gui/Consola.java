@@ -14,17 +14,24 @@ import javax.swing.JTextArea;
  */
 public class Consola {
     
-    private static JTextArea _consola = null;
-    private static PrintStream _out;
+    private static JTextArea _estandar = null;
+    private static JTextArea _errores = null;
+    private static PrintStream _salidaEstandar;
+    private static PrintStream _salidaErrores;
     
-    public static void inicializar(JTextArea textArea) {
-        _consola = textArea;
+    public static void inicializar(JTextArea estandar, JTextArea errores) {
+        _estandar = estandar;
+        _errores = errores;
         
-        TextAreaOutputStream taos = new TextAreaOutputStream(_consola);
-        _out = new PrintStream(taos);
+        _salidaEstandar = new PrintStream(new TextAreaOutputStream(_estandar));
+        _salidaErrores = new PrintStream(new TextAreaOutputStream(_errores));
     }
     
-    public static PrintStream out() {
-        return _out;
+    public static PrintStream estandar() {
+        return _salidaEstandar;
+    }
+    
+    public static PrintStream errores() {
+        return _salidaErrores;
     }
 }

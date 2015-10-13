@@ -39,6 +39,7 @@ public class Programa {
     };
     private static Modelos _modelo;
 
+    
     private Programa() {
     }
 
@@ -58,11 +59,11 @@ public class Programa {
         try {
             _lineas = new ArrayList<>();
 
-            Scanner s = new Scanner(new File(programa));
-            while (s.hasNextLine()) {
-                _lineas.add(s.nextLine());
+            Scanner scanner = new Scanner(new File(programa));
+            while (scanner.hasNextLine()) {
+                _lineas.add(scanner.nextLine());
             }
-            s.close();
+            scanner.close();
 
             _lineaActual = numeroLineas();
 
@@ -133,11 +134,6 @@ public class Programa {
         cargarMacros();
         previo();
 
-        /*
-         System.out.println("Programa antes de la expansión");
-         imprimirPrograma();
-         System.out.println();
-         */
         if (estadoOk()) {
             int llamadas = PrevioAcciones.llamadasAMacros();
             if (llamadas > 0) {

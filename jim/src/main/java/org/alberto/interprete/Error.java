@@ -11,7 +11,7 @@ public class Error {
 
     // Programa
     public static void alCargarPrograma(String f) {
-        imprimir("Error 0: El fichero \"" + f + "\" no existe.");
+        imprimir("Error 0: No se pudo abrir el fichero \"" + f + "\".");
     }
 
     public static void alCargarMacros(String f) {
@@ -57,6 +57,20 @@ public class Error {
                 + "\" porque contiene llamadas recursivas.");
     }
 
+    // GUI
+    
+    public static void alCargarProgramaGUI(String f) {
+        imprimir("Error 10: No se pudo abrir el fichero \"" + f + "\".");
+    }
+    
+    public static void alGuardarFichero(String f) {
+        imprimir("Error 11: No se pudo guardar el fichero \"" + f + "\".");
+    }
+    
+    public static void alGuardarFicheroTemporal() {
+        imprimir("Error 12: No se pudo guardar el fichero temporal.");
+    }
+    
     // Errores de analizador léxico
     // Errores de analizador sintáctico
     // Errores de analizador semántico / acciones
