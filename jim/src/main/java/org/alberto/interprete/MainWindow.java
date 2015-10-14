@@ -231,7 +231,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         taEditor.setColumns(20);
         taEditor.setRows(5);
-        taEditor.setText("y <- macroA(5)");
+        taEditor.setText("y <- dieciseis");
         taEditor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 taEditorKeyPressed(evt);
@@ -440,6 +440,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void comprobacionesPreviasAEjecucion() {
         taSalidaEstandar.setText("");
+        taSalidaErrores.setText("");
         tabPanelSalida.setSelectedIndex(0);
         
         // comprobar que el programa esté guardado en un fichero
@@ -481,7 +482,7 @@ public class MainWindow extends javax.swing.JFrame {
 
             Programa.iniciar(parametros);
 
-            if (Programa.estado() != Programa.Estado.ERROR) {
+            if (Programa.estado() == Programa.Estado.OK) {
                 System.out.println("Resultado: " + Programa.resultado());
             } else {
                 focusSalidaErrores();
@@ -500,6 +501,10 @@ public class MainWindow extends javax.swing.JFrame {
             taEditor.setText(Programa.obtenerPrograma());
             hayCambios();
 
+            if (Programa.estado() != Programa.estado().OK) {
+                focusSalidaErrores();
+            }
+            
             moverCursorAlFinal();
         }
     }

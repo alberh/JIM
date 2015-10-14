@@ -30,16 +30,17 @@ public class Programa {
     private static boolean _salto;
 
     public enum Estado {
+
         OK, ERROR
     };
     private static Estado _estado = Estado.OK;
 
     public enum Modelos {
+
         L, LOOP, WHILE
     };
     private static Modelos _modelo;
 
-    
     private Programa() {
     }
 
@@ -57,6 +58,7 @@ public class Programa {
 
     public static boolean cargar(String programa, Modelos modelo) {
         try {
+            _modelo = modelo;
             _lineas = new ArrayList<>();
 
             Scanner scanner = new Scanner(new File(programa));
@@ -66,8 +68,6 @@ public class Programa {
             scanner.close();
 
             _lineaActual = numeroLineas();
-
-            _modelo = modelo;
 
             switch (_modelo) {
 
@@ -87,7 +87,6 @@ public class Programa {
             _estado = Estado.OK;
 
             return true;
-
         } catch (FileNotFoundException ex) {
             Error.alCargarPrograma(programa);
         }
@@ -153,7 +152,7 @@ public class Programa {
 
     private static void limpiar() {
         System.out.println("Limpiando memoria...");
-        
+
         Variable.limpiar();
         Bucle.limpiar();
         Etiqueta.limpiar();
@@ -163,7 +162,7 @@ public class Programa {
 
     public static void cargarMacros() {
         System.out.println("Cargando macros...");
-        
+
         if (estadoOk()) {
             try {
                 Stream<Path> streamListaFicheros = Files.list(Paths.get(obtenerRutaModelo()));
@@ -215,7 +214,7 @@ public class Programa {
     public static Modelos modelo() {
         return _modelo;
     }
-    
+
     public static String nombreModelo() {
         String modelo = _modelo.toString();
         return modelo.charAt(0) + modelo.substring(1).toLowerCase();
@@ -237,14 +236,12 @@ public class Programa {
         // System.out.println("\t" + directorio.getAbsolutePath());
 
         if (!directorio.exists()) {
-
             boolean creados = directorio.mkdirs();
 
             if (!creados) {
                 Error.alCrearDirectoriosMacros();
             }
         } else {
-
             // es un directorio
             if (!directorio.isDirectory()) {
                 Error.alComprobarDirectorio(directorio.getAbsolutePath());
@@ -277,13 +274,12 @@ public class Programa {
         AnalizadorLexico lex = parser.analizadorLexico();
 
         if (numeroLineas() > 0) {
-
             String linea = lineaSiguiente();
 
             do {
                 if (traza) {
                     System.out.println(_lineaActual + ": " + linea);
-                    // System.out.println(estadoMemoria());
+                    System.out.println(estadoMemoria());
                 }
 
                 try {
@@ -356,10 +352,8 @@ public class Programa {
 
     public static void numeroLineaActual(int n) {
         if (lineaValida(n)) {
-
             _lineaActual = n;
         } else {
-
             terminar();
         }
     }
@@ -375,10 +369,8 @@ public class Programa {
 
     public static String linea(int n) {
         if (lineaValida(n)) {
-
             return _lineas.get(n);
         } else {
-
             return null;
         }
     }
@@ -430,8 +422,9 @@ public class Programa {
 
     public static String obtenerPrograma() {
         StringBuilder sb = new StringBuilder();
-
-        _lineas.forEach(linea -> sb.append(linea).append("\n"));
+        _lineas.forEach(
+                linea -> sb.append(linea).append("\n")
+        );
 
         return sb.toString();
     }

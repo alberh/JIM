@@ -18,11 +18,9 @@ public class Etiqueta {
      * Define una nueva etiqueta.
      */
     public static Etiqueta set(String id, int linea) {
-
         id = filtrar(id);
 
         if (_etiquetas.containsKey(id)) {
-
             return _etiquetas.get(id);
         }
 
@@ -30,11 +28,9 @@ public class Etiqueta {
         int indice = Integer.parseInt(id.substring(1, id.length()));
 
         Etiqueta et = new Etiqueta(id, linea);
-
         _etiquetas.put(id, et);
 
         if (letra == 'A' && indice > _ultimaA) {
-
             _ultimaA = indice;
         }
 
@@ -45,16 +41,7 @@ public class Etiqueta {
      * Obtiene una etiqueta previamente creada, según su identificador.
      */
     public static Etiqueta get(String id) {
-
-        Etiqueta et = null;
-
-        try {
-
-            et = _etiquetas.get(filtrar(id));
-        } catch (Exception ex) {
-        }
-
-        return et;
+        return _etiquetas.get(filtrar(id));
     }
 
     /**
@@ -62,10 +49,9 @@ public class Etiqueta {
      * unidad superior al mayor índice de cualquier etiqueta A creada.
      */
     public static Etiqueta get() {
-
         ++_ultimaA;
         Etiqueta etiqueta = new Etiqueta("A" + _ultimaA, 0);
-
+        
         return etiqueta;
     }
 
@@ -73,7 +59,6 @@ public class Etiqueta {
      * Devuelve el identificador de la última etiqueta A creada.
      */
     public static String ultimaEtiqueta() {
-
         return "A" + _ultimaA;
     }
 
@@ -81,9 +66,7 @@ public class Etiqueta {
      * Elimina todas las etiquetas.
      */
     public static void limpiar() {
-
         _etiquetas.clear();
-        
         _ultimaA = 0;
     }
 
@@ -91,7 +74,6 @@ public class Etiqueta {
      * Constructor de clase.
      */
     private Etiqueta(String id, int linea) {
-
         this._id = id;
         this._linea = linea;
     }
@@ -100,7 +82,6 @@ public class Etiqueta {
      * Devuelve el identificador de la etiqueta.
      */
     public String id() {
-
         return _id;
     }
 
@@ -108,7 +89,6 @@ public class Etiqueta {
      * Devuelve el número de línea en el que se encuentra la etiqueta.
      */
     public int linea() {
-
         return _linea;
     }
 
@@ -117,14 +97,11 @@ public class Etiqueta {
      * al final si no ha sido indicado.
      */
     public static String filtrar(String id) {
-
         id = id.toUpperCase();
 
         if (id.length() == 1) {
-
             return id + "1";
         } else {
-
             return id;
         }
     }
@@ -134,7 +111,6 @@ public class Etiqueta {
      */
     @Override
     public String toString() {
-
         return "(" + _id + ", " + _linea + ")";
     }
 
@@ -142,7 +118,6 @@ public class Etiqueta {
      * Imprime en pantalla todas las etiquetas.
      */
     public static void pintar() {
-
         System.out.println("Etiquetas");
         System.out.println(_etiquetas);
         System.out.println();

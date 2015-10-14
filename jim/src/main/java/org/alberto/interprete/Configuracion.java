@@ -20,21 +20,16 @@ public abstract class Configuracion {
      * fichero no existe, lo crea.
      */
     public static void cargar() {
-
         File ficheroConfig = new File("jim.cfg");
         System.out.println("Cargando configuración del programa...");
 
         if (!ficheroConfig.exists()) {
-
             crearFicheroConfiguracion(ficheroConfig);
         } else {
-
             try (FileReader fr = new FileReader(ficheroConfig)) {
-
                 _propiedades.load(fr);
 
                 if (_propiedades.stringPropertyNames().size() != 3) {
-
                     // Asigna las propiedades que no estén en el fichero de configuración
                     _propiedades.setProperty("rutaMacrosL", _propiedades.getProperty("rutaMacrosL", "macros/l"));
                     _propiedades.setProperty("rutaMacrosLoop", _propiedades.getProperty("rutaMacrosLoop", "macros/loop"));
@@ -42,9 +37,10 @@ public abstract class Configuracion {
 
                     guardar();
                 }
-                
+
                 System.out.println("Fichero de configuración cargado con éxito.");
             } catch (Exception ex) {
+                Error.alCargarConfiguracion(ficheroConfig.getAbsolutePath());
             }
         }
     }
@@ -57,21 +53,19 @@ public abstract class Configuracion {
      * @see File
      */
     private static void crearFicheroConfiguracion(File ficheroConfig) {
+        System.out.println("Creando fichero de configuración...");
 
-        System.out.println("Fichero de configuración no encontrado. Creando fichero \"jim.cfg\"...");
         try (FileWriter fw = new FileWriter(ficheroConfig)) {
-
             ficheroConfig.createNewFile();
 
             _propiedades.setProperty("rutaMacrosL", "macros/l");
             _propiedades.setProperty("rutaMacrosLoop", "macros/loop");
             _propiedades.setProperty("rutaMacrosWhile", "macros/while");
-
             _propiedades.store(fw, null);
+
             System.out.println("Fichero de configuración creado con éxito.");
         } catch (IOException ex) {
-
-            // gestión de errores
+            Error.alCrearFicheroConfiguracion(ficheroConfig.getAbsolutePath());
         }
     }
 
@@ -79,18 +73,15 @@ public abstract class Configuracion {
      * Almacena el fichero de configuración en el disco.
      */
     public static void guardar() {
-
         File ficheroConfig = new File("jim.cfg");
 
         if (!ficheroConfig.exists()) {
-
             crearFicheroConfiguracion(ficheroConfig);
         } else {
-
             try (FileWriter fw = new FileWriter(ficheroConfig)) {
-
                 _propiedades.store(fw, null);
             } catch (Exception ex) {
+                Error.alGuardarConfiguracion();
             }
         }
     }
@@ -102,7 +93,6 @@ public abstract class Configuracion {
      * @see String
      */
     public static String rutaMacrosL() {
-
         return _propiedades.getProperty("rutaMacrosL");
     }
 
@@ -113,7 +103,6 @@ public abstract class Configuracion {
      * @see String
      */
     public static void rutaMacrosL(String nuevaRuta) {
-
         _propiedades.setProperty("rutaMacrosL", nuevaRuta);
     }
 
@@ -124,7 +113,6 @@ public abstract class Configuracion {
      * @see String
      */
     public static String rutaMacrosLoop() {
-
         return _propiedades.getProperty("rutaMacrosLoop");
     }
 
@@ -135,7 +123,6 @@ public abstract class Configuracion {
      * @see String
      */
     public static void rutaMacrosLoop(String nuevaRuta) {
-
         _propiedades.setProperty("rutaMacrosLoop", nuevaRuta);
     }
 
@@ -146,7 +133,6 @@ public abstract class Configuracion {
      * @see String
      */
     public static String rutaMacrosWhile() {
-
         return _propiedades.getProperty("rutaMacrosWhile");
     }
 
@@ -157,7 +143,6 @@ public abstract class Configuracion {
      * @see String
      */
     public static void rutaMacrosWhile(String nuevaRuta) {
-
         _propiedades.setProperty("rutaMacrosWhile", nuevaRuta);
     }
 
@@ -168,7 +153,6 @@ public abstract class Configuracion {
      * @see String
      */
     public static String version() {
-
         return _version;
     }
 }

@@ -58,19 +58,38 @@ public class Error {
     }
 
     // GUI
-    
     public static void alCargarProgramaGUI(String f) {
         imprimir("Error 10: No se pudo abrir el fichero \"" + f + "\".");
     }
-    
+
     public static void alGuardarFichero(String f) {
         imprimir("Error 11: No se pudo guardar el fichero \"" + f + "\".");
     }
-    
+
     public static void alGuardarFicheroTemporal() {
         imprimir("Error 12: No se pudo guardar el fichero temporal.");
     }
+
+    // Bucle
+    public static void alCerrarBucle(int l) {
+        imprimir("Error 13: No se esperaba cierre de bucle en la línea " + l + ".");
+    }
+
+    // Configuración
+    public static void alCargarConfiguracion(String f) {
+        imprimir("Error 14: No se pudo cargar el fichero de configuración \""
+                + f + "\".");
+    }
+
+    public static void alCrearFicheroConfiguracion(String f) {
+        imprimir("Error 15: No se pudo crear el fichero de configuración \""
+                + f + "\".");
+    }
     
+    public static void alGuardarConfiguracion() {
+        imprimir("Error 16: No se pudo guardar la configuración.");
+    }
+
     // Errores de analizador léxico
     // Errores de analizador sintáctico
     // Errores de analizador semántico / acciones

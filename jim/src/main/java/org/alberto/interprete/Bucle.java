@@ -23,7 +23,6 @@ public class Bucle {
      * {@link #cerrar(int) cerrar}.
      */
     public static void abrir(int lineaInicio) {
-
         _inicioBucles.push(lineaInicio);
     }
 
@@ -34,60 +33,34 @@ public class Bucle {
      * colección de bucles.
      */
     public static void cerrar(int lineaFin) {
-
         if (!_inicioBucles.empty()) {
-
             int lineaInicio = _inicioBucles.pop();
-            _buclesLineaApertura.put(lineaInicio, new Bucle(lineaInicio, lineaFin));
-            _buclesLineaCierre.put(lineaFin, new Bucle(lineaInicio, lineaFin));
+            Bucle bucle = new Bucle(lineaInicio, lineaFin);
+            _buclesLineaApertura.put(lineaInicio, bucle);
+            _buclesLineaCierre.put(lineaFin, bucle);
         } else {
-
-            // gestión de errores
+            Error.alCerrarBucle(lineaFin);
         }
-
     }
 
     /**
      * Devuelve el objeto Bucle que comience por la línea de inicio indicada.
      */
     public static Bucle getPorLineaInicio(int lineaInicio) {
-
-        Bucle bucle = null;
-
-        try {
-
-            bucle = _buclesLineaApertura.get(lineaInicio);
-        } catch (Exception ex) {
-
-            System.err.println("No se encuentra la apertura del bucle.");
-        }
-
-        return bucle;
+        return _buclesLineaApertura.get(lineaInicio);
     }
 
     /**
      * Devuelve el objeto Bucle que comience por la línea de fin indicada.
      */
     public static Bucle getPorLineaFin(int lineaFin) {
-
-        Bucle bucle = null;
-
-        try {
-
-            bucle = _buclesLineaCierre.get(lineaFin);
-        } catch (Exception ex) {
-
-            System.err.println("No se encuentra la apertura del bucle.");
-        }
-
-        return bucle;
+        return _buclesLineaCierre.get(lineaFin);
     }
 
     /**
      * Borra todos los bucles creados.
      */
     public static void limpiar() {
-
         _buclesLineaApertura.clear();
         _buclesLineaCierre.clear();
         _inicioBucles.clear();
@@ -100,7 +73,6 @@ public class Bucle {
      * @param	lineaFin El número de línea final del bucle.
      */
     public Bucle(int lineaInicio, int lineaFin) {
-
         this._lineaInicio = lineaInicio;
         this._lineaFin = lineaFin;
         this._contador = -1;
@@ -110,7 +82,6 @@ public class Bucle {
      * Devuelve la línea inicial.
      */
     public int lineaInicio() {
-
         return _lineaInicio;
     }
 
@@ -118,7 +89,6 @@ public class Bucle {
      * Devuelve la línea final.
      */
     public int lineaFin() {
-
         return _lineaFin;
     }
 
@@ -127,7 +97,6 @@ public class Bucle {
      * veces que se ha ejecutado el bucle.
      */
     public int contador() {
-
         return _contador;
     }
 
@@ -135,7 +104,6 @@ public class Bucle {
      * Establece el valor del contador del bucle.
      */
     public void contador(int nuevoValor) {
-
         this._contador = nuevoValor;
     }
 
@@ -144,7 +112,6 @@ public class Bucle {
      * sido inicializado si el valor de su contador es igual o mayor que 0.
      */
     public boolean inicializado() {
-
         return _contador != -1;
     }
 
@@ -152,9 +119,7 @@ public class Bucle {
      * Decrementa el contador del bucle una unidad.
      */
     public void decremento() {
-
         if (_contador > 0) {
-
             _contador--;
         }
     }
@@ -163,7 +128,6 @@ public class Bucle {
      * Reinicia el contador del bucle. El bucle pasa a estar no inicializado.
      */
     public void resetContador() {
-
         this._contador = -1;
     }
 
@@ -172,7 +136,6 @@ public class Bucle {
      */
     @Override
     public String toString() {
-
         return "(" + _lineaInicio + ", " + _lineaFin + ")";
     }
 
@@ -180,7 +143,6 @@ public class Bucle {
      * Imprime en pantalla todos los bucles almacenados.
      */
     public static void pintar() {
-
         System.out.println("Bucles");
         _buclesLineaCierre.forEach((k, v) -> System.out.println(v));
         System.out.println();

@@ -128,7 +128,6 @@ public class Macro {
              */
             Hashtable<String, String> etiquetasReemplazadas = new Hashtable<>();
             for (String etiqueta : etiquetas) {
-
                 // registrar el número de línea de la etiqueta desplazado según el número de línea
                 // de la llamada a la macro + el número de asignaciones añadidas al código expandido
                 String nuevaEtiqueta = Etiqueta.get().id();
@@ -141,7 +140,6 @@ public class Macro {
              */
             String etiquetaSalida = Etiqueta.get().id();
             for (String etiqueta : etiquetasSalto) {
-
                 if (etiquetasReemplazadas.contains(etiqueta)) {
                     expansion = expansion.replace(etiqueta, etiquetasReemplazadas.get(etiqueta));
                 } else {
@@ -203,14 +201,12 @@ public class Macro {
         switch (tipo) {
             case 'X':
                 if (!_entrada.contains(id)) {
-
                     _entrada.add(id);
                 }
                 break;
 
             case 'Z':
                 if (!_locales.contains(id)) {
-
                     _locales.add(id);
                 }
                 break;
@@ -225,14 +221,12 @@ public class Macro {
 
     public void nuevaEtiqueta(String id) {
         if (!_etiquetas.contains(id)) {
-
             _etiquetas.add(id);
         }
     }
 
     public void nuevaEtiquetaSalto(String id) {
         if (!_etiquetasSalto.contains(id)) {
-
             _etiquetasSalto.add(id);
         }
     }
