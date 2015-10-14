@@ -1,11 +1,11 @@
 package org.alberto.interprete;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.ArrayList;
 
 public class Macro {
 
-    private static Hashtable<String, Macro> _macros = new Hashtable<>();
+    private static HashMap<String, Macro> _macros = new HashMap<>();
 
     private String _id;
     private String _cuerpo;
@@ -126,7 +126,7 @@ public class Macro {
 
             /* Reempaza las etiquetas que marcan un objetivo de salto
              */
-            Hashtable<String, String> etiquetasReemplazadas = new Hashtable<>();
+            HashMap<String, String> etiquetasReemplazadas = new HashMap<>();
             for (String etiqueta : etiquetas) {
                 // registrar el número de línea de la etiqueta desplazado según el número de línea
                 // de la llamada a la macro + el número de asignaciones añadidas al código expandido
@@ -140,7 +140,7 @@ public class Macro {
              */
             String etiquetaSalida = Etiqueta.get().id();
             for (String etiqueta : etiquetasSalto) {
-                if (etiquetasReemplazadas.contains(etiqueta)) {
+                if (etiquetasReemplazadas.containsKey(etiqueta)) {
                     expansion = expansion.replace(etiqueta, etiquetasReemplazadas.get(etiqueta));
                 } else {
                     expansion = expansion.replace(etiqueta, etiquetaSalida);

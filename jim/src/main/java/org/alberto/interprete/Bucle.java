@@ -1,6 +1,6 @@
 package org.alberto.interprete;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -8,8 +8,8 @@ import java.util.Stack;
  */
 public class Bucle {
 
-    private static Hashtable<Integer, Bucle> _buclesLineaApertura = new Hashtable<>();
-    private static Hashtable<Integer, Bucle> _buclesLineaCierre = new Hashtable<>();
+    private static HashMap<Integer, Bucle> _buclesLineaApertura = new HashMap<>();
+    private static HashMap<Integer, Bucle> _buclesLineaCierre = new HashMap<>();
     private static Stack<Integer> _inicioBucles = new Stack<>();
 
     private int _lineaInicio;

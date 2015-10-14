@@ -1,6 +1,6 @@
 package org.alberto.interprete;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 /**
  * Esta clase representa el concepto de etiqueta de salto utilizado en el modelo
@@ -8,7 +8,7 @@ import java.util.Hashtable;
  */
 public class Etiqueta {
 
-    private static Hashtable<String, Etiqueta> _etiquetas = new Hashtable<>();
+    private static HashMap<String, Etiqueta> _etiquetas = new HashMap<>();
     private static int _ultimaA = 0;
 
     private String _id;

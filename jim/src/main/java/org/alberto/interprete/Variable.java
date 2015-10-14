@@ -1,8 +1,8 @@
 package org.alberto.interprete;
 
-import java.util.Hashtable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
 class ComparadorVariables implements Comparator<Variable> {
 
@@ -14,8 +14,8 @@ class ComparadorVariables implements Comparator<Variable> {
 
 public class Variable {
 
-    private static Hashtable<Integer, Variable> _entrada = new Hashtable<>();
-    private static Hashtable<Integer, Variable> _locales = new Hashtable<>();
+    private static HashMap<Integer, Variable> _entrada = new HashMap<>();
+    private static HashMap<Integer, Variable> _locales = new HashMap<>();
     private static Variable _salida = new Variable("Y");
 
     private static int _mayorEntrada = 0;

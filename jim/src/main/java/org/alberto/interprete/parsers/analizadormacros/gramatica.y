@@ -39,19 +39,16 @@ simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
 
   /** constructor: crea el analizador léxico (lexer)
   **/
-  public MacrosParser(Reader r) 
-  {
+  public MacrosParser(Reader r) {
 	analex = new MacrosLex(r, this);
-	 //yydebug = true;
+	//yydebug = true;
   }
 
   public int parse() {
-    
     return this.yyparse();
   }
 
   public AnalizadorLexico analizadorLexico() {
-
     return analex;
   }
 

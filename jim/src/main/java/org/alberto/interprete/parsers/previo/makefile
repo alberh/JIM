@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=PrevioParser -Jpackage=org.alberto.interprete.parsers.previo -Jimplements=IParser
+BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=PrevioParser -Jpackage=org.alberto.interprete.parsers.previo -Jextends=Parser
 JAVAC = javac -d /home/alberto/Programación/tfg-int-rpretes/JIM/build/classes/main -classpath /home/alberto/Programación/tfg-int-rpretes/JIM/src/main/java/org
 
 all: PrevioLex.java PrevioParser.java PrevioParserVal.java
