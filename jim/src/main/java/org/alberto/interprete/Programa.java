@@ -26,7 +26,8 @@ public class Programa {
 
     private static ArrayList<String> _lineas;
     private static int _lineaActual;
-    private static IParser _parser;
+    //private static IParser _parser;
+    private static Parser _parser;
     private static boolean _salto;
 
     public enum Estado {
@@ -264,11 +265,11 @@ public class Programa {
         _lineas.addAll(linea - 1, lineasExpansion);
     }
 
-    private static void ejecutar(IParser parser) {
+    private static void ejecutar(Parser parser) {
         ejecutar(parser, false);
     }
 
-    private static void ejecutar(IParser parser, boolean traza) {
+    private static void ejecutar(Parser parser, boolean traza) {
         _lineaActual = 0;
         _salto = false;
         AnalizadorLexico lex = parser.analizadorLexico();

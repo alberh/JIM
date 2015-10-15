@@ -79,37 +79,30 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 
   /** constructor: crea el analizador léxico (lexer)
   **/
-  public PrevioParser(Reader r) 
-  {
+  public PrevioParser(Reader r) {
 	analex = new PrevioLex(r, this);
 	 //yydebug = true;
   }
 
   public int parse() {
-	
     return this.yyparse();
   }
 
   public AnalizadorLexico analizadorLexico() {
-
     return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 
   *** siguiente token del analizador léxico
   **/
-  private int yylex () 
-  {
+  protected int yylex () {
 	int yyl_return = -1;
 
-	try 
-	{
+	try {
 		yylval = new PrevioParserVal(0);
 		yyl_return = analex.yylex();
-	}
-	catch (IOException e) 
-	{
-		System.err.println("error de E/S:"+e);
+	} catch (IOException e) {
+		org.alberto.interprete.Error.deESenAnalizadorLexico();
 	}
 
 	return yyl_return;
@@ -117,9 +110,11 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 
   /** invocada cuando se produce un error
   **/
-  public void yyerror (String descripcion, int yystate, int token) 
-  {
-	//System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+  public void yyerror (String descripcion, int yystate, int token) {
+  	String nombreToken = yyname[token];
+  	org.alberto.interprete.Error.deTokenNoEsperado(nombreToken, descripcion);
+  	/*
+	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
 	System.err.println ("Token leído : "+yyname[token]);
 	System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -156,17 +151,5 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 	}
 
 	System.err.println(nombresTokens);
-	
+	*/
   }
-
-  public void yyerror (String descripcion) 
-  {
-	//System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
-	 //System.err.println ("Token leido : "+yyname[token]);
-	
-  }
-
-
-
-
-

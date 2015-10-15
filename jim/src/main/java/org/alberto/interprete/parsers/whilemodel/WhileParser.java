@@ -27,7 +27,7 @@ package org.alberto.interprete.parsers.whilemodel;
 
 
 public class WhileParser
-             implements IParser
+             extends Parser
 {
 
 boolean yydebug;        //do I want debug output?
@@ -336,98 +336,81 @@ final static String yyrule[] = {
 
   /** constructor: crea el analizador léxico (lexer)
   **/
-  public WhileParser(Reader r) 
-  {
+  public WhileParser(Reader r) {
      analex = new WhileLex(r, this);
      //yydebug = true;
   }
 
   public int parse() {
-    
     return this.yyparse();
   }
 
   public AnalizadorLexico analizadorLexico() {
-
     return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 
   *** siguiente token del analizador léxico
   **/
-  private int yylex () 
-  {
-    int yyl_return = -1;
+  protected int yylex () {
+  int yyl_return = -1;
 
-    try 
-    {
-       yylval = new WhileParserVal(0);
-       yyl_return = analex.yylex();
-    }
-    catch (IOException e) 
-    {
-       System.err.println("error de E/S:"+e);
-    }
+  try {
+    yylval = new WhileParserVal(0);
+    yyl_return = analex.yylex();
+  } catch (IOException e) {
+    org.alberto.interprete.Error.deESenAnalizadorLexico();
+  }
 
-    return yyl_return;
+  return yyl_return;
   }
 
   /** invocada cuando se produce un error
   **/
-  public void yyerror (String descripcion, int yystate, int token) 
+  public void yyerror (String descripcion, int yystate, int token) {
+    String nombreToken = yyname[token];
+    org.alberto.interprete.Error.deTokenNoEsperado(nombreToken, descripcion);
+    /*
+  System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+  System.err.println ("Token leído : "+yyname[token]);
+  System.err.print("Token(s) que se esperaba(n) : ");
+
+  String  nombresTokens = "" ;
+
+  int yyn ;
+
+   // añadir en 'nombresTokens' los tokens que permitirian desplazar
+
+  nombresTokens += "desplazan: " ;
+
+  for( yychar = 0 ; yychar < YYMAXTOKEN ; yychar++ )
   {
-     //System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
-     System.err.println ("Token leído : "+yyname[token]);
-     System.err.print("Token(s) que se esperaba(n) : ");
-
-     String  nombresTokens = "" ;
-
-     int yyn ;
-
-     // añadir en 'nombresTokens' los tokens que permitirian desplazar
-
-     nombresTokens += "desplazan: " ;
-
-     for( yychar = 0 ; yychar < YYMAXTOKEN ; yychar++ )
-     {
-        yyn = yysindex[yystate] ;  
-        if ((yyn != 0) && (yyn += yychar) >= 0 &&
-             yyn <= YYTABLESIZE && yycheck[yyn] == yychar)
-        {
-            nombresTokens += yyname[yychar] + " ";
-        }
-     }
-
-     // añadir tokens que permitirian reducir
-
-     nombresTokens += "reducen: " ;
-
-     for( yychar = 0 ; yychar < YYMAXTOKEN ; yychar++ )
-     {
-         yyn = yyrindex[yystate] ;  
-         if ((yyn !=0 ) && (yyn += yychar) >= 0 &&
-            yyn <= YYTABLESIZE && yycheck[yyn] == yychar)
-         {
-            nombresTokens += yyname[yychar] + " " ;
-         }
-     }
-
-    System.err.println(nombresTokens);
-    
+    yyn = yysindex[yystate] ;  
+    if ((yyn != 0) && (yyn += yychar) >= 0 &&
+      yyn <= YYTABLESIZE && yycheck[yyn] == yychar)
+    {
+      nombresTokens += yyname[yychar] + " ";
+    }
   }
 
-  public void yyerror (String descripcion) 
+   // añadir tokens que permitirian reducir
+
+  nombresTokens += "reducen: " ;
+
+  for( yychar = 0 ; yychar < YYMAXTOKEN ; yychar++ )
   {
-     //System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
-     //System.err.println ("Token leido : "+yyname[token]);
-   
+    yyn = yyrindex[yystate] ;  
+    if ((yyn !=0 ) && (yyn += yychar) >= 0 &&
+      yyn <= YYTABLESIZE && yycheck[yyn] == yychar)
+    {
+      nombresTokens += yyname[yychar] + " " ;
+    }
   }
 
-
-
-
-
-//#line 357 "WhileParser.java"
+  System.err.println(nombresTokens);
+  */
+  }
+//#line 340 "WhileParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -603,11 +586,11 @@ case 6:
 break;
 case 7:
 //#line 33 "gramatica.y"
-{ WhileAcciones.abreBucle(val_peek(1).sval, Programa.numeroLineaActual() /*analex.lineaActual()*/); }
+{ WhileAcciones.abreBucle(val_peek(1).sval, Programa.numeroLineaActual()); }
 break;
 case 8:
 //#line 34 "gramatica.y"
-{ WhileAcciones.cierraBucle(Programa.numeroLineaActual() /*analex.lineaActual()*/); }
+{ WhileAcciones.cierraBucle(Programa.numeroLineaActual()); }
 break;
 case 9:
 //#line 36 "gramatica.y"
@@ -673,7 +656,7 @@ case 26:
 //#line 54 "gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
-//#line 598 "WhileParser.java"
+//#line 581 "WhileParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

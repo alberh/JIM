@@ -27,7 +27,7 @@ package org.alberto.interprete.parsers.analizadormacros;
 
 
 public class MacrosParser
-             implements IParser
+             extends Parser
 {
 
 boolean yydebug;        //do I want debug output?
@@ -290,37 +290,30 @@ final static String yyrule[] = {
 
   /** constructor: crea el analizador léxico (lexer)
   **/
-  public MacrosParser(Reader r) 
-  {
+  public MacrosParser(Reader r) {
 	analex = new MacrosLex(r, this);
-	 //yydebug = true;
+	//yydebug = true;
   }
 
   public int parse() {
-    
     return this.yyparse();
   }
 
   public AnalizadorLexico analizadorLexico() {
-
     return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 
   *** siguiente token del analizador léxico
   **/
-  private int yylex () 
-  {
+  protected int yylex () {
 	int yyl_return = -1;
 
-	try 
-	{
+	try {
 		yylval = new MacrosParserVal(0);
 		yyl_return = analex.yylex();
-	}
-	catch (IOException e) 
-	{
-		System.err.println("error de E/S:"+e);
+	} catch (IOException e) {
+		org.alberto.interprete.Error.deESenAnalizadorLexico();
 	}
 
 	return yyl_return;
@@ -328,9 +321,11 @@ final static String yyrule[] = {
 
   /** invocada cuando se produce un error
   **/
-  public void yyerror (String descripcion, int yystate, int token) 
-  {
-	//System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+  public void yyerror (String descripcion, int yystate, int token) {
+  	String nombreToken = yyname[token];
+  	org.alberto.interprete.Error.deTokenNoEsperado(nombreToken, descripcion);
+  	/*
+	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
 	System.err.println ("Token leído : "+yyname[token]);
 	System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -367,21 +362,9 @@ final static String yyrule[] = {
 	}
 
 	System.err.println(nombresTokens);
-	
+	*/
   }
-
-  public void yyerror (String descripcion) 
-  {
-	//System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
-	 //System.err.println ("Token leido : "+yyname[token]);
-	
-  }
-
-
-
-
-
-//#line 311 "MacrosParser.java"
+//#line 294 "MacrosParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -559,7 +542,7 @@ case 11:
 //#line 30 "gramatica.y"
 { MacrosAcciones.nuevaEtiquetaSalto(val_peek(0).sval); }
 break;
-//#line 484 "MacrosParser.java"
+//#line 467 "MacrosParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

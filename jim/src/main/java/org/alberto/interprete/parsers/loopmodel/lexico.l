@@ -18,8 +18,7 @@ import org.alberto.interprete.parsers.AnalizadorLexico;
   *** acepta como parámetro el lector de caracteres a usar
   **/
 
-  public LoopLex(java.io.Reader r, LoopParser p) 
-  {
+  public LoopLex(java.io.Reader r, LoopParser p) {
     this(r);
     yyparser = p;
   }
@@ -44,7 +43,7 @@ Number = 0|[1-9]+[0-9]*
 %%
 {WhiteSpace}      { }
 {Comment}         { }
-{Variable}        { yyparser.yylval = new LoopParserVal( yytext() );
+{Variable}        { yyparser.yylval = new LoopParserVal(yytext());
                     return LoopParser.VARIABLE;
                   }
 "loop"|"LOOP"     { return LoopParser.LOOP;
@@ -57,12 +56,12 @@ Number = 0|[1-9]+[0-9]*
                   }
 [+*,()]           { return yycharat(0);
                   }
-{Number}          { yyparser.yylval = new LoopParserVal( Integer.parseInt(yytext()) );
+{Number}          { yyparser.yylval = new LoopParserVal(Integer.parseInt(yytext()));
                     return LoopParser.NUMERO;
                   }
-{Identifier}      { yyparser.yylval = new LoopParserVal( yytext() );
+{Identifier}      { yyparser.yylval = new LoopParserVal(yytext());
                     return LoopParser.IDMACRO;
                   }
 {LineTerminator}  { }
-.                 { yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido"); 
+.                 { org.alberto.interprete.Error.deCaracterNoReconocido(yytext());
                   }

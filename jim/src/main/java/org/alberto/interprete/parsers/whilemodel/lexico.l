@@ -18,8 +18,7 @@ import org.alberto.interprete.parsers.AnalizadorLexico;
   *** acepta como parámetro el lector de caracteres a usar
   **/
 
-  public WhileLex(java.io.Reader r, WhileParser p) 
-  {
+  public WhileLex(java.io.Reader r, WhileParser p) {
     this(r);
     yyparser = p;
   }
@@ -44,7 +43,7 @@ Number = 0|[1-9]+[0-9]*
 %%
 {WhiteSpace}      { }
 {Comment}         { }
-{Variable}        { yyparser.yylval = new WhileParserVal( yytext() );
+{Variable}        { yyparser.yylval = new WhileParserVal(yytext());
                     return WhileParser.VARIABLE;
                   }
 "while"|"WHILE"   { return WhileParser.WHILE;
@@ -62,12 +61,12 @@ Number = 0|[1-9]+[0-9]*
                   }
 [-+*/%,()]        { return yycharat(0);
                   }
-{Number}          { yyparser.yylval = new WhileParserVal( Integer.parseInt(yytext()) );
+{Number}          { yyparser.yylval = new WhileParserVal(Integer.parseInt(yytext()));
                     return WhileParser.NUMERO;
                   }
-{Identifier}      { yyparser.yylval = new WhileParserVal( yytext() );
+{Identifier}      { yyparser.yylval = new WhileParserVal(yytext());
                     return WhileParser.IDMACRO;
                   }
 {LineTerminator}  { }
-.                 { yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido"); 
+.                 { org.alberto.interprete.Error.deCaracterNoReconocido(yytext());
                   }

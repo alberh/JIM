@@ -9,6 +9,10 @@ public class Error {
         Programa.estado(Estado.ERROR);
     }
 
+    private static int linea(int error) {
+        return Programa.numeroLineaActual();
+    }
+
     // Programa
     public static void alCargarPrograma(String f) {
         imprimir("Error 0: No se pudo abrir el fichero \"" + f + "\".");
@@ -90,10 +94,25 @@ public class Error {
         imprimir("Error 16: No se pudo guardar la configuración.");
     }
 
-    // Errores de analizador léxico
-    // Errores de analizador sintáctico
-    // Errores de analizador semántico / acciones
-    // Errores previo
-    // Errores expansión macros
-    // Errores ejecución
+    // Analizador léxico
+    public static void deCaracterNoReconocido(String s) {
+        imprimir("Error 17: Carácter '" + s + "' no reconocido.");
+    }
+
+    public static void deDefinicionInterior() {
+        imprimir("Error 18: No se puede definir una macro dentro de otra definición de macro.");
+    }
+
+    // Analizador sintáctico
+    public static void deTokenNoEsperado(String nombre, String descripcion) {
+        imprimir("Error 19: No se esperaba el símbolo " + nombre + ". Descripción: " + descripcion);
+    }
+
+    public static void deTokenNoEsperado(String descripcion) {
+        imprimir("Error 20: No se esperaba un símbolo. Descripción: " + descripcion);
+    }
+
+    public static void deESenAnalizadorLexico() {
+        imprimir("Error 21: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.");
+    }
 }

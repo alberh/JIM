@@ -22,8 +22,7 @@ import java.lang.StringBuilder;
   *** acepta como parámetro el lector de caracteres a usar
   **/
 
-  public MacrosLex(java.io.Reader r, MacrosParser p) 
-  {
+  public MacrosLex(java.io.Reader r, MacrosParser p) {
     this(r);
     yyparser = p;
     _contenido = new StringBuilder();
@@ -65,7 +64,7 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                   }
 {LineTerminator}  { }
 {WhiteSpace}      { }
-.                 { /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
+.                 { org.alberto.interprete.Error.deCaracterNoReconocido(yytext()); /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
                   }
 
 } // YYINITIAL
@@ -88,8 +87,8 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                     _contenido.append("V" + id);
                     return MacrosParser.VARIABLE;
                   }
-"defmacro"		  { // ilegal. definición de macro dentro de definición de macro
-				  }
+"defmacro"		    { org.alberto.interprete.Error.deDefinicionInterior();
+				          }
 "endmacro"        { yyparser.yylval = new MacrosParserVal(_contenido.toString());
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;

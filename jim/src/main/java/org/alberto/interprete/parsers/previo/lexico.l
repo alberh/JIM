@@ -18,8 +18,7 @@ import org.alberto.interprete.parsers.AnalizadorLexico;
   *** acepta como parámetro el lector de caracteres a usar
   **/
 
-  public PrevioLex(java.io.Reader r, PrevioParser p) 
-  {
+  public PrevioLex(java.io.Reader r, PrevioParser p) {
     this(r);
     yyparser = p;
     contenido = "";
@@ -48,10 +47,10 @@ Number = 0|[1-9]+[0-9]*
 
 {WhiteSpace}      { }
 {Comment}         { }
-{Label}           { yyparser.yylval = new PrevioParserVal( yytext() );
+{Label}           { yyparser.yylval = new PrevioParserVal(yytext());
                     return PrevioParser.ETIQUETA;
                   }
-{Variable}        { yyparser.yylval = new PrevioParserVal( yytext() );
+{Variable}        { yyparser.yylval = new PrevioParserVal(yytext());
                     return PrevioParser.VARIABLE;
                   }
 "<-"              { return PrevioParser.FLECHA;
@@ -65,7 +64,7 @@ Number = 0|[1-9]+[0-9]*
                   }
 [-+*/%,\[\]()]    { return yycharat(0);
                   }
-{Number}          { yyparser.yylval = new PrevioParserVal( yytext() );
+{Number}          { yyparser.yylval = new PrevioParserVal(yytext());
                     return PrevioParser.NUMERO;
                   }
 "if"|"IF"         { return PrevioParser.IF;
@@ -78,9 +77,9 @@ Number = 0|[1-9]+[0-9]*
                   }
 "end"|"END"       { return PrevioParser.END;
                   }
-{Identifier}      { yyparser.yylval = new PrevioParserVal( yytext() );
+{Identifier}      { yyparser.yylval = new PrevioParserVal(yytext());
                     return PrevioParser.IDMACRO;
                   }
 {LineTerminator}  { }
-.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido.");
+.                 { org.alberto.interprete.Error.deCaracterNoReconocido(yytext());
                   }

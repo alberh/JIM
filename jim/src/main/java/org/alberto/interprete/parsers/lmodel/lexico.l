@@ -18,8 +18,7 @@ import org.alberto.interprete.parsers.AnalizadorLexico;
   *** acepta como parámetro el lector de caracteres a usar
   **/
 
-  public LLex(java.io.Reader r, LParser p) 
-  {
+  public LLex(java.io.Reader r, LParser p) {
     this(r);
     yyparser = p;
   }
@@ -44,10 +43,10 @@ Number = 0|[1-9]+[0-9]*
 %%
 {WhiteSpace}      { }
 {Comment}         { }
-{Label}           { yyparser.yylval = new LParserVal( yytext() );
+{Label}           { yyparser.yylval = new LParserVal(yytext());
                     return LParser.ETIQUETA;
                   }
-{Variable}        { yyparser.yylval = new LParserVal( yytext() );
+{Variable}        { yyparser.yylval = new LParserVal(yytext());
                     return LParser.VARIABLE;
                   }
 "<-"              { return LParser.FLECHA;
@@ -61,16 +60,16 @@ Number = 0|[1-9]+[0-9]*
                   }
 [-+*/%,\[\]()]    { return yycharat(0);
                   }
-{Number}          { yyparser.yylval = new LParserVal( Integer.parseInt(yytext()) );
+{Number}          { yyparser.yylval = new LParserVal(Integer.parseInt(yytext()));
                     return LParser.NUMERO;
                   }
 "if"|"IF"         { return LParser.IF;
                   }
 "goto"|"GOTO"     { return LParser.GOTO;
                   }
-{Identifier}      { yyparser.yylval = new LParserVal( yytext() );
+{Identifier}      { yyparser.yylval = new LParserVal(yytext());
                     return LParser.IDMACRO;
                   }
 {LineTerminator}  { }
-.                 { yyparser.yyerror("Error: Carácter '"+yytext()+"' no reconocido.");
+.                 { org.alberto.interprete.Error.deCaracterNoReconocido(yytext());
                   }
