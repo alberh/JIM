@@ -31,6 +31,7 @@ public abstract class Configuracion {
 
                 if (_propiedades.stringPropertyNames().size() != 3) {
                     // Asigna las propiedades que no estén en el fichero de configuración
+                    _propiedades.setProperty("rutaMacros", _propiedades.getProperty("rutaMacros", "macros"));
                     _propiedades.setProperty("rutaMacrosL", _propiedades.getProperty("rutaMacrosL", "macros/l"));
                     _propiedades.setProperty("rutaMacrosLoop", _propiedades.getProperty("rutaMacrosLoop", "macros/loop"));
                     _propiedades.setProperty("rutaMacrosWhile", _propiedades.getProperty("rutaMacrosWhile", "macros/while"));
@@ -58,6 +59,7 @@ public abstract class Configuracion {
         try (FileWriter fw = new FileWriter(ficheroConfig)) {
             ficheroConfig.createNewFile();
 
+            _propiedades.setProperty("rutaMacros", "macros");
             _propiedades.setProperty("rutaMacrosL", "macros/l");
             _propiedades.setProperty("rutaMacrosLoop", "macros/loop");
             _propiedades.setProperty("rutaMacrosWhile", "macros/while");
@@ -84,6 +86,26 @@ public abstract class Configuracion {
                 Error.alGuardarConfiguracion();
             }
         }
+    }
+    
+    /**
+     * Devuelve la ruta al directorio de macros comunes.
+     *
+     * @return	La ruta que apunta al directorio común.
+     * @see String
+     */
+    public static String rutaMacros() {
+        return _propiedades.getProperty("rutaMacros");
+    }
+    
+    /**
+     * Define la ruta al directorio de macros comunes.
+     *
+     * @param	nuevaRuta	La ruta que apunta al directorio común.
+     * @see String
+     */
+    public static void rutaMacros(String nuevaRuta) {
+        _propiedades.setProperty("rutaMacros", nuevaRuta);
     }
 
     /**
@@ -115,7 +137,7 @@ public abstract class Configuracion {
     public static String rutaMacrosLoop() {
         return _propiedades.getProperty("rutaMacrosLoop");
     }
-
+    
     /**
      * Define la ruta al directorio de macros del modelo Loop.
      *

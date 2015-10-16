@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.stream.Stream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
@@ -20,6 +19,7 @@ import java.nio.file.NotDirectoryException;
 
 import org.alberto.interprete.parsers.*;
 import java.io.FileNotFoundException;
+import java.nio.file.DirectoryStream;
 import java.util.Scanner;
 
 public class Programa {
@@ -165,30 +165,49 @@ public class Programa {
         System.out.println("Cargando macros...");
 
         if (estadoOk()) {
-            try {
-                Stream<Path> streamListaFicheros = Files.list(Paths.get(obtenerRutaModelo()));
+            procesarFicherosMacros(Configuracion.rutaMacros());
+        }
 
-                streamListaFicheros.forEach(
-                        p -> {
-                            if (estadoOk()) {
-                                String fichero = p.getFileName().toString();
-                                // System.out.println("Leyendo fichero de macros \"" + fichero + "\"");
-                                String rutaFichero = null;
-                                try {
-                                    rutaFichero = obtenerRutaModelo() + "/" + fichero;
-                                    MacrosParser macrosParser = new MacrosParser(new FileReader(rutaFichero));
-                                    macrosParser.parse();
-                                } catch (FileNotFoundException ex) {
-                                    Error.alCargarMacros(rutaFichero);
-                                }
-                            }
-                        }
-                );
-            } catch (NotDirectoryException ex) {
-                Error.alComprobarDirectorio(obtenerRutaModelo());
-            } catch (IOException ex) {
-                Error.alObtenerListaFicherosMacros();
+        if (estadoOk()) {
+            procesarFicherosMacros(obtenerRutaModelo());
+        }
+    }
+
+    private static void procesarFicherosMacros(String rutaMacros) {
+        //Error.alObtenerListaFicherosMacros(rutaMacros);
+        try {
+            ArrayList<Path> rutas = new ArrayList<>();
+            
+            DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(rutaMacros));
+            for (Path path : directoryStream) {
+                if (path.toFile().isFile()) {
+                    rutas.add(path);
+                }
             }
+            directoryStream.close();
+
+            for (Path p : rutas) {
+                if (estadoOk()) {
+                    System.out.println("   " + p.toAbsolutePath());
+
+                    String fichero = p.getFileName().toString();
+                    String rutaFichero = rutaMacros + "/" + fichero;
+                    try {
+                        MacrosParser macrosParser
+                                = new MacrosParser(new FileReader(rutaFichero));
+
+                        macrosParser.parse();
+                    } catch (FileNotFoundException ex) {
+                        Error.alCargarMacros(rutaFichero);
+                    }
+                }
+            }
+        } catch (NotDirectoryException ex) {
+            Error.alComprobarDirectorio(rutaMacros);
+        } catch (IOException ex) {
+            Error.alObtenerListaFicherosMacros(rutaMacros);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -223,18 +242,20 @@ public class Programa {
 
     private static void comprobarDirectoriosMacros() {
         System.out.println("Comprobando directorios de macros...");
-        /* macros/
+        /* Esquema por defecto:
+         * macros/
          * ...l/
          * ...loop/
          * ...while/
          */
+        comprobarDirectorio(new File(Configuracion.rutaMacros()));
         comprobarDirectorio(new File(Configuracion.rutaMacrosL()));
         comprobarDirectorio(new File(Configuracion.rutaMacrosLoop()));
         comprobarDirectorio(new File(Configuracion.rutaMacrosWhile()));
     }
 
     private static void comprobarDirectorio(File directorio) {
-        // System.out.println("\t" + directorio.getAbsolutePath());
+        System.out.println("   " + directorio.getAbsolutePath());
 
         if (!directorio.exists()) {
             boolean creados = directorio.mkdirs();
@@ -255,6 +276,7 @@ public class Programa {
     }
 
     private static void previo() {
+        System.out.println("Analizando el programa...");
         if (estadoOk()) {
             ejecutar(new PrevioParser(null));
         }
@@ -298,7 +320,7 @@ public class Programa {
                     linea = lineaActual();
                     _salto = false;
                 }
-            } while (!finalizado());
+            } while (!finalizado() && estadoOk());
         }
     }
 
