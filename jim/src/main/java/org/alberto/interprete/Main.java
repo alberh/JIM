@@ -1,24 +1,9 @@
 package org.alberto.interprete;
 
+import java.util.Arrays;
+import java.util.List;
 
-/* Día 24 de junio reunión con Tomeu
- * Cambiar clase abstracta AnalizadorLexico a Interfaz
- * Añadir PrevioAcciones
- *
- * Sobre expansión de macros:
- * PRIMERO EXPANDIR MACROS Y LUEGO SUSTITUIR VARIABLES. ASÍ SE PUEDEN IR EXPANDIENDO LAS LLAMADAS INTERNAS A MACROS
- * SEGÚN SE VAN ENCONTRADO POR EL PREVIO, Y POR ÚLTIMO SE ASIGNAN LAS VARIABLES QUE QUEDEN.
- *
- * Se añade al analizador de macros reconocimiento de llamadas a macros.
- *  - Se guarda la variable que almacenará el valor del resultado de la ejecución de la macro,
- *    el identificador de la macro y los parámetros utilizados en la llamada.
- * Para no pasar el previo dos veces, se registran las nuevas variables y etiquetas desde el método de expansión de macros.
- * Se saca del método de expansión de macros a otros métodos lo necesario para poder generalizar este algoritmo y usarlo así
- * en las expansiones de las macros dentro de otras macros.
- *  - El orden sería: una vez sustituídas las variables y etiquetas de una macro durante su expansión, se procede a expandir
- *    las macros. Proceso recursivo.
- *
- * Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
+/* Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
  * mayor que, etc...
 
  Apuntes cita con Salguero:
@@ -28,78 +13,114 @@ package org.alberto.interprete;
  Mirar plataforma Rodin
  Mirar licencias jflex y byacc/j. Pensar en licencia para el TFG.
  Planificación: tiempos memoria, diseño, programación, etc
-
  */
 
+/* Uso: jim modelo fichero [param1 [param2 [...]]]
+ */
 public class Main {
 
     public static void main(String[] args) {
-
         bienvenida();
-        Configuracion.cargar();
 
-        if (args.length > 0) {
+        if (args.length >= 2) {
+            Configuracion.cargar();
 
-            String modelo = args[0];
-            int[] parametros = null;
+            String cadenaModelo = args[0];
+            String fichero = args[1];
 
-            if (args.length > 1) {
+            Programa.Modelos modelo = obtenerModelo(cadenaModelo);
 
-                parametros = new int[args.length - 1];
+            if (modelo != null) {
+                int[] parametros = null;
 
-                int cont = 0;
-                for (int i = 1; i < args.length; ++i) {
+                if (args.length > 2) {
+                    parametros = new int[args.length - 2];
 
-                    parametros[cont++] = Integer.parseInt(args[i]);
+                    int cont = 0;
+                    for (int i = 2; i < args.length; ++i) {
+                        try {
+                            parametros[cont] = Integer.parseInt(args[i]);
+                        } catch (Exception ex) {
+                            parametros[cont] = 0;
+                        }
+
+                        cont++;
+                    }
                 }
-            }
 
-            if (modelo.equalsIgnoreCase("l")) {
+                iniciar(modelo, fichero, parametros);
+            } else {
+                // Añadir soporte para expansión de macros en terminal
 
-                pruebasL(parametros);
-            } else if (modelo.equalsIgnoreCase("loop")) {
-
-                pruebasLoop(parametros);
-            } else if (modelo.equalsIgnoreCase("while")) {
-
-                pruebasWhile(parametros);
-            } else if (modelo.equalsIgnoreCase("expansion")) {
-
-                pruebaExpansion(parametros);
+                // Error.deModeloNoValido(cadenaModelo);
+                System.err.println("Error x: modelo no válido.");
             }
         } else {
-
-            pruebasL(null);
-            // pruebasLoop();
-            // pruebasWhile();
+            System.out.println("Uso: jim modelo fichero [param1 [param2 [...]]]");
         }
+    }
 
-        // pruebaspruebaPrevioParser();
-        // pruebasVariables();
-        // pruebasEtiquetas();
+    public static void iniciar(Programa.Modelos modelo, String fichero, int[] parametros) {
+        Programa.cargar(fichero, modelo);
+        Programa.iniciar(parametros);
+
+        if (Programa.estadoOk()) {
+            System.out.println("Resultado: " + Programa.resultado());
+        }
+    }
+
+    public static void iniciarExpansionMacros(Programa.Modelos modelo, String fichero) {
+        Programa.cargar(fichero, modelo);
+        Programa.iniciarExpansionMacros();
+
+        if (Programa.estadoOk()) {
+            System.out.println("Programa tras la expansión");
+            System.out.println();
+            System.out.println(Programa.obtenerPrograma());
+        }
+    }
+
+    private static Programa.Modelos obtenerModelo(String modelo) {
+        switch (modelo.toUpperCase()) {
+            case "L":
+                return Programa.Modelos.L;
+
+            case "LOOP":
+                return Programa.Modelos.LOOP;
+
+            case "WHILE":
+                return Programa.Modelos.WHILE;
+
+            default:
+                return null;
+        }
     }
 
     public static void bienvenida() {
-
         System.out.println("JIM - Intérprete de Modelos");
         System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
         System.out.println("Versión " + Configuracion.version());
         System.out.println();
     }
 
-    public static void pruebaExpansion(int[] parametros) {
 
+
+
+
+
+    /*
+    public static void pruebaExpansion(int[] parametros) {
         String programa = "ejemplos/entradaExp.txt";
         Programa.cargar(programa, Programa.Modelos.L);
 
         Programa.iniciarExpansionMacros();
 
-        /*
+        
         System.out.println("====================");
         System.out.println("Estado de la memoria");
         System.out.println("====================");
         // Programa.imprimirComponentes();
-        */
+        
 
         System.out.println("====================");
 
@@ -110,7 +131,6 @@ public class Main {
     }
 
     public static void pruebasL(int[] parametros) {
-
         String programa = "ejemplos/entradaL.txt";
         Programa.cargar(programa, Programa.Modelos.L);
 
@@ -118,7 +138,6 @@ public class Main {
     }
 
     public static void pruebasLoop(int[] parametros) {
-
         String programa = "ejemplos/entradaLoop.txt";
         Programa.cargar(programa, Programa.Modelos.LOOP);
 
@@ -126,7 +145,6 @@ public class Main {
     }
 
     public static void pruebasWhile(int[] parametros) {
-
         String programa = "ejemplos/entradaWhile.txt";
         Programa.cargar(programa, Programa.Modelos.WHILE);
 
@@ -134,7 +152,6 @@ public class Main {
     }
 
     private static void restoPrueba(int[] parametros) {
-
         Programa.iniciar(parametros);
 
         System.out.println("====================");
@@ -148,6 +165,7 @@ public class Main {
 
         // Programa.imprimirPrograma();
     }
+
     /*
      public static void pruebasVariables() {
 
@@ -219,5 +237,5 @@ public class Main {
      pruebaPrevioParser(args);
      Programa.imprimirEstado();
      }
-     */
+    */    
 }
