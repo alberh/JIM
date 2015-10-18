@@ -313,7 +313,7 @@ final static String yyrule[] = {
 		yylval = new MacrosParserVal(0);
 		yyl_return = analex.yylex();
 	} catch (IOException e) {
-		org.alberto.interprete.Error.deESenAnalizadorLexico();
+		org.alberto.interprete.Error.deESEnAnalizadorLexico();
 	}
 
 	return yyl_return;
