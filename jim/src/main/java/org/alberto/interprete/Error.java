@@ -8,7 +8,7 @@ public class Error {
         System.err.println(s);
         Programa.estado(Estado.ERROR);
     }
-    
+
     private static void imprimir(String s, int n) {
         if (Programa.ficheroEnProceso().equals("jim.tmp")) {
             imprimir("Línea " + n + ". " + s);
@@ -29,18 +29,14 @@ public class Error {
     public static void alCargarMacros(String f) {
         imprimir("Error 1: No se pudo leer el fichero de macros \"" + f + "\".");
     }
-    
-    public static void alCargarMacrosComunes() {
-        imprimir("Error x: No se pudo leer e");
-    }
 
     public static void alComprobarDirectorio(String d) {
         imprimir("Error 2: \"" + d + "\" no es un directorio.");
     }
 
     public static void alObtenerListaFicherosMacros(String d) {
-        imprimir("Error 3: No se pudo obtener la lista de ficheros de macros " +
-                "del directorio \"" + d + "\".");
+        imprimir("Error 3: No se pudo obtener la lista de ficheros de macros "
+                + "del directorio \"" + d + "\".");
     }
 
     public static void alCrearDirectoriosMacros() {
@@ -115,7 +111,7 @@ public class Error {
     public static void deCaracterNoReconocido(int n, String s) {
         imprimir("Error 17: Carácter '" + s + "' no reconocido.", n);
     }
-    
+
     public static void deCaracterNoReconocido(String s) {
         deCaracterNoReconocido(Programa.numeroLineaActual(), s);
     }
@@ -124,16 +120,30 @@ public class Error {
         imprimir("Error 18 en línea: Las definiciones de macros "
                 + "no pueden ser anidadas.", 0);
     }
-    
+
     public static void deDefinicionInterior() {
         deDefinicionInterior(Programa.numeroLineaActual());
     }
 
     // Analizador sintáctico
     public static void deTokenNoEsperado(String token, String descripcion) {
-        imprimir("Error 19: No se esperaba el símbolo " + token
-                + ". Descripción: " + descripcion,
-                Programa.numeroLineaActual());
+        switch (token) {
+            case "IDMACRO":
+                imprimir("Error 19: Definición de macro inesperada.",
+                        Programa.numeroLineaActual());
+                break;
+                
+            case "FLECHA":
+                imprimir("Error 19: Asignación inesperada.",
+                        Programa.numeroLineaActual());
+                break;
+
+            default:
+                imprimir("Error 19: No se esperaba el símbolo " + token
+                        + ". Descripción: " + descripcion,
+                        Programa.numeroLineaActual());
+                break;
+        }
     }
 
     public static void deTokenNoEsperado(String descripcion) {
