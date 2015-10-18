@@ -21,13 +21,18 @@ public class Error {
     public static void alCargarMacros(String f) {
         imprimir("Error 1: No se pudo leer el fichero de macros \"" + f + "\".");
     }
+    
+    public static void alCargarMacrosComunes() {
+        imprimir("Error x: No se pudo leer e");
+    }
 
     public static void alComprobarDirectorio(String d) {
         imprimir("Error 2: \"" + d + "\" no es un directorio.");
     }
 
-    public static void alObtenerListaFicherosMacros() {
-        imprimir("Error 3: No se pudo obtener la lista de ficheros de macros.");
+    public static void alObtenerListaFicherosMacros(String d) {
+        imprimir("Error 3: No se pudo obtener la lista de ficheros de macros " +
+                "del directorio \"" + d + "\".");
     }
 
     public static void alCrearDirectoriosMacros() {
@@ -44,20 +49,23 @@ public class Error {
     }
 
     // Macro
-    public static void deMacroNoDefinida(String id) {
-        imprimir("Error 7: La macro \"" + id + "\" no está definida "
-                + "en el modelo " + Programa.nombreModelo() + ".");
+    public static void deMacroNoDefinida(int n, String id) {
+        imprimir("Error 7 en línea " + n + ": La macro \"" + id
+                + "\" no está definida en el modelo "
+                + Programa.nombreModelo() + ".");
     }
 
-    public static void enNumeroParametros(String id, int numVariablesEntrada,
-            int numParametros) {
-        imprimir("Error 8: La macro \"" + id + "\" acepta un máximo de "
+    public static void enNumeroParametros(int n, String id,
+            int numVariablesEntrada, int numParametros) {
+        imprimir("Error 8 en línea " + n
+                + ": La macro \"" + id + "\" acepta un máximo de "
                 + numVariablesEntrada + " parámetros y ha sido llamada con "
                 + numParametros + ".");
     }
 
-    public static void deRecursividadEnMacros(String id) {
-        imprimir("Error 9: No se ha podido expandir la macro \"" + id
+    public static void deRecursividadEnMacros(int n, String id) {
+        imprimir("Error 9 en línea " + n
+                + ": No se ha podido expandir la macro \"" + id
                 + "\" porque contiene llamadas recursivas.");
     }
 
@@ -89,27 +97,36 @@ public class Error {
         imprimir("Error 15: No se pudo crear el fichero de configuración \""
                 + f + "\".");
     }
-    
+
     public static void alGuardarConfiguracion() {
         imprimir("Error 16: No se pudo guardar la configuración.");
     }
 
     // Analizador léxico
-    public static void deCaracterNoReconocido(String s) {
-        imprimir("Error 17: Carácter '" + s + "' no reconocido.");
+    public static void deCaracterNoReconocido(int n, String s) {
+        imprimir("Error 17 en línea " + n
+                + ": Carácter '" + s + "' no reconocido.");
+        
+        /*
+        imprimir("Error 17 en línea " + n + ": Error sintáctico.");
+        */
     }
 
-    public static void deDefinicionInterior() {
-        imprimir("Error 18: No se puede definir una macro dentro de otra definición de macro.");
+    public static void deDefinicionInterior(int n) {
+        imprimir("Error 18 en línea " + n
+                + ": Las definiciones de macros no pueden ser anidadas.");
     }
 
     // Analizador sintáctico
-    public static void deTokenNoEsperado(String nombre, String descripcion) {
-        imprimir("Error 19: No se esperaba el símbolo " + nombre + ". Descripción: " + descripcion);
+    public static void deTokenNoEsperado(String token, String descripcion) {
+        imprimir("Error 19 en línea " + Programa.numeroLineaActual()
+                + ": No se esperaba el símbolo " + token + ". Descripción: "
+                + descripcion);
     }
 
     public static void deTokenNoEsperado(String descripcion) {
-        imprimir("Error 20: No se esperaba un símbolo. Descripción: " + descripcion);
+        imprimir("Error 20 en línea " + Programa.numeroLineaActual()
+                + ": No se esperaba un símbolo. Descripción: " + descripcion);
     }
 
     public static void deESenAnalizadorLexico() {
