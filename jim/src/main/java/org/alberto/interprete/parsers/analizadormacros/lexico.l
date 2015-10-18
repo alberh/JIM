@@ -4,7 +4,8 @@ package org.alberto.interprete.parsers.analizadormacros;
 import org.alberto.interprete.parsers.AnalizadorLexico;
 import org.alberto.interprete.Variable;
 import org.alberto.interprete.Etiqueta;
-import org.alberto.interprete.Error;
+// Conflicto con la clase Error del propio analizador. Se usa con la jerarquía de paquetes.
+// import org.alberto.interprete.Error;
 
 import java.lang.StringBuilder;
 
@@ -71,7 +72,7 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                   }
 {LineTerminator}  { }
 {WhiteSpace}      { }
-.                 { Error.deCaracterNoReconocido(_lineaActual, yytext());
+.                 { org.alberto.interprete.Error.deCaracterNoReconocido(_lineaActual, yytext());
                     /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
                   }
 
@@ -95,7 +96,7 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                     _contenido.append("V" + id);
                     return MacrosParser.VARIABLE;
                   }
-"defmacro"        { Error.deDefinicionInterior(_lineaActual); }
+"defmacro"        { org.alberto.interprete.Error.deDefinicionInterior(_lineaActual); }
 "endmacro"        { yyparser.yylval = new MacrosParserVal(_contenido.toString());
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;

@@ -40,7 +40,7 @@ cleanall:
 	make clean
 
 clean:
-	cd ../../../build/classes/main; rm -rf *.class
+	cd ../../../build/classes/main/org; rm -rf *
 
 cleanjavadoc:
 	rm -rf ../doc
