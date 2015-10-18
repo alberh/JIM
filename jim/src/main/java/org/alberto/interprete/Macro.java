@@ -59,11 +59,16 @@ public class Macro {
         return hayRecursividad;
     }
 
-    public static String expandir(String vSalida, String idMacro, ArrayList<String> parametros) {
+    public static String expandir(ContenedorParametrosExpansion contenedor) {
+        String idMacro = contenedor.idMacro;
+        String idVariableSalida = contenedor.idVariableSalida;
+        ArrayList<String> parametros = contenedor.variablesEntrada;
+        int numeroLinea = contenedor.linea;
+        
         Macro macro = Macro.get(idMacro);
 
         if (macro == null) {
-            Error.deMacroNoDefinida(idMacro);
+            Error.deMacroNoDefinida(numeroLinea, idMacro);
             return null;
         }
 
@@ -75,7 +80,7 @@ public class Macro {
         int nV = macro.variablesEntrada().size();
 
         if (nP > nV) {
-            Error.enNumeroParametros(idMacro, nV, nP);
+            Error.enNumeroParametros(numeroLinea, idMacro, nV, nP);
             return null;
         }
 
@@ -83,14 +88,14 @@ public class Macro {
         // en la macro a expandir
         // AÑADIR PARÁMETRO PARA NO COMPROBAR EN LAS SUCESIVAS PASADAS DEL PREVIO
         if (hayRecursividadEnMacros(macro)) {
-            Error.deRecursividadEnMacros(idMacro);
+            Error.deRecursividadEnMacros(numeroLinea, idMacro);
             return null;
         }
 
-        vSalida = vSalida.toUpperCase();
+        idVariableSalida = idVariableSalida.toUpperCase();
 
         String expansion = new String(macro.cuerpo());
-        String asignaciones = vSalida + " <- 0\n";
+        String asignaciones = idVariableSalida + " <- 0\n";
 
         ArrayList<String> vEntrada = macro.variablesEntrada();
         vEntrada.sort(null);
@@ -149,11 +154,11 @@ public class Macro {
             /* Añadimos una última línea con la etiqueta designada como etiqueta de salida de la macro
              * y la asignación a la variable de salida indicada por el usuario
              */
-            expansion = expansion + "\n[" + etiquetaSalida + "] " + vSalida + " <- " + variableSalidaLocal;
+            expansion = expansion + "\n[" + etiquetaSalida + "] " + idVariableSalida + " <- " + variableSalidaLocal;
         } else {
             /* Añadimos una última línea con la asignación a la variable de salida indicada por el usuario
              */
-            expansion = expansion + vSalida + " <- " + variableSalidaLocal;
+            expansion = expansion + idVariableSalida + " <- " + variableSalidaLocal;
         }
 
         return expansion + "\n# Fin expansión de " + idMacro + "\n";

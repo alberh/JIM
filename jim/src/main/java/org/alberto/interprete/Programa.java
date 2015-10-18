@@ -140,7 +140,7 @@ public class Programa {
                 System.out.println("Expandiendo macros...");
                 PrevioAcciones.expandir();
             } else {
-                System.out.println("No hay llamadas a macros en el código.");
+                System.out.println("No hay llamadas a macros en el programa.");
             }
         }
     }
@@ -197,6 +197,8 @@ public class Programa {
                                 = new MacrosParser(new FileReader(rutaFichero));
 
                         macrosParser.parse();
+                        
+                        /* ejecutar(macrosParser); */
                     } catch (FileNotFoundException ex) {
                         Error.alCargarMacros(rutaFichero);
                     }

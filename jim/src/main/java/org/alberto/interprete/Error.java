@@ -49,20 +49,23 @@ public class Error {
     }
 
     // Macro
-    public static void deMacroNoDefinida(String id) {
-        imprimir("Error 7: La macro \"" + id + "\" no está definida "
-                + "en el modelo " + Programa.nombreModelo() + ".");
+    public static void deMacroNoDefinida(int n, String id) {
+        imprimir("Error 7 en línea " + n + ": La macro \"" + id
+                + "\" no está definida en el modelo "
+                + Programa.nombreModelo() + ".");
     }
 
-    public static void enNumeroParametros(String id, int numVariablesEntrada,
-            int numParametros) {
-        imprimir("Error 8: La macro \"" + id + "\" acepta un máximo de "
+    public static void enNumeroParametros(int n, String id,
+            int numVariablesEntrada, int numParametros) {
+        imprimir("Error 8 en línea " + n
+                + ": La macro \"" + id + "\" acepta un máximo de "
                 + numVariablesEntrada + " parámetros y ha sido llamada con "
                 + numParametros + ".");
     }
 
-    public static void deRecursividadEnMacros(String id) {
-        imprimir("Error 9: No se ha podido expandir la macro \"" + id
+    public static void deRecursividadEnMacros(int n, String id) {
+        imprimir("Error 9 en línea " + n
+                + ": No se ha podido expandir la macro \"" + id
                 + "\" porque contiene llamadas recursivas.");
     }
 
@@ -100,20 +103,24 @@ public class Error {
     }
 
     // Analizador léxico
-    public static void deCaracterNoReconocido(String s) {
-        imprimir("Error 17 en línea " + Programa.numeroLineaActual()
+    public static void deCaracterNoReconocido(int n, String s) {
+        imprimir("Error 17 en línea " + n
                 + ": Carácter '" + s + "' no reconocido.");
+        
+        /*
+        imprimir("Error 17 en línea " + n + ": Error sintáctico.");
+        */
     }
 
-    public static void deDefinicionInterior() {
-        imprimir("Error 18 en línea " + Programa.numeroLineaActual()
-                + ": No se puede definir una macro dentro de otra definición de macro.");
+    public static void deDefinicionInterior(int n) {
+        imprimir("Error 18 en línea " + n
+                + ": Las definiciones de macros no pueden ser anidadas.");
     }
 
     // Analizador sintáctico
-    public static void deTokenNoEsperado(String nombre, String descripcion) {
+    public static void deTokenNoEsperado(String token, String descripcion) {
         imprimir("Error 19 en línea " + Programa.numeroLineaActual()
-                + ": No se esperaba el símbolo " + nombre + ". Descripción: "
+                + ": No se esperaba el símbolo " + token + ". Descripción: "
                 + descripcion);
     }
 
