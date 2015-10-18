@@ -61,10 +61,7 @@ public class PrevioAcciones extends Acciones {
             setIncremento(0);
 
             for (ContenedorParametrosExpansion contenedorExpansion : _expansiones) {
-                String resultadoExpansion = Macro.expandir(contenedorExpansion.idVariableSalida,
-                        contenedorExpansion.idMacro,
-                        contenedorExpansion.variablesEntrada
-                );
+                String resultadoExpansion = Macro.expandir(contenedorExpansion);
 
                 if (resultadoExpansion != null) {
 

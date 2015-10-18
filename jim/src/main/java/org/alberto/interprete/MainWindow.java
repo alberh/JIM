@@ -231,7 +231,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         taEditor.setColumns(20);
         taEditor.setRows(5);
-        taEditor.setText("y <- dieciseis");
+        taEditor.setText("y <- dieciseis()");
         taEditor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 taEditorKeyPressed(evt);
