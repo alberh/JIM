@@ -63,7 +63,6 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 %%
 
 <YYINITIAL> {
-
 {Comment}         { }
 "defmacro"        { return MacrosParser.DEFMACRO;
                   }
@@ -72,7 +71,7 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                     yybegin(CUERPO);
                     return MacrosParser.IDMACRO;
                   }
-{LineTerminator}  { }
+{LineTerminator}  { _lineaActual++; }
 {WhiteSpace}      { }
 .                 { org.alberto.interprete.Error.deCaracterNoReconocido(_lineaActual, yytext());
                     /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
@@ -81,7 +80,6 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 } // YYINITIAL
 
 <CUERPO> {
-
 "#".*             { }
 "goto"|"GOTO"     { _contenido.append(yytext());
                     return MacrosParser.GOTO;
@@ -114,6 +112,7 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 {InputCharacter}  { _contenido.append(yytext());
                   }
 {LineTerminator}  { _contenido.append(yytext());
+                    _lineaActual++;
                   }
 
 } // CUERPO

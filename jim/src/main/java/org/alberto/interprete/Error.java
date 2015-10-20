@@ -5,8 +5,10 @@ import org.alberto.interprete.Programa.Estado;
 public class Error {
 
     private static void imprimir(String s) {
-        System.err.println(s);
-        Programa.estado(Estado.ERROR);
+        if (Programa.estadoOk()) {
+            System.err.println(s);
+            Programa.estado(Estado.ERROR);
+        }
     }
 
     private static void imprimir(String s, int n) {
@@ -127,32 +129,42 @@ public class Error {
 
     // Analizador sintáctico
     public static void deTokenNoEsperado(String token, String descripcion) {
+        deTokenNoEsperado(Programa.numeroLineaActual(), token, descripcion);
+    }
+
+    public static void deTokenNoEsperado(int n, String token, String descripcion) {
         switch (token) {
             case "IDMACRO":
-                imprimir("Error 19: Definición de macro inesperada.",
-                        Programa.numeroLineaActual());
+                imprimir("Error 19: Definición de macro inesperada.", n);
                 break;
                 
             case "FLECHA":
-                imprimir("Error 19: Asignación inesperada.",
-                        Programa.numeroLineaActual());
+                imprimir("Error 19: Asignación inesperada.", n);
                 break;
 
             default:
                 imprimir("Error 19: No se esperaba el símbolo " + token
-                        + ". Descripción: " + descripcion,
-                        Programa.numeroLineaActual());
+                            + ". Descripción: " + descripcion,
+                        n);
                 break;
         }
     }
 
     public static void deTokenNoEsperado(String descripcion) {
+        deTokenNoEsperado(Programa.numeroLineaActual(), descripcion);
+    }
+
+    public static void deTokenNoEsperado(int n, String descripcion) {
         imprimir("Error 20: No se esperaba un símbolo. Descripción: "
                 + descripcion,
-                Programa.numeroLineaActual());
+                n);
     }
 
     public static void deESEnAnalizadorLexico() {
-        imprimir("Error 21: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.");
+        deESEnAnalizadorLexico(Programa.numeroLineaActual());
+    }
+
+    public static void deESEnAnalizadorLexico(int n) {
+        imprimir("Error 21: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", n);
     }
 }

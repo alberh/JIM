@@ -483,6 +483,7 @@ public class MainWindow extends javax.swing.JFrame {
             Programa.iniciar(parametros);
 
             if (Programa.estado() == Programa.Estado.OK) {
+                System.out.println();
                 System.out.println("Resultado: " + Programa.resultado());
             } else {
                 focusSalidaErrores();

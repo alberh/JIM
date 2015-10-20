@@ -65,6 +65,7 @@ public class Main {
         Programa.iniciar(parametros);
 
         if (Programa.estadoOk()) {
+            System.out.println();
             System.out.println("Resultado: " + Programa.resultado());
         }
     }
@@ -74,6 +75,7 @@ public class Main {
         Programa.iniciarExpansionMacros();
 
         if (Programa.estadoOk()) {
+            System.out.println();
             System.out.println("Programa tras la expansión");
             System.out.println();
             System.out.println(Programa.obtenerPrograma());

@@ -313,7 +313,7 @@ final static String yyrule[] = {
 		yylval = new MacrosParserVal(0);
 		yyl_return = analex.yylex();
 	} catch (IOException e) {
-		org.alberto.interprete.Error.deESEnAnalizadorLexico();
+		org.alberto.interprete.Error.deESEnAnalizadorLexico(77); //analex.lineaActual());
 	}
 
 	return yyl_return;
@@ -323,7 +323,8 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-  	org.alberto.interprete.Error.deTokenNoEsperado(nombreToken, descripcion);
+	org.alberto.interprete.Error.deTokenNoEsperado(analex.lineaActual(), nombreToken, descripcion);
+  	
   	/*
 	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
 	System.err.println ("Token leído : "+yyname[token]);
@@ -364,7 +365,12 @@ final static String yyrule[] = {
 	System.err.println(nombresTokens);
 	*/
   }
-//#line 294 "MacrosParser.java"
+
+  @Override
+  public void yyerror(String descripcion) {
+  	org.alberto.interprete.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
+  }
+//#line 300 "MacrosParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -542,7 +548,7 @@ case 11:
 //#line 30 "gramatica.y"
 { MacrosAcciones.nuevaEtiquetaSalto(val_peek(0).sval); }
 break;
-//#line 467 "MacrosParser.java"
+//#line 473 "MacrosParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
