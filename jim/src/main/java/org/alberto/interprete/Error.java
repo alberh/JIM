@@ -9,6 +9,14 @@ public class Error {
         Programa.estado(Estado.ERROR);
     }
 
+    private static void imprimir(String s, int n) {
+        if (Programa.ficheroEnProceso().equals("jim.tmp")) {
+            imprimir("Línea " + n + ". " + s);
+        } else {
+            imprimir(Programa.ficheroEnProceso() + ":" + n + ". " + s);
+        }
+    }
+
     private static int linea(int error) {
         return Programa.numeroLineaActual();
     }
@@ -21,18 +29,14 @@ public class Error {
     public static void alCargarMacros(String f) {
         imprimir("Error 1: No se pudo leer el fichero de macros \"" + f + "\".");
     }
-    
-    public static void alCargarMacrosComunes() {
-        imprimir("Error x: No se pudo leer e");
-    }
 
     public static void alComprobarDirectorio(String d) {
         imprimir("Error 2: \"" + d + "\" no es un directorio.");
     }
 
     public static void alObtenerListaFicherosMacros(String d) {
-        imprimir("Error 3: No se pudo obtener la lista de ficheros de macros " +
-                "del directorio \"" + d + "\".");
+        imprimir("Error 3: No se pudo obtener la lista de ficheros de macros "
+                + "del directorio \"" + d + "\".");
     }
 
     public static void alCrearDirectoriosMacros() {
@@ -50,23 +54,24 @@ public class Error {
 
     // Macro
     public static void deMacroNoDefinida(int n, String id) {
-        imprimir("Error 7 en línea " + n + ": La macro \"" + id
+        imprimir("Error 7: La macro \"" + id
                 + "\" no está definida en el modelo "
-                + Programa.nombreModelo() + ".");
+                + Programa.nombreModelo() + ".",
+                n);
     }
 
     public static void enNumeroParametros(int n, String id,
             int numVariablesEntrada, int numParametros) {
-        imprimir("Error 8 en línea " + n
-                + ": La macro \"" + id + "\" acepta un máximo de "
+        imprimir("Error 8 : La macro \"" + id + "\" acepta un máximo de "
                 + numVariablesEntrada + " parámetros y ha sido llamada con "
-                + numParametros + ".");
+                + numParametros + ".",
+                n);
     }
 
     public static void deRecursividadEnMacros(int n, String id) {
-        imprimir("Error 9 en línea " + n
-                + ": No se ha podido expandir la macro \"" + id
-                + "\" porque contiene llamadas recursivas.");
+        imprimir("Error 9: No se ha podido expandir la macro \"" + id
+                + "\" porque contiene llamadas recursivas.",
+                n);
     }
 
     // GUI
@@ -104,32 +109,50 @@ public class Error {
 
     // Analizador léxico
     public static void deCaracterNoReconocido(int n, String s) {
-        imprimir("Error 17 en línea " + n
-                + ": Carácter '" + s + "' no reconocido.");
-        
-        /*
-        imprimir("Error 17 en línea " + n + ": Error sintáctico.");
-        */
+        imprimir("Error 17: Carácter '" + s + "' no reconocido.", n);
+    }
+
+    public static void deCaracterNoReconocido(String s) {
+        deCaracterNoReconocido(Programa.numeroLineaActual(), s);
     }
 
     public static void deDefinicionInterior(int n) {
-        imprimir("Error 18 en línea " + n
-                + ": Las definiciones de macros no pueden ser anidadas.");
+        imprimir("Error 18 en línea: Las definiciones de macros "
+                + "no pueden ser anidadas.", 0);
+    }
+
+    public static void deDefinicionInterior() {
+        deDefinicionInterior(Programa.numeroLineaActual());
     }
 
     // Analizador sintáctico
     public static void deTokenNoEsperado(String token, String descripcion) {
-        imprimir("Error 19 en línea " + Programa.numeroLineaActual()
-                + ": No se esperaba el símbolo " + token + ". Descripción: "
-                + descripcion);
+        switch (token) {
+            case "IDMACRO":
+                imprimir("Error 19: Definición de macro inesperada.",
+                        Programa.numeroLineaActual());
+                break;
+                
+            case "FLECHA":
+                imprimir("Error 19: Asignación inesperada.",
+                        Programa.numeroLineaActual());
+                break;
+
+            default:
+                imprimir("Error 19: No se esperaba el símbolo " + token
+                        + ". Descripción: " + descripcion,
+                        Programa.numeroLineaActual());
+                break;
+        }
     }
 
     public static void deTokenNoEsperado(String descripcion) {
-        imprimir("Error 20 en línea " + Programa.numeroLineaActual()
-                + ": No se esperaba un símbolo. Descripción: " + descripcion);
+        imprimir("Error 20: No se esperaba un símbolo. Descripción: "
+                + descripcion,
+                Programa.numeroLineaActual());
     }
 
-    public static void deESenAnalizadorLexico() {
+    public static void deESEnAnalizadorLexico() {
         imprimir("Error 21: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.");
     }
 }

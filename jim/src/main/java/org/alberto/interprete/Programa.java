@@ -24,11 +24,14 @@ import java.util.Scanner;
 
 public class Programa {
 
+    private static String _ficheroPrograma;
+    private static String _ficheroEnProceso;
     private static ArrayList<String> _lineas;
     private static int _lineaActual;
-    //private static IParser _parser;
+    
     private static Parser _parser;
     private static boolean _salto;
+    
 
     public enum Estado {
 
@@ -56,18 +59,24 @@ public class Programa {
     public static boolean estadoOk() {
         return _estado == Estado.OK;
     }
+    
+    public static String ficheroEnProceso() {
+        return new File(_ficheroEnProceso).getName();
+    }
 
-    public static boolean cargar(String programa, Modelos modelo) {
+    public static boolean cargar(String fichero, Modelos modelo) {
         try {
             _modelo = modelo;
             _lineas = new ArrayList<>();
+            _ficheroPrograma = fichero;
 
-            Scanner scanner = new Scanner(new File(programa));
+            Scanner scanner = new Scanner(new File(fichero));
             while (scanner.hasNextLine()) {
                 _lineas.add(scanner.nextLine());
             }
             scanner.close();
 
+            _ficheroEnProceso = fichero;
             _lineaActual = numeroLineas();
 
             switch (_modelo) {
@@ -89,7 +98,7 @@ public class Programa {
 
             return true;
         } catch (FileNotFoundException ex) {
-            Error.alCargarPrograma(programa);
+            Error.alCargarPrograma(fichero);
         }
 
         return false;
@@ -103,6 +112,11 @@ public class Programa {
         limpiar();
         comprobarDirectoriosMacros();
         cargarMacros();
+        
+        _ficheroEnProceso = _ficheroPrograma;
+        if (estadoOk()) {
+            System.out.println("Analizando el programa...");
+        }
         previo();
 
         if (estadoOk()) {
@@ -132,6 +146,10 @@ public class Programa {
         limpiar();
         comprobarDirectoriosMacros();
         cargarMacros();
+        
+        if (estadoOk()) {
+            System.out.println("Analizando el programa...");
+        }
         previo();
 
         if (estadoOk()) {
@@ -192,13 +210,11 @@ public class Programa {
 
                     String fichero = p.getFileName().toString();
                     String rutaFichero = rutaMacros + "/" + fichero;
+                    _ficheroEnProceso = rutaFichero;
                     try {
                         MacrosParser macrosParser
                                 = new MacrosParser(new FileReader(rutaFichero));
-
                         macrosParser.parse();
-                        
-                        /* ejecutar(macrosParser); */
                     } catch (FileNotFoundException ex) {
                         Error.alCargarMacros(rutaFichero);
                     }
@@ -278,7 +294,6 @@ public class Programa {
     }
 
     private static void previo() {
-        System.out.println("Analizando el programa...");
         if (estadoOk()) {
             ejecutar(new PrevioParser(null));
         }
@@ -294,6 +309,7 @@ public class Programa {
     }
 
     private static void ejecutar(Parser parser, boolean traza) {
+        _ficheroEnProceso = _ficheroPrograma;
         _lineaActual = 0;
         _salto = false;
         AnalizadorLexico lex = parser.analizadorLexico();

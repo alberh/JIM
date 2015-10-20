@@ -4,6 +4,10 @@ package org.alberto.interprete.parsers.analizadormacros;
 import org.alberto.interprete.parsers.AnalizadorLexico;
 import org.alberto.interprete.Variable;
 import org.alberto.interprete.Etiqueta;
+// Debido a conflicto con la clase Error del propio analizador,
+// se hace referencia a la clase Error especificando toda la jerarquía
+// de paquetes, en lugar de añadir el sigiente import.
+// import org.alberto.interprete.Error;
 
 import java.lang.StringBuilder;
 
@@ -26,9 +30,15 @@ import java.lang.StringBuilder;
     this(r);
     yyparser = p;
     _contenido = new StringBuilder();
+    _lineaActual = 1;
   }
 
   private StringBuilder _contenido;
+  private int _lineaActual;
+
+  public int lineaActual() {
+    return _lineaActual;
+  }
 
 %}
 
@@ -64,7 +74,8 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                   }
 {LineTerminator}  { }
 {WhiteSpace}      { }
-.                 { org.alberto.interprete.Error.deCaracterNoReconocido(yytext()); /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
+.                 { org.alberto.interprete.Error.deCaracterNoReconocido(_lineaActual, yytext());
+                    /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
                   }
 
 } // YYINITIAL
@@ -87,8 +98,7 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                     _contenido.append("V" + id);
                     return MacrosParser.VARIABLE;
                   }
-"defmacro"		    { org.alberto.interprete.Error.deDefinicionInterior();
-				          }
+"defmacro"        { org.alberto.interprete.Error.deDefinicionInterior(_lineaActual); }
 "endmacro"        { yyparser.yylval = new MacrosParserVal(_contenido.toString());
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;
