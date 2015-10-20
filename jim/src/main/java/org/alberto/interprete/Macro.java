@@ -64,7 +64,7 @@ public class Macro {
         String idVariableSalida = contenedor.idVariableSalida;
         ArrayList<String> parametros = contenedor.variablesEntrada;
         int numeroLinea = contenedor.linea;
-        
+
         Macro macro = Macro.get(idMacro);
 
         if (macro == null) {
