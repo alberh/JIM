@@ -174,8 +174,12 @@ public class Programa {
         if (estadoOk()) {
             System.out.println("Expandiendo macros...");
 
-            if (PrevioAcciones.llamadasAMacros() > 0) {
+            int llamadas = PrevioAcciones.llamadasAMacros();
+            if (llamadas > 0) {
                 PrevioAcciones.expandir();
+                
+                System.out.println();
+                System.out.println(llamadas + " llamadas a macro expandidas.");
             } else {
                 System.out.println();
                 System.out.println("No hay llamadas a macros en el programa.");
