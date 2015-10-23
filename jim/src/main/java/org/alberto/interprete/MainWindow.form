@@ -393,7 +393,7 @@
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="y &lt;- dieciseis()"/>
+                <Property name="text" type="java.lang.String" value="&#x9;Z &lt;- producto(x1, x2)&#xa;&#x9;IF Z != 0 GOTO A&#xa;&#x9;Y &lt;- suma(x1, x2)&#xa;&#x9;GOTO E&#xa;[A]&#x9;Y &lt;- Z&#xa;&#x9;"/>
               </Properties>
               <Events>
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="taEditorKeyPressed"/>
@@ -421,7 +421,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTextArea" name="taSalidaEstandar">
+                <Component class="javax.swing.JTextArea" name="taSalida">
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                     <Property name="columns" type="int" value="20"/>
@@ -436,28 +436,26 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+            <Container class="javax.swing.JScrollPane" name="jScrollPane4">
+              <Properties>
+                <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
+              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Errores">
-                    <Property name="tabTitle" type="java.lang.String" value="Errores"/>
+                  <JTabbedPaneConstraints tabName="Traza">
+                    <Property name="tabTitle" type="java.lang.String" value="Traza"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTextArea" name="taSalidaErrores">
+                <Component class="javax.swing.JTextArea" name="taTraza">
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                     <Property name="columns" type="int" value="20"/>
+                    <Property name="lineWrap" type="boolean" value="true"/>
                     <Property name="rows" type="int" value="5"/>
-                    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                      <Color id="Cursor de Texto"/>
-                    </Property>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[2147483647, 96]"/>
-                    </Property>
                   </Properties>
                 </Component>
               </SubComponents>

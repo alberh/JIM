@@ -66,7 +66,7 @@ public class PrevioAcciones extends Acciones {
                 if (resultadoExpansion != null) {
 
                     ArrayList<String> lineasExpansion = new ArrayList<>(
-                            Arrays.asList(resultadoExpansion.split("\n"))
+                            Arrays.asList(resultadoExpansion.split("[\n\r]+"))
                     );
 
                     Programa.insertarExpansion(

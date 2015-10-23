@@ -59,11 +59,11 @@ public class Macro {
         return hayRecursividad;
     }
 
-    public static String expandir(ContenedorParametrosExpansion contenedor) {
-        String idMacro = contenedor.idMacro;
-        String idVariableSalida = contenedor.idVariableSalida;
-        ArrayList<String> parametros = contenedor.variablesEntrada;
-        int numeroLinea = contenedor.linea;
+    public static String expandir(ContenedorParametrosExpansion parametrosExpansion) {
+        String idMacro = parametrosExpansion.idMacro;
+        String idVariableSalida = parametrosExpansion.idVariableSalida;
+        ArrayList<String> parametrosEntrada = parametrosExpansion.variablesEntrada;
+        int numeroLinea = parametrosExpansion.linea;
 
         Macro macro = Macro.get(idMacro);
 
@@ -76,7 +76,7 @@ public class Macro {
         //  - Permitir llamadas con 0 a Nv parámetros, siendo Nv
         //    el número de variables de entrada que se utilizan
         //    en la macro. Si nP > Nv, mostrar error.
-        int nP = parametros.size();
+        int nP = parametrosEntrada.size();
         int nV = macro.variablesEntrada().size();
 
         if (nP > nV) {
@@ -86,7 +86,6 @@ public class Macro {
 
         // Comprobamos que no hay llamadas recursivas directas ni indirectas
         // en la macro a expandir
-        // AÑADIR PARÁMETRO PARA NO COMPROBAR EN LAS SUCESIVAS PASADAS DEL PREVIO
         if (hayRecursividadEnMacros(macro)) {
             Error.deRecursividadEnMacros(numeroLinea, idMacro);
             return null;
@@ -94,8 +93,9 @@ public class Macro {
 
         idVariableSalida = idVariableSalida.toUpperCase();
 
+        String separador = System.getProperty("line.separator");
         String expansion = new String(macro.cuerpo());
-        String asignaciones = idVariableSalida + " <- 0\n";
+        String asignaciones = idVariableSalida + " <- 0" + separador;
 
         ArrayList<String> vEntrada = macro.variablesEntrada();
         vEntrada.sort(null);
@@ -108,8 +108,9 @@ public class Macro {
 
             expansion = expansion.replace(variable, nuevaVariable);
 
-            if (i < parametros.size()) {
-                asignaciones += nuevaVariable + " <- " + parametros.get(i).toUpperCase() + "\n";
+            if (i < parametrosEntrada.size()) {
+                asignaciones += nuevaVariable + " <- "
+                        + parametrosEntrada.get(i).toUpperCase() + separador;
             }
         }
 
@@ -122,7 +123,7 @@ public class Macro {
          * por esta nueva variable
          */
         String variableSalidaLocal = Variable.get(Variable.EVariable.LOCAL).id();
-        expansion = "# Expansión de " + idMacro + "\n"
+        expansion = "# Expansión de " + idMacro + separador
                 + asignaciones + expansion.replace("VY", variableSalidaLocal);
 
         if (Programa.modelo() == Programa.Modelos.L) {
@@ -154,14 +155,15 @@ public class Macro {
             /* Añadimos una última línea con la etiqueta designada como etiqueta de salida de la macro
              * y la asignación a la variable de salida indicada por el usuario
              */
-            expansion = expansion + "\n[" + etiquetaSalida + "] " + idVariableSalida + " <- " + variableSalidaLocal;
+            expansion = expansion + separador + "[" + etiquetaSalida + "] "
+                    + idVariableSalida + " <- " + variableSalidaLocal;
         } else {
             /* Añadimos una última línea con la asignación a la variable de salida indicada por el usuario
              */
             expansion = expansion + idVariableSalida + " <- " + variableSalidaLocal;
         }
 
-        return expansion + "\n# Fin expansión de " + idMacro + "\n";
+        return expansion + "\n# Fin expansión de " + idMacro + separador;
     }
 
     public Macro(String id) {
@@ -220,7 +222,8 @@ public class Macro {
                 break;
 
             default:
-                System.err.println("Error: Tipo de variable '" + id + "' desconocido.");
+                System.err.println("Error: Tipo de variable '" + id
+                        + "' desconocido.");
         }
     }
 

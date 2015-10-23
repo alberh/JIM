@@ -28,16 +28,24 @@ public class Programa {
     private static String _ficheroEnProceso;
     private static ArrayList<String> _lineas;
     private static int _lineaActual;
-    
+
+    private static StringBuilder _traza = new StringBuilder();
+
     private static Parser _parser;
     private static boolean _salto;
-    
 
     public enum Estado {
 
         OK, ERROR
     };
     private static Estado _estado = Estado.OK;
+
+    public enum Etapa {
+
+        ESPERA, CARGANDO_FICHERO, COMPROBANDO_DIRECTORIO_MACROS,
+        CARGANDO_MACROS, ANALIZANDO, EXPANDIENDO_MACROS, EJECUTANDO
+    };
+    private static Etapa _etapa = Etapa.ESPERA;
 
     public enum Modelos {
 
@@ -56,16 +64,25 @@ public class Programa {
         return _estado;
     }
 
+    public static void etapa(Etapa etapa) {
+        _etapa = etapa;
+    }
+
+    public static Etapa estapa() {
+        return _etapa;
+    }
+
     public static boolean estadoOk() {
         return _estado == Estado.OK;
     }
-    
+
     public static String ficheroEnProceso() {
         return new File(_ficheroEnProceso).getName();
     }
 
     public static boolean cargar(String fichero, Modelos modelo) {
         try {
+            _etapa = Etapa.CARGANDO_FICHERO;
             _modelo = modelo;
             _lineas = new ArrayList<>();
             _ficheroPrograma = fichero;
@@ -112,7 +129,7 @@ public class Programa {
         limpiar();
         comprobarDirectoriosMacros();
         cargarMacros();
-        
+
         _ficheroEnProceso = _ficheroPrograma;
         if (estadoOk()) {
             System.out.println("Analizando el programa...");
@@ -135,7 +152,9 @@ public class Programa {
             }
 
             // Lanzar
-            // System.out.println("Ejecutando...");
+            System.out.println("Ejecutando...");
+            System.out.println("Si el programa no termina en unos segundos, "
+                    + "probablemente haya caído en un bucle infinito.");
             ejecutar(_parser);
         } else {
             _estado = Estado.ERROR;
@@ -146,18 +165,19 @@ public class Programa {
         limpiar();
         comprobarDirectoriosMacros();
         cargarMacros();
-        
+
         if (estadoOk()) {
             System.out.println("Analizando el programa...");
         }
         previo();
 
         if (estadoOk()) {
-            int llamadas = PrevioAcciones.llamadasAMacros();
-            if (llamadas > 0) {
-                System.out.println("Expandiendo macros...");
+            System.out.println("Expandiendo macros...");
+
+            if (PrevioAcciones.llamadasAMacros() > 0) {
                 PrevioAcciones.expandir();
             } else {
+                System.out.println();
                 System.out.println("No hay llamadas a macros en el programa.");
             }
         }
@@ -180,6 +200,7 @@ public class Programa {
     }
 
     public static void cargarMacros() {
+        _etapa = Etapa.CARGANDO_MACROS;
         System.out.println("Cargando macros...");
 
         if (estadoOk()) {
@@ -195,7 +216,7 @@ public class Programa {
         //Error.alObtenerListaFicherosMacros(rutaMacros);
         try {
             ArrayList<Path> rutas = new ArrayList<>();
-            
+
             DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(rutaMacros));
             for (Path path : directoryStream) {
                 if (path.toFile().isFile()) {
@@ -259,6 +280,7 @@ public class Programa {
     }
 
     private static void comprobarDirectoriosMacros() {
+        _etapa = Etapa.COMPROBANDO_DIRECTORIO_MACROS;
         System.out.println("Comprobando directorios de macros...");
         /* Esquema por defecto:
          * macros/
@@ -294,6 +316,7 @@ public class Programa {
     }
 
     private static void previo() {
+        _etapa = Etapa.ANALIZANDO;
         if (estadoOk()) {
             ejecutar(new PrevioParser(null));
         }
@@ -309,6 +332,12 @@ public class Programa {
     }
 
     private static void ejecutar(Parser parser, boolean traza) {
+        if (!(parser instanceof PrevioParser)) {
+            _etapa = Etapa.EJECUTANDO;
+        }
+        // System.out.println("Etapa en ejecutar: " + _etapa);
+
+        _traza = new StringBuilder();
         _ficheroEnProceso = _ficheroPrograma;
         _lineaActual = 0;
         _salto = false;
@@ -318,9 +347,13 @@ public class Programa {
             String linea = lineaSiguiente();
 
             do {
-                if (traza) {
-                    System.out.println(_lineaActual + ": " + linea);
-                    System.out.println(estadoMemoria());
+                if (_etapa == Etapa.EJECUTANDO) {
+                    if (traza) {
+                        // System.out.println(_lineaActual + ": " + linea);
+                        System.out.println(estadoMemoria());
+                    }
+                    _traza.append(estadoMemoria())
+                            .append(System.getProperty("line.separator"));
                 }
 
                 try {
@@ -372,6 +405,10 @@ public class Programa {
         sb.append(">)");
 
         return sb.toString();
+    }
+
+    public static String traza() {
+        return _traza.toString();
     }
 
     private static void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {

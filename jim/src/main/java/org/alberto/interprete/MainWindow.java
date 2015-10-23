@@ -31,16 +31,12 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         initComponents();
 
-        Consola.inicializar(taSalidaEstandar, taSalidaErrores);
+        Consola.inicializar(taSalida, taSalida);
         System.setOut(Consola.estandar());
         System.setErr(Consola.errores());
 
         Configuracion.cargar();
         MainWindow.bienvenida();
-    }
-    
-    public void focusSalidaErrores() {
-        tabPanelSalida.setSelectedIndex(1);
     }
 
     public static void bienvenida() {
@@ -82,9 +78,9 @@ public class MainWindow extends javax.swing.JFrame {
         taEditor = new javax.swing.JTextArea();
         tabPanelSalida = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
-        taSalidaEstandar = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        taSalidaErrores = new javax.swing.JTextArea();
+        taSalida = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        taTraza = new javax.swing.JTextArea();
         barraMenu = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         menuArchivoNuevo = new javax.swing.JMenuItem();
@@ -231,7 +227,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         taEditor.setColumns(20);
         taEditor.setRows(5);
-        taEditor.setText("y <- dieciseis()");
+        taEditor.setText("\tZ <- producto(x1, x2)\n\tIF Z != 0 GOTO A\n\tY <- suma(x1, x2)\n\tGOTO E\n[A]\tY <- Z\n\t");
         taEditor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 taEditorKeyPressed(evt);
@@ -241,23 +237,24 @@ public class MainWindow extends javax.swing.JFrame {
 
         jSplitPane1.setLeftComponent(jScrollPane1);
 
-        taSalidaEstandar.setEditable(false);
-        taSalidaEstandar.setColumns(20);
-        taSalidaEstandar.setRows(5);
-        taSalidaEstandar.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        taSalidaEstandar.setMaximumSize(new java.awt.Dimension(2147483647, 96));
-        jScrollPane2.setViewportView(taSalidaEstandar);
+        taSalida.setEditable(false);
+        taSalida.setColumns(20);
+        taSalida.setRows(5);
+        taSalida.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        taSalida.setMaximumSize(new java.awt.Dimension(2147483647, 96));
+        jScrollPane2.setViewportView(taSalida);
 
         tabPanelSalida.addTab("Salida", jScrollPane2);
 
-        taSalidaErrores.setEditable(false);
-        taSalidaErrores.setColumns(20);
-        taSalidaErrores.setRows(5);
-        taSalidaErrores.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        taSalidaErrores.setMaximumSize(new java.awt.Dimension(2147483647, 96));
-        jScrollPane3.setViewportView(taSalidaErrores);
+        jScrollPane4.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        tabPanelSalida.addTab("Errores", jScrollPane3);
+        taTraza.setEditable(false);
+        taTraza.setColumns(20);
+        taTraza.setLineWrap(true);
+        taTraza.setRows(5);
+        jScrollPane4.setViewportView(taTraza);
+
+        tabPanelSalida.addTab("Traza", jScrollPane4);
 
         jSplitPane1.setRightComponent(tabPanelSalida);
 
@@ -439,10 +436,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_menuProgramaExpandirMacrosActionPerformed
 
     private void comprobacionesPreviasAEjecucion() {
-        taSalidaEstandar.setText("");
-        taSalidaErrores.setText("");
-        tabPanelSalida.setSelectedIndex(0);
-        
+        taSalida.setText("");
+        taTraza.setText("");
+
         // comprobar que el programa esté guardado en un fichero
         // si no, crear un fichero temporal "jim.tmp"
         if (_ficheroAbierto == null) {
@@ -457,8 +453,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void moverCursorAlFinal() {
-        int posicionFinal = taSalidaEstandar.getDocument().getLength();
-        taSalidaEstandar.setCaretPosition(posicionFinal);
+        int posicionFinal = taSalida.getDocument().getLength();
+        taSalida.setCaretPosition(posicionFinal);
     }
 
     private void iniciarPrograma() {
@@ -482,11 +478,12 @@ public class MainWindow extends javax.swing.JFrame {
 
             Programa.iniciar(parametros);
 
-            if (Programa.estado() == Programa.Estado.OK) {
+            if (Programa.estadoOk()) {
                 System.out.println();
                 System.out.println("Resultado: " + Programa.resultado());
+                taTraza.setText(Programa.traza());
             } else {
-                focusSalidaErrores();
+                tabPanelSalida.setSelectedIndex(0);
             }
 
             moverCursorAlFinal();
@@ -502,11 +499,11 @@ public class MainWindow extends javax.swing.JFrame {
             taEditor.setText(Programa.obtenerPrograma());
             hayCambios();
 
-            if (Programa.estado() != Programa.estado().OK) {
-                focusSalidaErrores();
-            }
-            
             moverCursorAlFinal();
+        }
+        
+        if (!Programa.estadoOk()) {
+            tabPanelSalida.setSelectedIndex(0);
         }
     }
 
@@ -608,7 +605,6 @@ public class MainWindow extends javax.swing.JFrame {
 
             } catch (Exception ex) {
                 Error.alCargarProgramaGUI(_ficheroAbierto.getAbsolutePath());
-                focusSalidaErrores();
             }
         }
     }
@@ -624,8 +620,6 @@ public class MainWindow extends javax.swing.JFrame {
                 } else {
                     Error.alGuardarFicheroTemporal();
                 }
-                
-                focusSalidaErrores();
             }
         } else {
             guardarFicheroComo();
@@ -638,7 +632,7 @@ public class MainWindow extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _ficheroAbierto = _fc.getSelectedFile();
             guardarFichero();
-            
+
             this.setTitle(tituloYFichero());
         }
     }
@@ -728,7 +722,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -755,8 +749,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem menuProgramaPermitirMacros;
     private javax.swing.JMenuItem menuProgramaSiguienteInstruccion;
     private javax.swing.JTextArea taEditor;
-    private javax.swing.JTextArea taSalidaErrores;
-    private javax.swing.JTextArea taSalidaEstandar;
+    private javax.swing.JTextArea taSalida;
+    private javax.swing.JTextArea taTraza;
     private javax.swing.JTabbedPane tabPanelSalida;
     private javax.swing.JTextField tfEntradaPrograma;
     // End of variables declaration//GEN-END:variables

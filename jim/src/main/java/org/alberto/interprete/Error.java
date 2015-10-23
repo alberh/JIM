@@ -135,16 +135,25 @@ public class Error {
     public static void deTokenNoEsperado(int n, String token, String descripcion) {
         switch (token) {
             case "IDMACRO":
-                imprimir("Error 19: Definición de macro inesperada.", n);
+                imprimir("Error 19: Definición o llamada a macro no esperada.",
+                        n);
                 break;
                 
             case "FLECHA":
-                imprimir("Error 19: Asignación inesperada.", n);
+                imprimir("Error 19: Asignación no esperada.", n);
+                break;
+                
+            case "end-of-file":
+                imprimir("Error 19: Encontrado final de fichero.", n);
+                break;
+                
+            case "')'":
+                imprimir("Error 19: Cierre de llamada a macro no esperado.", n);
                 break;
 
             default:
-                imprimir("Error 19: No se esperaba el símbolo " + token
-                            + ". Descripción: " + descripcion,
+                imprimir("Error 19: No se esperaba el símbolo \"" + token
+                            + "\". Descripción: " + descripcion,
                         n);
                 break;
         }
