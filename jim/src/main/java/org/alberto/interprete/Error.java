@@ -89,6 +89,13 @@ public class Error {
         imprimir("Error 12: No se pudo guardar el fichero temporal.");
     }
 
+    // Variable
+    public static void alObtenerIndiceDeVariable(String v) {
+        imprimir("Error 22: No se pudo obtener el índice de la variable "
+                + "\"" + v + "\".",
+                Programa.numeroLineaActual());
+    }
+
     // Bucle
     public static void alCerrarBucle(int l) {
         imprimir("Error 13: No se esperaba cierre de bucle en la línea " + l + ".");
@@ -138,22 +145,22 @@ public class Error {
                 imprimir("Error 19: Definición o llamada a macro no esperada.",
                         n);
                 break;
-                
+
             case "FLECHA":
                 imprimir("Error 19: Asignación no esperada.", n);
                 break;
-                
+
             case "end-of-file":
                 imprimir("Error 19: Encontrado final de fichero.", n);
                 break;
-                
+
             case "')'":
                 imprimir("Error 19: Cierre de llamada a macro no esperado.", n);
                 break;
 
             default:
                 imprimir("Error 19: No se esperaba el símbolo \"" + token
-                            + "\". Descripción: " + descripcion,
+                        + "\". Descripción: " + descripcion,
                         n);
                 break;
         }

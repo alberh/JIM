@@ -23,6 +23,7 @@ public class Variable {
 
     private int _valor;
     private String _id;
+    private boolean _creadaEnExpansion = false;
 
     public enum EVariable {
 
@@ -40,13 +41,17 @@ public class Variable {
         char tipo = id.charAt(0);
         int indice = 1;
         Variable v = new Variable(id, valor);
-
+        
         if (tipo != 'Y') {
-            indice = Integer.parseInt(id.substring(1, id.length()));
+            indice = obtenerIndice(id);
         }
 
         switch (tipo) {
             case 'X':
+                if (_entrada.containsKey(indice)) {
+                    v._creadaEnExpansion = _entrada.get(indice)._creadaEnExpansion;
+                }
+
                 _entrada.put(indice, v);
                 if (indice > _mayorEntrada) {
                     _mayorEntrada = indice;
@@ -54,6 +59,10 @@ public class Variable {
                 break;
 
             case 'Z':
+                if (_locales.containsKey(indice)) {
+                    v._creadaEnExpansion = _locales.get(indice)._creadaEnExpansion;
+                }
+
                 _locales.put(indice, v);
                 if (indice > _mayorLocal) {
                     _mayorLocal = indice;
@@ -68,6 +77,16 @@ public class Variable {
         return v;
     }
 
+    private static int obtenerIndice(String id) {
+        try {
+            return Integer.parseInt(id.substring(1, id.length()));
+        } catch (NumberFormatException ex) {
+            Error.alObtenerIndiceDeVariable(id);
+            return 0;
+        }
+    }
+
+    // Sólo utilizado por Macro.expandir
     public static Variable get(EVariable tipo) {
         Variable v = null;
 
@@ -75,12 +94,14 @@ public class Variable {
             case ENTRADA:
                 _mayorEntrada++;
                 v = new Variable("X" + _mayorEntrada);
+                v._creadaEnExpansion = true;
                 _entrada.put(_mayorEntrada, v);
                 break;
 
             case LOCAL:
                 _mayorLocal++;
                 v = new Variable("Z" + _mayorLocal);
+                v._creadaEnExpansion = true;
                 _locales.put(_mayorLocal, v);
                 break;
 
@@ -98,18 +119,18 @@ public class Variable {
         int indice = 1;
 
         if (tipo != 'Y') {
-            indice = Integer.parseInt(id.substring(1, id.length()));
+            indice = obtenerIndice(id);
         }
 
         switch (tipo) {
             case 'X':
                 v = _entrada.get(indice);
                 break;
-                
+
             case 'Z':
                 v = _locales.get(indice);
                 break;
-                
+
             case 'Y':
                 v = _salida;
                 break;
@@ -125,6 +146,20 @@ public class Variable {
     }
 
     public static ArrayList<Variable> variablesLocales() {
+        ArrayList<Variable> variables = new ArrayList<Variable>();
+
+        for (Variable v : _locales.values()) {
+            if (!v._creadaEnExpansion) {
+                variables.add(v);
+            }
+        }
+
+        variables.sort(new ComparadorVariables());
+        return variables;
+    }
+
+    // Devuelve todas
+    public static ArrayList<Variable> variablesLocalesExp() {
         ArrayList<Variable> variables = new ArrayList<Variable>(_locales.values());
         variables.sort(new ComparadorVariables());
         return variables;
@@ -175,6 +210,10 @@ public class Variable {
         if (this._valor > 0) {
             this._valor--;
         }
+    }
+
+    public boolean creadaEnExpansion() {
+        return _creadaEnExpansion;
     }
 
     public static String filtrar(String id) {

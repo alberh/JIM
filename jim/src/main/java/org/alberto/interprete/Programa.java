@@ -177,7 +177,7 @@ public class Programa {
             int llamadas = PrevioAcciones.llamadasAMacros();
             if (llamadas > 0) {
                 PrevioAcciones.expandir();
-                
+
                 System.out.println();
                 System.out.println(llamadas + " llamadas a macro expandidas.");
             } else {
@@ -341,11 +341,12 @@ public class Programa {
         }
         // System.out.println("Etapa en ejecutar: " + _etapa);
 
-        _traza = new StringBuilder();
+        _traza = new StringBuilder("[");
         _ficheroEnProceso = _ficheroPrograma;
         _lineaActual = 0;
         _salto = false;
         AnalizadorLexico lex = parser.analizadorLexico();
+        int instruccionesEjecutadas = 0;
 
         if (numeroLineas() > 0) {
             String linea = lineaSiguiente();
@@ -356,8 +357,11 @@ public class Programa {
                         // System.out.println(_lineaActual + ": " + linea);
                         System.out.println(estadoMemoria());
                     }
-                    _traza.append(estadoMemoria())
-                            .append(System.getProperty("line.separator"));
+                    if (instruccionesEjecutadas > 0) {
+                        _traza.append(",");
+                        _traza.append(System.getProperty("line.separator"));
+                    }
+                    _traza.append(estadoMemoria());
                 }
 
                 try {
@@ -375,8 +379,11 @@ public class Programa {
                     linea = lineaActual();
                     _salto = false;
                 }
+
+                ++instruccionesEjecutadas;
             } while (!finalizado() && estadoOk());
         }
+        _traza.append("]");
     }
 
     public static String estadoMemoria() {

@@ -119,8 +119,8 @@ public class Macro {
             expansion = expansion.replace(variable, nuevaVariable);
         }
 
-        /* Se obtiene una nueva variable local y se reemplaza todas las referencias a la variable de salida Y
-         * por esta nueva variable
+        /* Se obtiene una nueva variable local y se reemplaza todas las
+         * referencias a la variable de salida Y por esta nueva variable
          */
         String variableSalidaLocal = Variable.get(Variable.EVariable.LOCAL).id();
         expansion = "# Expansión de " + idMacro + separador
@@ -134,8 +134,9 @@ public class Macro {
              */
             HashMap<String, String> etiquetasReemplazadas = new HashMap<>();
             for (String etiqueta : etiquetas) {
-                // registrar el número de línea de la etiqueta desplazado según el número de línea
-                // de la llamada a la macro + el número de asignaciones añadidas al código expandido
+                // registrar el número de línea de la etiqueta desplazado según
+                // el número de línea de la llamada a la macro + el número de
+                // asignaciones añadidas al código expandido
                 String nuevaEtiqueta = Etiqueta.get().id();
                 etiquetasReemplazadas.put(etiqueta, nuevaEtiqueta);
 
@@ -147,18 +148,21 @@ public class Macro {
             String etiquetaSalida = Etiqueta.get().id();
             for (String etiqueta : etiquetasSalto) {
                 if (etiquetasReemplazadas.containsKey(etiqueta)) {
-                    expansion = expansion.replace(etiqueta, etiquetasReemplazadas.get(etiqueta));
+                    expansion = expansion.replace(etiqueta,
+                            etiquetasReemplazadas.get(etiqueta));
                 } else {
                     expansion = expansion.replace(etiqueta, etiquetaSalida);
                 }
             }
-            /* Añadimos una última línea con la etiqueta designada como etiqueta de salida de la macro
-             * y la asignación a la variable de salida indicada por el usuario
+            /* Añadimos una última línea con la etiqueta designada como etiqueta
+             * de salida de la macro y la asignación a la variable de salida
+             * indicada por el usuario
              */
             expansion = expansion + separador + "[" + etiquetaSalida + "] "
                     + idVariableSalida + " <- " + variableSalidaLocal;
         } else {
-            /* Añadimos una última línea con la asignación a la variable de salida indicada por el usuario
+            /* Añadimos una última línea con la asignación a la variable de
+             * salida indicada por el usuario
              */
             expansion = expansion + idVariableSalida + " <- " + variableSalidaLocal;
         }
