@@ -64,9 +64,10 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         comboModelos = new javax.swing.JComboBox();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(12, 32767));
+        cbModoExtendido = new javax.swing.JCheckBox();
+        jSeparator9 = new javax.swing.JToolBar.Separator();
         jLabel2 = new javax.swing.JLabel();
         tfEntradaPrograma = new javax.swing.JTextField();
-        jSeparator5 = new javax.swing.JToolBar.Separator();
         btnIniciarEjecucion = new javax.swing.JButton();
         btnPararEjecucion = new javax.swing.JButton();
         btnIniciarDebug = new javax.swing.JButton();
@@ -167,16 +168,22 @@ public class MainWindow extends javax.swing.JFrame {
         barraHerramientas.add(comboModelos);
         barraHerramientas.add(filler1);
 
+        cbModoExtendido.setText("Modo Extendido");
+        cbModoExtendido.setFocusable(false);
+        cbModoExtendido.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        cbModoExtendido.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barraHerramientas.add(cbModoExtendido);
+        barraHerramientas.add(jSeparator9);
+
         jLabel2.setText("Entrada:  ");
         barraHerramientas.add(jLabel2);
 
         tfEntradaPrograma.setMaximumSize(new java.awt.Dimension(100, 2147483647));
         tfEntradaPrograma.setMinimumSize(new java.awt.Dimension(80, 20));
         barraHerramientas.add(tfEntradaPrograma);
-        barraHerramientas.add(jSeparator5);
 
         btnIniciarEjecucion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/play.png"))); // NOI18N
-        btnIniciarEjecucion.setToolTipText("Iniciar programa");
+        btnIniciarEjecucion.setToolTipText("Iniciar programa (F5)");
         btnIniciarEjecucion.setFocusable(false);
         btnIniciarEjecucion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnIniciarEjecucion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -212,6 +219,7 @@ public class MainWindow extends javax.swing.JFrame {
         barraHerramientas.add(jSeparator8);
 
         btnExpandirMacros.setText("Expandir macros");
+        btnExpandirMacros.setToolTipText("Expandir macros (F9)");
         btnExpandirMacros.setFocusable(false);
         btnExpandirMacros.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnExpandirMacros.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -315,6 +323,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         menuPrograma.setText("Programa");
 
+        menuProgramaIniciar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         menuProgramaIniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/play.png"))); // NOI18N
         menuProgramaIniciar.setText("Iniciar");
         menuProgramaIniciar.addActionListener(new java.awt.event.ActionListener() {
@@ -337,6 +346,7 @@ public class MainWindow extends javax.swing.JFrame {
         menuPrograma.add(menuProgramaSiguienteInstruccion);
         menuPrograma.add(jSeparator6);
 
+        menuProgramaExpandirMacros.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
         menuProgramaExpandirMacros.setText("Expandir macros");
         menuProgramaExpandirMacros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -451,6 +461,14 @@ public class MainWindow extends javax.swing.JFrame {
             guardarFichero();
         }
     }
+    
+    private Programa.ModoInstrucciones obtenerModoInstrucciones() {
+        if (cbModoExtendido.isSelected()) {
+            return Programa.ModoInstrucciones.EXTENDIDO;
+        } else {
+            return Programa.ModoInstrucciones.NORMAL;
+        }
+    }
 
     private void moverCursorAlFinal() {
         int posicionFinal = taSalida.getDocument().getLength();
@@ -460,7 +478,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void iniciarPrograma() {
         comprobacionesPreviasAEjecucion();
 
-        if (Programa.cargar(_ficheroAbierto.getAbsolutePath(), obtenerModelo())) {
+        String ruta = _ficheroAbierto.getAbsolutePath();
+        if (Programa.cargar(ruta, obtenerModelo(), obtenerModoInstrucciones())) {
             int[] parametros = null;
             if (!tfEntradaPrograma.getText().isEmpty()) {
                 String[] parametrosComoCadenas = tfEntradaPrograma.getText().split(" ");
@@ -493,7 +512,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void iniciarExpansionMacros() {
         comprobacionesPreviasAEjecucion();
 
-        if (Programa.cargar(_ficheroAbierto.getAbsolutePath(), obtenerModelo())) {
+        String ruta = _ficheroAbierto.getAbsolutePath();
+        if (Programa.cargar(ruta, obtenerModelo(), obtenerModoInstrucciones())) {
             Programa.iniciarExpansionMacros();
 
             taEditor.setText(Programa.obtenerPrograma());
@@ -716,6 +736,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnNuevoFichero;
     private javax.swing.JButton btnPararEjecucion;
     private javax.swing.JButton btnSiguienteInstruccion;
+    private javax.swing.JCheckBox cbModoExtendido;
     private javax.swing.JComboBox comboModelos;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel1;
@@ -727,10 +748,10 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JToolBar.Separator jSeparator8;
+    private javax.swing.JToolBar.Separator jSeparator9;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenuItem menuArchivoAbrir;

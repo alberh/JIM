@@ -47,6 +47,12 @@ public class Programa {
     };
     private static Etapa _etapa = Etapa.ESPERA;
 
+    public enum ModoInstrucciones {
+
+        NORMAL, EXTENDIDO, MACROS, EXTENDIDO_MACROS
+    };
+    private static ModoInstrucciones _modoInstrucciones = ModoInstrucciones.NORMAL;
+
     public enum Modelos {
 
         L, LOOP, WHILE
@@ -72,6 +78,24 @@ public class Programa {
         return _etapa;
     }
 
+    public static ModoInstrucciones modoInstrucciones() {
+        return _modoInstrucciones;
+    }
+
+    public static void modoInstrucciones(ModoInstrucciones modo) {
+        _modoInstrucciones = modo;
+    }
+
+    public static boolean modoExtendido() {
+        return _modoInstrucciones == ModoInstrucciones.EXTENDIDO
+                || _modoInstrucciones == ModoInstrucciones.EXTENDIDO_MACROS;
+    }
+
+    public static boolean modoMacros() {
+        return _modoInstrucciones == ModoInstrucciones.MACROS
+                || _modoInstrucciones == ModoInstrucciones.EXTENDIDO_MACROS;
+    }
+
     public static boolean estadoOk() {
         return _estado == Estado.OK;
     }
@@ -80,45 +104,42 @@ public class Programa {
         return new File(_ficheroEnProceso).getName();
     }
 
-    public static boolean cargar(String fichero, Modelos modelo) {
-        try {
-            _etapa = Etapa.CARGANDO_FICHERO;
-            _modelo = modelo;
-            _lineas = new ArrayList<>();
-            _ficheroPrograma = fichero;
+    public static boolean cargar(String fichero, Modelos modelo,
+            ModoInstrucciones modo) {
 
-            Scanner scanner = new Scanner(new File(fichero));
+        _etapa = Etapa.CARGANDO_FICHERO;
+        _modelo = modelo;
+        _modoInstrucciones = modo;
+        _lineas = new ArrayList<>();
+        _ficheroPrograma = fichero;
+
+        try (Scanner scanner = new Scanner(new File(fichero))) {
             while (scanner.hasNextLine()) {
                 _lineas.add(scanner.nextLine());
             }
-            scanner.close();
-
-            _ficheroEnProceso = fichero;
-            _lineaActual = numeroLineas();
-
-            switch (_modelo) {
-
-                case L:
-                    _parser = new LParser(null);
-                    break;
-
-                case LOOP:
-                    _parser = new LoopParser(null);
-                    break;
-
-                case WHILE:
-                    _parser = new WhileParser(null);
-                    break;
-            }
-
-            _estado = Estado.OK;
-
-            return true;
         } catch (FileNotFoundException ex) {
             Error.alCargarPrograma(fichero);
+            return false;
         }
 
-        return false;
+        _ficheroEnProceso = fichero;
+        _lineaActual = numeroLineas();
+
+        switch (_modelo) {
+            case L:
+                _parser = new LParser(null);
+                break;
+
+            case LOOP:
+                _parser = new LoopParser(null);
+                break;
+
+            case WHILE:
+                _parser = new WhileParser(null);
+                break;
+        }
+        _estado = Estado.OK;
+        return true;
     }
 
     public static void iniciar() {

@@ -15,7 +15,8 @@ import java.util.List;
  Planificación: tiempos memoria, diseño, programación, etc
  */
 
-/* Uso: jim modelo fichero [param1 [param2 [...]]]
+/* Uso: jim modelo fichero [ex|extendido] [param1 [param2 [...]]]
+ *            0       1          2          2/3     3/4
  */
 public class Main {
 
@@ -29,26 +30,37 @@ public class Main {
             String fichero = args[1];
 
             Programa.Modelos modelo = obtenerModelo(cadenaModelo);
+            Programa.ModoInstrucciones modoInstrucciones
+                    = Programa.ModoInstrucciones.NORMAL;
 
             if (modelo != null) {
                 int[] parametros = null;
 
                 if (args.length > 2) {
-                    parametros = new int[args.length - 2];
+                    int indiceParametros = 2;
 
-                    int cont = 0;
-                    for (int i = 2; i < args.length; ++i) {
-                        try {
-                            parametros[cont] = Integer.parseInt(args[i]);
-                        } catch (Exception ex) {
-                            parametros[cont] = 0;
+                    if (args[2].equals("ex") || args[2].equals("extendido")) {
+                        modoInstrucciones = Programa.ModoInstrucciones.EXTENDIDO;
+                        indiceParametros = 3;
+                    }
+
+                    if (args.length > indiceParametros) {
+                        parametros = new int[args.length - indiceParametros];
+
+                        int cont = 0;
+                        for (int i = indiceParametros; i < args.length; ++i) {
+                            try {
+                                parametros[cont] = Integer.parseInt(args[i]);
+                            } catch (Exception ex) {
+                                parametros[cont] = 0;
+                            }
+
+                            cont++;
                         }
-
-                        cont++;
                     }
                 }
 
-                iniciar(modelo, fichero, parametros);
+                iniciar(modelo, modoInstrucciones, fichero, parametros);
             } else {
                 // Añadir soporte para expansión de macros en terminal
 
@@ -60,8 +72,12 @@ public class Main {
         }
     }
 
-    public static void iniciar(Programa.Modelos modelo, String fichero, int[] parametros) {
-        Programa.cargar(fichero, modelo);
+    public static void iniciar(Programa.Modelos modelo,
+            Programa.ModoInstrucciones modo,
+            String fichero,
+            int[] parametros) {
+        
+        Programa.cargar(fichero, modelo, modo);
         Programa.iniciar(parametros);
 
         if (Programa.estadoOk()) {
@@ -70,8 +86,10 @@ public class Main {
         }
     }
 
-    public static void iniciarExpansionMacros(Programa.Modelos modelo, String fichero) {
-        Programa.cargar(fichero, modelo);
+    public static void iniciarExpansionMacros(Programa.Modelos modelo,
+            Programa.ModoInstrucciones modo,
+            String fichero) {
+        Programa.cargar(fichero, modelo, modo);
         Programa.iniciarExpansionMacros();
 
         if (Programa.estadoOk()) {
@@ -105,70 +123,65 @@ public class Main {
         System.out.println();
     }
 
-
-
-
-
-
     /*
-    public static void pruebaExpansion(int[] parametros) {
-        String programa = "ejemplos/entradaExp.txt";
-        Programa.cargar(programa, Programa.Modelos.L);
+     public static void pruebaExpansion(int[] parametros) {
+     String programa = "ejemplos/entradaExp.txt";
+     Programa.cargar(programa, Programa.Modelos.L);
 
-        Programa.iniciarExpansionMacros();
+     Programa.iniciarExpansionMacros();
 
         
-        System.out.println("====================");
-        System.out.println("Estado de la memoria");
-        System.out.println("====================");
-        // Programa.imprimirComponentes();
+     System.out.println("====================");
+     System.out.println("Estado de la memoria");
+     System.out.println("====================");
+     // Programa.imprimirComponentes();
         
 
-        System.out.println("====================");
+     System.out.println("====================");
 
-        Programa.imprimirPrograma();
-        System.out.println("====================");
+     Programa.imprimirPrograma();
+     System.out.println("====================");
 
-        // Macro.pintar();
-    }
+     // Macro.pintar();
+     }
 
-    public static void pruebasL(int[] parametros) {
-        String programa = "ejemplos/entradaL.txt";
-        Programa.cargar(programa, Programa.Modelos.L);
+     public static void pruebasL(int[] parametros) {
+     String programa = "ejemplos/entradaL.txt";
+     Programa.cargar(programa, Programa.Modelos.L);
 
-        restoPrueba(parametros);
-    }
+     restoPrueba(parametros);
+     }
 
-    public static void pruebasLoop(int[] parametros) {
-        String programa = "ejemplos/entradaLoop.txt";
-        Programa.cargar(programa, Programa.Modelos.LOOP);
+     public static void pruebasLoop(int[] parametros) {
+     String programa = "ejemplos/entradaLoop.txt";
+     Programa.cargar(programa, Programa.Modelos.LOOP);
 
-        restoPrueba(parametros);
-    }
+     restoPrueba(parametros);
+     }
 
-    public static void pruebasWhile(int[] parametros) {
-        String programa = "ejemplos/entradaWhile.txt";
-        Programa.cargar(programa, Programa.Modelos.WHILE);
+     public static void pruebasWhile(int[] parametros) {
+     String programa = "ejemplos/entradaWhile.txt";
+     Programa.cargar(programa, Programa.Modelos.WHILE);
 
-        restoPrueba(parametros);
-    }
+     restoPrueba(parametros);
+     }
 
-    private static void restoPrueba(int[] parametros) {
-        Programa.iniciar(parametros);
+     private static void restoPrueba(int[] parametros) {
+     Programa.iniciar(parametros);
 
-        System.out.println("====================");
-        System.out.println("Estado de la memoria");
-        System.out.println("====================");
+     System.out.println("====================");
+     System.out.println("Estado de la memoria");
+     System.out.println("====================");
 
-        // Programa.imprimirComponentes();
-        System.out.println("====================");
+     // Programa.imprimirComponentes();
+     System.out.println("====================");
 
-        System.out.println("Resultado: " + Programa.resultado());
+     System.out.println("Resultado: " + Programa.resultado());
 
-        // Programa.imprimirPrograma();
-    }
+     // Programa.imprimirPrograma();
+     }
 
-    /*
+     /*
      public static void pruebasVariables() {
 
      Variable.set("x33");
@@ -239,5 +252,5 @@ public class Main {
      pruebaPrevioParser(args);
      Programa.imprimirEstado();
      }
-    */    
+     */
 }

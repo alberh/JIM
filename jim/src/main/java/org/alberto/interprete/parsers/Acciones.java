@@ -1,7 +1,9 @@
 package org.alberto.interprete.parsers;
 
 import org.alberto.interprete.Etiqueta;
+import org.alberto.interprete.Programa;
 import org.alberto.interprete.Variable;
+import org.alberto.interprete.Error;
 
 public class Acciones {
 
@@ -25,6 +27,100 @@ public class Acciones {
 
         v1 = obtenerValor(op1);
         v2 = obtenerValor(op2);
+
+        /*
+         ===========
+         Modelo L =
+         ===========
+
+         ---------------------
+         Instrucciones básicas
+         ---------------------
+
+         V <- V + 1
+         V <- V - 1
+         V <- V
+         IF V != 0 GOTO L
+
+         -------------------
+         Instrucciones extra
+         -------------------
+
+         V++
+         V--
+         V <- {N, V'}
+         V <- {N, V'} {+,-,*,/,%} {N', V''}
+         V <- MACRO(arg0, arg1, ..., argn)
+         GOTO E
+        
+         Asignación, suma, resta, producto, división y módulo de variables y números
+        
+         ==============
+         Modelo Loop =
+         ==============
+
+         ---------------------
+         Instrucciones básicas
+         ---------------------
+
+         V <- 0
+         V <- V + 1
+         V <- V'
+         LOOP V
+         END
+
+         -------------------
+         Instrucciones extra
+         -------------------
+
+         V++
+         V <- {N, V'}
+         V <- {N, V'} {+, *} {N', V''}
+         V <- MACRO(arg0, arg1, ..., argn)
+
+         Asignación, suma y producto de variables y números
+        
+         ===============
+         Modelo While =
+         ===============
+
+         ---------------------
+         Instrucciones básicas
+         ---------------------
+
+         V <- 0
+         V <- V + 1
+         V <- V'
+         V--
+         WHILE V != 0
+         END
+
+         -------------------
+         Instrucciones extra
+         -------------------
+
+         V++
+         V <- {N, V'}
+         V <- {N, V'} {+,-,*,/,%} {N', V''}
+         V <- MACRO(arg0, arg1, ..., argn)
+
+         Asignación, suma, resta, producto y división de variables y números
+         */
+        if (!Programa.modoExtendido()) {
+            // Comprobaciones comunes
+            if (operador == '+') {
+                // Todos los modelos comparten la operación V <- V + 1
+                // Número distinto de 1
+                if (esEntero(op2) && v2 != 1) {
+                    Error.deSumaValorNoUnidad();
+                }
+            }
+            
+            // Operación entre variables
+            if (esCadena(op2)) {
+                Error.deOperacionEntreVariables(operador);
+            }
+        }
 
         switch (operador) {
 
@@ -66,27 +162,29 @@ public class Acciones {
     }
 
     protected static int obtenerValor(Object o) {
-        // falta debido a no haber implementado aún el tratamiento de macros
-        if (o == null) {
-
-            return 999;
-        }
-
         int valor = 0;
 
-        if (o.getClass() == Integer.class) {
-            valor = ((Integer) o).intValue();
+        if (esEntero(o)) {
+            valor = (Integer) o;
         } else {
             try {
                 valor = Variable.get((String) o).valor();
             } catch (Exception ex) {
-                // Gestión errores
-                System.err.println("Error: La variable " + o + " no está inicializada internamente"
-                        + " (Probablemente debido a que no se ha ejecutado el analizado previo).");
+                // Si el analizador previo se ha pasado debidamente, no debería
+                // llegarse a este punto.
+                valor = 0;
             }
         }
 
         return valor;
+    }
+
+    protected static boolean esEntero(Object o) {
+        return o instanceof Integer;
+    }
+
+    protected static boolean esCadena(Object o) {
+        return o instanceof String;
     }
 
     protected static Etiqueta obtenerEtiqueta(Object id) {

@@ -140,13 +140,13 @@ public class Variable {
     }
 
     public static ArrayList<Variable> variablesEntrada() {
-        ArrayList<Variable> variables = new ArrayList<Variable>(_entrada.values());
+        ArrayList<Variable> variables = new ArrayList<>(_entrada.values());
         variables.sort(new ComparadorVariables());
         return variables;
     }
 
     public static ArrayList<Variable> variablesLocales() {
-        ArrayList<Variable> variables = new ArrayList<Variable>();
+        ArrayList<Variable> variables = new ArrayList<>();
 
         for (Variable v : _locales.values()) {
             if (!v._creadaEnExpansion) {
@@ -160,7 +160,7 @@ public class Variable {
 
     // Devuelve todas
     public static ArrayList<Variable> variablesLocalesExp() {
-        ArrayList<Variable> variables = new ArrayList<Variable>(_locales.values());
+        ArrayList<Variable> variables = new ArrayList<>(_locales.values());
         variables.sort(new ComparadorVariables());
         return variables;
     }

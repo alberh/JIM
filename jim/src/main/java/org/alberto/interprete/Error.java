@@ -19,7 +19,7 @@ public class Error {
         }
     }
 
-    private static int linea(int error) {
+    private static int numeroLineaActual() {
         return Programa.numeroLineaActual();
     }
 
@@ -93,7 +93,7 @@ public class Error {
     public static void alObtenerIndiceDeVariable(String v) {
         imprimir("Error 22: No se pudo obtener el índice de la variable "
                 + "\"" + v + "\".",
-                Programa.numeroLineaActual());
+                numeroLineaActual());
     }
 
     // Bucle
@@ -122,7 +122,7 @@ public class Error {
     }
 
     public static void deCaracterNoReconocido(String s) {
-        deCaracterNoReconocido(Programa.numeroLineaActual(), s);
+        deCaracterNoReconocido(numeroLineaActual(), s);
     }
 
     public static void deDefinicionInterior(int n) {
@@ -131,12 +131,12 @@ public class Error {
     }
 
     public static void deDefinicionInterior() {
-        deDefinicionInterior(Programa.numeroLineaActual());
+        deDefinicionInterior(numeroLineaActual());
     }
 
     // Analizador sintáctico
     public static void deTokenNoEsperado(String token, String descripcion) {
-        deTokenNoEsperado(Programa.numeroLineaActual(), token, descripcion);
+        deTokenNoEsperado(numeroLineaActual(), token, descripcion);
     }
 
     public static void deTokenNoEsperado(int n, String token, String descripcion) {
@@ -160,14 +160,14 @@ public class Error {
 
             default:
                 imprimir("Error 19: No se esperaba el símbolo \"" + token
-                        + "\". Descripción: " + descripcion,
+                        + "\"." /* + Descripción: " + descripcion */,
                         n);
                 break;
         }
     }
 
     public static void deTokenNoEsperado(String descripcion) {
-        deTokenNoEsperado(Programa.numeroLineaActual(), descripcion);
+        deTokenNoEsperado(numeroLineaActual(), descripcion);
     }
 
     public static void deTokenNoEsperado(int n, String descripcion) {
@@ -177,10 +177,48 @@ public class Error {
     }
 
     public static void deESEnAnalizadorLexico() {
-        deESEnAnalizadorLexico(Programa.numeroLineaActual());
+        deESEnAnalizadorLexico(numeroLineaActual());
     }
 
     public static void deESEnAnalizadorLexico(int n) {
         imprimir("Error 21: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", n);
+    }
+
+    // Operaciones extendidas
+    public static void deSumaValorNoUnidad() {
+        imprimir("Error 22: No se puede sumar un valor distinto de la unidad "
+                + "sin activar el modo extendido.", numeroLineaActual());
+    }
+
+    public static void deOperacionEntreVariables(char operador) {
+        String operacion;
+        switch (operador) {
+            case '+':
+                operacion = "la suma";
+                break;
+
+            case '-':
+                operacion = "la resta";
+                break;
+
+            case '*':
+                operacion = "el producto";
+                break;
+
+            case '/':
+                operacion = "la división";
+                break;
+
+            case '%':
+                operacion = "el módulo";
+                break;
+
+            default:
+                operacion = "";
+        }
+
+        imprimir("Error 23: No se puede realizar " + operacion + " entre dos "
+                + "variables sin activar el modo extendido.",
+                numeroLineaActual());
     }
 }
