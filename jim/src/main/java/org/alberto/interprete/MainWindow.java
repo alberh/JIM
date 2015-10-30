@@ -5,6 +5,8 @@
  */
 package org.alberto.interprete;
 
+import org.alberto.interprete.util.Error;
+import org.alberto.interprete.util.Configuracion;
 import org.alberto.interprete.gui.Consola;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -235,7 +237,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         taEditor.setColumns(20);
         taEditor.setRows(5);
-        taEditor.setText("\tZ <- producto(x1, x2)\n\tIF Z != 0 GOTO A\n\tY <- suma(x1, x2)\n\tGOTO E\n[A]\tY <- Z\n\t");
+        taEditor.setText("[a1]\tif x1 != 0 goto a2\n\ty <- z\n\tgoto e\n# sumo x2 en z1\n[a2]\tz <- z + x2\n\tx1--\n\tgoto a1\n");
         taEditor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 taEditorKeyPressed(evt);
@@ -461,7 +463,7 @@ public class MainWindow extends javax.swing.JFrame {
             guardarFichero();
         }
     }
-    
+
     private Programa.ModoInstrucciones obtenerModoInstrucciones() {
         if (cbModoExtendido.isSelected()) {
             return Programa.ModoInstrucciones.EXTENDIDO;
@@ -479,7 +481,11 @@ public class MainWindow extends javax.swing.JFrame {
         comprobacionesPreviasAEjecucion();
 
         String ruta = _ficheroAbierto.getAbsolutePath();
-        if (Programa.cargar(ruta, obtenerModelo(), obtenerModoInstrucciones())) {
+        if (Programa.cargar(ruta,
+                obtenerModelo(),
+                obtenerModoInstrucciones(),
+                Programa.Etapa.EXPANDIENDO_MACROS/*EJECUTANDO*/)) {
+            
             int[] parametros = null;
             if (!tfEntradaPrograma.getText().isEmpty()) {
                 String[] parametrosComoCadenas = tfEntradaPrograma.getText().split(" ");
@@ -513,7 +519,11 @@ public class MainWindow extends javax.swing.JFrame {
         comprobacionesPreviasAEjecucion();
 
         String ruta = _ficheroAbierto.getAbsolutePath();
-        if (Programa.cargar(ruta, obtenerModelo(), obtenerModoInstrucciones())) {
+        if (Programa.cargar(ruta,
+                obtenerModelo(),
+                obtenerModoInstrucciones(),
+                Programa.Etapa.EXPANDIENDO_MACROS)) {
+            
             Programa.iniciarExpansionMacros();
 
             taEditor.setText(Programa.obtenerPrograma());
@@ -521,7 +531,7 @@ public class MainWindow extends javax.swing.JFrame {
 
             moverCursorAlFinal();
         }
-        
+
         if (!Programa.estadoOk()) {
             tabPanelSalida.setSelectedIndex(0);
         }

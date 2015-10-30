@@ -1,4 +1,4 @@
-package org.alberto.interprete;
+package org.alberto.interprete.util;
 
 import java.util.ArrayList;
 

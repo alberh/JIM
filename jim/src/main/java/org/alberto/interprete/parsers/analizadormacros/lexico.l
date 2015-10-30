@@ -2,8 +2,8 @@
 package org.alberto.interprete.parsers.analizadormacros;
 
 import org.alberto.interprete.parsers.AnalizadorLexico;
-import org.alberto.interprete.Variable;
-import org.alberto.interprete.Etiqueta;
+import org.alberto.interprete.util.Variable;
+import org.alberto.interprete.util.Etiqueta;
 // Debido a conflicto con la clase Error del propio analizador,
 // se hace referencia a la clase Error especificando toda la jerarquía
 // de paquetes, en lugar de añadir el sigiente import.
@@ -86,14 +86,14 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                   }
 {Reserved}        { _contenido.append(yytext());
                   }
-{Label}           { String id = Etiqueta.filtrar(yytext());
-                    yyparser.yylval = new MacrosParserVal("L" + id);
-                    _contenido.append("L" + id);
+{Label}           { String id = MacrosAcciones.filtrarIDEtiqueta(yytext());
+                    yyparser.yylval = new MacrosParserVal(id);
+                    _contenido.append(id);
                     return MacrosParser.ETIQUETA;
                   }
-{Variable}        { String id = Variable.filtrar(yytext());
-                    yyparser.yylval = new MacrosParserVal("V" + id);
-                    _contenido.append("V" + id);
+{Variable}        { String id = MacrosAcciones.filtrarIDVariable(yytext());
+                    yyparser.yylval = new MacrosParserVal(id);
+                    _contenido.append(id);
                     return MacrosParser.VARIABLE;
                   }
 "defmacro"        { org.alberto.interprete.Error.deDefinicionInterior(_lineaActual); }

@@ -1,5 +1,11 @@
 package org.alberto.interprete;
 
+import org.alberto.interprete.util.Error;
+import org.alberto.interprete.util.Bucle;
+import org.alberto.interprete.util.Configuracion;
+import org.alberto.interprete.util.Macro;
+import org.alberto.interprete.util.Variable;
+import org.alberto.interprete.util.Etiqueta;
 import org.alberto.interprete.parsers.analizadormacros.MacrosParser;
 import org.alberto.interprete.parsers.lmodel.LParser;
 import org.alberto.interprete.parsers.loopmodel.LoopParser;
@@ -46,6 +52,7 @@ public class Programa {
         CARGANDO_MACROS, ANALIZANDO, EXPANDIENDO_MACROS, EJECUTANDO
     };
     private static Etapa _etapa = Etapa.ESPERA;
+    private static Etapa _etapaFinal;
 
     public enum ModoInstrucciones {
 
@@ -77,6 +84,14 @@ public class Programa {
     public static Etapa estapa() {
         return _etapa;
     }
+    
+    public static void etapaFinal(Etapa etapaFinal) {
+        _etapaFinal = etapaFinal;
+    }
+    
+    public static Etapa etapaFinal() {
+        return _etapaFinal;
+    }
 
     public static ModoInstrucciones modoInstrucciones() {
         return _modoInstrucciones;
@@ -105,9 +120,10 @@ public class Programa {
     }
 
     public static boolean cargar(String fichero, Modelos modelo,
-            ModoInstrucciones modo) {
+            ModoInstrucciones modo, Etapa etapaFinal) {
 
         _etapa = Etapa.CARGANDO_FICHERO;
+        _etapaFinal = etapaFinal;
         _modelo = modelo;
         _modoInstrucciones = modo;
         _lineas = new ArrayList<>();

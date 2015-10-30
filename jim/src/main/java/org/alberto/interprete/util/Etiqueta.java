@@ -1,4 +1,4 @@
-package org.alberto.interprete;
+package org.alberto.interprete.util;
 
 import java.util.HashMap;
 
@@ -6,19 +6,18 @@ import java.util.HashMap;
  * Esta clase representa el concepto de etiqueta de salto utilizado en el modelo
  * L.
  */
-public class Etiqueta {
+public class Etiqueta extends Componente {
 
     private static HashMap<String, Etiqueta> _etiquetas = new HashMap<>();
     private static int _ultimaA = 0;
 
-    private String _id;
     private int _linea;
 
     /**
      * Define una nueva etiqueta.
      */
     public static Etiqueta set(String id, int linea) {
-        id = filtrar(id);
+        id = normalizarID(id);
 
         if (_etiquetas.containsKey(id)) {
             return _etiquetas.get(id);
@@ -41,7 +40,7 @@ public class Etiqueta {
      * Obtiene una etiqueta previamente creada, según su identificador.
      */
     public static Etiqueta get(String id) {
-        return _etiquetas.get(filtrar(id));
+        return _etiquetas.get(normalizarID(id));
     }
 
     /**
@@ -74,8 +73,9 @@ public class Etiqueta {
      * Constructor de clase.
      */
     private Etiqueta(String id, int linea) {
-        this._id = id;
-        this._linea = linea;
+        super(id);
+        
+        _linea = linea;
     }
 
     /**
@@ -96,7 +96,7 @@ public class Etiqueta {
      * Cambia a mayúsculas el identificador de una etiqueta, y concatena un "1"
      * al final si no ha sido indicado.
      */
-    public static String filtrar(String id) {
+    public static String normalizarID(String id) {
         id = id.toUpperCase();
 
         if (id.length() == 1) {

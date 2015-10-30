@@ -1,7 +1,7 @@
 package org.alberto.interprete.parsers.whilemodel;
 
-import org.alberto.interprete.Bucle;
-import org.alberto.interprete.Variable;
+import org.alberto.interprete.util.Bucle;
+import org.alberto.interprete.util.Variable;
 import org.alberto.interprete.Programa;
 import org.alberto.interprete.parsers.Acciones;
 

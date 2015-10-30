@@ -580,7 +580,7 @@ public class LoopLex extends AnalizadorLexico {
           }
         case 13: break;
         case 1: 
-          { org.alberto.interprete.Error.deCaracterNoReconocido(yytext());
+          { org.alberto.interprete.util.Error.deCaracterNoReconocido(yytext());
           }
         case 14: break;
         case 8: 

@@ -1,12 +1,13 @@
-package org.alberto.interprete;
+package org.alberto.interprete.util;
 
 import java.util.HashMap;
 import java.util.Stack;
+import org.alberto.interprete.Programa;
 
 /**
  * Clase encargada de gestionar los distintos bucles del programa interpretado.
  */
-public class Bucle {
+public class Bucle extends Componente {
 
     private static HashMap<Integer, Bucle> _buclesLineaApertura = new HashMap<>();
     private static HashMap<Integer, Bucle> _buclesLineaCierre = new HashMap<>();
@@ -73,9 +74,12 @@ public class Bucle {
      * @param	lineaFin El número de línea final del bucle.
      */
     public Bucle(int lineaInicio, int lineaFin) {
-        this._lineaInicio = lineaInicio;
-        this._lineaFin = lineaFin;
-        this._contador = -1;
+        super(Programa.ficheroEnProceso() + "[" + lineaInicio
+                + ":" + lineaFin + "]");
+        
+        _lineaInicio = lineaInicio;
+        _lineaFin = lineaFin;
+        _contador = -1;
     }
 
     /**

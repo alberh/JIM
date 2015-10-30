@@ -1,5 +1,6 @@
-package org.alberto.interprete;
+package org.alberto.interprete.util;
 
+import org.alberto.interprete.Programa;
 import org.alberto.interprete.Programa.Estado;
 
 public class Error {
@@ -183,7 +184,14 @@ public class Error {
     public static void deESEnAnalizadorLexico(int n) {
         imprimir("Error 21: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", n);
     }
-
+    
+    // Operaciones
+    /*
+    public static void deDivisionPorCero() {
+        imprimir("Error 24: División por cero.", Programa.numeroLineaActual());
+    }
+    */
+    
     // Operaciones extendidas
     public static void deSumaValorNoUnidad() {
         imprimir("Error 22: No se puede sumar un valor distinto de la unidad "

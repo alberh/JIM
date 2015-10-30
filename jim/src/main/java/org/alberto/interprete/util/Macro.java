@@ -1,14 +1,15 @@
-package org.alberto.interprete;
+package org.alberto.interprete.util;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import org.alberto.interprete.Programa;
 
-public class Macro {
+public class Macro extends Componente {
 
     private static HashMap<String, Macro> _macros = new HashMap<>();
-
-    private String _id;
+    
     private String _cuerpo;
+    private String _definidaEn;
     private ArrayList<String> _entrada = new ArrayList<>();
     private ArrayList<String> _locales = new ArrayList<>();
 
@@ -17,6 +18,16 @@ public class Macro {
 
     private ArrayList<String> _llamadasAMacros = new ArrayList<>();
 
+    public Macro(String id) {
+        super(id);
+        
+        _definidaEn = Programa.ficheroEnProceso();
+        
+        if (_definidaEn.equals("jim.tmp")) {
+            _definidaEn = "Editor";
+        }
+    }
+    
     public static Macro set(String id) {
         Macro macro = new Macro(id);
         _macros.put(id, macro);
@@ -104,7 +115,7 @@ public class Macro {
 
         for (int i = 0; i < vEntrada.size(); ++i) {
             String variable = vEntrada.get(i);
-            String nuevaVariable = Variable.get(Variable.EVariable.LOCAL).id();
+            String nuevaVariable = Variable.get(Variable.Tipo.LOCAL).id();
 
             expansion = expansion.replace(variable, nuevaVariable);
 
@@ -115,14 +126,14 @@ public class Macro {
         }
 
         for (String variable : vLocales) {
-            String nuevaVariable = Variable.get(Variable.EVariable.LOCAL).id();
+            String nuevaVariable = Variable.get(Variable.Tipo.LOCAL).id();
             expansion = expansion.replace(variable, nuevaVariable);
         }
 
         /* Se obtiene una nueva variable local y se reemplaza todas las
          * referencias a la variable de salida Y por esta nueva variable
          */
-        String variableSalidaLocal = Variable.get(Variable.EVariable.LOCAL).id();
+        String variableSalidaLocal = Variable.get(Variable.Tipo.LOCAL).id();
         expansion = "# Expansión de " + idMacro + separador
                 + asignaciones + expansion.replace("VY", variableSalidaLocal);
 
@@ -170,12 +181,14 @@ public class Macro {
         return expansion + "\n# Fin expansión de " + idMacro + separador;
     }
 
-    public Macro(String id) {
-        this._id = id;
-    }
+    
 
     public String id() {
         return _id;
+    }
+    
+    public String definidaEn() {
+        return _definidaEn;
     }
 
     public String cuerpo() {

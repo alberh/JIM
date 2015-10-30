@@ -586,7 +586,7 @@ public class LLex extends AnalizadorLexico {
           }
         case 16: break;
         case 1: 
-          { org.alberto.interprete.Error.deCaracterNoReconocido(yytext());
+          { org.alberto.interprete.util.Error.deCaracterNoReconocido(yytext());
           }
         case 17: break;
         case 13: 

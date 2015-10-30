@@ -1,19 +1,98 @@
-package org.alberto.interprete;
+package org.alberto.interprete.util;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 
-class ComparadorVariables implements Comparator<Variable> {
+public class Variable extends Componente {
+
+    public enum Tipo {
+
+        ENTRADA, LOCAL, SALIDA
+    }
+
+    private int _valor;
+    private Tipo _tipo;
+    private boolean _creadaEnExpansion = false;
+
+    public Variable(String id) {
+        this(id, 0, false);
+    }
+    
+    public Variable(String id, int valor) {
+        this(id, valor, false);
+    }
+    
+    public Variable(String id, boolean creadaEnExpansion) {
+        this(id, 0, creadaEnExpansion);
+    }
+    
+    public Variable(String id, int valor, boolean creadaEnExpansion) {
+        super(GestorVariables.normalizarID(id));
+        
+        _valor = valor;
+        _creadaEnExpansion = creadaEnExpansion;
+
+        if (id.length() >= 1) {
+            switch (id.charAt(0)) {
+                case 'X':
+                    _tipo = Tipo.ENTRADA;
+                    break;
+
+                case 'Y':
+                    _tipo = Tipo.SALIDA;
+                    break;
+                
+                case 'Z':
+                    _tipo = Tipo.LOCAL;
+                    break;
+                    
+                default:
+                    // Error.
+            }
+        } else {
+            // Error.
+        }
+    }
+
+    public String id() {
+        return _id;
+    }
+    
+    public Tipo tipo() {
+        return _tipo;
+    }
+
+    public int valor() {
+        return _valor;
+    }
+
+    public void valor(int nuevoValor) {
+        this._valor = Math.max(0, nuevoValor);
+    }
+
+    public void incremento() {
+        this._valor++;
+    }
+
+    public void decremento() {
+        if (this._valor > 0) {
+            this._valor--;
+        }
+    }
+
+    public boolean creadaEnExpansion() {
+        return _creadaEnExpansion;
+    }
 
     @Override
-    public int compare(Variable v1, Variable v2) {
-        return v1.id().compareToIgnoreCase(v2.id());
+    public String toString() {
+        return "(" + _id + ", " + _valor + ")";
     }
-}
 
-public class Variable {
-
+    /**
+     * *************************************************************************
+     * PURGA DE CARA A REFACTOR
+     */
     private static HashMap<Integer, Variable> _entrada = new HashMap<>();
     private static HashMap<Integer, Variable> _locales = new HashMap<>();
     private static Variable _salida = new Variable("Y");
@@ -21,15 +100,18 @@ public class Variable {
     private static int _mayorEntrada = 0;
     private static int _mayorLocal = 0;
 
-    private int _valor;
-    private String _id;
-    private boolean _creadaEnExpansion = false;
+    public static String normalizarID(String id) {
+        id = id.toUpperCase();
 
-    public enum EVariable {
-
-        ENTRADA,
-        LOCAL,
-        SALIDA
+        if (id.length() == 1) {
+            if (id.charAt(0) == 'Y') {
+                return id;
+            } else {
+                return id + "1";
+            }
+        } else {
+            return id;
+        }
     }
 
     public static Variable set(String id) {
@@ -37,11 +119,11 @@ public class Variable {
     }
 
     public static Variable set(String id, int valor) {
-        id = filtrar(id);
+        id = normalizarID(id);
         char tipo = id.charAt(0);
         int indice = 1;
         Variable v = new Variable(id, valor);
-        
+
         if (tipo != 'Y') {
             indice = obtenerIndice(id);
         }
@@ -87,7 +169,7 @@ public class Variable {
     }
 
     // Sólo utilizado por Macro.expandir
-    public static Variable get(EVariable tipo) {
+    public static Variable get(Tipo tipo) {
         Variable v = null;
 
         switch (tipo) {
@@ -113,7 +195,7 @@ public class Variable {
     }
 
     public static Variable get(String id) {
-        id = filtrar(id);
+        id = normalizarID(id);
         char tipo = id.charAt(0);
         Variable v = null;
         int indice = 1;
@@ -148,11 +230,9 @@ public class Variable {
     public static ArrayList<Variable> variablesLocales() {
         ArrayList<Variable> variables = new ArrayList<>();
 
-        for (Variable v : _locales.values()) {
-            if (!v._creadaEnExpansion) {
-                variables.add(v);
-            }
-        }
+        _locales.values().stream()
+                .filter(v -> !v._creadaEnExpansion)
+                .forEach(v -> variables.add(v));
 
         variables.sort(new ComparadorVariables());
         return variables;
@@ -178,63 +258,6 @@ public class Variable {
         _mayorLocal = 0;
     }
 
-    private Variable(String id) {
-        this._id = id;
-        this._valor = 0;
-    }
-
-    private Variable(String id, int valor) {
-        this(id);
-        if (valor > 0) {
-            this._valor = valor;
-        }
-    }
-
-    public String id() {
-        return _id;
-    }
-
-    public int valor() {
-        return _valor;
-    }
-
-    public void valor(int nuevoValor) {
-        this._valor = Math.max(0, nuevoValor);
-    }
-
-    public void incremento() {
-        this._valor++;
-    }
-
-    public void decremento() {
-        if (this._valor > 0) {
-            this._valor--;
-        }
-    }
-
-    public boolean creadaEnExpansion() {
-        return _creadaEnExpansion;
-    }
-
-    public static String filtrar(String id) {
-        id = id.toUpperCase();
-
-        if (id.length() == 1) {
-            if (id.charAt(0) == 'Y') {
-                return id;
-            } else {
-                return id + "1";
-            }
-        } else {
-            return id;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "(" + _id + ", " + _valor + ")";
-    }
-
     public static void pintar() {
         System.out.println("Variables de entrada");
         System.out.println(_entrada);
@@ -248,5 +271,4 @@ public class Variable {
         System.out.println(_salida);
         System.out.println();
     }
-
 }

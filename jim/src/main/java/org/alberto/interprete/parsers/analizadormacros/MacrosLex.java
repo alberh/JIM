@@ -4,8 +4,8 @@
 package org.alberto.interprete.parsers.analizadormacros;
 
 import org.alberto.interprete.parsers.AnalizadorLexico;
-import org.alberto.interprete.Variable;
-import org.alberto.interprete.Etiqueta;
+import org.alberto.interprete.util.Variable;
+import org.alberto.interprete.util.Etiqueta;
 // Debido a conflicto con la clase Error del propio analizador,
 // se hace referencia a la clase Error especificando toda la jerarquía
 // de paquetes, en lugar de añadir el sigiente import.
@@ -634,7 +634,7 @@ public class MacrosLex extends AnalizadorLexico {
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 14: 
-          { org.alberto.interprete.Error.deDefinicionInterior(_lineaActual);
+          {     org.alberto.interprete.util.Error.deDefinicionInterior(_lineaActual);
           }
         case 15: break;
         case 12: 
@@ -642,19 +642,19 @@ public class MacrosLex extends AnalizadorLexico {
           }
         case 16: break;
         case 1: 
-          { org.alberto.interprete.Error.deCaracterNoReconocido(_lineaActual, yytext());
+          {     org.alberto.interprete.util.Error.deCaracterNoReconocido(_lineaActual, yytext());
                     /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
           }
         case 17: break;
         case 6: 
-          { String id = Etiqueta.filtrar(yytext());
+          { String id = Etiqueta.normalizarID(yytext());
                     yyparser.yylval = new MacrosParserVal("L" + id);
                     _contenido.append("L" + id);
                     return MacrosParser.ETIQUETA;
           }
         case 18: break;
         case 7: 
-          { String id = Variable.filtrar(yytext());
+          { String id = Variable.normalizarID(yytext());
                     yyparser.yylval = new MacrosParserVal("V" + id);
                     _contenido.append("V" + id);
                     return MacrosParser.VARIABLE;

@@ -1,9 +1,9 @@
 package org.alberto.interprete.parsers;
 
-import org.alberto.interprete.Etiqueta;
+import org.alberto.interprete.util.Etiqueta;
 import org.alberto.interprete.Programa;
-import org.alberto.interprete.Variable;
-import org.alberto.interprete.Error;
+import org.alberto.interprete.util.Variable;
+import org.alberto.interprete.util.Error;
 
 public class Acciones {
 
@@ -31,79 +31,59 @@ public class Acciones {
         /*
          ===========
          Modelo L =
-         ===========
-
          ---------------------
          Instrucciones básicas
          ---------------------
-
          V <- V + 1
          V <- V - 1
          V <- V
          IF V != 0 GOTO L
-
          -------------------
          Instrucciones extra
          -------------------
-
          V++
          V--
          V <- {N, V'}
          V <- {N, V'} {+,-,*,/,%} {N', V''}
          V <- MACRO(arg0, arg1, ..., argn)
          GOTO E
-        
          Asignación, suma, resta, producto, división y módulo de variables y números
-        
          ==============
          Modelo Loop =
-         ==============
-
          ---------------------
          Instrucciones básicas
          ---------------------
-
          V <- 0
          V <- V + 1
          V <- V'
          LOOP V
          END
-
          -------------------
          Instrucciones extra
          -------------------
-
          V++
          V <- {N, V'}
          V <- {N, V'} {+, *} {N', V''}
          V <- MACRO(arg0, arg1, ..., argn)
-
          Asignación, suma y producto de variables y números
-        
          ===============
          Modelo While =
-         ===============
-
          ---------------------
          Instrucciones básicas
          ---------------------
-
          V <- 0
          V <- V + 1
          V <- V'
          V--
          WHILE V != 0
          END
-
          -------------------
          Instrucciones extra
          -------------------
-
          V++
          V <- {N, V'}
          V <- {N, V'} {+,-,*,/,%} {N', V''}
          V <- MACRO(arg0, arg1, ..., argn)
-
          Asignación, suma, resta, producto y división de variables y números
          */
         if (!Programa.modoExtendido()) {
@@ -115,7 +95,7 @@ public class Acciones {
                     Error.deSumaValorNoUnidad();
                 }
             }
-            
+
             // Operación entre variables
             if (esCadena(op2)) {
                 Error.deOperacionEntreVariables(operador);
@@ -123,31 +103,26 @@ public class Acciones {
         }
 
         switch (operador) {
-
             case '+':
                 return v1 + v2;
 
             case '-':
-                int res = v1 - v2;
-                return res >= 0 ? res : 0;
+                int dif = v1 - v2;
+                return dif >= 0 ? dif : 0;
 
             case '*':
                 return v1 * v2;
 
             case '/':
                 if (v2 == 0) {
-                    // tratamiento de errores
                     return 0;
                 }
-
                 return v1 / v2;
 
             case '%':
                 if (v2 == 0) {
-                    // tratamiento de errores
                     return 0;
                 }
-
                 return v1 % v2;
 
             default:

@@ -1,13 +1,11 @@
 package org.alberto.interprete;
 
-import java.util.Arrays;
-import java.util.List;
+import org.alberto.interprete.util.Configuracion;
 
 /* Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
  * mayor que, etc...
 
  Apuntes cita con Salguero:
- Parser y Analizadorlexico como clases base. Importante jerarquía
  Preparar memoria, importancia a diagramas.
  Resaltado de código en el editor
  Mirar plataforma Rodin
@@ -77,7 +75,8 @@ public class Main {
             String fichero,
             int[] parametros) {
         
-        Programa.cargar(fichero, modelo, modo);
+        Programa.cargar(fichero, modelo, modo,
+                Programa.Etapa.EXPANDIENDO_MACROS/*EJECUTANDO*/);
         Programa.iniciar(parametros);
 
         if (Programa.estadoOk()) {
@@ -89,7 +88,8 @@ public class Main {
     public static void iniciarExpansionMacros(Programa.Modelos modelo,
             Programa.ModoInstrucciones modo,
             String fichero) {
-        Programa.cargar(fichero, modelo, modo);
+        Programa.cargar(fichero, modelo, modo,
+                Programa.Etapa.EXPANDIENDO_MACROS);
         Programa.iniciarExpansionMacros();
 
         if (Programa.estadoOk()) {

@@ -20,7 +20,7 @@ public abstract class Parser {
     public abstract void yyerror(String descripcion, int yystate, int token);
 
     public void yyerror(String descripcion) {
-        org.alberto.interprete.Error.deTokenNoEsperado(descripcion);
+        org.alberto.interprete.util.Error.deTokenNoEsperado(descripcion);
     }
 
     /*
