@@ -12,7 +12,7 @@ public class MacrosAcciones extends Acciones {
     private static Macro _macro;
 
     public static String filtrarIDVariable(String id) {
-        id = GestorVariables.normalizarID(id);
+        id = Variable.normalizarID(id);
         
         if (Programa.etapaFinal() == Programa.Etapa.EXPANDIENDO_MACROS) {
             id = "V" + id;

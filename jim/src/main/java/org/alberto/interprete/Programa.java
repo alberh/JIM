@@ -84,11 +84,11 @@ public class Programa {
     public static Etapa estapa() {
         return _etapa;
     }
-    
+
     public static void etapaFinal(Etapa etapaFinal) {
         _etapaFinal = etapaFinal;
     }
-    
+
     public static Etapa etapaFinal() {
         return _etapaFinal;
     }
@@ -395,8 +395,8 @@ public class Programa {
                         System.out.println(estadoMemoria());
                     }
                     if (instruccionesEjecutadas > 0) {
-                        _traza.append(",");
-                        _traza.append(System.getProperty("line.separator"));
+                        _traza.append(",")
+                                .append(System.getProperty("line.separator"));
                     }
                     _traza.append(estadoMemoria());
                 }
@@ -420,6 +420,9 @@ public class Programa {
                 ++instruccionesEjecutadas;
             } while (!finalizado() && estadoOk());
         }
+        _traza.append(",")
+                .append(System.getProperty("line.separator"));
+        _traza.append(estadoMemoria());
         _traza.append("]");
     }
 

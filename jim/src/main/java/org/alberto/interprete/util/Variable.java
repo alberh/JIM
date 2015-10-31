@@ -12,28 +12,29 @@ public class Variable extends Componente {
 
     private int _valor;
     private Tipo _tipo;
+    private int _indice;
     private boolean _creadaEnExpansion = false;
 
     public Variable(String id) {
         this(id, 0, false);
     }
-    
+
     public Variable(String id, int valor) {
         this(id, valor, false);
     }
-    
+
     public Variable(String id, boolean creadaEnExpansion) {
         this(id, 0, creadaEnExpansion);
     }
-    
+
     public Variable(String id, int valor, boolean creadaEnExpansion) {
-        super(GestorVariables.normalizarID(id));
-        
+        super(Variable.normalizarID(id));
+
         _valor = valor;
         _creadaEnExpansion = creadaEnExpansion;
 
-        if (id.length() >= 1) {
-            switch (id.charAt(0)) {
+        if (_id.length() >= 1) {
+            switch (_id.charAt(0)) {
                 case 'X':
                     _tipo = Tipo.ENTRADA;
                     break;
@@ -41,14 +42,16 @@ public class Variable extends Componente {
                 case 'Y':
                     _tipo = Tipo.SALIDA;
                     break;
-                
+
                 case 'Z':
                     _tipo = Tipo.LOCAL;
                     break;
-                    
+
                 default:
-                    // Error.
+                // Error.
             }
+
+            _indice = Variable.obtenerIndice(_id);
         } else {
             // Error.
         }
@@ -57,9 +60,13 @@ public class Variable extends Componente {
     public String id() {
         return _id;
     }
-    
+
     public Tipo tipo() {
         return _tipo;
+    }
+
+    public int indice() {
+        return _indice;
     }
 
     public int valor() {
@@ -79,6 +86,10 @@ public class Variable extends Componente {
             this._valor--;
         }
     }
+    
+    public void creadaEnExpansion(boolean b) {
+        _creadaEnExpansion = b;
+    }
 
     public boolean creadaEnExpansion() {
         return _creadaEnExpansion;
@@ -87,6 +98,47 @@ public class Variable extends Componente {
     @Override
     public String toString() {
         return "(" + _id + ", " + _valor + ")";
+    }
+    
+    /* Métodos estáticos
+     */
+    public static String normalizarID(String id) {
+        id = id.toUpperCase();
+        int len = id.length();
+
+        if (len > 0) {
+            if (len == 1) {
+                if (id.charAt(0) == 'Y') {
+                    return id;
+                } else {
+                    return id + "1";
+                }
+            }
+        } else {
+            Error.deNombreDeVariableVacio();
+        }
+
+        return id;
+    }
+
+    public static int obtenerIndice(String id) {
+        int len = id.length();
+
+        if (len > 0) {
+            if (len > 1) {
+                try {
+                    return Integer.parseInt(id.substring(1));
+                } catch (NumberFormatException ex) {
+                    Error.alObtenerIndiceDeVariable(id);
+                }
+            } else {
+                return 1;
+            }
+        } else {
+            // Error.
+        }
+
+        return 0;
     }
 
     /**
@@ -99,20 +151,6 @@ public class Variable extends Componente {
 
     private static int _mayorEntrada = 0;
     private static int _mayorLocal = 0;
-
-    public static String normalizarID(String id) {
-        id = id.toUpperCase();
-
-        if (id.length() == 1) {
-            if (id.charAt(0) == 'Y') {
-                return id;
-            } else {
-                return id + "1";
-            }
-        } else {
-            return id;
-        }
-    }
 
     public static Variable set(String id) {
         return set(id, 0);
@@ -157,15 +195,6 @@ public class Variable extends Componente {
         }
 
         return v;
-    }
-
-    private static int obtenerIndice(String id) {
-        try {
-            return Integer.parseInt(id.substring(1, id.length()));
-        } catch (NumberFormatException ex) {
-            Error.alObtenerIndiceDeVariable(id);
-            return 0;
-        }
     }
 
     // Sólo utilizado por Macro.expandir

@@ -25,70 +25,43 @@ public class GestorVariables {
         return nuevaVariable(id, 0);
     }
 
-    // Re-hacer este método
     public Variable nuevaVariable(String id, int valor) {
-        id = normalizarID(id);
-        char tipo = id.charAt(0);
-        int indice = 1;
-        Variable v = null;
+        Variable v = new Variable(id, valor);
+        int indice = v.indice();
 
-        if (tipo != 'Y') {
-            indice = obtenerIndice(id);
-        }
-
-        switch (tipo) {
-            case 'X': {
+        switch (v.tipo()) {
+            case ENTRADA:
                 if (_variablesEntrada.containsKey(indice)) {
-                    boolean enExpansion = _variablesEntrada.get(indice).creadaEnExpansion();
-                    v = new Variable(id, valor, enExpansion);
-                } else {
-                    v = new Variable(id, valor);
+                    boolean enExpansion = _variablesEntrada.get(indice)
+                            .creadaEnExpansion();
+                    v.creadaEnExpansion(enExpansion);
                 }
-
                 _variablesEntrada.put(indice, v);
+
                 if (indice > _mayorIndiceEntrada) {
                     _mayorIndiceEntrada = indice;
                 }
-            }
-            break;
+                break;
 
-            case 'Z': {
+            case LOCAL:
                 if (_variablesLocales.containsKey(indice)) {
-                    boolean enExpansion = _variablesLocales.get(indice).creadaEnExpansion();
-                    v = new Variable(id, valor, enExpansion);
-                } else {
-                    v = new Variable(id, valor);
+                    boolean enExpansion = _variablesLocales.get(indice)
+                            .creadaEnExpansion();
+                    v.creadaEnExpansion(enExpansion);
                 }
-
                 _variablesLocales.put(indice, v);
+
                 if (indice > _mayorIndiceLocal) {
                     _mayorIndiceLocal = indice;
                 }
-            }
-            break;
+                break;
 
-            case 'Y':
-                if (_variableSalida != null) {
-                    v = new Variable(id, valor, _variableSalida.creadaEnExpansion());
-                } else {
-                    v = new Variable(id, valor);
-                }
-                
+            case SALIDA:
                 _variableSalida = v;
-                
                 break;
         }
 
         return v;
-    }
-
-    private int obtenerIndice(String id) {
-        try {
-            return Integer.parseInt(id.substring(1, id.length()));
-        } catch (NumberFormatException ex) {
-            Error.alObtenerIndiceDeVariable(id);
-            return 0;
-        }
     }
 
     // Sólo utilizado por Macro.expandir
@@ -98,12 +71,14 @@ public class GestorVariables {
         switch (tipo) {
             case ENTRADA:
                 _mayorIndiceEntrada++;
+
                 v = new Variable("X" + _mayorIndiceEntrada, true);
                 _variablesEntrada.put(_mayorIndiceEntrada, v);
                 break;
 
             case LOCAL:
                 _mayorIndiceLocal++;
+
                 v = new Variable("Z" + _mayorIndiceLocal, true);
                 _variablesLocales.put(_mayorIndiceLocal, v);
                 break;
@@ -116,44 +91,23 @@ public class GestorVariables {
     }
 
     public Variable get(String id) {
-        id = normalizarID(id);
-        char tipo = id.charAt(0);
-        Variable v = null;
-        int indice = 1;
+        Variable v = new Variable(id);
 
-        if (tipo != 'Y') {
-            indice = obtenerIndice(id);
-        }
-
-        switch (tipo) {
-            case 'X':
-                v = _variablesEntrada.get(indice);
+        switch (v.tipo()) {
+            case ENTRADA:
+                v = _variablesEntrada.get(v.indice());
                 break;
 
-            case 'Z':
-                v = _variablesLocales.get(indice);
+            case LOCAL:
+                v = _variablesLocales.get(v.indice());
                 break;
 
-            case 'Y':
+            case SALIDA:
                 v = _variableSalida;
                 break;
         }
 
         return v;
-    }
-
-    public static String normalizarID(String id) {
-        id = id.toUpperCase();
-
-        if (id.length() == 1) {
-            if (id.charAt(0) == 'Y') {
-                return id;
-            } else {
-                return id + "1";
-            }
-        } else {
-            return id;
-        }
     }
 
     public ArrayList<Variable> variablesEntrada() {
@@ -175,13 +129,12 @@ public class GestorVariables {
 
     // Devuelve todas
     /*
-    public ArrayList<Variable> variablesLocalesExp() {
-        ArrayList<Variable> variables = new ArrayList<>(_locales.values());
-        variables.sort(new ComparadorVariables());
-        return variables;
-    }
-    */
-
+     public ArrayList<Variable> variablesLocalesExp() {
+     ArrayList<Variable> variables = new ArrayList<>(_locales.values());
+     variables.sort(new ComparadorVariables());
+     return variables;
+     }
+     */
     public Variable variableSalida() {
         return _variableSalida;
     }
@@ -209,7 +162,7 @@ public class GestorVariables {
         sb.append("Variable de salida").append("\n");
         sb.append(_variableSalida).append("\n");
         sb.append("\n");
-        
+
         return sb.toString();
     }
 }

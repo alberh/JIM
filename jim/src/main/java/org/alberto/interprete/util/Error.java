@@ -96,6 +96,10 @@ public class Error {
                 + "\"" + v + "\".",
                 numeroLineaActual());
     }
+    
+    public static void deNombreDeVariableVacio() {
+        imprimir("Error 24: Nombre de variable vacío.");
+    }
 
     // Bucle
     public static void alCerrarBucle(int l) {
