@@ -323,7 +323,7 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-	  org.alberto.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), nombreToken, descripcion);
+	org.alberto.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), nombreToken, descripcion);
   	
   	/*
 	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
@@ -368,7 +368,7 @@ final static String yyrule[] = {
 
   @Override
   public void yyerror(String descripcion) {
-  	  org.alberto.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
+  	org.alberto.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
   }
 //#line 300 "MacrosParser.java"
 //###############################################################

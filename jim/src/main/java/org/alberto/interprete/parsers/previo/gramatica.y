@@ -2,6 +2,7 @@
 %{
 	import java.io.*;
 	import org.alberto.interprete.*;
+	import org.alberto.interprete.util.*;
 	import org.alberto.interprete.parsers.*;
 %}
 
@@ -102,7 +103,7 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 		yylval = new PrevioParserVal(0);
 		yyl_return = analex.yylex();
 	} catch (IOException e) {
-		org.alberto.interprete.Error.deESenAnalizadorLexico();
+		org.alberto.interprete.util.Error.deESEnAnalizadorLexico();
 	}
 
 	return yyl_return;
@@ -112,7 +113,7 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-  	org.alberto.interprete.Error.deTokenNoEsperado(nombreToken, descripcion);
+  	org.alberto.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
   	/*
 	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
 	System.err.println ("Token leído : "+yyname[token]);

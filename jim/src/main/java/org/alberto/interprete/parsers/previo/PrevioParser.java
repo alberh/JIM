@@ -18,13 +18,11 @@ package org.alberto.interprete.parsers.previo;
 
 
 //#line 3 "gramatica.y"
-import org.alberto.interprete.util.Bucle;
-import org.alberto.interprete.util.Variable;
-import org.alberto.interprete.util.Etiqueta;
 	import java.io.*;
 	import org.alberto.interprete.*;
+	import org.alberto.interprete.util.*;
 	import org.alberto.interprete.parsers.*;
-//#line 21 "PrevioParser.java"
+//#line 22 "PrevioParser.java"
 
 
 
@@ -351,7 +349,7 @@ final static String yyrule[] = {
 "masParametrosMacro :",
 };
 
-//#line 75 "gramatica.y"
+//#line 76 "gramatica.y"
 
 	/** referencia al analizador léxico
   **/
@@ -433,7 +431,7 @@ final static String yyrule[] = {
 	System.err.println(nombresTokens);
 	*/
   }
-//#line 360 "PrevioParser.java"
+//#line 361 "PrevioParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -588,126 +586,126 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 33 "gramatica.y"
+//#line 34 "gramatica.y"
 { yyval.sval = val_peek(0).sval; }
 break;
 case 3:
-//#line 34 "gramatica.y"
+//#line 35 "gramatica.y"
 { yyval.sval = null; }
 break;
 case 4:
-//#line 36 "gramatica.y"
+//#line 37 "gramatica.y"
 { ; }
 break;
 case 5:
-//#line 38 "gramatica.y"
+//#line 39 "gramatica.y"
 { Etiqueta.set(val_peek(1).sval, Programa.numeroLineaActual()); }
 break;
 case 6:
-//#line 39 "gramatica.y"
+//#line 40 "gramatica.y"
 { ; }
 break;
 case 7:
-//#line 41 "gramatica.y"
+//#line 42 "gramatica.y"
 { PrevioAcciones.definirVariableYMantener(val_peek(0).sval); }
 break;
 case 9:
-//#line 42 "gramatica.y"
-{ PrevioAcciones.definirVariable(val_peek(1).sval); }
-break;
-case 10:
 //#line 43 "gramatica.y"
 { PrevioAcciones.definirVariable(val_peek(1).sval); }
 break;
-case 11:
+case 10:
 //#line 44 "gramatica.y"
+{ PrevioAcciones.definirVariable(val_peek(1).sval); }
+break;
+case 11:
+//#line 45 "gramatica.y"
 { Variable.set(val_peek(3).sval); }
 break;
 case 12:
-//#line 45 "gramatica.y"
+//#line 46 "gramatica.y"
 { ; }
 break;
 case 13:
-//#line 46 "gramatica.y"
+//#line 47 "gramatica.y"
 { PrevioAcciones.definirVariable(val_peek(0).sval); Bucle.abrir(Programa.numeroLineaActual()); }
 break;
 case 14:
-//#line 47 "gramatica.y"
+//#line 48 "gramatica.y"
 { PrevioAcciones.definirVariable(val_peek(1).sval); Bucle.abrir(Programa.numeroLineaActual()); }
 break;
 case 15:
-//#line 48 "gramatica.y"
+//#line 49 "gramatica.y"
 { Bucle.cerrar(Programa.numeroLineaActual()); }
 break;
 case 16:
-//#line 50 "gramatica.y"
+//#line 51 "gramatica.y"
 { PrevioAcciones.definirVariable(val_peek(0).sval); }
 break;
 case 17:
-//#line 51 "gramatica.y"
-{ ; }
-break;
-case 18:
 //#line 52 "gramatica.y"
 { ; }
 break;
-case 19:
+case 18:
 //#line 53 "gramatica.y"
+{ ; }
+break;
+case 19:
+//#line 54 "gramatica.y"
 { PrevioAcciones.prepararParaExpandir(val_peek(0).sval); }
 break;
 case 21:
-//#line 55 "gramatica.y"
-{ ; }
-break;
-case 22:
 //#line 56 "gramatica.y"
 { ; }
 break;
-case 23:
+case 22:
 //#line 57 "gramatica.y"
 { ; }
 break;
-case 24:
+case 23:
 //#line 58 "gramatica.y"
 { ; }
 break;
-case 25:
+case 24:
 //#line 59 "gramatica.y"
 { ; }
 break;
+case 25:
+//#line 60 "gramatica.y"
+{ ; }
+break;
 case 26:
-//#line 61 "gramatica.y"
+//#line 62 "gramatica.y"
 { ; }
 break;
 case 27:
-//#line 62 "gramatica.y"
+//#line 63 "gramatica.y"
 { PrevioAcciones.definirVariable(val_peek(0).sval); }
 break;
 case 28:
-//#line 64 "gramatica.y"
+//#line 65 "gramatica.y"
 { PrevioAcciones.prepararVariableEntrada(val_peek(0).sval); }
 break;
 case 29:
-//#line 65 "gramatica.y"
+//#line 66 "gramatica.y"
 { PrevioAcciones.definirVariable(val_peek(0).sval); PrevioAcciones.prepararVariableEntrada(val_peek(0).sval); }
 break;
 case 30:
-//#line 67 "gramatica.y"
-{ ; }
-break;
-case 31:
 //#line 68 "gramatica.y"
 { ; }
 break;
-case 32:
-//#line 70 "gramatica.y"
+case 31:
+//#line 69 "gramatica.y"
 { ; }
 break;
-case 33:
+case 32:
 //#line 71 "gramatica.y"
 { ; }
 break;
-//#line 629 "PrevioParser.java"
+case 33:
+//#line 72 "gramatica.y"
+{ ; }
+break;
+//#line 630 "PrevioParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

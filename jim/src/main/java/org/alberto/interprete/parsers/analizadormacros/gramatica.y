@@ -62,7 +62,7 @@ simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
 		yylval = new MacrosParserVal(0);
 		yyl_return = analex.yylex();
 	} catch (IOException e) {
-		org.alberto.interprete.Error.deESEnAnalizadorLexico(77); //analex.lineaActual());
+		org.alberto.interprete.util.Error.deESEnAnalizadorLexico(77); //analex.lineaActual());
 	}
 
 	return yyl_return;
@@ -72,7 +72,7 @@ simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-	org.alberto.interprete.Error.deTokenNoEsperado(analex.lineaActual(), nombreToken, descripcion);
+	org.alberto.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), nombreToken, descripcion);
   	
   	/*
 	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
@@ -117,5 +117,5 @@ simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
 
   @Override
   public void yyerror(String descripcion) {
-  	org.alberto.interprete.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
+  	org.alberto.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
   }
