@@ -8,10 +8,102 @@ import java.util.HashMap;
  */
 public class Etiqueta extends Componente {
 
+    private char _grupo;
+    private int _indice;
+    private int _linea;
+
+    /**
+     * Constructor de clase.
+     */
+    public Etiqueta(String id, int linea) {
+        super(Etiqueta.normalizarID(id));
+
+        _grupo = Etiqueta.obtenerGrupo(id);
+        _indice = Etiqueta.obtenerIndice(id);
+        _linea = linea;
+    }
+
+    public char grupo() {
+        return _grupo;
+    }
+
+    public int indice() {
+        return _indice;
+    }
+
+    /**
+     * Devuelve el número de línea en el que se encuentra la etiqueta.
+     */
+    public int linea() {
+        return _linea;
+    }
+
+    /**
+     * Devuelve una representación en forma de cadena de la etiqueta.
+     */
+    @Override
+    public String toString() {
+        return "(" + _id + ", " + _linea + ")";
+    }
+
+    // Métodos estáticos
+    /**
+     * Cambia a mayúsculas el identificador de una etiqueta, y concatena un "1"
+     * al final si no ha sido indicado.
+     */
+    public static String normalizarID(String id) {
+        id = id.toUpperCase();
+        int len = id.length();
+
+        if (len > 0) {
+            if (len == 1) {
+                return id + "1";
+            } else {
+                return id;
+            }
+        } else {
+            Error.deIdentificadorDeEtiquetaVacio();
+            return "";
+        }
+    }
+
+    public static char obtenerGrupo(String id) {
+        id = Etiqueta.normalizarID(id);
+        return id.charAt(0);
+    }
+
+    // Interfaz con los métodos comunes entre Etiqueta y Variable?
+    public static int obtenerIndice(String id) {
+        id = Etiqueta.normalizarID(id);
+
+        if (id.length() > 1) {
+            try {
+                return Integer.parseInt(id.substring(1));
+            } catch (NumberFormatException ex) {
+                Error.alObtenerIndiceDeVariable(id);
+            }
+        } else {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * *************************************************************
+     * Refactor
+     */
     private static HashMap<String, Etiqueta> _etiquetas = new HashMap<>();
     private static int _ultimaA = 0;
 
-    private int _linea;
+    /**
+     * Imprime en pantalla todas las etiquetas.
+     */
+    public static void pintar() {
+        System.out.println("Etiquetas");
+        System.out.println(_etiquetas);
+        System.out.println();
+    }
 
     /**
      * Define una nueva etiqueta.
@@ -50,7 +142,7 @@ public class Etiqueta extends Componente {
     public static Etiqueta get() {
         ++_ultimaA;
         Etiqueta etiqueta = new Etiqueta("A" + _ultimaA, 0);
-        
+
         return etiqueta;
     }
 
@@ -67,59 +159,5 @@ public class Etiqueta extends Componente {
     public static void limpiar() {
         _etiquetas.clear();
         _ultimaA = 0;
-    }
-
-    /**
-     * Constructor de clase.
-     */
-    private Etiqueta(String id, int linea) {
-        super(id);
-        
-        _linea = linea;
-    }
-
-    /**
-     * Devuelve el identificador de la etiqueta.
-     */
-    public String id() {
-        return _id;
-    }
-
-    /**
-     * Devuelve el número de línea en el que se encuentra la etiqueta.
-     */
-    public int linea() {
-        return _linea;
-    }
-
-    /**
-     * Cambia a mayúsculas el identificador de una etiqueta, y concatena un "1"
-     * al final si no ha sido indicado.
-     */
-    public static String normalizarID(String id) {
-        id = id.toUpperCase();
-
-        if (id.length() == 1) {
-            return id + "1";
-        } else {
-            return id;
-        }
-    }
-
-    /**
-     * Devuelve una representación en forma de cadena de la etiqueta.
-     */
-    @Override
-    public String toString() {
-        return "(" + _id + ", " + _linea + ")";
-    }
-
-    /**
-     * Imprime en pantalla todas las etiquetas.
-     */
-    public static void pintar() {
-        System.out.println("Etiquetas");
-        System.out.println(_etiquetas);
-        System.out.println();
     }
 }

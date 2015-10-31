@@ -7,4 +7,11 @@ public abstract class Componente {
     public Componente(String id) {
         _id = id;
     }
+
+    /**
+     * Devuelve el identificador del componente.
+     */
+    public String id() {
+        return _id;
+    }
 }

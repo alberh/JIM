@@ -22,7 +22,7 @@ public class GestorVariables {
     }
 
     public Variable nuevaVariable(String id) {
-        return nuevaVariable(id, 0);
+        return GestorVariables.this.nuevaVariable(id, 0);
     }
 
     public Variable nuevaVariable(String id, int valor) {
@@ -65,7 +65,7 @@ public class GestorVariables {
     }
 
     // Sólo utilizado por Macro.expandir
-    public Variable get(Variable.Tipo tipo) {
+    public Variable nuevaVariable(Variable.Tipo tipo) {
         Variable v = null;
 
         switch (tipo) {
@@ -90,7 +90,7 @@ public class GestorVariables {
         return v;
     }
 
-    public Variable get(String id) {
+    public Variable obtenerVariable(String id) {
         Variable v = new Variable(id);
 
         switch (v.tipo()) {

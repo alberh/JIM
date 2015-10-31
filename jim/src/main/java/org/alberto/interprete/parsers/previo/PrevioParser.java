@@ -619,7 +619,7 @@ case 10:
 break;
 case 11:
 //#line 45 "gramatica.y"
-{ Variable.set(val_peek(3).sval); }
+{ PrevioAcciones.definirVariable(val_peek(3).sval); }
 break;
 case 12:
 //#line 46 "gramatica.y"

@@ -33,32 +33,8 @@ public class Variable extends Componente {
         _valor = valor;
         _creadaEnExpansion = creadaEnExpansion;
 
-        if (_id.length() >= 1) {
-            switch (_id.charAt(0)) {
-                case 'X':
-                    _tipo = Tipo.ENTRADA;
-                    break;
-
-                case 'Y':
-                    _tipo = Tipo.SALIDA;
-                    break;
-
-                case 'Z':
-                    _tipo = Tipo.LOCAL;
-                    break;
-
-                default:
-                // Error.
-            }
-
-            _indice = Variable.obtenerIndice(_id);
-        } else {
-            // Error.
-        }
-    }
-
-    public String id() {
-        return _id;
+        _tipo = Variable.obtenerTipo(_id);
+        _indice = Variable.obtenerIndice(_id);
     }
 
     public Tipo tipo() {
@@ -86,7 +62,7 @@ public class Variable extends Componente {
             this._valor--;
         }
     }
-    
+
     public void creadaEnExpansion(boolean b) {
         _creadaEnExpansion = b;
     }
@@ -99,7 +75,7 @@ public class Variable extends Componente {
     public String toString() {
         return "(" + _id + ", " + _valor + ")";
     }
-    
+
     /* Métodos estáticos
      */
     public static String normalizarID(String id) {
@@ -113,32 +89,48 @@ public class Variable extends Componente {
                 } else {
                     return id + "1";
                 }
+            } else {
+                return id;
             }
         } else {
-            Error.deNombreDeVariableVacio();
+            Error.deIdentificadorDeVariableVacio();
+            return "";
         }
-
-        return id;
     }
 
     public static int obtenerIndice(String id) {
-        int len = id.length();
+        id = Variable.normalizarID(id);
 
-        if (len > 0) {
-            if (len > 1) {
-                try {
-                    return Integer.parseInt(id.substring(1));
-                } catch (NumberFormatException ex) {
-                    Error.alObtenerIndiceDeVariable(id);
-                }
-            } else {
-                return 1;
+        if (id.length() > 1) {
+            try {
+                return Integer.parseInt(id.substring(1));
+            } catch (NumberFormatException ex) {
+                Error.alObtenerIndiceDeVariable(id);
             }
         } else {
-            // Error.
+            return 1;
         }
 
         return 0;
+    }
+
+    public static Tipo obtenerTipo(String id) {
+        char charTipo = Variable.normalizarID(id).charAt(0);
+
+        switch (charTipo) {
+            case 'X':
+                return Tipo.ENTRADA;
+
+            case 'Y':
+                return Tipo.SALIDA;
+
+            case 'Z':
+                return Tipo.LOCAL;
+
+            default:
+                Error.deTipoDeVariableNoValido(charTipo);
+                return null;
+        }
     }
 
     /**

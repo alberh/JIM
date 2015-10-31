@@ -42,7 +42,7 @@ etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, Programa.numeroLineaActual()); }
 instruccion : VARIABLE { PrevioAcciones.definirVariableYMantener($1); } FLECHA finInstruccion
             | VARIABLE INCREMENTO { PrevioAcciones.definirVariable($1); }
             | VARIABLE DECREMENTO { PrevioAcciones.definirVariable($1); }
-            | IF VARIABLE DISTINTO GOTO ETIQUETA { Variable.set($2); }
+            | IF VARIABLE DISTINTO GOTO ETIQUETA { PrevioAcciones.definirVariable($2); }
             | GOTO ETIQUETA { ; }
             | LOOP VARIABLE { PrevioAcciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }
             | WHILE VARIABLE DISTINTO { PrevioAcciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }

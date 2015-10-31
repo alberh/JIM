@@ -97,13 +97,24 @@ public class Error {
                 numeroLineaActual());
     }
     
-    public static void deNombreDeVariableVacio() {
+    public static void deIdentificadorDeVariableVacio() {
         imprimir("Error 24: Nombre de variable vacío.");
+    }
+    
+    public static void deTipoDeVariableNoValido(char charTipo) {
+        imprimir("Error 26: Tipo de variable '" + charTipo + "' no válido.",
+                Programa.numeroLineaActual());
     }
 
     // Bucle
-    public static void alCerrarBucle(int l) {
-        imprimir("Error 13: No se esperaba cierre de bucle en la línea " + l + ".");
+    public static void alCerrarBucle(int linea ){
+        imprimir("Error 13: No se esperaba cierre de bucle en la línea "
+                + linea + ".");
+    }
+    
+    // Etiqueta
+    public static void deIdentificadorDeEtiquetaVacio() {
+        imprimir("Error 25: Nombre de etiqueta vacío.");
     }
 
     // Configuración

@@ -180,12 +180,6 @@ public class Macro extends Componente {
 
         return expansion + "\n# Fin expansión de " + idMacro + separador;
     }
-
-    
-
-    public String id() {
-        return _id;
-    }
     
     public String definidaEn() {
         return _definidaEn;
