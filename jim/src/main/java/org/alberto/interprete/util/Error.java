@@ -92,7 +92,7 @@ public class Error {
 
     // Variable
     public static void alObtenerIndiceDeVariable(String v) {
-        imprimir("Error 22: No se pudo obtener el índice de la variable "
+        imprimir("Error 27: No se pudo obtener el índice de la variable "
                 + "\"" + v + "\".",
                 numeroLineaActual());
     }
@@ -101,8 +101,9 @@ public class Error {
         imprimir("Error 24: Nombre de variable vacío.");
     }
     
-    public static void deTipoDeVariableNoValido(char charTipo) {
-        imprimir("Error 26: Tipo de variable '" + charTipo + "' no válido.",
+    public static void deTipoDeVariableNoValido(String tipo) {
+        // Para después del refactor
+        imprimir("Error 26: Tipo de variable '" + tipo + "' no válido.",
                 Programa.numeroLineaActual());
     }
 
@@ -115,6 +116,12 @@ public class Error {
     // Etiqueta
     public static void deIdentificadorDeEtiquetaVacio() {
         imprimir("Error 25: Nombre de etiqueta vacío.");
+    }
+    
+    public static void alObtenerIndiceDeEtiqueta(String e) {
+        imprimir("Error 28: No se pudo obtener el índice de la etiqueta "
+                + "\"" + e + "\".",
+                numeroLineaActual());
     }
 
     // Configuración

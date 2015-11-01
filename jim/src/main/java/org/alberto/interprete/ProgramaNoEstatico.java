@@ -27,97 +27,93 @@ import org.alberto.interprete.parsers.*;
 import java.io.FileNotFoundException;
 import java.nio.file.DirectoryStream;
 import java.util.Scanner;
+import org.alberto.interprete.util.gestor.GestorAmbitos;
 
-public class Programa {
-
-    private static String _ficheroPrograma;
-    private static String _ficheroEnProceso;
-    private static ArrayList<String> _lineas;
-    private static int _lineaActual;
-
-    private static StringBuilder _traza = new StringBuilder();
-
-    private static Parser _parser;
-    private static boolean _salto;
+public class ProgramaNoEstatico {
 
     public enum Estado {
 
         OK, ERROR
     };
-    private static Estado _estado = Estado.OK;
 
     public enum Etapa {
 
-        ESPERA, CARGANDO_FICHERO, COMPROBANDO_DIRECTORIO_MACROS,
+        INICIANDO, CARGANDO_FICHERO, COMPROBANDO_DIRECTORIO_MACROS,
         CARGANDO_MACROS, ANALIZANDO, EXPANDIENDO_MACROS, EJECUTANDO
     };
-    private static Etapa _etapa = Etapa.ESPERA;
-    private static Etapa _etapaFinal;
 
-    public enum ModoInstrucciones {
+    public enum Objetivo {
 
-        NORMAL, EXTENDIDO, MACROS, EXTENDIDO_MACROS
+        EJECUTAR, EXPANDIR
     };
-    private static ModoInstrucciones _modoInstrucciones = ModoInstrucciones.NORMAL;
 
-    public enum Modelos {
+    public enum Modelo {
 
         L, LOOP, WHILE
     };
-    private static Modelos _modelo;
 
-    private Programa() {
+    private String _ficheroPrograma;
+    private String _ficheroEnProceso;
+    private Parser _parser;
+    private Estado _estado;
+    private Etapa _etapa;
+    private Objetivo _objetivo;
+    private boolean _modoFlexible;
+    private boolean _macrosPermitidas;
+    private Modelo _modelo;
+    
+    private GestorAmbitos _gestorAmbitos;
+
+    // Cada ámbito lleva su propia traza.
+    // private StringBuilder _traza;
+    //
+    public ProgramaNoEstatico(String fichero, Modelo modelo,
+            Objetivo objetivo, boolean modoFlexible,
+            boolean macrosPermitidas) {
+
+        _estado = Estado.OK;
+        _etapa = Etapa.INICIANDO;
+
+        _ficheroPrograma = _ficheroEnProceso = fichero;
+
+        _modelo = modelo;
+        _objetivo = objetivo;
+        _modoFlexible = modoFlexible;
+        _macrosPermitidas = macrosPermitidas;
+        
+        _gestorAmbitos = new GestorAmbitos(this);
+        
+        try (Scanner scanner = new Scanner(new File(fichero))) {
+            while (scanner.hasNextLine()) {
+                _lineas.add(scanner.nextLine());
+            }
+        } catch (FileNotFoundException ex) {
+            Error.alCargarPrograma(fichero);
+        }
+
+        _ficheroEnProceso = fichero;
+
+        switch (_modelo) {
+            case L:
+                _parser = new LParser(null);
+                break;
+
+            case LOOP:
+                _parser = new LoopParser(null);
+                break;
+
+            case WHILE:
+                _parser = new WhileParser(null);
+                break;
+        }
     }
 
-    public static void estado(Estado estado) {
-        _estado = estado;
-    }
-
-    public static Estado estado() {
-        return _estado;
-    }
-
-    public static void etapa(Etapa etapa) {
-        _etapa = etapa;
-    }
-
-    public static Etapa estapa() {
-        return _etapa;
-    }
-
-    public static void etapaFinal(Etapa etapaFinal) {
-        _etapaFinal = etapaFinal;
-    }
-
-    public static Etapa etapaFinal() {
-        return _etapaFinal;
-    }
-
-    public static boolean modoExtendido() {
-        return _modoInstrucciones == ModoInstrucciones.EXTENDIDO
-                || _modoInstrucciones == ModoInstrucciones.EXTENDIDO_MACROS;
-    }
-
-    public static boolean modoMacros() {
-        return _modoInstrucciones == ModoInstrucciones.MACROS
-                || _modoInstrucciones == ModoInstrucciones.EXTENDIDO_MACROS;
-    }
-
-    public static boolean estadoOk() {
-        return _estado == Estado.OK;
-    }
-
-    public static String ficheroEnProceso() {
-        return new File(_ficheroEnProceso).getName();
-    }
-
-    public static boolean cargar(String fichero, Modelos modelo,
-            ModoInstrucciones modo, Etapa etapaFinal) {
+    public boolean cargar(String fichero, Modelo modelo,
+            Objetivo objetivo) {
 
         _etapa = Etapa.CARGANDO_FICHERO;
-        _etapaFinal = etapaFinal;
+        _objetivo = objetivo;
         _modelo = modelo;
-        _modoInstrucciones = modo;
         _lineas = new ArrayList<>();
         _ficheroPrograma = fichero;
 
@@ -150,11 +146,68 @@ public class Programa {
         return true;
     }
 
-    public static void iniciar() {
+    public void estado(Estado estado) {
+        _estado = estado;
+    }
+
+    public Estado estado() {
+        return _estado;
+    }
+
+    public void etapa(Etapa etapa) {
+        _etapa = etapa;
+    }
+
+    public Etapa estapa() {
+        return _etapa;
+    }
+
+    public void objetivo(Objetivo objetivo) {
+        _objetivo = objetivo;
+    }
+
+    public Objetivo objetivo() {
+        return _objetivo;
+    }
+
+    public boolean modoFlexible() {
+        return _modoFlexible;
+    }
+
+    public void modoFlexible(boolean b) {
+        _modoFlexible = b;
+    }
+
+    public boolean macrosPermitidas() {
+        return _macrosPermitidas;
+    }
+    
+    public void macrosPermitidas(boolean b) {
+        _macrosPermitidas = b;
+    }
+
+    public boolean estadoOk() {
+        return _estado == Estado.OK;
+    }
+
+    public String ficheroEnProceso() {
+        return new File(_ficheroEnProceso).getName();
+    }
+    
+    public GestorAmbitos gestorAmbitos() {
+        return _gestorAmbitos;
+    }
+    
+    
+    
+    
+    
+
+    public void iniciar() {
         iniciar(null);
     }
 
-    public static void iniciar(int[] parametros) {
+    public void iniciar(int[] parametros) {
         limpiar();
         comprobarDirectoriosMacros();
         cargarMacros();
@@ -190,7 +243,7 @@ public class Programa {
         }
     }
 
-    public static void iniciarExpansionMacros() {
+    public void iniciarExpansionMacros() {
         limpiar();
         comprobarDirectoriosMacros();
         cargarMacros();
@@ -216,13 +269,13 @@ public class Programa {
         }
     }
 
-    private static void asignarVariablesEntrada(int[] parametros) {
+    private void asignarVariablesEntrada(int[] parametros) {
         for (int i = 0; i < parametros.length; ++i) {
             Variable.set("X" + (i + 1), parametros[i]);
         }
     }
 
-    private static void limpiar() {
+    private void limpiar() {
         System.out.println("Limpiando memoria...");
 
         Variable.limpiar();
@@ -232,7 +285,7 @@ public class Programa {
         PrevioAcciones.limpiar();
     }
 
-    public static void cargarMacros() {
+    public void cargarMacros() {
         _etapa = Etapa.CARGANDO_MACROS;
         System.out.println("Cargando macros...");
 
@@ -245,8 +298,7 @@ public class Programa {
         }
     }
 
-    private static void procesarFicherosMacros(String rutaMacros) {
-        //Error.alObtenerListaFicherosMacros(rutaMacros);
+    private void procesarFicherosMacros(String rutaMacros) {
         try {
             ArrayList<Path> rutas = new ArrayList<>();
 
@@ -283,7 +335,7 @@ public class Programa {
         }
     }
 
-    private static String obtenerRutaModelo() {
+    private String obtenerRutaModelo() {
         String ruta = null;
 
         switch (_modelo) {
@@ -303,16 +355,16 @@ public class Programa {
         return ruta;
     }
 
-    public static Modelos modelo() {
+    public Modelo modelo() {
         return _modelo;
     }
 
-    public static String nombreModelo() {
+    public String nombreModelo() {
         String modelo = _modelo.toString();
         return modelo.charAt(0) + modelo.substring(1).toLowerCase();
     }
 
-    private static void comprobarDirectoriosMacros() {
+    private void comprobarDirectoriosMacros() {
         _etapa = Etapa.COMPROBANDO_DIRECTORIO_MACROS;
         System.out.println("Comprobando directorios de macros...");
         /* Esquema por defecto:
@@ -327,7 +379,7 @@ public class Programa {
         comprobarDirectorio(new File(Configuracion.rutaMacrosWhile()));
     }
 
-    private static void comprobarDirectorio(File directorio) {
+    private void comprobarDirectorio(File directorio) {
         System.out.println("   " + directorio.getAbsolutePath());
 
         if (!directorio.exists()) {
@@ -348,29 +400,33 @@ public class Programa {
         }
     }
 
-    private static void previo() {
+    private void previo() {
         _etapa = Etapa.ANALIZANDO;
         if (estadoOk()) {
             ejecutar(new PrevioParser(null));
         }
     }
 
-    public static void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
+    public void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
         _lineas.remove(linea - 1);
         _lineas.addAll(linea - 1, lineasExpansion);
     }
 
-    private static void ejecutar(Parser parser) {
+    /**
+     * *************************************************************************
+     * Para rediseñar en base a métodos de Ambito o GestorAmbitos
+     */
+    private void ejecutar(Parser parser) {
         ejecutar(parser, false);
     }
 
-    private static void ejecutar(Parser parser, boolean traza) {
+    private void ejecutar(Parser parser, boolean traza) {
         if (!(parser instanceof PrevioParser)) {
             _etapa = Etapa.EJECUTANDO;
         }
         // System.out.println("Etapa en ejecutar: " + _etapa);
 
-        _traza = new StringBuilder("[");
+        // _traza = new StringBuilder("[");
         _ficheroEnProceso = _ficheroPrograma;
         _lineaActual = 0;
         _salto = false;
@@ -386,11 +442,13 @@ public class Programa {
                         // System.out.println(_lineaActual + ": " + linea);
                         System.out.println(estadoMemoria());
                     }
-                    if (instruccionesEjecutadas > 0) {
-                        _traza.append(",")
-                                .append(System.getProperty("line.separator"));
-                    }
-                    _traza.append(estadoMemoria());
+                    /*
+                     if (instruccionesEjecutadas > 0) {
+                     _traza.append(",")
+                     .append(System.getProperty("line.separator"));
+                     }
+                     _traza.append(estadoMemoria());
+                     */
                 }
 
                 try {
@@ -412,13 +470,15 @@ public class Programa {
                 ++instruccionesEjecutadas;
             } while (!finalizado() && estadoOk());
         }
-        _traza.append(",")
-                .append(System.getProperty("line.separator"));
-        _traza.append(estadoMemoria());
-        _traza.append("]");
+        /*
+         _traza.append(",")
+         .append(System.getProperty("line.separator"));
+         _traza.append(estadoMemoria());
+         _traza.append("]");
+         */
     }
 
-    public static String estadoMemoria() {
+    public String estadoMemoria() {
         boolean comaAlFinal = false;
         StringBuilder sb = new StringBuilder();
         sb.append("(").append(_lineaActual).append(", <");
@@ -450,11 +510,12 @@ public class Programa {
         return sb.toString();
     }
 
-    public static String traza() {
-        return _traza.toString();
-    }
-
-    private static void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {
+    /*
+     public String traza() {
+     return _traza.toString();
+     }
+     */
+    private void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {
         concatenarVariable(variables.get(0), sb);
 
         for (int i = 1; i < variables.size(); ++i) {
@@ -463,15 +524,15 @@ public class Programa {
         }
     }
 
-    private static void concatenarVariable(Variable variable, StringBuilder sb) {
+    private void concatenarVariable(Variable variable, StringBuilder sb) {
         sb.append(variable.id()).append(" = ").append(variable.valor());
     }
 
-    public static int numeroLineaActual() {
+    public int numeroLineaActual() {
         return _lineaActual;
     }
 
-    public static void numeroLineaActual(int n) {
+    public void numeroLineaActual(int n) {
         if (lineaValida(n)) {
             _lineaActual = n;
         } else {
@@ -479,16 +540,16 @@ public class Programa {
         }
     }
 
-    public static String lineaActual() {
+    public String lineaActual() {
         return finalizado() ? null : _lineas.get(_lineaActual - 1);
     }
 
-    public static String lineaSiguiente() {
+    public String lineaSiguiente() {
         numeroLineaActual(_lineaActual + 1);
         return lineaActual();
     }
 
-    public static String linea(int n) {
+    public String linea(int n) {
         if (lineaValida(n)) {
             return _lineas.get(n);
         } else {
@@ -496,35 +557,35 @@ public class Programa {
         }
     }
 
-    public static boolean lineaValida(int numeroLinea) {
+    public boolean lineaValida(int numeroLinea) {
         return numeroLinea >= 1 && numeroLinea <= numeroLineas();
     }
 
-    public static int numeroLineas() {
+    public int numeroLineas() {
         return _lineas.size();
     }
 
-    public static ArrayList<String> lineas() {
+    public ArrayList<String> lineas() {
         return _lineas;
     }
 
-    public static void terminar() {
+    public void terminar() {
         _lineaActual = numeroLineas() + 1;
     }
 
-    public static boolean finalizado() {
+    public boolean finalizado() {
         return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
     }
 
-    public static void salto(int linea) {
+    public void salto(int linea) {
         numeroLineaActual(linea);
         _salto = true;
     }
 
-    public static void imprimirComponentes() {
+    public void imprimirComponentes() {
         Variable.pintar();
 
-        if (_modelo == Modelos.L) {
+        if (_modelo == Modelo.L) {
             Etiqueta.pintar();
         } else {
             Bucle.pintar();
@@ -533,7 +594,7 @@ public class Programa {
         Macro.pintar();
     }
 
-    public static void imprimirPrograma() {
+    public void imprimirPrograma() {
         for (int i = 0; i < _lineas.size(); ++i) {
             System.out.println((i + 1) + ": " + _lineas.get(i));
         }
@@ -541,7 +602,7 @@ public class Programa {
         System.out.println(numeroLineas() + " líneas.");
     }
 
-    public static String obtenerPrograma() {
+    public String obtenerPrograma() {
         StringBuilder sb = new StringBuilder();
         _lineas.forEach(
                 linea -> sb.append(linea).append("\n")
@@ -550,7 +611,17 @@ public class Programa {
         return sb.toString();
     }
 
-    public static int resultado() {
+    public int resultado() {
         return Variable.get("Y").valor();
     }
+
+    /**
+     * *************************************************************************
+     * Para refactor a Ambito
+     */
+    private ArrayList<String> _lineas;
+    private int _lineaActual;
+    private boolean _salto;
+    // En cargar:
+    //      _lineaActual = numeroLineas();
 }

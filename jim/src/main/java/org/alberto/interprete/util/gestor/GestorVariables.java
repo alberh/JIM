@@ -1,9 +1,12 @@
-package org.alberto.interprete.util;
+package org.alberto.interprete.util.gestor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.util.ComparadorVariables;
+import org.alberto.interprete.util.Variable;
 
-public class GestorVariables {
+public class GestorVariables extends GestorComponentes {
 
     private HashMap<Integer, Variable> _variablesEntrada;
     private HashMap<Integer, Variable> _variablesLocales;
@@ -12,7 +15,9 @@ public class GestorVariables {
     private int _mayorIndiceEntrada;
     private int _mayorIndiceLocal;
 
-    public GestorVariables() {
+    public GestorVariables(ProgramaNoEstatico programa) {
+        super(programa);
+        
         _variablesEntrada = new HashMap<>();
         _variablesLocales = new HashMap<>();
         _variableSalida = new Variable("Y");
@@ -22,7 +27,7 @@ public class GestorVariables {
     }
 
     public Variable nuevaVariable(String id) {
-        return GestorVariables.this.nuevaVariable(id, 0);
+        return nuevaVariable(id, 0);
     }
 
     public Variable nuevaVariable(String id, int valor) {
@@ -164,5 +169,15 @@ public class GestorVariables {
         sb.append("\n");
 
         return sb.toString();
+    }
+
+    @Override
+    protected int count() {
+        return _variablesEntrada.size() + _variablesLocales.size() + 1;
+    }
+
+    @Override
+    protected boolean vacio() {
+        return _variablesEntrada.isEmpty() && _variablesLocales.isEmpty();
     }
 }

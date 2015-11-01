@@ -1,167 +1,53 @@
-package org.alberto.interprete.util;
+package org.alberto.interprete.util.gestor;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.alberto.interprete.Programa;
+import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.util.ContenedorParametrosExpansion;
+import org.alberto.interprete.util.Error;
+import org.alberto.interprete.util.Etiqueta;
+import org.alberto.interprete.util.Macro;
+import org.alberto.interprete.util.Variable;
 
-public class Macro extends Componente {
+public class GestorMacros extends GestorComponentes {
 
-    private String _definidaEn;
+    private HashMap<String, Macro> _macros;
     
-    private String _cuerpo;
-    
-    // Componentes usados en la expansión de macros ilustrativa
-    private ArrayList<String> _variablesEntrada = new ArrayList<>();
-    private ArrayList<String> _variablesLocales = new ArrayList<>();
-
-    private ArrayList<String> _etiquetas = new ArrayList<>();
-    private ArrayList<String> _etiquetasGoTo = new ArrayList<>();
-
-    private ArrayList<String> _llamadasAMacros = new ArrayList<>();
-
-    public Macro(String id) {
-        super(id);
-
-        _definidaEn = Programa.ficheroEnProceso();
-
-        if (_definidaEn.equals("jim.tmp")) {
-            _definidaEn = "Editor";
-        }
+    public GestorMacros(ProgramaNoEstatico programa) {
+        super(programa);
+        _macros = new HashMap<>();
     }
 
-    public String definidaEn() {
-        return _definidaEn;
-    }
-
-    public String cuerpo() {
-        return _cuerpo;
-    }
-
-    public void cuerpo(String cuerpo) {
-        _cuerpo = cuerpo;
-    }
-
-    public ArrayList<String> variablesEntrada() {
-        return _variablesEntrada;
-    }
-
-    public ArrayList<String> variablesLocales() {
-        return _variablesLocales;
-    }
-
-    public ArrayList<String> etiquetas() {
-        return _etiquetas;
-    }
-
-    public ArrayList<String> etiquetasSalto() {
-        return _etiquetasGoTo;
-    }
-
-    public ArrayList<String> llamadasAMacros() {
-        return _llamadasAMacros;
-    }
-
-    public void nuevaVariable(String id) {
-        Variable v = new Variable(id);
-        id = v.id();
-
-        switch (v.tipo()) {
-            case ENTRADA:
-                if (!_variablesEntrada.contains(id)) {
-                    _variablesEntrada.add(id);
-                }
-                break;
-
-            case LOCAL:
-                if (!_variablesLocales.contains(id)) {
-                    _variablesLocales.add(id);
-                }
-                break;
-
-            case SALIDA:
-                break;
-        }
-    }
-
-    public void nuevaEtiqueta(String id) {
-        if (!_etiquetas.contains(id)) {
-            _etiquetas.add(id);
-        }
-    }
-
-    public void nuevaEtiquetaGoTo(String id) {
-        if (!_etiquetasGoTo.contains(id)) {
-            _etiquetasGoTo.add(id);
-        }
-    }
-
-    public void nuevaLlamadaAMacro(String id) {
-        _llamadasAMacros.add(id);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("ID: ").append(_id).append("\n");
-        sb.append("Cuerpo: ").append(_cuerpo).append("\n");
-
-        sb.append("Variables de entrada: ");
-        for (int i = 0; i < _variablesEntrada.size(); ++i) {
-            sb.append(_variablesEntrada.get(i)).append(" ");
-        }
-        sb.append("\n");
-
-        sb.append("Variables locales: ");
-        for (int i = 0; i < _variablesLocales.size(); ++i) {
-            sb.append(_variablesLocales.get(i)).append(" ");
-        }
-        sb.append("\n");
-
-        sb.append("Etiquetas: ");
-        for (int i = 0; i < _etiquetas.size(); ++i) {
-            sb.append(_etiquetas.get(i)).append(" ");
-        }
-        sb.append("\n");
-
-        sb.append("Llamadas a macros: ");
-        for (int i = 0; i < _llamadasAMacros.size(); ++i) {
-            sb.append(_llamadasAMacros.get(i)).append(" ");
-        }
-        sb.append("\n");
-
-        return sb.toString();
-    }
-
-    /**
-     * **************************************************************
-     * Refactor
-     */
-    private static HashMap<String, Macro> _macros = new HashMap<>();
-
-    public static void pintar() {
-        System.out.println("Macros");
-        _macros.forEach(
-                (k, v) -> System.out.println(v)
-        );
-        System.out.println();
-    }
-
-    public static Macro set(String id) {
+    public Macro nuevaMacro(String id) {
         Macro macro = new Macro(id);
         _macros.put(id, macro);
 
         return macro;
     }
 
-    public static Macro get(String id) {
+    public Macro obtenerMacro(String id) {
         return _macros.get(id);
     }
 
-    public static void limpiar() {
+    public void limpiar() {
         _macros.clear();
     }
-
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        _macros.forEach(
+                (k, v) -> {
+                    sb.append(v);
+                }
+        );
+        sb.append("\n");
+        
+        return sb.toString();
+    }
+    
+    // Métodos estáticos
     private static boolean hayRecursividadEnMacros(Macro macro) {
         return hayRecursividadEnMacros(macro, new ArrayList<>());
     }
@@ -298,5 +184,15 @@ public class Macro extends Componente {
         }
 
         return expansion + "\n# Fin expansión de " + idMacro + separador;
+    }
+
+    @Override
+    protected int count() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected boolean vacio() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

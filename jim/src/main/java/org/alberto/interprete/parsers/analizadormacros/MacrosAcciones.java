@@ -4,16 +4,16 @@ import org.alberto.interprete.Programa;
 import org.alberto.interprete.util.Macro;
 import org.alberto.interprete.parsers.Acciones;
 import org.alberto.interprete.util.Etiqueta;
-import org.alberto.interprete.util.GestorVariables;
 import org.alberto.interprete.util.Variable;
 
 public class MacrosAcciones extends Acciones {
 
-    private static Macro _macro;
+    private static Macro _macroEnProceso;
 
     public static String filtrarIDVariable(String id) {
         id = Variable.normalizarID(id);
         
+        // if (programa.objetivo() == Programa.OBJETIVO.EXPANDIR) {
         if (Programa.etapaFinal() == Programa.Etapa.EXPANDIENDO_MACROS) {
             id = "V" + id;
         }
@@ -24,6 +24,7 @@ public class MacrosAcciones extends Acciones {
     public static String filtrarIDEtiqueta(String id) {
         id = Etiqueta.normalizarID(id);
         
+        // if (programa.objetivo() == Programa.OBJETIVO.EXPANDIR) {
         if (Programa.etapaFinal() == Programa.Etapa.EXPANDIENDO_MACROS) {
             id = "L" + id;
         }
@@ -32,26 +33,26 @@ public class MacrosAcciones extends Acciones {
     }
 
     public static void nuevaMacro(Object idMacro) {
-        _macro = Macro.set(idMacro.toString());
+        _macroEnProceso = Macro.set(idMacro.toString());
     }
 
     public static void nuevaVariable(Object idVariable) {
-        _macro.nuevaVariable(idVariable.toString());
+        _macroEnProceso.nuevaVariable(idVariable.toString());
     }
 
     public static void nuevaEtiqueta(Object idEtiqueta) {
-        _macro.nuevaEtiqueta(idEtiqueta.toString());
+        _macroEnProceso.nuevaEtiqueta(idEtiqueta.toString());
     }
 
     public static void nuevaEtiquetaSalto(Object idEtiqueta) {
-        _macro.nuevaEtiquetaSalto(idEtiqueta.toString());
+        _macroEnProceso.nuevaEtiquetaGoTo(idEtiqueta.toString());
     }
 
     public static void nuevaLlamadaAMacro(Object idMacro) {
-        _macro.nuevaLlamadaAMacro(idMacro.toString());
+        _macroEnProceso.nuevaLlamadaAMacro(idMacro.toString());
     }
 
-    public static void defineCuerpo(Object cuerpoMacro) {
-        _macro.cuerpo(cuerpoMacro.toString());
+    public static void cuerpo(Object cuerpoMacro) {
+        _macroEnProceso.cuerpo(cuerpoMacro.toString());
     }
 }

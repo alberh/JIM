@@ -1,14 +1,22 @@
-package org.alberto.interprete.util;
+package org.alberto.interprete.util.gestor;
 
 import java.util.HashMap;
 import java.util.Stack;
+import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.util.Bucle;
+import org.alberto.interprete.util.Error;
 
-public class GestorBucles {
+public class GestorBucles extends GestorComponentes {
 
     private HashMap<Integer, Bucle> _buclesLineaInicio = new HashMap<>();
     private HashMap<Integer, Bucle> _buclesLineaFin = new HashMap<>();
+    
     private Stack<Integer> _lineasInicioBucles = new Stack<>();
 
+    public GestorBucles(ProgramaNoEstatico programa) {
+        super(programa);
+    }
+    
     /**
      * Mantiene el número de línea indicado en memoria, representando el número
      * de línea inicial de un objeto Bucle que será creado más tarde, una vez se
@@ -68,5 +76,15 @@ public class GestorBucles {
         StringBuilder sb = new StringBuilder();
         _buclesLineaFin.forEach((k, v) -> sb.append(v).append("\n"));
         return sb.toString();
+    }
+
+    @Override
+    protected int count() {
+        return _buclesLineaInicio.size();
+    }
+
+    @Override
+    protected boolean vacio() {
+        return _buclesLineaInicio.isEmpty();
     }
 }

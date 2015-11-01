@@ -22,12 +22,12 @@
 inicio :  sentencia inicio
 	   |
 ;
-sentencia : DEFMACRO IDMACRO { MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.defineCuerpo($5); }
+sentencia : DEFMACRO IDMACRO { MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.cuerpo($5); }
 ;
 simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
          |  IDMACRO { MacrosAcciones.nuevaLlamadaAMacro($1); } simbolos
          |  '[' ETIQUETA ']' { MacrosAcciones.nuevaEtiqueta($2); } simbolos
-	 |  GOTO ETIQUETA { MacrosAcciones.nuevaEtiquetaSalto($2); } simbolos
+	 |  GOTO ETIQUETA { MacrosAcciones.nuevaEtiquetaGoTo($2); } simbolos
 	 |
 ;
 

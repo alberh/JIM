@@ -530,7 +530,7 @@ case 3:
 break;
 case 4:
 //#line 25 "gramatica.y"
-{ MacrosAcciones.defineCuerpo(val_peek(0).sval); }
+{ MacrosAcciones.cuerpo(val_peek(0).sval); }
 break;
 case 5:
 //#line 27 "gramatica.y"

@@ -83,12 +83,8 @@ public class Variable extends Componente {
         int len = id.length();
 
         if (len > 0) {
-            if (len == 1) {
-                if (id.charAt(0) == 'Y') {
-                    return id;
-                } else {
-                    return id + "1";
-                }
+            if (!id.contains("Y") && (len == 1 || (len == 2 && id.charAt(0) == 'V'))) {
+                return id + "1";
             } else {
                 return id;
             }
@@ -100,10 +96,22 @@ public class Variable extends Componente {
 
     public static int obtenerIndice(String id) {
         id = Variable.normalizarID(id);
+        
+        if (id.equals("Y") || id.equals("VY")) {
+            return 1;
+        }
 
         if (id.length() > 1) {
+            int indiceInicio;
+
+            if (Character.isDigit(id.charAt(1))) {
+                indiceInicio = 1;
+            } else {
+                indiceInicio = 2;
+            }
+            
             try {
-                return Integer.parseInt(id.substring(1));
+                return Integer.parseInt(id.substring(indiceInicio));
             } catch (NumberFormatException ex) {
                 Error.alObtenerIndiceDeVariable(id);
             }
@@ -115,20 +123,53 @@ public class Variable extends Componente {
     }
 
     public static Tipo obtenerTipo(String id) {
-        char charTipo = Variable.normalizarID(id).charAt(0);
+        /* Después del refactor:
+         char charTipo = Variable.normalizarID(id).charAt(0);
+         char charTipo;
+         if (id.charAt(0) == 'V') {
+         charTipo = Variable.normalizarID(id).charAt(1);
+         } else {
+         charTipo = Variable.normalizarID(id).charAt(0);
+         }
 
-        switch (charTipo) {
-            case 'X':
+         switch (charTipo) {
+         case 'X':
+         return Tipo.ENTRADA;
+
+         case 'Y':
+         return Tipo.SALIDA;
+
+         case 'Z':
+         return Tipo.LOCAL;
+
+         default:
+         Error.deTipoDeVariableNoValido(charTipo);
+         return null;
+         }
+         */
+
+        String tipo;
+        if (id.charAt(0) == 'V') {
+            tipo = Variable.normalizarID(id).substring(0, 2);
+        } else {
+            tipo = Variable.normalizarID(id).substring(0, 1);
+        }
+
+        switch (tipo) {
+            case "X":
+            case "VX":
                 return Tipo.ENTRADA;
 
-            case 'Y':
+            case "Y":
+            case "VY":
                 return Tipo.SALIDA;
 
-            case 'Z':
+            case "Z":
+            case "VZ":
                 return Tipo.LOCAL;
 
             default:
-                Error.deTipoDeVariableNoValido(charTipo);
+                Error.deTipoDeVariableNoValido(tipo);
                 return null;
         }
     }

@@ -56,7 +56,7 @@ public class Etiqueta extends Componente {
         int len = id.length();
 
         if (len > 0) {
-            if (len == 1) {
+            if (len == 1 || (len == 2 && id.charAt(0) == 'L')) {
                 return id + "1";
             } else {
                 return id;
@@ -69,7 +69,11 @@ public class Etiqueta extends Componente {
 
     public static char obtenerGrupo(String id) {
         id = Etiqueta.normalizarID(id);
-        return id.charAt(0);
+        if (Character.isDigit(id.charAt(1))) {
+            return id.charAt(0);
+        } else {
+            return id.charAt(1);
+        }
     }
 
     // Interfaz con los métodos comunes entre Etiqueta y Variable?
@@ -77,10 +81,18 @@ public class Etiqueta extends Componente {
         id = Etiqueta.normalizarID(id);
 
         if (id.length() > 1) {
+            int indiceInicio;
+
+            if (Character.isDigit(id.charAt(1))) {
+                indiceInicio = 1;
+            } else {
+                indiceInicio = 2;
+            }
+
             try {
-                return Integer.parseInt(id.substring(1));
+                return Integer.parseInt(id.substring(indiceInicio));
             } catch (NumberFormatException ex) {
-                Error.alObtenerIndiceDeVariable(id);
+                Error.alObtenerIndiceDeEtiqueta(id);
             }
         } else {
             return 1;

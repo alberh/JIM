@@ -1,5 +1,11 @@
 package org.alberto.interprete.util;
 
+import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.util.gestor.GestorEtiquetas;
+import org.alberto.interprete.util.gestor.GestorMacros;
+import org.alberto.interprete.util.gestor.GestorBucles;
+import org.alberto.interprete.util.gestor.GestorVariables;
+
 public class Ambito {
     
     private GestorVariables _gestorVariables;
@@ -7,19 +13,36 @@ public class Ambito {
     private GestorEtiquetas _gestorEtiquetas;
     private GestorMacros _gestorMacros;
     
-    private Ambito _ambitoPadre;
+    private ProgramaNoEstatico _programa;
     
-    public Ambito() {
-        this(null);
+    private int[] _parametrosEntrada;
+    private Macro _macroAsociada;
+    
+    public Ambito(ProgramaNoEstatico programa) {
+        this(programa, null, null);
     }
     
-    public Ambito(Ambito ambitoPadre) {
-        _ambitoPadre = ambitoPadre;
+    public Ambito(ProgramaNoEstatico programa, int[] parametrosEntrada) {
+        this(programa, parametrosEntrada, null);
+    }
+    
+    public Ambito(ProgramaNoEstatico programa, Macro macroAsociada) {
+        this(programa, null, macroAsociada);
+    }
+    
+    public Ambito(ProgramaNoEstatico programa,
+            int[] parametrosEntrada,
+            Macro macroAsociada) {
         
-        _gestorVariables = new GestorVariables();
-        _gestorBucles = new GestorBucles();
-        _gestorEtiquetas = new GestorEtiquetas();
-        _gestorMacros = new GestorMacros();
+        _programa = programa;
+        
+        _gestorVariables = new GestorVariables(_programa);
+        _gestorBucles = new GestorBucles(_programa);
+        _gestorEtiquetas = new GestorEtiquetas(_programa);
+        _gestorMacros = new GestorMacros(_programa);
+        
+        _parametrosEntrada = parametrosEntrada;
+        _macroAsociada = macroAsociada;
     }
     
     public GestorVariables variables() {
@@ -38,11 +61,18 @@ public class Ambito {
         return _gestorMacros;
     }
     
-    public Ambito ambitoPadre() {
-        return _ambitoPadre;
+    public int[] parametrosEntrada() {
+        return _parametrosEntrada;
     }
     
-    public boolean esAmbitoRaiz() {
-        return _ambitoPadre == null;
+    public Macro macroAsociada() {
+        return _macroAsociada;
+    }
+    
+    public void limpiar() {
+        _gestorVariables.limpiar();
+        _gestorBucles.limpiar();
+        _gestorEtiquetas.limpiar();
+        _gestorMacros.limpiar();
     }
 }
