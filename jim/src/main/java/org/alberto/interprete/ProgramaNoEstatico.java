@@ -47,21 +47,16 @@ public class ProgramaNoEstatico {
         EJECUTAR, EXPANDIR
     };
 
-    public enum Modelo {
-
-        L, LOOP, WHILE
-    };
-
     private String _ficheroPrograma;
     private String _ficheroEnProceso;
-    private Parser _parser;
+
     private Estado _estado;
     private Etapa _etapa;
     private Objetivo _objetivo;
     private boolean _modoFlexible;
     private boolean _macrosPermitidas;
+
     private Modelo _modelo;
-    
     private GestorAmbitos _gestorAmbitos;
 
     // Cada ámbito lleva su propia traza.
@@ -71,51 +66,16 @@ public class ProgramaNoEstatico {
             Objetivo objetivo, boolean modoFlexible,
             boolean macrosPermitidas) {
 
+        _ficheroPrograma = fichero;
+        _ficheroEnProceso = fichero;
         _estado = Estado.OK;
         _etapa = Etapa.INICIANDO;
-
-        _ficheroPrograma = _ficheroEnProceso = fichero;
-
-        _modelo = modelo;
         _objetivo = objetivo;
         _modoFlexible = modoFlexible;
         _macrosPermitidas = macrosPermitidas;
-        
-        _gestorAmbitos = new GestorAmbitos(this);
-        
-        try (Scanner scanner = new Scanner(new File(fichero))) {
-            while (scanner.hasNextLine()) {
-                _lineas.add(scanner.nextLine());
-            }
-        } catch (FileNotFoundException ex) {
-            Error.alCargarPrograma(fichero);
-        }
 
-        _ficheroEnProceso = fichero;
-
-        switch (_modelo) {
-            case L:
-                _parser = new LParser(null);
-                break;
-
-            case LOOP:
-                _parser = new LoopParser(null);
-                break;
-
-            case WHILE:
-                _parser = new WhileParser(null);
-                break;
-        }
-    }
-
-    public boolean cargar(String fichero, Modelo modelo,
-            Objetivo objetivo) {
-
-        _etapa = Etapa.CARGANDO_FICHERO;
-        _objetivo = objetivo;
         _modelo = modelo;
-        _lineas = new ArrayList<>();
-        _ficheroPrograma = fichero;
+        _gestorAmbitos = new GestorAmbitos(this);
 
         try (Scanner scanner = new Scanner(new File(fichero))) {
             while (scanner.hasNextLine()) {
@@ -123,27 +83,18 @@ public class ProgramaNoEstatico {
             }
         } catch (FileNotFoundException ex) {
             Error.alCargarPrograma(fichero);
-            return false;
         }
 
         _ficheroEnProceso = fichero;
-        _lineaActual = numeroLineas();
 
-        switch (_modelo) {
-            case L:
-                _parser = new LParser(null);
-                break;
-
-            case LOOP:
-                _parser = new LoopParser(null);
-                break;
-
-            case WHILE:
-                _parser = new WhileParser(null);
-                break;
-        }
-        _estado = Estado.OK;
-        return true;
+    }
+    
+    public String ficheroPrograma() {
+        return new File(_ficheroPrograma).getName();
+    }
+    
+    public String ficheroEnProceso() {
+        return new File(_ficheroEnProceso).getName();
     }
 
     public void estado(Estado estado) {
@@ -152,6 +103,10 @@ public class ProgramaNoEstatico {
 
     public Estado estado() {
         return _estado;
+    }
+
+    public boolean estadoOk() {
+        return _estado == Estado.OK;
     }
 
     public void etapa(Etapa etapa) {
@@ -170,38 +125,25 @@ public class ProgramaNoEstatico {
         return _objetivo;
     }
 
+    public void modoFlexible(boolean b) {
+        _modoFlexible = b;
+    }
+
     public boolean modoFlexible() {
         return _modoFlexible;
     }
 
-    public void modoFlexible(boolean b) {
-        _modoFlexible = b;
+    public void macrosPermitidas(boolean b) {
+        _macrosPermitidas = b;
     }
 
     public boolean macrosPermitidas() {
         return _macrosPermitidas;
     }
-    
-    public void macrosPermitidas(boolean b) {
-        _macrosPermitidas = b;
-    }
 
-    public boolean estadoOk() {
-        return _estado == Estado.OK;
-    }
-
-    public String ficheroEnProceso() {
-        return new File(_ficheroEnProceso).getName();
-    }
-    
     public GestorAmbitos gestorAmbitos() {
         return _gestorAmbitos;
     }
-    
-    
-    
-    
-    
 
     public void iniciar() {
         iniciar(null);
@@ -237,7 +179,7 @@ public class ProgramaNoEstatico {
             System.out.println("Ejecutando...");
             System.out.println("Si el programa no termina en unos segundos, "
                     + "probablemente haya caído en un bucle infinito.");
-            ejecutar(_parser);
+            ejecutar(_modelo.parser());
         } else {
             _estado = Estado.ERROR;
         }
@@ -278,10 +220,7 @@ public class ProgramaNoEstatico {
     private void limpiar() {
         System.out.println("Limpiando memoria...");
 
-        Variable.limpiar();
-        Bucle.limpiar();
-        Etiqueta.limpiar();
-        Macro.limpiar();
+        _gestorAmbitos.limpiar();
         PrevioAcciones.limpiar();
     }
 
@@ -294,7 +233,7 @@ public class ProgramaNoEstatico {
         }
 
         if (estadoOk()) {
-            procesarFicherosMacros(obtenerRutaModelo());
+            procesarFicherosMacros(_modelo.ruta());
         }
     }
 
@@ -333,26 +272,6 @@ public class ProgramaNoEstatico {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-    }
-
-    private String obtenerRutaModelo() {
-        String ruta = null;
-
-        switch (_modelo) {
-            case L:
-                ruta = Configuracion.rutaMacrosL();
-                break;
-
-            case LOOP:
-                ruta = Configuracion.rutaMacrosLoop();
-                break;
-
-            case WHILE:
-                ruta = Configuracion.rutaMacrosWhile();
-                break;
-        }
-
-        return ruta;
     }
 
     public Modelo modelo() {
@@ -585,7 +504,7 @@ public class ProgramaNoEstatico {
     public void imprimirComponentes() {
         Variable.pintar();
 
-        if (_modelo == Modelo.L) {
+        if (_modelo.tipo() == Modelo.Tipo.L) {
             Etiqueta.pintar();
         } else {
             Bucle.pintar();
