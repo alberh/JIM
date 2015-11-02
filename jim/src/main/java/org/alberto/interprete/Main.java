@@ -27,11 +27,11 @@ public class Main {
             String cadenaModelo = args[0];
             String fichero = args[1];
 
-            Programa.Modelos modelo = obtenerModelo(cadenaModelo);
+            Modelo modelo = new Modelo(cadenaModelo);
             Programa.ModoInstrucciones modoInstrucciones
                     = Programa.ModoInstrucciones.NORMAL;
 
-            if (modelo != null) {
+            if (modelo.tipo() != null) {
                 int[] parametros = null;
 
                 if (args.length > 2) {
@@ -70,7 +70,7 @@ public class Main {
         }
     }
 
-    public static void iniciar(Programa.Modelos modelo,
+    public static void iniciar(Modelo modelo,
             Programa.ModoInstrucciones modo,
             String fichero,
             int[] parametros) {
@@ -85,7 +85,7 @@ public class Main {
         }
     }
 
-    public static void iniciarExpansionMacros(Programa.Modelos modelo,
+    public static void iniciarExpansionMacros(Modelo modelo,
             Programa.ModoInstrucciones modo,
             String fichero) {
         Programa.cargar(fichero, modelo, modo,
@@ -97,22 +97,6 @@ public class Main {
             System.out.println("Programa tras la expansión");
             System.out.println();
             System.out.println(Programa.obtenerPrograma());
-        }
-    }
-
-    private static Programa.Modelos obtenerModelo(String modelo) {
-        switch (modelo.toUpperCase()) {
-            case "L":
-                return Programa.Modelos.L;
-
-            case "LOOP":
-                return Programa.Modelos.LOOP;
-
-            case "WHILE":
-                return Programa.Modelos.WHILE;
-
-            default:
-                return null;
         }
     }
 

@@ -481,8 +481,12 @@ public class MainWindow extends javax.swing.JFrame {
         comprobacionesPreviasAEjecucion();
 
         String ruta = _ficheroAbierto.getAbsolutePath();
+        
+        String cadenaModelo = comboModelos.getSelectedItem().toString();
+        Modelo modelo = new Modelo(cadenaModelo);
+        
         if (Programa.cargar(ruta,
-                obtenerModelo(),
+                modelo,
                 obtenerModoInstrucciones(),
                 Programa.Etapa.EXPANDIENDO_MACROS/*EJECUTANDO*/)) {
             
@@ -519,8 +523,12 @@ public class MainWindow extends javax.swing.JFrame {
         comprobacionesPreviasAEjecucion();
 
         String ruta = _ficheroAbierto.getAbsolutePath();
+        
+        String cadenaModelo = comboModelos.getSelectedItem().toString();
+        Modelo modelo = new Modelo(cadenaModelo);
+        
         if (Programa.cargar(ruta,
-                obtenerModelo(),
+                modelo,
                 obtenerModoInstrucciones(),
                 Programa.Etapa.EXPANDIENDO_MACROS)) {
             
@@ -546,19 +554,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         btnGuardarFichero.setEnabled(c);
         menuArchivoGuardar.setEnabled(c);
-    }
-
-    private Programa.Modelos obtenerModelo() {
-        switch (comboModelos.getSelectedIndex()) {
-            case 0: // L
-                return Programa.Modelos.L;
-
-            case 1: // Loop
-                return Programa.Modelos.LOOP;
-
-            default: // While
-                return Programa.Modelos.WHILE;
-        }
     }
 
     private String titulo() {

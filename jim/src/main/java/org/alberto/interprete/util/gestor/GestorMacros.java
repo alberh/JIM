@@ -2,6 +2,7 @@ package org.alberto.interprete.util.gestor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.alberto.interprete.Modelo;
 import org.alberto.interprete.Programa;
 import org.alberto.interprete.ProgramaNoEstatico;
 import org.alberto.interprete.util.ContenedorParametrosExpansion;
@@ -142,7 +143,7 @@ public class GestorMacros extends GestorComponentes {
         expansion = "# Expansión de " + idMacro + separador
                 + asignaciones + expansion.replace("VY", variableSalidaLocal);
 
-        if (Programa.modelo() == Programa.Modelos.L) {
+        if (Programa.modelo().tipo() == Modelo.Tipo.L) {
             ArrayList<String> etiquetas = macro.etiquetas();
             ArrayList<String> etiquetasSalto = macro.etiquetasSalto();
 

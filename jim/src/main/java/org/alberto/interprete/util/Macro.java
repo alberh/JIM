@@ -2,6 +2,7 @@ package org.alberto.interprete.util;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import org.alberto.interprete.Modelo;
 import org.alberto.interprete.Programa;
 
 public class Macro extends Componente {
@@ -256,7 +257,7 @@ public class Macro extends Componente {
         expansion = "# Expansión de " + idMacro + separador
                 + asignaciones + expansion.replace("VY", variableSalidaLocal);
 
-        if (Programa.modelo() == Programa.Modelos.L) {
+        if (Programa.modelo().tipo() == Modelo.Tipo.L) {
             ArrayList<String> etiquetas = macro.etiquetas();
             ArrayList<String> etiquetasSalto = macro.etiquetasSalto();
 

@@ -37,7 +37,6 @@ public class Programa {
 
     private static StringBuilder _traza = new StringBuilder();
 
-    private static Parser _parser;
     private static boolean _salto;
 
     public enum Estado {
@@ -60,11 +59,7 @@ public class Programa {
     };
     private static ModoInstrucciones _modoInstrucciones = ModoInstrucciones.NORMAL;
 
-    public enum Modelos {
-
-        L, LOOP, WHILE
-    };
-    private static Modelos _modelo;
+    private static Modelo _modelo;
 
     private Programa() {
     }
@@ -111,7 +106,7 @@ public class Programa {
         return new File(_ficheroEnProceso).getName();
     }
 
-    public static boolean cargar(String fichero, Modelos modelo,
+    public static boolean cargar(String fichero, Modelo modelo,
             ModoInstrucciones modo, Etapa etapaFinal) {
 
         _etapa = Etapa.CARGANDO_FICHERO;
@@ -132,20 +127,6 @@ public class Programa {
 
         _ficheroEnProceso = fichero;
         _lineaActual = numeroLineas();
-
-        switch (_modelo) {
-            case L:
-                _parser = new LParser(null);
-                break;
-
-            case LOOP:
-                _parser = new LoopParser(null);
-                break;
-
-            case WHILE:
-                _parser = new WhileParser(null);
-                break;
-        }
         _estado = Estado.OK;
         return true;
     }
@@ -184,7 +165,7 @@ public class Programa {
             System.out.println("Ejecutando...");
             System.out.println("Si el programa no termina en unos segundos, "
                     + "probablemente haya caído en un bucle infinito.");
-            ejecutar(_parser);
+            ejecutar(_modelo.parser());
         } else {
             _estado = Estado.ERROR;
         }
@@ -241,7 +222,7 @@ public class Programa {
         }
 
         if (estadoOk()) {
-            procesarFicherosMacros(obtenerRutaModelo());
+            procesarFicherosMacros(_modelo.ruta());
         }
     }
 
@@ -283,27 +264,7 @@ public class Programa {
         }
     }
 
-    private static String obtenerRutaModelo() {
-        String ruta = null;
-
-        switch (_modelo) {
-            case L:
-                ruta = Configuracion.rutaMacrosL();
-                break;
-
-            case LOOP:
-                ruta = Configuracion.rutaMacrosLoop();
-                break;
-
-            case WHILE:
-                ruta = Configuracion.rutaMacrosWhile();
-                break;
-        }
-
-        return ruta;
-    }
-
-    public static Modelos modelo() {
+    public static Modelo modelo() {
         return _modelo;
     }
 
@@ -524,7 +485,7 @@ public class Programa {
     public static void imprimirComponentes() {
         Variable.pintar();
 
-        if (_modelo == Modelos.L) {
+        if (_modelo.tipo() == Modelo.Tipo.L) {
             Etiqueta.pintar();
         } else {
             Bucle.pintar();
