@@ -1,7 +1,7 @@
 package org.alberto.interprete.util.gestor;
 
 import java.util.HashMap;
-import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.Interprete;
 import org.alberto.interprete.util.Etiqueta;
 import static org.alberto.interprete.util.Etiqueta.normalizarID;
 
@@ -10,7 +10,7 @@ public class GestorEtiquetas extends GestorComponentes {
     private HashMap<String, Etiqueta> _etiquetas;
     private int _indiceUltimaA;
 
-    public GestorEtiquetas(ProgramaNoEstatico programa) {
+    public GestorEtiquetas(Interprete programa) {
         super(programa);
         _etiquetas = new HashMap<>();
         _indiceUltimaA = 0;

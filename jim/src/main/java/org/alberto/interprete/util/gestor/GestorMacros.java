@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.alberto.interprete.Modelo;
 import org.alberto.interprete.Programa;
-import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.Interprete;
 import org.alberto.interprete.util.ContenedorParametrosExpansion;
 import org.alberto.interprete.util.Error;
 import org.alberto.interprete.util.Etiqueta;
@@ -14,8 +14,8 @@ import org.alberto.interprete.util.Variable;
 public class GestorMacros extends GestorComponentes {
 
     private HashMap<String, Macro> _macros;
-    
-    public GestorMacros(ProgramaNoEstatico programa) {
+
+    public GestorMacros(Interprete programa) {
         super(programa);
         _macros = new HashMap<>();
     }
@@ -34,7 +34,7 @@ public class GestorMacros extends GestorComponentes {
     public void limpiar() {
         _macros.clear();
     }
-    
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -44,10 +44,10 @@ public class GestorMacros extends GestorComponentes {
                 }
         );
         sb.append("\n");
-        
+
         return sb.toString();
     }
-    
+
     // Métodos estáticos
     private static boolean hayRecursividadEnMacros(Macro macro) {
         return hayRecursividadEnMacros(macro, new ArrayList<>());
@@ -77,6 +77,11 @@ public class GestorMacros extends GestorComponentes {
     }
 
     public static String expandir(ContenedorParametrosExpansion parametrosExpansion) {
+        //
+        //
+        // Usar salto de línea del sistema!
+        //
+        //
         String idMacro = parametrosExpansion.idMacro;
         String idVariableSalida = parametrosExpansion.idVariableSalida;
         ArrayList<String> parametrosEntrada = parametrosExpansion.variablesEntrada;
@@ -189,11 +194,11 @@ public class GestorMacros extends GestorComponentes {
 
     @Override
     protected int count() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return _macros.size();
     }
 
     @Override
     protected boolean vacio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return _macros.isEmpty();
     }
 }

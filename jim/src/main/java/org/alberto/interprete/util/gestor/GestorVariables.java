@@ -2,7 +2,7 @@ package org.alberto.interprete.util.gestor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.Interprete;
 import org.alberto.interprete.util.ComparadorVariables;
 import org.alberto.interprete.util.Variable;
 
@@ -15,7 +15,7 @@ public class GestorVariables extends GestorComponentes {
     private int _mayorIndiceEntrada;
     private int _mayorIndiceLocal;
 
-    public GestorVariables(ProgramaNoEstatico programa) {
+    public GestorVariables(Interprete programa) {
         super(programa);
         
         _variablesEntrada = new HashMap<>();
@@ -69,30 +69,34 @@ public class GestorVariables extends GestorComponentes {
         return v;
     }
 
-    // Sólo utilizado por Macro.expandir
     public Variable nuevaVariable(Variable.Tipo tipo) {
-        Variable v = null;
+        return nuevaVariable(tipo, 0);
+    }
+    
+    public Variable nuevaVariable(Variable.Tipo tipo, int valor) {
+        Variable variable = null;
 
         switch (tipo) {
             case ENTRADA:
                 _mayorIndiceEntrada++;
 
-                v = new Variable("X" + _mayorIndiceEntrada, true);
-                _variablesEntrada.put(_mayorIndiceEntrada, v);
+                variable = new Variable("X" + _mayorIndiceEntrada, valor);
+                _variablesEntrada.put(_mayorIndiceEntrada, variable);
                 break;
 
             case LOCAL:
                 _mayorIndiceLocal++;
 
-                v = new Variable("Z" + _mayorIndiceLocal, true);
-                _variablesLocales.put(_mayorIndiceLocal, v);
+                variable = new Variable("Z" + _mayorIndiceLocal, valor);
+                _variablesLocales.put(_mayorIndiceLocal, variable);
                 break;
 
             case SALIDA:
-                v = _variableSalida;
+                _variableSalida.valor(valor);
+                variable = _variableSalida;
         }
 
-        return v;
+        return variable;
     }
 
     public Variable obtenerVariable(String id) {

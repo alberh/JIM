@@ -1,17 +1,17 @@
 package org.alberto.interprete.util.gestor;
 
-import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.Interprete;
 import org.alberto.interprete.util.Ambito;
 
 public abstract class GestorComponentes {
 
-    protected ProgramaNoEstatico _programa;
+    protected Interprete _programa;
 
-    public GestorComponentes(ProgramaNoEstatico programa) {
+    public GestorComponentes(Interprete programa) {
         _programa = programa;
     }
 
-    protected ProgramaNoEstatico programa() {
+    protected Interprete programa() {
         return _programa;
     }
     

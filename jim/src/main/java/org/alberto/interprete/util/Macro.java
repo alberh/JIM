@@ -23,6 +23,7 @@ public class Macro extends Componente {
     public Macro(String id) {
         super(id);
 
+        // esto habrá que cambiarlo
         _definidaEn = Programa.ficheroEnProceso();
 
         if (_definidaEn.equals("jim.tmp")) {

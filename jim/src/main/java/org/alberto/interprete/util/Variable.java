@@ -13,20 +13,28 @@ public class Variable extends Componente {
     private int _valor;
     private Tipo _tipo;
     private int _indice;
+    
+    @Deprecated
     private boolean _creadaEnExpansion = false;
 
     public Variable(String id) {
-        this(id, 0, false);
+        this(id, 0);
     }
 
     public Variable(String id, int valor) {
-        this(id, valor, false);
+        super(Variable.normalizarID(id));
+
+        _valor = valor;
+        _tipo = Variable.obtenerTipo(_id);
+        _indice = Variable.obtenerIndice(_id);
     }
 
+    @Deprecated
     public Variable(String id, boolean creadaEnExpansion) {
         this(id, 0, creadaEnExpansion);
     }
-
+    
+    @Deprecated
     public Variable(String id, int valor, boolean creadaEnExpansion) {
         super(Variable.normalizarID(id));
 

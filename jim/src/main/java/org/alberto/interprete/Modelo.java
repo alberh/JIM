@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.alberto.interprete;
 
 import org.alberto.interprete.parsers.Parser;
@@ -11,10 +6,6 @@ import org.alberto.interprete.parsers.loopmodel.LoopParser;
 import org.alberto.interprete.parsers.whilemodel.WhileParser;
 import org.alberto.interprete.util.Configuracion;
 
-/**
- *
- * @author alber_000
- */
 public class Modelo {
 
     public enum Tipo {

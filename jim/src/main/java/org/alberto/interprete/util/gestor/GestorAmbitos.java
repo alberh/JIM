@@ -1,7 +1,7 @@
 package org.alberto.interprete.util.gestor;
 
 import java.util.ArrayList;
-import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.Interprete;
 import org.alberto.interprete.util.Ambito;
 import org.alberto.interprete.util.Macro;
 
@@ -10,7 +10,7 @@ public class GestorAmbitos extends GestorComponentes {
     private ArrayList<Ambito> _ambitos;
     private Ambito _ultimoAmbito;
 
-    public GestorAmbitos(ProgramaNoEstatico programa) {
+    public GestorAmbitos(Interprete programa) {
         super(programa);
         _ambitos = new ArrayList<>();
         _ultimoAmbito = null;

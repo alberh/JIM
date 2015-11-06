@@ -2,7 +2,7 @@ package org.alberto.interprete.util.gestor;
 
 import java.util.HashMap;
 import java.util.Stack;
-import org.alberto.interprete.ProgramaNoEstatico;
+import org.alberto.interprete.Interprete;
 import org.alberto.interprete.util.Bucle;
 import org.alberto.interprete.util.Error;
 
@@ -13,7 +13,7 @@ public class GestorBucles extends GestorComponentes {
     
     private Stack<Integer> _lineasInicioBucles = new Stack<>();
 
-    public GestorBucles(ProgramaNoEstatico programa) {
+    public GestorBucles(Interprete programa) {
         super(programa);
     }
     
