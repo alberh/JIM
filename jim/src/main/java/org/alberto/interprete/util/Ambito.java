@@ -1,5 +1,7 @@
 package org.alberto.interprete.util;
 
+import org.alberto.interprete.componente.Variable;
+import org.alberto.interprete.componente.Macro;
 import java.util.ArrayList;
 import org.alberto.interprete.Interprete;
 import org.alberto.interprete.Modelo;

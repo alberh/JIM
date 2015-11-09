@@ -1,6 +1,7 @@
-package org.alberto.interprete.util;
+package org.alberto.interprete.componente;
 
 import java.util.HashMap;
+import org.alberto.interprete.util.Error;
 
 /**
  * Esta clase representa el concepto de etiqueta de salto utilizado en el modelo

@@ -1,7 +1,7 @@
 package org.alberto.interprete.parsers.lmodel;
 
-import org.alberto.interprete.util.Etiqueta;
-import org.alberto.interprete.util.Variable;
+import org.alberto.interprete.componente.Etiqueta;
+import org.alberto.interprete.componente.Variable;
 import org.alberto.interprete.Programa;
 import org.alberto.interprete.parsers.Acciones;
 

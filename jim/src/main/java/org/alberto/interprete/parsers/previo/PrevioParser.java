@@ -18,6 +18,8 @@ package org.alberto.interprete.parsers.previo;
 
 
 //#line 3 "gramatica.y"
+import org.alberto.interprete.componente.Etiqueta;
+import org.alberto.interprete.componente.Bucle;
 	import java.io.*;
 	import org.alberto.interprete.*;
 	import org.alberto.interprete.util.*;

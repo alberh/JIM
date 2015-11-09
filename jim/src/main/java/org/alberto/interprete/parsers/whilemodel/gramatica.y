@@ -2,6 +2,7 @@
 %{
   import java.io.*;
   import org.alberto.interprete.*;
+  import org.alberto.interprete.componente.*;
   import org.alberto.interprete.parsers.*;
 %}
 

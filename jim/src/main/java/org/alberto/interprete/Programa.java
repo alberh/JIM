@@ -1,11 +1,11 @@
 package org.alberto.interprete;
 
 import org.alberto.interprete.util.Error;
-import org.alberto.interprete.util.Bucle;
+import org.alberto.interprete.componente.Bucle;
 import org.alberto.interprete.util.Configuracion;
-import org.alberto.interprete.util.Macro;
-import org.alberto.interprete.util.Variable;
-import org.alberto.interprete.util.Etiqueta;
+import org.alberto.interprete.componente.Macro;
+import org.alberto.interprete.componente.Variable;
+import org.alberto.interprete.componente.Etiqueta;
 import org.alberto.interprete.parsers.analizadormacros.MacrosParser;
 import org.alberto.interprete.parsers.previo.PrevioAcciones;
 import org.alberto.interprete.parsers.previo.PrevioParser;

@@ -1,7 +1,7 @@
 package org.alberto.interprete.parsers.loopmodel;
 
-import org.alberto.interprete.util.Bucle;
-import org.alberto.interprete.util.Variable;
+import org.alberto.interprete.componente.Bucle;
+import org.alberto.interprete.componente.Variable;
 import org.alberto.interprete.Programa;
 import org.alberto.interprete.parsers.Acciones;
 

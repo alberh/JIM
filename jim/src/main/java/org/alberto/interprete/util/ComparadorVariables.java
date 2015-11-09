@@ -1,5 +1,6 @@
 package org.alberto.interprete.util;
 
+import org.alberto.interprete.componente.Variable;
 import java.util.Comparator;
 
 public class ComparadorVariables implements Comparator<Variable> {

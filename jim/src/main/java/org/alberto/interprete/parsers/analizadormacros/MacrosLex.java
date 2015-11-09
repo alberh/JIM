@@ -4,8 +4,8 @@
 package org.alberto.interprete.parsers.analizadormacros;
 
 import org.alberto.interprete.parsers.AnalizadorLexico;
-import org.alberto.interprete.util.Variable;
-import org.alberto.interprete.util.Etiqueta;
+import org.alberto.interprete.componente.Variable;
+import org.alberto.interprete.componente.Etiqueta;
 // Debido a conflicto con la clase Error del propio analizador,
 // se hace referencia a la clase Error especificando toda la jerarquía
 // de paquetes, en lugar de añadir el sigiente import.

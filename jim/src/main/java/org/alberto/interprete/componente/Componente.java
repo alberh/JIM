@@ -1,4 +1,4 @@
-package org.alberto.interprete.util;
+package org.alberto.interprete.componente;
 
 public abstract class Componente {
 

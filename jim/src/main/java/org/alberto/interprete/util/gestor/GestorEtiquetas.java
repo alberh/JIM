@@ -2,8 +2,8 @@ package org.alberto.interprete.util.gestor;
 
 import java.util.HashMap;
 import org.alberto.interprete.Interprete;
-import org.alberto.interprete.util.Etiqueta;
-import static org.alberto.interprete.util.Etiqueta.normalizarID;
+import org.alberto.interprete.componente.Etiqueta;
+import static org.alberto.interprete.componente.Etiqueta.normalizarID;
 
 public class GestorEtiquetas extends GestorComponentes {
 

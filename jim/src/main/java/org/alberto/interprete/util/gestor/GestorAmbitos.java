@@ -3,7 +3,7 @@ package org.alberto.interprete.util.gestor;
 import java.util.ArrayList;
 import org.alberto.interprete.Interprete;
 import org.alberto.interprete.util.Ambito;
-import org.alberto.interprete.util.Macro;
+import org.alberto.interprete.componente.Macro;
 
 public class GestorAmbitos extends GestorComponentes {
 

@@ -1,7 +1,7 @@
 package org.alberto.interprete.parsers.previo;
 
-import org.alberto.interprete.util.Variable;
-import org.alberto.interprete.util.Macro;
+import org.alberto.interprete.componente.Variable;
+import org.alberto.interprete.componente.Macro;
 import org.alberto.interprete.Programa;
 import org.alberto.interprete.util.ContenedorParametrosExpansion;
 import java.util.Arrays;

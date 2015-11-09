@@ -7,9 +7,9 @@ import org.alberto.interprete.Programa;
 import org.alberto.interprete.Interprete;
 import org.alberto.interprete.util.ContenedorParametrosExpansion;
 import org.alberto.interprete.util.Error;
-import org.alberto.interprete.util.Etiqueta;
-import org.alberto.interprete.util.Macro;
-import org.alberto.interprete.util.Variable;
+import org.alberto.interprete.componente.Etiqueta;
+import org.alberto.interprete.componente.Macro;
+import org.alberto.interprete.componente.Variable;
 
 public class GestorMacros extends GestorComponentes {
 

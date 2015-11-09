@@ -1,9 +1,11 @@
-package org.alberto.interprete.util;
+package org.alberto.interprete.componente;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import org.alberto.interprete.Modelo;
 import org.alberto.interprete.Programa;
+import org.alberto.interprete.util.ContenedorParametrosExpansion;
+import org.alberto.interprete.util.Error;
 
 public class Macro extends Componente {
 

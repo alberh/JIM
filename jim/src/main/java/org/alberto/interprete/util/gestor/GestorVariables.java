@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.alberto.interprete.Interprete;
 import org.alberto.interprete.util.ComparadorVariables;
-import org.alberto.interprete.util.Variable;
+import org.alberto.interprete.componente.Variable;
 
 public class GestorVariables extends GestorComponentes {
 

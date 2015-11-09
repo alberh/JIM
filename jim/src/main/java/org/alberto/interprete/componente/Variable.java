@@ -1,7 +1,9 @@
-package org.alberto.interprete.util;
+package org.alberto.interprete.componente;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.alberto.interprete.util.ComparadorVariables;
+import org.alberto.interprete.util.Error;
 
 public class Variable extends Componente {
 

@@ -1,8 +1,9 @@
-package org.alberto.interprete.util;
+package org.alberto.interprete.componente;
 
 import java.util.HashMap;
 import java.util.Stack;
 import org.alberto.interprete.Programa;
+import org.alberto.interprete.util.Error;
 
 /**
  * Clase encargada de gestionar los distintos bucles del programa interpretado.

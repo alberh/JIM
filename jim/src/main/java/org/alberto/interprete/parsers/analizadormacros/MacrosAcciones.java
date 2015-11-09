@@ -1,10 +1,10 @@
 package org.alberto.interprete.parsers.analizadormacros;
 
 import org.alberto.interprete.Programa;
-import org.alberto.interprete.util.Macro;
+import org.alberto.interprete.componente.Macro;
 import org.alberto.interprete.parsers.Acciones;
-import org.alberto.interprete.util.Etiqueta;
-import org.alberto.interprete.util.Variable;
+import org.alberto.interprete.componente.Etiqueta;
+import org.alberto.interprete.componente.Variable;
 
 public class MacrosAcciones extends Acciones {
 
