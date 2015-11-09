@@ -17,4 +17,4 @@ MainWindow.class:
 	cd com/jim_project/interprete; rm -f *.class; $(JAVAC) *.java
 
 clean:
-	rm -f *.class parsers/*.class gui/*.class
+	rm -f *.class parser/*.class gui/*.class
