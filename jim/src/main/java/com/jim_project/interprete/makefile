@@ -11,10 +11,10 @@ gui:
 	make MainWindow.class
 
 Main.class:
-	cd org/alberto/interprete; rm -f *.class; $(JAVAC) *.java
+	cd com/jim_project/interprete; rm -f *.class; $(JAVAC) *.java
 
 MainWindow.class:
-	cd org/alberto/interprete; rm -f *.class; $(JAVAC) *.java
+	cd com/jim_project/interprete; rm -f *.class; $(JAVAC) *.java
 
 clean:
 	rm -f *.class parsers/*.class gui/*.class
