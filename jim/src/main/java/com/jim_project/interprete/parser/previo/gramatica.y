@@ -4,7 +4,7 @@
 	import com.jim_project.interprete.*;
 	import com.jim_project.interprete.util.*;
         import com.jim_project.interprete.componente.*;
-	import com.jim_project.interprete.parsers.*;
+	import com.jim_project.interprete.parser.*;
 %}
 
 
