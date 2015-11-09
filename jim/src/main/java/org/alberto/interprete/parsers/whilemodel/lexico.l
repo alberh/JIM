@@ -68,5 +68,5 @@ Number = 0|[1-9]+[0-9]*
                     return WhileParser.IDMACRO;
                   }
 {LineTerminator}  { }
-.                 { org.alberto.interprete.Error.deCaracterNoReconocido(yytext());
+.                 { org.alberto.interprete.util.Error.deCaracterNoReconocido(yytext());
                   }

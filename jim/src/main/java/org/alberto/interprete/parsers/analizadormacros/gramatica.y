@@ -28,7 +28,7 @@ sentencia : DEFMACRO IDMACRO { MacrosAcciones.nuevaMacro($2); } simbolos ENDMACR
 simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
          |  IDMACRO { MacrosAcciones.nuevaLlamadaAMacro($1); } simbolos
          |  '[' ETIQUETA ']' { MacrosAcciones.nuevaEtiqueta($2); } simbolos
-	 |  GOTO ETIQUETA { MacrosAcciones.nuevaEtiquetaGoTo($2); } simbolos
+	 |  GOTO ETIQUETA { MacrosAcciones.nuevaEtiquetaSalto($2); } simbolos
 	 |
 ;
 
