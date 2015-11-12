@@ -129,10 +129,6 @@ public class Programa {
         return true;
     }
 
-    public static void iniciar() {
-        iniciar(null);
-    }
-
     public static void iniciar(int[] parametros) {
         limpiar();
         comprobarDirectoriosMacros();

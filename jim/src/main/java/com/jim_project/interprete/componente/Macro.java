@@ -9,8 +9,7 @@ import com.jim_project.interprete.util.Error;
 
 public class Macro extends Componente {
 
-    private String _definidaEn;
-    
+    private String _definidaEn;    
     private String _cuerpo;
     
     // Componentes usados en la expansión de macros ilustrativa

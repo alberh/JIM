@@ -21,9 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.NotDirectoryException;
-
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.nio.file.DirectoryStream;
 import java.util.Scanner;
 import com.jim_project.interprete.util.gestor.GestorAmbitos;
@@ -40,6 +38,7 @@ public class Interprete {
         EJECUTAR, EXPANDIR
     };
 
+    private String _fichero;
     private String _ficheroEnProceso;
 
     private Estado _estado;
@@ -54,26 +53,15 @@ public class Interprete {
             Objetivo objetivo, boolean modoFlexible,
             boolean macrosPermitidas) {
 
+        _fichero = fichero;
         _ficheroEnProceso = fichero;
-        
         _estado = Estado.OK;
         _objetivo = objetivo;
         _modoFlexible = modoFlexible;
         _macrosPermitidas = macrosPermitidas;
-
         _modelo = modelo;
         _gestorAmbitos = new GestorAmbitos(this);
-
-        try (Scanner scanner = new Scanner(new File(fichero))) {
-            while (scanner.hasNextLine()) {
-                _lineas.add(scanner.nextLine());
-            }
-        } catch (FileNotFoundException ex) {
-            Error.alCargarPrograma(fichero);
-        }
-
         _ficheroEnProceso = fichero;
-
     }
 
     public String ficheroEnProceso() {
@@ -133,15 +121,44 @@ public class Interprete {
         return _gestorAmbitos;
     }
 
-    private void limpiar() {
-        System.out.println("Limpiando memoria...");
+    public void iniciar() {
+        iniciar(null);
+    }
 
+    public void iniciar(int[] parametros) {
+        limpiar();
+
+        ArrayList<String> lineas = new ArrayList<>();
+
+        try (Scanner scanner = new Scanner(new File(_fichero))) {
+            while (scanner.hasNextLine()) {
+                lineas.add(scanner.nextLine());
+            }
+        } catch (FileNotFoundException ex) {
+            Error.alCargarPrograma(_fichero);
+        }
+
+        _gestorAmbitos.nuevoAmbito(parametros, lineas);
+        _gestorAmbitos.ambitoActual().iniciar(parametros);
+    }
+
+    private void limpiar() {
         _gestorAmbitos.limpiar();
         PrevioAcciones.limpiar();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < _lineas.size(); ++i) {
+            sb.append(i + 1).append(": ").append(_lineas.get(i)).append("\n");
+        }
+        sb.append(numeroLineas()).append(" líneas.").append("\n");
+
+        return sb.toString();
+    }
+
     /**
-     * *************************************************************************
      * Para refactor
      */
     private ArrayList<String> _lineas; // OK
@@ -150,69 +167,7 @@ public class Interprete {
     // En cargar:
     //      _lineaActual = numeroLineas();
 
-    public void imprimirPrograma(PrintStream ps) {
-        for (int i = 0; i < _lineas.size(); ++i) {
-            ps.println((i + 1) + ": " + _lineas.get(i));
-        }
-
-        ps.println(numeroLineas() + " líneas.");
-    }
-
-    public String obtenerPrograma() {
-        StringBuilder sb = new StringBuilder();
-        _lineas.forEach(
-                linea -> sb.append(linea).append("\n")
-        );
-
-        return sb.toString();
-    }
-
-    // ControladorEjecucion
-    public int resultado() {
-        return Variable.get("Y").valor();
-    }
-
-    // ControladorEjecucion OK
-    public void iniciar() {
-        iniciar(null);
-    }
-
-    // ControladorEjecucion OK
-    public void iniciar(int[] parametros) {
-        limpiar();
-        comprobarDirectoriosMacros();
-        cargarMacros();
-
-        if (estadoOk()) {
-            System.out.println("Analizando el programa...");
-        }
-        previo();
-
-        if (estadoOk()) {
-            do {
-                // Se vuelve a pasar el previo para establecer las nuevas variables y
-                // etiquetas tras la expansión de macros
-                PrevioAcciones.expandir();
-                previo();
-            } while (PrevioAcciones.llamadasAMacros() > 0 && estadoOk());
-        }
-
-        if (estadoOk()) {
-            // Asignar variables de entrada
-            if (parametros != null) {
-                asignarVariablesEntrada(parametros);
-            }
-
-            // Lanzar
-            System.out.println("Ejecutando...");
-            System.out.println("Si el programa no termina en unos segundos, "
-                    + "probablemente haya caído en un bucle infinito.");
-            ejecutar(_modelo.parser());
-        } else {
-            _estado = Estado.ERROR;
-        }
-    }
-
+    // Ambito
     public void iniciarExpansionMacros() {
         limpiar();
         comprobarDirectoriosMacros();
@@ -237,6 +192,27 @@ public class Interprete {
                 System.out.println("No hay llamadas a macros en el programa.");
             }
         }
+    }
+
+    // Ambito
+    public void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
+        _lineas.remove(linea - 1);
+        _lineas.addAll(linea - 1, lineasExpansion);
+    }
+
+    // Ambito
+    public String obtenerPrograma() {
+        StringBuilder sb = new StringBuilder();
+        _lineas.forEach(
+                linea -> sb.append(linea).append("\n")
+        );
+
+        return sb.toString();
+    }
+
+    // ControladorEjecucion OK
+    public int resultado() {
+        return Variable.get("Y").valor();
     }
 
     // Ambito OK BORRAR
@@ -340,12 +316,6 @@ public class Interprete {
         if (estadoOk()) {
             ejecutar(new PrevioParser(null));
         }
-    }
-
-    // Macro o ExpansorMacros ?
-    public void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
-        _lineas.remove(linea - 1);
-        _lineas.addAll(linea - 1, lineasExpansion);
     }
 
     // ControladorEjecucion OK

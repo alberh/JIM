@@ -9,6 +9,7 @@ import com.jim_project.interprete.util.gestor.GestorEtiquetas;
 import com.jim_project.interprete.util.gestor.GestorMacros;
 import com.jim_project.interprete.util.gestor.GestorBucles;
 import com.jim_project.interprete.util.gestor.GestorVariables;
+import java.util.Arrays;
 
 public class Ambito {
 
@@ -24,33 +25,38 @@ public class Ambito {
     private int[] _parametrosEntrada;
     private Macro _macroAsociada;
 
-    public Ambito(Interprete programa) {
-        this(programa, null, null);
-    }
+    private Ambito(Interprete programa, int[] parametrosEntrada) {
+        _programa = programa;
+        _parametrosEntrada = parametrosEntrada;
 
-    public Ambito(Interprete programa, int[] parametrosEntrada) {
-        this(programa, parametrosEntrada, null);
-    }
-
-    public Ambito(Interprete programa, Macro macroAsociada) {
-        this(programa, null, macroAsociada);
+        _gestorVariables = new GestorVariables(_programa);
+        _gestorBucles = new GestorBucles(_programa);
+        _gestorEtiquetas = new GestorEtiquetas(_programa);
+        _gestorMacros = new GestorMacros(_programa);
     }
 
     public Ambito(Interprete programa,
             int[] parametrosEntrada,
             Macro macroAsociada) {
 
-        _programa = programa;
+        this(programa, parametrosEntrada);
 
-        _controladorEjecucion = new ControladorEjecucion(this);
+        ArrayList<String> lineas = new ArrayList<>(
+                Arrays.asList(macroAsociada.cuerpo().split("[\n\r]+"))
+        );
 
-        _gestorVariables = new GestorVariables(_programa);
-        _gestorBucles = new GestorBucles(_programa);
-        _gestorEtiquetas = new GestorEtiquetas(_programa);
-        _gestorMacros = new GestorMacros(_programa);
-
-        _parametrosEntrada = parametrosEntrada;
+        _controladorEjecucion = new ControladorEjecucion(this, lineas);
         _macroAsociada = macroAsociada;
+    }
+
+    public Ambito(Interprete programa,
+            int[] parametrosEntrada,
+            ArrayList<String> lineas) {
+
+        this(programa, parametrosEntrada);
+
+        _controladorEjecucion = new ControladorEjecucion(this, lineas);
+        _macroAsociada = null;
     }
 
     public ControladorEjecucion controladorEjecucion() {
@@ -83,6 +89,14 @@ public class Ambito {
 
     public Macro macroAsociada() {
         return _macroAsociada;
+    }
+
+    public boolean tieneMacroAsociada() {
+        return _macroAsociada != null;
+    }
+
+    public void iniciar(int[] parametros) {
+        _controladorEjecucion.iniciar(parametros);
     }
 
     public String estadoMemoria() {
@@ -130,6 +144,14 @@ public class Ambito {
 
     private void concatenarVariable(Variable variable, StringBuilder sb) {
         sb.append(variable.id()).append(" = ").append(variable.valor());
+    }
+
+    public int resultado() {
+        return _gestorVariables.variableSalida().valor();
+    }
+
+    public void iniciarExpansionMacros() {
+        _controladorEjecucion.iniciarExpansionMacros();
     }
 
     public void imprimirComponentes() {

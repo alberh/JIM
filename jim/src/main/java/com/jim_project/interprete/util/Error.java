@@ -5,7 +5,8 @@ import com.jim_project.interprete.Programa.Estado;
 
 public class Error {
 
-    private static void imprimir(String s) {
+    // Métodos útiles
+    private static synchronized void imprimir(String s) {
         if (Programa.estadoOk()) {
             System.err.println(s);
             Programa.estado(Estado.ERROR);

@@ -73,10 +73,12 @@ public class Variable extends Componente {
         }
     }
 
+    @Deprecated
     public void creadaEnExpansion(boolean b) {
         _creadaEnExpansion = b;
     }
 
+    @Deprecated
     public boolean creadaEnExpansion() {
         return _creadaEnExpansion;
     }
@@ -133,7 +135,8 @@ public class Variable extends Componente {
     }
 
     public static Tipo obtenerTipo(String id) {
-        /* Después del refactor:
+        /* Después del refactor? Porque al final hice que se pusieran las V
+         * o las L según si estaba expandiendo o no...
          char charTipo = Variable.normalizarID(id).charAt(0);
          char charTipo;
          if (id.charAt(0) == 'V') {
