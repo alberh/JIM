@@ -104,30 +104,37 @@ public class Programa {
     }
 
     public void iniciar(int[] parametros) {
-        limpiar();
+        if (estadoOk()) {
+            limpiar();
 
-        ArrayList<String> lineas = new ArrayList<>();
+            ArrayList<String> lineas = new ArrayList<>();
 
-        try (Scanner scanner = new Scanner(new File(_fichero))) {
-            while (scanner.hasNextLine()) {
-                lineas.add(scanner.nextLine());
+            try (Scanner scanner = new Scanner(new File(_fichero))) {
+                while (scanner.hasNextLine()) {
+                    lineas.add(scanner.nextLine());
+                }
+            } catch (FileNotFoundException ex) {
+                Error.alCargarPrograma(_fichero);
             }
-        } catch (FileNotFoundException ex) {
-            Error.alCargarPrograma(_fichero);
-        }
 
-        _gestorAmbitos.nuevoAmbito(parametros, lineas);
-        _gestorAmbitos.ambitoActual().iniciar(parametros);
+            _gestorAmbitos.nuevoAmbito(parametros, lineas);
+            _gestorAmbitos.ambitoActual().iniciar(parametros);
+        }
     }
-    
+
     public void iniciarExpansionMacros() {
-        limpiar();
-        
-        _gestorAmbitos.ambitoRaiz().iniciarExpansionMacros();
+        if (estadoOk()) {
+            limpiar();
+            _gestorAmbitos.ambitoRaiz().iniciarExpansionMacros();
+        }
     }
-    
+
     public int resultado() {
         return _gestorAmbitos.ambitoRaiz().resultado();
+    }
+    
+    public String traza() {
+        return _gestorAmbitos.ambitoRaiz().controladorEjecucion().traza();
     }
 
     private void limpiar() {
@@ -139,18 +146,18 @@ public class Programa {
     public String toString() {
         ArrayList<String> lineas = _gestorAmbitos.ambitoRaiz().controladorEjecucion().lineas();
         StringBuilder sb = new StringBuilder();
-        
+
         lineas.forEach(
                 linea -> sb.append(linea).append("\n")
         );
 
         return sb.toString();
     }
-    
+
     public String toStringDetallado() {
         ArrayList<String> lineas = _gestorAmbitos.ambitoRaiz().controladorEjecucion().lineas();
         int numeroLineas = _gestorAmbitos.ambitoRaiz().controladorEjecucion().numeroLineas();
-        
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < lineas.size(); ++i) {
             sb.append(i + 1).append(": ").append(lineas.get(i)).append("\n");
@@ -164,348 +171,348 @@ public class Programa {
      * Para refactor
      */
     /*
-    private ArrayList<String> _lineas; // OK
-    private int _lineaActual; // OK
-    private boolean _salto; // OK
-    // En cargar:
-    //      _lineaActual = numeroLineas();
+     private ArrayList<String> _lineas; // OK
+     private int _lineaActual; // OK
+     private boolean _salto; // OK
+     // En cargar:
+     //      _lineaActual = numeroLineas();
 
-    // Ambito
-    public void iniciarExpansionMacros() {
-        limpiar();
-        comprobarDirectoriosMacros();
-        cargarMacros();
+     // Ambito
+     public void iniciarExpansionMacros() {
+     limpiar();
+     comprobarDirectoriosMacros();
+     cargarMacros();
 
-        if (estadoOk()) {
-            System.out.println("Analizando el programa...");
-        }
-        previo();
+     if (estadoOk()) {
+     System.out.println("Analizando el programa...");
+     }
+     previo();
 
-        if (estadoOk()) {
-            System.out.println("Expandiendo macros...");
+     if (estadoOk()) {
+     System.out.println("Expandiendo macros...");
 
-            int llamadas = PrevioAcciones.llamadasAMacros();
-            if (llamadas > 0) {
-                PrevioAcciones.expandir();
+     int llamadas = PrevioAcciones.llamadasAMacros();
+     if (llamadas > 0) {
+     PrevioAcciones.expandir();
 
-                System.out.println();
-                System.out.println(llamadas + " llamadas a macro expandidas.");
-            } else {
-                System.out.println();
-                System.out.println("No hay llamadas a macros en el programa.");
-            }
-        }
-    }
+     System.out.println();
+     System.out.println(llamadas + " llamadas a macro expandidas.");
+     } else {
+     System.out.println();
+     System.out.println("No hay llamadas a macros en el programa.");
+     }
+     }
+     }
 
-    // Ambito
-    public void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
-        _lineas.remove(linea - 1);
-        _lineas.addAll(linea - 1, lineasExpansion);
-    }
+     // Ambito
+     public void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
+     _lineas.remove(linea - 1);
+     _lineas.addAll(linea - 1, lineasExpansion);
+     }
 
-    // Ambito
-    public String obtenerPrograma() {
-        StringBuilder sb = new StringBuilder();
-        _lineas.forEach(
-                linea -> sb.append(linea).append("\n")
-        );
+     // Ambito
+     public String obtenerPrograma() {
+     StringBuilder sb = new StringBuilder();
+     _lineas.forEach(
+     linea -> sb.append(linea).append("\n")
+     );
 
-        return sb.toString();
-    }
+     return sb.toString();
+     }
 
-    // ControladorEjecucion OK
-    public int resultado() {
-        return Variable.get("Y").valor();
-    }
+     // ControladorEjecucion OK
+     public int resultado() {
+     return Variable.get("Y").valor();
+     }
 
-    // Ambito OK BORRAR
-    private void asignarVariablesEntrada(int[] parametros) {
-        for (int i = 0; i < parametros.length; ++i) {
-            Variable.set("X" + (i + 1), parametros[i]);
-        }
-    }
+     // Ambito OK BORRAR
+     private void asignarVariablesEntrada(int[] parametros) {
+     for (int i = 0; i < parametros.length; ++i) {
+     Variable.set("X" + (i + 1), parametros[i]);
+     }
+     }
 
-    // ControladorEjecucion OK
-    public void cargarMacros() {
-        System.out.println("Cargando macros...");
+     // ControladorEjecucion OK
+     public void cargarMacros() {
+     System.out.println("Cargando macros...");
 
-        if (estadoOk()) {
-            procesarFicherosMacros(Configuracion.rutaMacros());
-        }
+     if (estadoOk()) {
+     procesarFicherosMacros(Configuracion.rutaMacros());
+     }
 
-        if (estadoOk()) {
-            procesarFicherosMacros(_modelo.ruta());
-        }
-    }
+     if (estadoOk()) {
+     procesarFicherosMacros(_modelo.ruta());
+     }
+     }
 
-    // ControladorEjecucion OK
-    private void procesarFicherosMacros(String rutaMacros) {
-        try {
-            ArrayList<Path> rutas = new ArrayList<>();
+     // ControladorEjecucion OK
+     private void procesarFicherosMacros(String rutaMacros) {
+     try {
+     ArrayList<Path> rutas = new ArrayList<>();
 
-            DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(rutaMacros));
-            for (Path path : directoryStream) {
-                if (path.toFile().isFile()) {
-                    rutas.add(path);
-                }
-            }
-            directoryStream.close();
+     DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(rutaMacros));
+     for (Path path : directoryStream) {
+     if (path.toFile().isFile()) {
+     rutas.add(path);
+     }
+     }
+     directoryStream.close();
 
-            for (Path p : rutas) {
-                if (estadoOk()) {
-                    System.out.println("   " + p.toAbsolutePath());
+     for (Path p : rutas) {
+     if (estadoOk()) {
+     System.out.println("   " + p.toAbsolutePath());
 
-                    String fichero = p.getFileName().toString();
-                    String rutaFichero = rutaMacros + "/" + fichero;
-                    _ficheroEnProceso = rutaFichero;
-                    try {
-                        MacrosParser macrosParser
-                                = new MacrosParser(new FileReader(rutaFichero));
-                        macrosParser.parse();
-                    } catch (FileNotFoundException ex) {
-                        Error.alCargarMacros(rutaFichero);
-                    }
-                }
-            }
-        } catch (NotDirectoryException ex) {
-            Error.alComprobarDirectorio(rutaMacros);
-        } catch (IOException ex) {
-            Error.alObtenerListaFicherosMacros(rutaMacros);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
+     String fichero = p.getFileName().toString();
+     String rutaFichero = rutaMacros + "/" + fichero;
+     _ficheroEnProceso = rutaFichero;
+     try {
+     MacrosParser macrosParser
+     = new MacrosParser(new FileReader(rutaFichero));
+     macrosParser.parse();
+     } catch (FileNotFoundException ex) {
+     Error.alCargarMacros(rutaFichero);
+     }
+     }
+     }
+     } catch (NotDirectoryException ex) {
+     Error.alComprobarDirectorio(rutaMacros);
+     } catch (IOException ex) {
+     Error.alObtenerListaFicherosMacros(rutaMacros);
+     } catch (Exception ex) {
+     System.out.println(ex.getMessage());
+     }
+     }
 
-    // ControladorEjecucion OK
-    private void comprobarDirectoriosMacros() {
-        System.out.println("Comprobando directorios de macros...");
-        /* Esquema por defecto:
-         * macros/
-         * ...l/
-         * ...loop/
-         * ...while/
+     // ControladorEjecucion OK
+     private void comprobarDirectoriosMacros() {
+     System.out.println("Comprobando directorios de macros...");
+     /* Esquema por defecto:
+     * macros/
+     * ...l/
+     * ...loop/
+     * ...while/
          
-        comprobarDirectorio(new File(Configuracion.rutaMacros()));
-        comprobarDirectorio(new File(Configuracion.rutaMacrosL()));
-        comprobarDirectorio(new File(Configuracion.rutaMacrosLoop()));
-        comprobarDirectorio(new File(Configuracion.rutaMacrosWhile()));
-    }
+     comprobarDirectorio(new File(Configuracion.rutaMacros()));
+     comprobarDirectorio(new File(Configuracion.rutaMacrosL()));
+     comprobarDirectorio(new File(Configuracion.rutaMacrosLoop()));
+     comprobarDirectorio(new File(Configuracion.rutaMacrosWhile()));
+     }
 
-    // ControladorEjecucion OK
-    private void comprobarDirectorio(File directorio) {
-        System.out.println("   " + directorio.getAbsolutePath());
+     // ControladorEjecucion OK
+     private void comprobarDirectorio(File directorio) {
+     System.out.println("   " + directorio.getAbsolutePath());
 
-        if (!directorio.exists()) {
-            boolean creados = directorio.mkdirs();
+     if (!directorio.exists()) {
+     boolean creados = directorio.mkdirs();
 
-            if (!creados) {
-                Error.alCrearDirectoriosMacros();
-            }
-        } else {
-            // es un directorio
-            if (!directorio.isDirectory()) {
-                Error.alComprobarDirectorio(directorio.getAbsolutePath());
-            }
+     if (!creados) {
+     Error.alCrearDirectoriosMacros();
+     }
+     } else {
+     // es un directorio
+     if (!directorio.isDirectory()) {
+     Error.alComprobarDirectorio(directorio.getAbsolutePath());
+     }
 
-            if (!directorio.canRead()) {
-                Error.alComprobarAccesoDirectorio(directorio.getAbsolutePath());
-            }
-        }
-    }
+     if (!directorio.canRead()) {
+     Error.alComprobarAccesoDirectorio(directorio.getAbsolutePath());
+     }
+     }
+     }
 
-    // ControladorEjecucion OK
-    // Deberá pasar el analizador previo en todos los ámbitos
-    private void previo() {
-        if (estadoOk()) {
-            ejecutar(new PrevioParser(null));
-        }
-    }
+     // ControladorEjecucion OK
+     // Deberá pasar el analizador previo en todos los ámbitos
+     private void previo() {
+     if (estadoOk()) {
+     ejecutar(new PrevioParser(null));
+     }
+     }
 
-    // ControladorEjecucion OK
-    private void ejecutar(Parser parser) {
-        ejecutar(parser, false);
-    }
+     // ControladorEjecucion OK
+     private void ejecutar(Parser parser) {
+     ejecutar(parser, false);
+     }
 
-    // ControladorEjecución OK
-    private void ejecutar(Parser parser, boolean traza) {
-        // _traza = new StringBuilder("[");
-        _lineaActual = 0;
-        _salto = false;
-        AnalizadorLexico lex = parser.analizadorLexico();
-        int instruccionesEjecutadas = 0;
+     // ControladorEjecución OK
+     private void ejecutar(Parser parser, boolean traza) {
+     // _traza = new StringBuilder("[");
+     _lineaActual = 0;
+     _salto = false;
+     AnalizadorLexico lex = parser.analizadorLexico();
+     int instruccionesEjecutadas = 0;
 
-        if (numeroLineas() > 0) {
-            String linea = lineaSiguiente();
+     if (numeroLineas() > 0) {
+     String linea = lineaSiguiente();
 
-            do {
-                if (traza) {
-                    // System.out.println(_lineaActual + ": " + linea);
-                    System.out.println(estadoMemoria());
-                }
-                /*
-                 if (instruccionesEjecutadas > 0) {
-                 _traza.append(",")
-                 .append(System.getProperty("line.separator"));
-                 }
-                 _traza.append(estadoMemoria());
+     do {
+     if (traza) {
+     // System.out.println(_lineaActual + ": " + linea);
+     System.out.println(estadoMemoria());
+     }
+     /*
+     if (instruccionesEjecutadas > 0) {
+     _traza.append(",")
+     .append(System.getProperty("line.separator"));
+     }
+     _traza.append(estadoMemoria());
                  
 
-                try {
-                    lex.yyclose();
-                } catch (Exception ex) {
-                    Error.deEjecucion();
-                }
-                lex.yyreset(new BufferedReader(new StringReader(linea)));
+     try {
+     lex.yyclose();
+     } catch (Exception ex) {
+     Error.deEjecucion();
+     }
+     lex.yyreset(new BufferedReader(new StringReader(linea)));
 
-                parser.parse();
+     parser.parse();
 
-                if (!_salto) {
-                    linea = lineaSiguiente();
-                } else {
-                    linea = lineaActual();
-                    _salto = false;
-                }
+     if (!_salto) {
+     linea = lineaSiguiente();
+     } else {
+     linea = lineaActual();
+     _salto = false;
+     }
 
-                ++instruccionesEjecutadas;
-            } while (!finalizado() && estadoOk());
-        }
-        /*
-         _traza.append(",")
-         .append(System.getProperty("line.separator"));
-         _traza.append(estadoMemoria());
-         _traza.append("]");
+     ++instruccionesEjecutadas;
+     } while (!finalizado() && estadoOk());
+     }
+     /*
+     _traza.append(",")
+     .append(System.getProperty("line.separator"));
+     _traza.append(estadoMemoria());
+     _traza.append("]");
          
-    }
+     }
 
-    // Ambito OK
-    public String estadoMemoria() {
-        boolean comaAlFinal = false;
-        StringBuilder sb = new StringBuilder();
-        sb.append("(").append(_lineaActual).append(", <");
+     // Ambito OK
+     public String estadoMemoria() {
+     boolean comaAlFinal = false;
+     StringBuilder sb = new StringBuilder();
+     sb.append("(").append(_lineaActual).append(", <");
 
-        ArrayList<Variable> variables = Variable.variablesEntrada();
-        if (variables.size() > 0) {
-            comaAlFinal = true;
-            concatenarVariables(variables, sb);
-        }
+     ArrayList<Variable> variables = Variable.variablesEntrada();
+     if (variables.size() > 0) {
+     comaAlFinal = true;
+     concatenarVariables(variables, sb);
+     }
 
-        if (comaAlFinal) {
-            sb.append(", ");
-            comaAlFinal = false;
-        }
+     if (comaAlFinal) {
+     sb.append(", ");
+     comaAlFinal = false;
+     }
 
-        variables = Variable.variablesLocales();
-        if (variables.size() > 0) {
-            comaAlFinal = true;
-            concatenarVariables(variables, sb);
-        }
+     variables = Variable.variablesLocales();
+     if (variables.size() > 0) {
+     comaAlFinal = true;
+     concatenarVariables(variables, sb);
+     }
 
-        if (comaAlFinal) {
-            sb.append(", ");
-        }
-        concatenarVariable(Variable.variableSalida(), sb);
+     if (comaAlFinal) {
+     sb.append(", ");
+     }
+     concatenarVariable(Variable.variableSalida(), sb);
 
-        sb.append(">)");
+     sb.append(">)");
 
-        return sb.toString();
-    }
+     return sb.toString();
+     }
 
-    // Ambito OK
-    /*
+     // Ambito OK
+     /*
      public String traza() {
      return _traza.toString();
      }
      
-    private void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {
-        concatenarVariable(variables.get(0), sb);
+     private void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {
+     concatenarVariable(variables.get(0), sb);
 
-        for (int i = 1; i < variables.size(); ++i) {
-            sb.append(", ");
-            concatenarVariable(variables.get(i), sb);
-        }
-    }
+     for (int i = 1; i < variables.size(); ++i) {
+     sb.append(", ");
+     concatenarVariable(variables.get(i), sb);
+     }
+     }
 
-    // Ambito OK
-    private void concatenarVariable(Variable variable, StringBuilder sb) {
-        sb.append(variable.id()).append(" = ").append(variable.valor());
-    }
+     // Ambito OK
+     private void concatenarVariable(Variable variable, StringBuilder sb) {
+     sb.append(variable.id()).append(" = ").append(variable.valor());
+     }
 
-    // ControladorEjecucion OK
-    public int numeroLineaActual() {
-        return _lineaActual;
-    }
+     // ControladorEjecucion OK
+     public int numeroLineaActual() {
+     return _lineaActual;
+     }
 
-    // ControladorEjecucion OK
-    public void numeroLineaActual(int n) {
-        if (lineaValida(n)) {
-            _lineaActual = n;
-        } else {
-            terminar();
-        }
-    }
+     // ControladorEjecucion OK
+     public void numeroLineaActual(int n) {
+     if (lineaValida(n)) {
+     _lineaActual = n;
+     } else {
+     terminar();
+     }
+     }
 
-    // ControladorEjecucion OK
-    public String lineaActual() {
-        return finalizado() ? null : _lineas.get(_lineaActual - 1);
-    }
+     // ControladorEjecucion OK
+     public String lineaActual() {
+     return finalizado() ? null : _lineas.get(_lineaActual - 1);
+     }
 
-    // ControladorEjecucion OK
-    public String lineaSiguiente() {
-        numeroLineaActual(_lineaActual + 1);
-        return lineaActual();
-    }
+     // ControladorEjecucion OK
+     public String lineaSiguiente() {
+     numeroLineaActual(_lineaActual + 1);
+     return lineaActual();
+     }
 
-    // ControladorEjecucion OK
-    public String linea(int n) {
-        if (lineaValida(n)) {
-            return _lineas.get(n);
-        } else {
-            return null;
-        }
-    }
+     // ControladorEjecucion OK
+     public String linea(int n) {
+     if (lineaValida(n)) {
+     return _lineas.get(n);
+     } else {
+     return null;
+     }
+     }
 
-    // ControladorEjecucion OK
-    public boolean lineaValida(int numeroLinea) {
-        return numeroLinea >= 1 && numeroLinea <= numeroLineas();
-    }
+     // ControladorEjecucion OK
+     public boolean lineaValida(int numeroLinea) {
+     return numeroLinea >= 1 && numeroLinea <= numeroLineas();
+     }
 
-    // ControladorEjecucion OK
-    public int numeroLineas() {
-        return _lineas.size();
-    }
+     // ControladorEjecucion OK
+     public int numeroLineas() {
+     return _lineas.size();
+     }
 
-    // ControladorEjecucion OK
-    public ArrayList<String> lineas() {
-        return _lineas;
-    }
+     // ControladorEjecucion OK
+     public ArrayList<String> lineas() {
+     return _lineas;
+     }
 
-    // ControladorEjecucion OK
-    public void terminar() {
-        _lineaActual = numeroLineas() + 1;
-    }
+     // ControladorEjecucion OK
+     public void terminar() {
+     _lineaActual = numeroLineas() + 1;
+     }
 
-    // ControladorEjecucion OK
-    public boolean finalizado() {
-        return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
-    }
+     // ControladorEjecucion OK
+     public boolean finalizado() {
+     return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
+     }
 
-    // ControladorEjecucion OK
-    public void salto(int linea) {
-        numeroLineaActual(linea);
-        _salto = true;
-    }
+     // ControladorEjecucion OK
+     public void salto(int linea) {
+     numeroLineaActual(linea);
+     _salto = true;
+     }
 
-    // Ambito OK
-    public void imprimirComponentes() {
-        Variable.pintar();
+     // Ambito OK
+     public void imprimirComponentes() {
+     Variable.pintar();
 
-        if (_modelo.tipo() == Modelo.Tipo.L) {
-            Etiqueta.pintar();
-        } else {
-            Bucle.pintar();
-        }
+     if (_modelo.tipo() == Modelo.Tipo.L) {
+     Etiqueta.pintar();
+     } else {
+     Bucle.pintar();
+     }
 
-        Macro.pintar();
-    }
-    */
+     Macro.pintar();
+     }
+     */
 }

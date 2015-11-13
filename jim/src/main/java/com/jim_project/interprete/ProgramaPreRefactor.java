@@ -26,7 +26,6 @@ import java.io.FileNotFoundException;
 import java.nio.file.DirectoryStream;
 import java.util.Scanner;
 
-@Deprecated
 public class ProgramaPreRefactor {
 
     private static String _ficheroPrograma;
@@ -60,7 +59,7 @@ public class ProgramaPreRefactor {
 
     private static Modelo _modelo;
 
-    private Programa() {
+    private ProgramaPreRefactor() {
     }
 
     public static void estado(Estado estado) {

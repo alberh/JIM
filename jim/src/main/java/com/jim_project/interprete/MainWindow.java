@@ -464,12 +464,16 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
-    private Programa.ModoInstrucciones obtenerModoInstrucciones() {
+    private boolean modoFlexible() {
         if (cbModoExtendido.isSelected()) {
-            return Programa.ModoInstrucciones.EXTENDIDO;
+            return true;
         } else {
-            return Programa.ModoInstrucciones.NORMAL;
+            return false;
         }
+    }
+
+    private boolean macrosPermitidas() {
+        return true;
     }
 
     private void moverCursorAlFinal() {
@@ -481,66 +485,66 @@ public class MainWindow extends javax.swing.JFrame {
         comprobacionesPreviasAEjecucion();
 
         String ruta = _ficheroAbierto.getAbsolutePath();
-        
+
         String cadenaModelo = comboModelos.getSelectedItem().toString();
         Modelo modelo = new Modelo(cadenaModelo);
-        
-        if (Programa.cargar(ruta,
-                modelo,
-                obtenerModoInstrucciones(),
-                Programa.Etapa.EXPANDIENDO_MACROS/*EJECUTANDO*/)) {
-            
-            int[] parametros = null;
-            if (!tfEntradaPrograma.getText().isEmpty()) {
-                String[] parametrosComoCadenas = tfEntradaPrograma.getText().split(" ");
-                int tam = parametrosComoCadenas.length;
-                parametros = new int[tam];
 
-                for (int i = 0; i < tam; ++i) {
-                    try {
-                        parametros[i] = Integer.parseInt(parametrosComoCadenas[i]);
-                    } catch (NumberFormatException ex) {
-                        parametros[i] = 0;
-                    }
+        Programa programa = new Programa(ruta,
+                modelo,
+                Programa.Objetivo.EJECUTAR,
+                modoFlexible(),
+                macrosPermitidas());
+
+        int[] parametros = null;
+        if (!tfEntradaPrograma.getText().isEmpty()) {
+            String[] parametrosComoCadenas = tfEntradaPrograma.getText().split(" ");
+            int tam = parametrosComoCadenas.length;
+            parametros = new int[tam];
+
+            for (int i = 0; i < tam; ++i) {
+                try {
+                    parametros[i] = Integer.parseInt(parametrosComoCadenas[i]);
+                } catch (NumberFormatException ex) {
+                    parametros[i] = 0;
                 }
             }
-
-            Programa.iniciar(parametros);
-
-            if (Programa.estadoOk()) {
-                System.out.println();
-                System.out.println("Resultado: " + Programa.resultado());
-                taTraza.setText(Programa.traza());
-            } else {
-                tabPanelSalida.setSelectedIndex(0);
-            }
-
-            moverCursorAlFinal();
         }
+
+        programa.iniciar(parametros);
+
+        if (programa.estadoOk()) {
+            System.out.println();
+            System.out.println("Resultado: " + programa.resultado());
+            taTraza.setText(programa.traza());
+        } else {
+            tabPanelSalida.setSelectedIndex(0);
+        }
+
+        moverCursorAlFinal();
     }
 
     private void iniciarExpansionMacros() {
         comprobacionesPreviasAEjecucion();
 
         String ruta = _ficheroAbierto.getAbsolutePath();
-        
+
         String cadenaModelo = comboModelos.getSelectedItem().toString();
         Modelo modelo = new Modelo(cadenaModelo);
-        
-        if (Programa.cargar(ruta,
+
+        Programa programa = new Programa(ruta,
                 modelo,
-                obtenerModoInstrucciones(),
-                Programa.Etapa.EXPANDIENDO_MACROS)) {
-            
-            Programa.iniciarExpansionMacros();
+                Programa.Objetivo.EJECUTAR,
+                modoFlexible(),
+                macrosPermitidas());
 
-            taEditor.setText(Programa.obtenerPrograma());
-            hayCambios();
+        programa.iniciarExpansionMacros();
 
-            moverCursorAlFinal();
-        }
+        taEditor.setText(programa.toString());
+        hayCambios();
 
-        if (!Programa.estadoOk()) {
+        moverCursorAlFinal();
+
+        if (!programa.estadoOk()) {
             tabPanelSalida.setSelectedIndex(0);
         }
     }
