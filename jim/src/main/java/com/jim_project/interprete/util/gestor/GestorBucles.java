@@ -36,7 +36,7 @@ public class GestorBucles extends GestorComponentes {
     public void definirLineaFin(int lineaFin) {
         if (!_lineasInicioBucles.empty()) {
             int lineaInicio = _lineasInicioBucles.pop();
-            Bucle bucle = new Bucle(lineaInicio, lineaFin);
+            Bucle bucle = new Bucle(lineaInicio, lineaFin, this);
             
             _buclesLineaInicio.put(lineaInicio, bucle);
             _buclesLineaFin.put(lineaFin, bucle);
@@ -79,12 +79,12 @@ public class GestorBucles extends GestorComponentes {
     }
 
     @Override
-    protected int count() {
+    public int count() {
         return _buclesLineaInicio.size();
     }
 
     @Override
-    protected boolean vacio() {
+    public boolean vacio() {
         return _buclesLineaInicio.isEmpty();
     }
 }

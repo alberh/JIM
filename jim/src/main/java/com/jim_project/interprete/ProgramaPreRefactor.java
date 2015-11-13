@@ -199,12 +199,13 @@ public class ProgramaPreRefactor {
 
     private static void limpiar() {
         System.out.println("Limpiando memoria...");
-
+/*
         Variable.limpiar();
         Bucle.limpiar();
         Etiqueta.limpiar();
         Macro.limpiar();
         PrevioAcciones.limpiar();
+        */
     }
 
     public static void cargarMacros() {
@@ -482,7 +483,7 @@ public class ProgramaPreRefactor {
         if (_modelo.tipo() == Modelo.Tipo.L) {
             Etiqueta.pintar();
         } else {
-            Bucle.pintar();
+//            Bucle.pintar();
         }
 
         Macro.pintar();

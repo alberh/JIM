@@ -11,19 +11,19 @@ public abstract class GestorComponentes {
         _programa = programa;
     }
 
-    protected Programa programa() {
+    public Programa programa() {
         return _programa;
     }
     
-    protected GestorAmbitos gestorAmbitos() {
+    public GestorAmbitos gestorAmbitos() {
         return _programa.gestorAmbitos();
     }
     
-    protected Ambito ambitoActual() {
+    public Ambito ambitoActual() {
         return _programa.gestorAmbitos().ambitoActual();
     }
 
-    protected abstract int count();
+    public abstract int count();
 
-    protected abstract boolean vacio();
+    public abstract boolean vacio();
 }
