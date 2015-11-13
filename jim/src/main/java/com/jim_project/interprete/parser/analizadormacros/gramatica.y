@@ -23,7 +23,7 @@
 inicio :  sentencia inicio
 	   |
 ;
-sentencia : DEFMACRO IDMACRO { macroEnProceso = MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.cuerpo($5); }
+sentencia : DEFMACRO IDMACRO { macroEnProceso = MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.cuerpo($5, macroEnProceso); }
 ;
 simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1, macroEnProceso); } simbolos
          |  IDMACRO { MacrosAcciones.nuevaLlamadaAMacro($1, macroEnProceso); } simbolos

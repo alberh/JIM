@@ -288,6 +288,7 @@ final static String yyrule[] = {
 	/** referencia al analizador léxico
   **/
 	private MacrosLex analex;
+        private Macro macroEnProceso;
 
   /** constructor: crea el analizador léxico (lexer)
   **/
@@ -371,7 +372,7 @@ final static String yyrule[] = {
   public void yyerror(String descripcion) {
   	com.jim_project.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
   }
-//#line 301 "MacrosParser.java"
+//#line 302 "MacrosParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -527,29 +528,29 @@ boolean doaction;
 //########## USER-SUPPLIED ACTIONS ##########
 case 3:
 //#line 26 "gramatica.y"
-{ MacrosAcciones.nuevaMacro(val_peek(0).sval); }
+{ macroEnProceso = MacrosAcciones.nuevaMacro(val_peek(0).sval); }
 break;
 case 4:
 //#line 26 "gramatica.y"
-{ MacrosAcciones.cuerpo(val_peek(0).sval); }
+{ MacrosAcciones.cuerpo(val_peek(0).sval, macroEnProceso); }
 break;
 case 5:
 //#line 28 "gramatica.y"
-{ MacrosAcciones.nuevaVariable(val_peek(0).sval); }
+{ MacrosAcciones.nuevaVariable(val_peek(0).sval, macroEnProceso); }
 break;
 case 7:
 //#line 29 "gramatica.y"
-{ MacrosAcciones.nuevaLlamadaAMacro(val_peek(0).sval); }
+{ MacrosAcciones.nuevaLlamadaAMacro(val_peek(0).sval, macroEnProceso); }
 break;
 case 9:
 //#line 30 "gramatica.y"
-{ MacrosAcciones.nuevaEtiqueta(val_peek(1).sval); }
+{ MacrosAcciones.nuevaEtiqueta(val_peek(1).sval, macroEnProceso); }
 break;
 case 11:
 //#line 31 "gramatica.y"
-{ MacrosAcciones.nuevaEtiquetaSalto(val_peek(0).sval); }
+{ MacrosAcciones.nuevaEtiquetaSalto(val_peek(0).sval, macroEnProceso); }
 break;
-//#line 474 "MacrosParser.java"
+//#line 475 "MacrosParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
