@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
-import com.jim_project.interprete.Interprete;
+import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.ContenedorParametrosExpansion;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.componente.Etiqueta;
@@ -15,7 +15,7 @@ public class GestorMacros extends GestorComponentes {
 
     private HashMap<String, Macro> _macros;
 
-    public GestorMacros(Interprete programa) {
+    public GestorMacros(Programa programa) {
         super(programa);
         _macros = new HashMap<>();
     }

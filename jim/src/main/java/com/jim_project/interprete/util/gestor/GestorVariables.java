@@ -2,7 +2,7 @@ package com.jim_project.interprete.util.gestor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.jim_project.interprete.Interprete;
+import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.ComparadorVariables;
 import com.jim_project.interprete.componente.Variable;
 
@@ -15,7 +15,7 @@ public class GestorVariables extends GestorComponentes {
     private int _mayorIndiceEntrada;
     private int _mayorIndiceLocal;
 
-    public GestorVariables(Interprete programa) {
+    public GestorVariables(Programa programa) {
         super(programa);
         
         _variablesEntrada = new HashMap<>();

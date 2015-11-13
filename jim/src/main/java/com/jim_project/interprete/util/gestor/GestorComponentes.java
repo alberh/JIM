@@ -1,17 +1,17 @@
 package com.jim_project.interprete.util.gestor;
 
-import com.jim_project.interprete.Interprete;
+import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.Ambito;
 
 public abstract class GestorComponentes {
 
-    protected Interprete _programa;
+    protected Programa _programa;
 
-    public GestorComponentes(Interprete programa) {
+    public GestorComponentes(Programa programa) {
         _programa = programa;
     }
 
-    protected Interprete programa() {
+    protected Programa programa() {
         return _programa;
     }
     

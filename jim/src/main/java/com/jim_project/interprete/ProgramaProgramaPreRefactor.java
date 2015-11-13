@@ -21,154 +21,152 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.NotDirectoryException;
+
 import java.io.FileNotFoundException;
 import java.nio.file.DirectoryStream;
 import java.util.Scanner;
-import com.jim_project.interprete.util.gestor.GestorAmbitos;
 
-public class Interprete {
+@Deprecated
+public class ProgramaPreRefactor {
+
+    private static String _ficheroPrograma;
+    private static String _ficheroEnProceso;
+    private static ArrayList<String> _lineas;
+    private static int _lineaActual;
+
+    private static StringBuilder _traza = new StringBuilder();
+
+    private static boolean _salto;
 
     public enum Estado {
 
         OK, ERROR
     };
+    private static Estado _estado = Estado.OK;
 
-    public enum Objetivo {
+    public enum Etapa {
 
-        EJECUTAR, EXPANDIR
+        ESPERA, CARGANDO_FICHERO, COMPROBANDO_DIRECTORIO_MACROS,
+        CARGANDO_MACROS, ANALIZANDO, EXPANDIENDO_MACROS, EJECUTANDO
     };
+    private static Etapa _etapa = Etapa.ESPERA;
+    private static Etapa _etapaFinal;
 
-    private String _fichero;
-    private String _ficheroEnProceso;
+    public enum ModoInstrucciones {
 
-    private Estado _estado;
-    private Objetivo _objetivo;
-    private boolean _modoFlexible;
-    private boolean _macrosPermitidas;
+        NORMAL, EXTENDIDO, MACROS, EXTENDIDO_MACROS
+    };
+    private static ModoInstrucciones _modoInstrucciones = ModoInstrucciones.NORMAL;
 
-    private Modelo _modelo;
-    private GestorAmbitos _gestorAmbitos;
+    private static Modelo _modelo;
 
-    public Interprete(String fichero, Modelo modelo,
-            Objetivo objetivo, boolean modoFlexible,
-            boolean macrosPermitidas) {
-
-        _fichero = fichero;
-        _ficheroEnProceso = fichero;
-        _estado = Estado.OK;
-        _objetivo = objetivo;
-        _modoFlexible = modoFlexible;
-        _macrosPermitidas = macrosPermitidas;
-        _modelo = modelo;
-        _gestorAmbitos = new GestorAmbitos(this);
-        _ficheroEnProceso = fichero;
+    private Programa() {
     }
 
-    public String ficheroEnProceso() {
-        return new File(_ficheroEnProceso).getName();
-    }
-
-    public void ficheroEnProceso(String ficheroEnProceso) {
-        _ficheroEnProceso = ficheroEnProceso;
-    }
-
-    public void estado(Estado estado) {
+    public static void estado(Estado estado) {
         _estado = estado;
     }
 
-    public Estado estado() {
+    public static Estado estado() {
         return _estado;
     }
 
-    public boolean estadoOk() {
+    public static void etapa(Etapa etapa) {
+        _etapa = etapa;
+    }
+
+    public static Etapa estapa() {
+        return _etapa;
+    }
+
+    public static void etapaFinal(Etapa etapaFinal) {
+        _etapaFinal = etapaFinal;
+    }
+
+    public static Etapa etapaFinal() {
+        return _etapaFinal;
+    }
+
+    public static boolean modoExtendido() {
+        return _modoInstrucciones == ModoInstrucciones.EXTENDIDO
+                || _modoInstrucciones == ModoInstrucciones.EXTENDIDO_MACROS;
+    }
+
+    public static boolean modoMacros() {
+        return _modoInstrucciones == ModoInstrucciones.MACROS
+                || _modoInstrucciones == ModoInstrucciones.EXTENDIDO_MACROS;
+    }
+
+    public static boolean estadoOk() {
         return _estado == Estado.OK;
     }
 
-    public void objetivo(Objetivo objetivo) {
-        _objetivo = objetivo;
+    public static String ficheroEnProceso() {
+        return new File(_ficheroEnProceso).getName();
     }
 
-    public Objetivo objetivo() {
-        return _objetivo;
-    }
+    public static boolean cargar(String fichero, Modelo modelo,
+            ModoInstrucciones modo, Etapa etapaFinal) {
 
-    public void modoFlexible(boolean b) {
-        _modoFlexible = b;
-    }
+        _etapa = Etapa.CARGANDO_FICHERO;
+        _etapaFinal = etapaFinal;
+        _modelo = modelo;
+        _modoInstrucciones = modo;
+        _lineas = new ArrayList<>();
+        _ficheroPrograma = fichero;
 
-    public boolean modoFlexible() {
-        return _modoFlexible;
-    }
-
-    public void macrosPermitidas(boolean b) {
-        _macrosPermitidas = b;
-    }
-
-    public boolean macrosPermitidas() {
-        return _macrosPermitidas;
-    }
-
-    public Modelo modelo() {
-        return _modelo;
-    }
-
-    public String nombreModelo() {
-        String modelo = _modelo.toString();
-        return modelo.charAt(0) + modelo.substring(1).toLowerCase();
-    }
-
-    public GestorAmbitos gestorAmbitos() {
-        return _gestorAmbitos;
-    }
-
-    public void iniciar() {
-        iniciar(null);
-    }
-
-    public void iniciar(int[] parametros) {
-        limpiar();
-
-        ArrayList<String> lineas = new ArrayList<>();
-
-        try (Scanner scanner = new Scanner(new File(_fichero))) {
+        try (Scanner scanner = new Scanner(new File(fichero))) {
             while (scanner.hasNextLine()) {
-                lineas.add(scanner.nextLine());
+                _lineas.add(scanner.nextLine());
             }
         } catch (FileNotFoundException ex) {
-            Error.alCargarPrograma(_fichero);
+            Error.alCargarPrograma(fichero);
+            return false;
         }
 
-        _gestorAmbitos.nuevoAmbito(parametros, lineas);
-        _gestorAmbitos.ambitoActual().iniciar(parametros);
+        _ficheroEnProceso = fichero;
+        _lineaActual = numeroLineas();
+        _estado = Estado.OK;
+        return true;
     }
 
-    private void limpiar() {
-        _gestorAmbitos.limpiar();
-        PrevioAcciones.limpiar();
-    }
+    public static void iniciar(int[] parametros) {
+        limpiar();
+        comprobarDirectoriosMacros();
+        cargarMacros();
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < _lineas.size(); ++i) {
-            sb.append(i + 1).append(": ").append(_lineas.get(i)).append("\n");
+        _ficheroEnProceso = _ficheroPrograma;
+        if (estadoOk()) {
+            System.out.println("Analizando el programa...");
         }
-        sb.append(numeroLineas()).append(" líneas.").append("\n");
+        previo();
 
-        return sb.toString();
+        if (estadoOk()) {
+            do {
+                // Se vuelve a pasar el previo para establecer las nuevas variables y
+                // etiquetas tras la expansión de macros
+                PrevioAcciones.expandir();
+                previo();
+            } while (PrevioAcciones.llamadasAMacros() > 0 && estadoOk());
+        }
+
+        if (estadoOk()) {
+            // Asignar variables de entrada
+            if (parametros != null) {
+                asignarVariablesEntrada(parametros);
+            }
+
+            // Lanzar
+            System.out.println("Ejecutando...");
+            System.out.println("Si el programa no termina en unos segundos, "
+                    + "probablemente haya caído en un bucle infinito.");
+            ejecutar(_modelo.parser());
+        } else {
+            _estado = Estado.ERROR;
+        }
     }
 
-    /**
-     * Para refactor
-     */
-    private ArrayList<String> _lineas; // OK
-    private int _lineaActual; // OK
-    private boolean _salto; // OK
-    // En cargar:
-    //      _lineaActual = numeroLineas();
-
-    // Ambito
-    public void iniciarExpansionMacros() {
+    public static void iniciarExpansionMacros() {
         limpiar();
         comprobarDirectoriosMacros();
         cargarMacros();
@@ -194,36 +192,24 @@ public class Interprete {
         }
     }
 
-    // Ambito
-    public void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
-        _lineas.remove(linea - 1);
-        _lineas.addAll(linea - 1, lineasExpansion);
-    }
-
-    // Ambito
-    public String obtenerPrograma() {
-        StringBuilder sb = new StringBuilder();
-        _lineas.forEach(
-                linea -> sb.append(linea).append("\n")
-        );
-
-        return sb.toString();
-    }
-
-    // ControladorEjecucion OK
-    public int resultado() {
-        return Variable.get("Y").valor();
-    }
-
-    // Ambito OK BORRAR
-    private void asignarVariablesEntrada(int[] parametros) {
+    private static void asignarVariablesEntrada(int[] parametros) {
         for (int i = 0; i < parametros.length; ++i) {
             Variable.set("X" + (i + 1), parametros[i]);
         }
     }
 
-    // ControladorEjecucion OK
-    public void cargarMacros() {
+    private static void limpiar() {
+        System.out.println("Limpiando memoria...");
+
+        Variable.limpiar();
+        Bucle.limpiar();
+        Etiqueta.limpiar();
+        Macro.limpiar();
+        PrevioAcciones.limpiar();
+    }
+
+    public static void cargarMacros() {
+        _etapa = Etapa.CARGANDO_MACROS;
         System.out.println("Cargando macros...");
 
         if (estadoOk()) {
@@ -235,8 +221,8 @@ public class Interprete {
         }
     }
 
-    // ControladorEjecucion OK
-    private void procesarFicherosMacros(String rutaMacros) {
+    private static void procesarFicherosMacros(String rutaMacros) {
+        //Error.alObtenerListaFicherosMacros(rutaMacros);
         try {
             ArrayList<Path> rutas = new ArrayList<>();
 
@@ -273,8 +259,17 @@ public class Interprete {
         }
     }
 
-    // ControladorEjecucion OK
-    private void comprobarDirectoriosMacros() {
+    public static Modelo modelo() {
+        return _modelo;
+    }
+
+    public static String nombreModelo() {
+        String modelo = _modelo.toString();
+        return modelo.charAt(0) + modelo.substring(1).toLowerCase();
+    }
+
+    private static void comprobarDirectoriosMacros() {
+        _etapa = Etapa.COMPROBANDO_DIRECTORIO_MACROS;
         System.out.println("Comprobando directorios de macros...");
         /* Esquema por defecto:
          * macros/
@@ -288,8 +283,7 @@ public class Interprete {
         comprobarDirectorio(new File(Configuracion.rutaMacrosWhile()));
     }
 
-    // ControladorEjecucion OK
-    private void comprobarDirectorio(File directorio) {
+    private static void comprobarDirectorio(File directorio) {
         System.out.println("   " + directorio.getAbsolutePath());
 
         if (!directorio.exists()) {
@@ -310,22 +304,30 @@ public class Interprete {
         }
     }
 
-    // ControladorEjecucion OK
-    // Deberá pasar el analizador previo en todos los ámbitos
-    private void previo() {
+    private static void previo() {
+        _etapa = Etapa.ANALIZANDO;
         if (estadoOk()) {
             ejecutar(new PrevioParser(null));
         }
     }
 
-    // ControladorEjecucion OK
-    private void ejecutar(Parser parser) {
+    public static void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
+        _lineas.remove(linea - 1);
+        _lineas.addAll(linea - 1, lineasExpansion);
+    }
+
+    private static void ejecutar(Parser parser) {
         ejecutar(parser, false);
     }
 
-    // ControladorEjecución OK
-    private void ejecutar(Parser parser, boolean traza) {
-        // _traza = new StringBuilder("[");
+    private static void ejecutar(Parser parser, boolean traza) {
+        if (!(parser instanceof PrevioParser)) {
+            _etapa = Etapa.EJECUTANDO;
+        }
+        // System.out.println("Etapa en ejecutar: " + _etapa);
+
+        _traza = new StringBuilder("[");
+        _ficheroEnProceso = _ficheroPrograma;
         _lineaActual = 0;
         _salto = false;
         AnalizadorLexico lex = parser.analizadorLexico();
@@ -335,17 +337,17 @@ public class Interprete {
             String linea = lineaSiguiente();
 
             do {
-                if (traza) {
-                    // System.out.println(_lineaActual + ": " + linea);
-                    System.out.println(estadoMemoria());
+                if (_etapa == Etapa.EJECUTANDO) {
+                    if (traza) {
+                        // System.out.println(_lineaActual + ": " + linea);
+                        System.out.println(estadoMemoria());
+                    }
+                    if (instruccionesEjecutadas > 0) {
+                        _traza.append(",")
+                                .append(System.getProperty("line.separator"));
+                    }
+                    _traza.append(estadoMemoria());
                 }
-                /*
-                 if (instruccionesEjecutadas > 0) {
-                 _traza.append(",")
-                 .append(System.getProperty("line.separator"));
-                 }
-                 _traza.append(estadoMemoria());
-                 */
 
                 try {
                     lex.yyclose();
@@ -366,16 +368,13 @@ public class Interprete {
                 ++instruccionesEjecutadas;
             } while (!finalizado() && estadoOk());
         }
-        /*
-         _traza.append(",")
-         .append(System.getProperty("line.separator"));
-         _traza.append(estadoMemoria());
-         _traza.append("]");
-         */
+        _traza.append(",")
+                .append(System.getProperty("line.separator"));
+        _traza.append(estadoMemoria());
+        _traza.append("]");
     }
 
-    // Ambito OK
-    public String estadoMemoria() {
+    public static String estadoMemoria() {
         boolean comaAlFinal = false;
         StringBuilder sb = new StringBuilder();
         sb.append("(").append(_lineaActual).append(", <");
@@ -407,13 +406,11 @@ public class Interprete {
         return sb.toString();
     }
 
-    // Ambito OK
-    /*
-     public String traza() {
-     return _traza.toString();
-     }
-     */
-    private void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {
+    public static String traza() {
+        return _traza.toString();
+    }
+
+    private static void concatenarVariables(ArrayList<Variable> variables, StringBuilder sb) {
         concatenarVariable(variables.get(0), sb);
 
         for (int i = 1; i < variables.size(); ++i) {
@@ -422,18 +419,15 @@ public class Interprete {
         }
     }
 
-    // Ambito OK
-    private void concatenarVariable(Variable variable, StringBuilder sb) {
+    private static void concatenarVariable(Variable variable, StringBuilder sb) {
         sb.append(variable.id()).append(" = ").append(variable.valor());
     }
 
-    // ControladorEjecucion OK
-    public int numeroLineaActual() {
+    public static int numeroLineaActual() {
         return _lineaActual;
     }
 
-    // ControladorEjecucion OK
-    public void numeroLineaActual(int n) {
+    public static void numeroLineaActual(int n) {
         if (lineaValida(n)) {
             _lineaActual = n;
         } else {
@@ -441,19 +435,16 @@ public class Interprete {
         }
     }
 
-    // ControladorEjecucion OK
-    public String lineaActual() {
+    public static String lineaActual() {
         return finalizado() ? null : _lineas.get(_lineaActual - 1);
     }
 
-    // ControladorEjecucion OK
-    public String lineaSiguiente() {
+    public static String lineaSiguiente() {
         numeroLineaActual(_lineaActual + 1);
         return lineaActual();
     }
 
-    // ControladorEjecucion OK
-    public String linea(int n) {
+    public static String linea(int n) {
         if (lineaValida(n)) {
             return _lineas.get(n);
         } else {
@@ -461,39 +452,32 @@ public class Interprete {
         }
     }
 
-    // ControladorEjecucion OK
-    public boolean lineaValida(int numeroLinea) {
+    public static boolean lineaValida(int numeroLinea) {
         return numeroLinea >= 1 && numeroLinea <= numeroLineas();
     }
 
-    // ControladorEjecucion OK
-    public int numeroLineas() {
+    public static int numeroLineas() {
         return _lineas.size();
     }
 
-    // ControladorEjecucion OK
-    public ArrayList<String> lineas() {
+    public static ArrayList<String> lineas() {
         return _lineas;
     }
 
-    // ControladorEjecucion OK
-    public void terminar() {
+    public static void terminar() {
         _lineaActual = numeroLineas() + 1;
     }
 
-    // ControladorEjecucion OK
-    public boolean finalizado() {
+    public static boolean finalizado() {
         return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
     }
 
-    // ControladorEjecucion OK
-    public void salto(int linea) {
+    public static void salto(int linea) {
         numeroLineaActual(linea);
         _salto = true;
     }
 
-    // Ambito OK
-    public void imprimirComponentes() {
+    public static void imprimirComponentes() {
         Variable.pintar();
 
         if (_modelo.tipo() == Modelo.Tipo.L) {
@@ -503,5 +487,26 @@ public class Interprete {
         }
 
         Macro.pintar();
+    }
+
+    public static void imprimirPrograma() {
+        for (int i = 0; i < _lineas.size(); ++i) {
+            System.out.println((i + 1) + ": " + _lineas.get(i));
+        }
+
+        System.out.println(numeroLineas() + " líneas.");
+    }
+
+    public static String obtenerPrograma() {
+        StringBuilder sb = new StringBuilder();
+        _lineas.forEach(
+                linea -> sb.append(linea).append("\n")
+        );
+
+        return sb.toString();
+    }
+
+    public static int resultado() {
+        return Variable.get("Y").valor();
     }
 }

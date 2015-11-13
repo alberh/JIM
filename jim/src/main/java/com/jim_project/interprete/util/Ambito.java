@@ -3,7 +3,7 @@ package com.jim_project.interprete.util;
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.componente.Macro;
 import java.util.ArrayList;
-import com.jim_project.interprete.Interprete;
+import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.util.gestor.GestorEtiquetas;
 import com.jim_project.interprete.util.gestor.GestorMacros;
@@ -20,12 +20,12 @@ public class Ambito {
     private GestorEtiquetas _gestorEtiquetas;
     private GestorMacros _gestorMacros;
 
-    private Interprete _programa;
+    private Programa _programa;
 
     private int[] _parametrosEntrada;
     private Macro _macroAsociada;
 
-    private Ambito(Interprete programa, int[] parametrosEntrada) {
+    private Ambito(Programa programa, int[] parametrosEntrada) {
         _programa = programa;
         _parametrosEntrada = parametrosEntrada;
 
@@ -35,7 +35,7 @@ public class Ambito {
         _gestorMacros = new GestorMacros(_programa);
     }
 
-    public Ambito(Interprete programa,
+    public Ambito(Programa programa,
             int[] parametrosEntrada,
             Macro macroAsociada) {
 
@@ -49,7 +49,7 @@ public class Ambito {
         _macroAsociada = macroAsociada;
     }
 
-    public Ambito(Interprete programa,
+    public Ambito(Programa programa,
             int[] parametrosEntrada,
             ArrayList<String> lineas) {
 
@@ -79,7 +79,7 @@ public class Ambito {
         return _gestorMacros;
     }
 
-    public Interprete programa() {
+    public Programa programa() {
         return _programa;
     }
 

@@ -1,7 +1,7 @@
 package com.jim_project.interprete.util.gestor;
 
 import java.util.HashMap;
-import com.jim_project.interprete.Interprete;
+import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Etiqueta;
 import static com.jim_project.interprete.componente.Etiqueta.normalizarID;
 
@@ -10,7 +10,7 @@ public class GestorEtiquetas extends GestorComponentes {
     private HashMap<String, Etiqueta> _etiquetas;
     private int _indiceUltimaA;
 
-    public GestorEtiquetas(Interprete programa) {
+    public GestorEtiquetas(Programa programa) {
         super(programa);
         _etiquetas = new HashMap<>();
         _indiceUltimaA = 0;

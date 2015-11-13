@@ -12,7 +12,7 @@ import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import com.jim_project.interprete.Interprete;
+import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.parser.AnalizadorLexico;
 import com.jim_project.interprete.parser.Parser;
 import com.jim_project.interprete.parser.analizadormacros.MacrosParser;
@@ -28,7 +28,7 @@ public class ControladorEjecucion {
     };
 
     private Ambito _ambito;
-    private Interprete _programa;
+    private Programa _programa;
 
     private Etapa _etapa;
 
@@ -84,7 +84,7 @@ public class ControladorEjecucion {
 
             ejecutar(_programa.modelo().parser());
         } else {
-            _programa.estado(Interprete.Estado.ERROR);
+            _programa.estado(Programa.Estado.ERROR);
         }
     }
 

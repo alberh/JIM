@@ -28,8 +28,8 @@ public class Main {
             String fichero = args[1];
 
             Modelo modelo = new Modelo(cadenaModelo);
-            Programa.ModoInstrucciones modoInstrucciones
-                    = Programa.ModoInstrucciones.NORMAL;
+            boolean modoFlexible = false;
+            boolean macrosPermitidas = true;
 
             if (modelo.tipo() != null) {
                 int[] parametros = null;
@@ -38,7 +38,7 @@ public class Main {
                     int indiceParametros = 2;
 
                     if (args[2].equals("ex") || args[2].equals("extendido")) {
-                        modoInstrucciones = Programa.ModoInstrucciones.EXTENDIDO;
+                        modoFlexible = true;
                         indiceParametros = 3;
                     }
 
@@ -58,7 +58,7 @@ public class Main {
                     }
                 }
 
-                iniciar(modelo, modoInstrucciones, fichero, parametros);
+                iniciar(fichero, modelo, modoFlexible, macrosPermitidas, parametros);
             } else {
                 // Añadir soporte para expansión de macros en terminal
 
@@ -70,33 +70,45 @@ public class Main {
         }
     }
 
-    public static void iniciar(Modelo modelo,
-            Programa.ModoInstrucciones modo,
+    public static void iniciar(
             String fichero,
+            Modelo modelo,
+            boolean modoFlexible,
+            boolean macrosPermitidas,
             int[] parametros) {
-        
-        Programa.cargar(fichero, modelo, modo,
-                Programa.Etapa.EXPANDIENDO_MACROS/*EJECUTANDO*/);
-        Programa.iniciar(parametros);
 
-        if (Programa.estadoOk()) {
+        Programa programa = new Programa(fichero,
+                modelo,
+                Programa.Objetivo.EJECUTAR,
+                modoFlexible,
+                macrosPermitidas);
+        programa.iniciar(parametros);
+
+        if (programa.estadoOk()) {
             System.out.println();
-            System.out.println("Resultado: " + Programa.resultado());
+            System.out.println("Resultado: " + programa.resultado());
         }
     }
 
-    public static void iniciarExpansionMacros(Modelo modelo,
-            Programa.ModoInstrucciones modo,
-            String fichero) {
-        Programa.cargar(fichero, modelo, modo,
-                Programa.Etapa.EXPANDIENDO_MACROS);
-        Programa.iniciarExpansionMacros();
+    public static void iniciarExpansionMacros(
+            String fichero,
+            Modelo modelo,
+            boolean modoFlexible,
+            boolean macrosPermitidas
+            ) {
+        
+        Programa programa = new Programa(fichero,
+                modelo,
+                Programa.Objetivo.EJECUTAR,
+                modoFlexible,
+                macrosPermitidas);
+        programa.iniciarExpansionMacros();
 
-        if (Programa.estadoOk()) {
+        if (programa.estadoOk()) {
             System.out.println();
             System.out.println("Programa tras la expansión");
             System.out.println();
-            System.out.println(Programa.obtenerPrograma());
+            System.out.println(programa);
         }
     }
 

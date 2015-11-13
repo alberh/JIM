@@ -1,7 +1,7 @@
 package com.jim_project.interprete.util.gestor;
 
 import java.util.ArrayList;
-import com.jim_project.interprete.Interprete;
+import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.Ambito;
 import com.jim_project.interprete.componente.Macro;
 
@@ -10,7 +10,7 @@ public class GestorAmbitos extends GestorComponentes {
     private ArrayList<Ambito> _ambitos;
     private Ambito _ultimoAmbito;
 
-    public GestorAmbitos(Interprete programa) {
+    public GestorAmbitos(Programa programa) {
         super(programa);
         _ambitos = new ArrayList<>();
         _ultimoAmbito = null;
