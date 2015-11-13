@@ -18,10 +18,11 @@ package com.jim_project.interprete.parser.analizadormacros;
 
 
 //#line 3 "gramatica.y"
-import com.jim_project.interprete.parser.Parser;
-import com.jim_project.interprete.parser.AnalizadorLexico;
 	import java.io.*;
-//#line 21 "MacrosParser.java"
+  	import com.jim_project.interprete.*;
+        import com.jim_project.interprete.componente.*;
+  	import com.jim_project.interprete.parser.*;
+//#line 22 "MacrosParser.java"
 
 
 
@@ -282,7 +283,7 @@ final static String yyrule[] = {
 "simbolos :",
 };
 
-//#line 35 "gramatica.y"
+//#line 36 "gramatica.y"
 
 	/** referencia al analizador léxico
   **/
@@ -323,7 +324,7 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-	  com.jim_project.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), nombreToken, descripcion);
+	com.jim_project.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), nombreToken, descripcion);
   	
   	/*
 	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
@@ -368,9 +369,9 @@ final static String yyrule[] = {
 
   @Override
   public void yyerror(String descripcion) {
-  	  com.jim_project.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
+  	com.jim_project.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
   }
-//#line 300 "MacrosParser.java"
+//#line 301 "MacrosParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -525,30 +526,30 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 3:
-//#line 25 "gramatica.y"
+//#line 26 "gramatica.y"
 { MacrosAcciones.nuevaMacro(val_peek(0).sval); }
 break;
 case 4:
-//#line 25 "gramatica.y"
+//#line 26 "gramatica.y"
 { MacrosAcciones.cuerpo(val_peek(0).sval); }
 break;
 case 5:
-//#line 27 "gramatica.y"
+//#line 28 "gramatica.y"
 { MacrosAcciones.nuevaVariable(val_peek(0).sval); }
 break;
 case 7:
-//#line 28 "gramatica.y"
+//#line 29 "gramatica.y"
 { MacrosAcciones.nuevaLlamadaAMacro(val_peek(0).sval); }
 break;
 case 9:
-//#line 29 "gramatica.y"
+//#line 30 "gramatica.y"
 { MacrosAcciones.nuevaEtiqueta(val_peek(1).sval); }
 break;
 case 11:
-//#line 30 "gramatica.y"
+//#line 31 "gramatica.y"
 { MacrosAcciones.nuevaEtiquetaSalto(val_peek(0).sval); }
 break;
-//#line 473 "MacrosParser.java"
+//#line 474 "MacrosParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

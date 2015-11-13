@@ -18,11 +18,11 @@ package com.jim_project.interprete.parser.loopmodel;
 
 
 //#line 4 "gramatica.y"
-import com.jim_project.interprete.parser.Parser;
-import com.jim_project.interprete.parser.AnalizadorLexico;
-import com.jim_project.interprete.Programa;
   import java.io.*;
-//#line 21 "LoopParser.java"
+  import com.jim_project.interprete.*;
+  import com.jim_project.interprete.componente.*;
+  import com.jim_project.interprete.parser.*;
+//#line 22 "LoopParser.java"
 
 
 
@@ -318,7 +318,7 @@ final static String yyrule[] = {
 "masParametrosMacro :",
 };
 
-//#line 53 "gramatica.y"
+//#line 54 "gramatica.y"
 
   /** referencia al analizador léxico
   **/
@@ -401,7 +401,7 @@ final static String yyrule[] = {
   System.err.println(nombresTokens);
   */
   }
-//#line 330 "LoopParser.java"
+//#line 331 "LoopParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -556,82 +556,82 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 26 "gramatica.y"
+//#line 27 "gramatica.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 3:
-//#line 27 "gramatica.y"
+//#line 28 "gramatica.y"
 { yyval.obj = new LoopParserVal(); }
 break;
 case 4:
-//#line 29 "gramatica.y"
+//#line 30 "gramatica.y"
 { LoopAcciones.asignacion(val_peek(2).sval, val_peek(0).obj); }
 break;
 case 5:
-//#line 30 "gramatica.y"
+//#line 31 "gramatica.y"
 { LoopAcciones.incremento(val_peek(1).sval); }
 break;
 case 6:
-//#line 31 "gramatica.y"
+//#line 32 "gramatica.y"
 { LoopAcciones.abreBucle(val_peek(0).sval, Programa.numeroLineaActual()); }
 break;
 case 7:
-//#line 32 "gramatica.y"
+//#line 33 "gramatica.y"
 { LoopAcciones.cierraBucle(Programa.numeroLineaActual()); }
 break;
 case 8:
-//#line 34 "gramatica.y"
+//#line 35 "gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 9:
-//#line 35 "gramatica.y"
-{ yyval.obj = val_peek(0).ival; }
-break;
-case 10:
 //#line 36 "gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
-case 11:
+case 10:
 //#line 37 "gramatica.y"
+{ yyval.obj = val_peek(0).ival; }
+break;
+case 11:
+//#line 38 "gramatica.y"
 { yyval.obj = new LoopParserVal(); }
 break;
 case 12:
-//#line 37 "gramatica.y"
+//#line 38 "gramatica.y"
 { /* Tratamiento de macros */ }
 break;
 case 13:
-//#line 39 "gramatica.y"
+//#line 40 "gramatica.y"
 { yyval.ival = LoopAcciones.operacion('+', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 14:
-//#line 40 "gramatica.y"
+//#line 41 "gramatica.y"
 { yyval.ival = LoopAcciones.operacion('*', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 15:
-//#line 42 "gramatica.y"
+//#line 43 "gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 16:
-//#line 43 "gramatica.y"
+//#line 44 "gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 17:
-//#line 45 "gramatica.y"
+//#line 46 "gramatica.y"
 {yyval.obj = val_peek(0).obj; }
 break;
 case 19:
-//#line 46 "gramatica.y"
+//#line 47 "gramatica.y"
 { yyval.obj = new LoopParserVal(); }
 break;
 case 20:
-//#line 48 "gramatica.y"
+//#line 49 "gramatica.y"
 {yyval.obj = val_peek(0).obj; }
 break;
 case 22:
-//#line 49 "gramatica.y"
+//#line 50 "gramatica.y"
 { yyval.obj = new LoopParserVal(); }
 break;
-//#line 555 "LoopParser.java"
+//#line 556 "LoopParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

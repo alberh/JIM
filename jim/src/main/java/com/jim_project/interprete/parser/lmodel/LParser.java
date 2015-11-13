@@ -18,10 +18,11 @@ package com.jim_project.interprete.parser.lmodel;
 
 
 //#line 3 "gramatica.y"
-import com.jim_project.interprete.parser.Parser;
-import com.jim_project.interprete.parser.AnalizadorLexico;
   import java.io.*;
-//#line 21 "LParser.java"
+  import com.jim_project.interprete.*;
+  import com.jim_project.interprete.componente.*;
+  import com.jim_project.interprete.parser.*;
+//#line 22 "LParser.java"
 
 
 
@@ -334,7 +335,7 @@ final static String yyrule[] = {
 "masParametrosMacro :",
 };
 
-//#line 64 "gramatica.y"
+//#line 65 "gramatica.y"
 
   /** referencia al analizador léxico
   **/
@@ -417,7 +418,7 @@ final static String yyrule[] = {
   System.err.println(nombresTokens);
   */
   }
-//#line 347 "LParser.java"
+//#line 348 "LParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -572,110 +573,110 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 28 "gramatica.y"
+//#line 29 "gramatica.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 3:
-//#line 29 "gramatica.y"
+//#line 30 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 4:
-//#line 31 "gramatica.y"
+//#line 32 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 5:
-//#line 33 "gramatica.y"
+//#line 34 "gramatica.y"
 { yyval.obj = val_peek(1).sval; }
 break;
 case 6:
-//#line 34 "gramatica.y"
+//#line 35 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 7:
-//#line 36 "gramatica.y"
+//#line 37 "gramatica.y"
 { LAcciones.asignacion(val_peek(2).sval, val_peek(0).obj); }
 break;
 case 8:
-//#line 37 "gramatica.y"
+//#line 38 "gramatica.y"
 { LAcciones.incremento(val_peek(1).sval); }
 break;
 case 9:
-//#line 38 "gramatica.y"
+//#line 39 "gramatica.y"
 { LAcciones.decremento(val_peek(1).sval); }
 break;
 case 10:
-//#line 39 "gramatica.y"
+//#line 40 "gramatica.y"
 { LAcciones.saltoCondicional(val_peek(3).sval, val_peek(0).sval); }
 break;
 case 11:
-//#line 40 "gramatica.y"
+//#line 41 "gramatica.y"
 { LAcciones.saltoIncondicional(val_peek(0).sval); }
 break;
 case 12:
-//#line 42 "gramatica.y"
+//#line 43 "gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 13:
-//#line 43 "gramatica.y"
-{ yyval.obj = val_peek(0).ival; }
-break;
-case 14:
 //#line 44 "gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
-case 15:
+case 14:
 //#line 45 "gramatica.y"
+{ yyval.obj = val_peek(0).ival; }
+break;
+case 15:
+//#line 46 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 16:
-//#line 45 "gramatica.y"
+//#line 46 "gramatica.y"
 { /* Tratamiento de macros */ }
 break;
 case 17:
-//#line 47 "gramatica.y"
+//#line 48 "gramatica.y"
 { yyval.ival = LAcciones.operacion('+', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 18:
-//#line 48 "gramatica.y"
+//#line 49 "gramatica.y"
 { yyval.ival = LAcciones.operacion('-', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 19:
-//#line 49 "gramatica.y"
+//#line 50 "gramatica.y"
 { yyval.ival = LAcciones.operacion('*', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 20:
-//#line 50 "gramatica.y"
+//#line 51 "gramatica.y"
 { yyval.ival = LAcciones.operacion('/', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 21:
-//#line 51 "gramatica.y"
+//#line 52 "gramatica.y"
 { yyval.ival = LAcciones.operacion('%', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 22:
-//#line 53 "gramatica.y"
+//#line 54 "gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 23:
-//#line 54 "gramatica.y"
+//#line 55 "gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 24:
-//#line 56 "gramatica.y"
+//#line 57 "gramatica.y"
 {yyval.obj = val_peek(0).obj; }
 break;
 case 26:
-//#line 57 "gramatica.y"
+//#line 58 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 27:
-//#line 59 "gramatica.y"
+//#line 60 "gramatica.y"
 {yyval.obj = val_peek(0).obj; }
 break;
 case 29:
-//#line 60 "gramatica.y"
+//#line 61 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
-//#line 600 "LParser.java"
+//#line 601 "LParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
