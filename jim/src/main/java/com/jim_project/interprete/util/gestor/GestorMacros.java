@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
-import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.ContenedorParametrosExpansion;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.componente.Etiqueta;
@@ -21,7 +20,7 @@ public class GestorMacros extends GestorComponentes {
     }
 
     public Macro nuevaMacro(String id) {
-        Macro macro = new Macro(id);
+        Macro macro = new Macro(id, this);
         _macros.put(id, macro);
 
         return macro;
@@ -49,11 +48,11 @@ public class GestorMacros extends GestorComponentes {
     }
 
     // Métodos estáticos
-    private static boolean hayRecursividadEnMacros(Macro macro) {
+    private boolean hayRecursividadEnMacros(Macro macro) {
         return hayRecursividadEnMacros(macro, new ArrayList<>());
     }
 
-    private static boolean hayRecursividadEnMacros(Macro macro, ArrayList<String> marcas) {
+    private boolean hayRecursividadEnMacros(Macro macro, ArrayList<String> marcas) {
         String macroActual = macro.id();
 
         if (marcas.contains(macroActual)) {
@@ -67,7 +66,7 @@ public class GestorMacros extends GestorComponentes {
         ArrayList<String> llamadas = macro.llamadasAMacros();
 
         for (int i = 0; i < llamadas.size() && !hayRecursividad; ++i) {
-            Macro m = Macro.get(llamadas.get(i));
+            Macro m = _macros.get(llamadas.get(i));
             hayRecursividad = hayRecursividad || hayRecursividadEnMacros(m, marcas);
         }
         // si hay recursividad, no borrar
@@ -76,7 +75,7 @@ public class GestorMacros extends GestorComponentes {
         return hayRecursividad;
     }
 
-    public static String expandir(ContenedorParametrosExpansion parametrosExpansion) {
+    public String expandir(ContenedorParametrosExpansion parametrosExpansion) {
         //
         //
         // Usar salto de línea del sistema!
@@ -87,7 +86,7 @@ public class GestorMacros extends GestorComponentes {
         ArrayList<String> parametrosEntrada = parametrosExpansion.variablesEntrada;
         int numeroLinea = parametrosExpansion.linea;
 
-        Macro macro = Macro.get(idMacro);
+        Macro macro = _macros.get(idMacro);
 
         if (macro == null) {
             Error.deMacroNoDefinida(numeroLinea, idMacro);
@@ -126,7 +125,7 @@ public class GestorMacros extends GestorComponentes {
 
         for (int i = 0; i < vEntrada.size(); ++i) {
             String variable = vEntrada.get(i);
-            String nuevaVariable = Variable.get(Variable.Tipo.LOCAL).id();
+            String nuevaVariable = ambitoActual().variables().nuevaVariable(Variable.Tipo.LOCAL).id();
 
             expansion = expansion.replace(variable, nuevaVariable);
 
@@ -137,18 +136,18 @@ public class GestorMacros extends GestorComponentes {
         }
 
         for (String variable : vLocales) {
-            String nuevaVariable = Variable.get(Variable.Tipo.LOCAL).id();
+            String nuevaVariable = ambitoActual().variables().nuevaVariable(Variable.Tipo.LOCAL).id();
             expansion = expansion.replace(variable, nuevaVariable);
         }
 
         /* Se obtiene una nueva variable local y se reemplaza todas las
          * referencias a la variable de salida Y por esta nueva variable
          */
-        String variableSalidaLocal = Variable.get(Variable.Tipo.LOCAL).id();
+        String variableSalidaLocal = ambitoActual().variables().nuevaVariable(Variable.Tipo.LOCAL).id();
         expansion = "# Expansión de " + idMacro + separador
                 + asignaciones + expansion.replace("VY", variableSalidaLocal);
 
-        if (Programa.modelo().tipo() == Modelo.Tipo.L) {
+        if (programa().modelo().tipo() == Modelo.Tipo.L) {
             ArrayList<String> etiquetas = macro.etiquetas();
             ArrayList<String> etiquetasSalto = macro.etiquetasSalto();
 
@@ -159,7 +158,7 @@ public class GestorMacros extends GestorComponentes {
                 // registrar el número de línea de la etiqueta desplazado según
                 // el número de línea de la llamada a la macro + el número de
                 // asignaciones añadidas al código expandido
-                String nuevaEtiqueta = Etiqueta.get().id();
+                String nuevaEtiqueta = ambitoActual().etiquetas().nuevaEtiqueta().id();
                 etiquetasReemplazadas.put(etiqueta, nuevaEtiqueta);
 
                 expansion = expansion.replace(etiqueta, nuevaEtiqueta);
@@ -167,7 +166,7 @@ public class GestorMacros extends GestorComponentes {
 
             /* Reemplaza todas las etiquetas que son objetivo de un salto
              */
-            String etiquetaSalida = Etiqueta.get().id();
+            String etiquetaSalida = ambitoActual().etiquetas().nuevaEtiqueta().id();
             for (String etiqueta : etiquetasSalto) {
                 if (etiquetasReemplazadas.containsKey(etiqueta)) {
                     expansion = expansion.replace(etiqueta,
@@ -193,12 +192,12 @@ public class GestorMacros extends GestorComponentes {
     }
 
     @Override
-    protected int count() {
+    public int count() {
         return _macros.size();
     }
 
     @Override
-    protected boolean vacio() {
+    public boolean vacio() {
         return _macros.isEmpty();
     }
 }

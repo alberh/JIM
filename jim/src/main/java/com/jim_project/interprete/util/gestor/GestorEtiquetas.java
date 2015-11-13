@@ -20,7 +20,7 @@ public class GestorEtiquetas extends GestorComponentes {
      * Define una nueva etiqueta.
      */
     public Etiqueta nuevaEtiqueta(String id, int linea) {
-        Etiqueta et = new Etiqueta(id, linea);
+        Etiqueta et = new Etiqueta(id, linea, this);
 
         if (_etiquetas.containsKey(et.id())) {
             return _etiquetas.get(et.id());
@@ -41,7 +41,7 @@ public class GestorEtiquetas extends GestorComponentes {
      */
     public Etiqueta nuevaEtiqueta() {
         ++_indiceUltimaA;
-        Etiqueta etiqueta = new Etiqueta("A" + _indiceUltimaA, 0);
+        Etiqueta etiqueta = new Etiqueta("A" + _indiceUltimaA, 0, this);
 
         return etiqueta;
     }
@@ -77,12 +77,12 @@ public class GestorEtiquetas extends GestorComponentes {
     }
 
     @Override
-    protected int count() {
+    public int count() {
         return _etiquetas.size();
     }
 
     @Override
-    protected boolean vacio() {
+    public boolean vacio() {
         return _etiquetas.isEmpty();
     }
 }

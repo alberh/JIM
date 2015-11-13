@@ -70,12 +70,12 @@ public class GestorAmbitos extends GestorComponentes {
     }
 
     @Override
-    protected int count() {
+    public int count() {
         return _ambitos.size();
     }
 
     @Override
-    protected boolean vacio() {
+    public boolean vacio() {
         return _ambitos.isEmpty();
     }
 }

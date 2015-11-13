@@ -6,7 +6,7 @@ public abstract class Componente {
 
     protected String _id;
     protected GestorComponentes _gestor;
-
+    
     public Componente(String id, GestorComponentes gestor) {
         _id = id;
         _gestor = gestor;

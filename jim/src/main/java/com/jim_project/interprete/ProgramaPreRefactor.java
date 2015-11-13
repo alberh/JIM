@@ -1,5 +1,7 @@
 package com.jim_project.interprete;
 
+/*
+
 import com.jim_project.interprete.parser.Parser;
 import com.jim_project.interprete.parser.AnalizadorLexico;
 import com.jim_project.interprete.util.Error;
@@ -124,7 +126,7 @@ public class ProgramaPreRefactor {
         }
 
         _ficheroEnProceso = fichero;
-        _lineaActual = numeroLineas();
+        //_lineaActual = numeroLineas();
         _estado = Estado.OK;
         return true;
     }
@@ -193,7 +195,7 @@ public class ProgramaPreRefactor {
 
     private static void asignarVariablesEntrada(int[] parametros) {
         for (int i = 0; i < parametros.length; ++i) {
-            Variable.set("X" + (i + 1), parametros[i]);
+//            Variable.set("X" + (i + 1), parametros[i]);
         }
     }
 
@@ -205,7 +207,7 @@ public class ProgramaPreRefactor {
         Etiqueta.limpiar();
         Macro.limpiar();
         PrevioAcciones.limpiar();
-        */
+        
     }
 
     public static void cargarMacros() {
@@ -276,7 +278,7 @@ public class ProgramaPreRefactor {
          * ...l/
          * ...loop/
          * ...while/
-         */
+         
         comprobarDirectorio(new File(Configuracion.rutaMacros()));
         comprobarDirectorio(new File(Configuracion.rutaMacrosL()));
         comprobarDirectorio(new File(Configuracion.rutaMacrosLoop()));
@@ -373,7 +375,7 @@ public class ProgramaPreRefactor {
         _traza.append(estadoMemoria());
         _traza.append("]");
     }
-
+/*
     public static String estadoMemoria() {
         boolean comaAlFinal = false;
         StringBuilder sb = new StringBuilder();
@@ -478,15 +480,15 @@ public class ProgramaPreRefactor {
     }
 
     public static void imprimirComponentes() {
-        Variable.pintar();
+        //Variable.pintar();
 
         if (_modelo.tipo() == Modelo.Tipo.L) {
-            Etiqueta.pintar();
+//            Etiqueta.pintar();
         } else {
 //            Bucle.pintar();
         }
 
-        Macro.pintar();
+        //Macro.pintar();
     }
 
     public static void imprimirPrograma() {
@@ -510,3 +512,4 @@ public class ProgramaPreRefactor {
         return Variable.get("Y").valor();
     }
 }
+*/

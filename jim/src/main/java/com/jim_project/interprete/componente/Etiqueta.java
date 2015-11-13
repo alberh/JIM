@@ -2,6 +2,7 @@ package com.jim_project.interprete.componente;
 
 import java.util.HashMap;
 import com.jim_project.interprete.util.Error;
+import com.jim_project.interprete.util.gestor.GestorEtiquetas;
 
 /**
  * Esta clase representa el concepto de etiqueta de salto utilizado en el modelo
@@ -16,8 +17,8 @@ public class Etiqueta extends Componente {
     /**
      * Constructor de clase.
      */
-    public Etiqueta(String id, int linea) {
-        super(Etiqueta.normalizarID(id));
+    public Etiqueta(String id, int linea, GestorEtiquetas gestorEtiquetas) {
+        super(Etiqueta.normalizarID(id), gestorEtiquetas);
 
         _grupo = Etiqueta.obtenerGrupo(id);
         _indice = Etiqueta.obtenerIndice(id);
@@ -106,21 +107,22 @@ public class Etiqueta extends Componente {
      * *************************************************************
      * Refactor
      */
+    /*
     private static HashMap<String, Etiqueta> _etiquetas = new HashMap<>();
     private static int _ultimaA = 0;
-
+*/
     /**
      * Imprime en pantalla todas las etiquetas.
-     */
+     *//*
     public static void pintar() {
         System.out.println("Etiquetas");
         System.out.println(_etiquetas);
         System.out.println();
     }
-
+*/
     /**
      * Define una nueva etiqueta.
-     */
+     *//*
     public static Etiqueta set(String id, int linea) {
         id = normalizarID(id);
 
@@ -140,37 +142,37 @@ public class Etiqueta extends Componente {
 
         return et;
     }
-
+*/
     /**
      * Obtiene una etiqueta previamente creada, según su identificador.
-     */
+     *//*
     public static Etiqueta get(String id) {
         return _etiquetas.get(normalizarID(id));
     }
-
+*/
     /**
      * Crea y devuelve una nueva etiqueta etiquetada como An, donde n es una
      * unidad superior al mayor índice de cualquier etiqueta A creada.
-     */
+     *//*
     public static Etiqueta get() {
         ++_ultimaA;
         Etiqueta etiqueta = new Etiqueta("A" + _ultimaA, 0);
 
         return etiqueta;
     }
-
+*/
     /**
      * Devuelve el identificador de la última etiqueta A creada.
-     */
+     *//*
     public static String ultimaEtiqueta() {
         return "A" + _ultimaA;
     }
-
+*/
     /**
      * Elimina todas las etiquetas.
-     */
+     *//*
     public static void limpiar() {
         _etiquetas.clear();
         _ultimaA = 0;
-    }
+    }*/
 }

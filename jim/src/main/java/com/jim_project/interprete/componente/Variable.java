@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.jim_project.interprete.util.ComparadorVariables;
 import com.jim_project.interprete.util.Error;
+import com.jim_project.interprete.util.gestor.GestorVariables;
 
 public class Variable extends Componente {
 
@@ -16,33 +17,14 @@ public class Variable extends Componente {
     private Tipo _tipo;
     private int _indice;
     
-    @Deprecated
-    private boolean _creadaEnExpansion = false;
-
-    public Variable(String id) {
-        this(id, 0);
+    public Variable(String id, GestorVariables gestorVariables) {
+        this(id, 0, gestorVariables);
     }
 
-    public Variable(String id, int valor) {
-        super(Variable.normalizarID(id));
+    public Variable(String id, int valor, GestorVariables gestorVariables) {
+        super(Variable.normalizarID(id), gestorVariables);
 
         _valor = valor;
-        _tipo = Variable.obtenerTipo(_id);
-        _indice = Variable.obtenerIndice(_id);
-    }
-
-    @Deprecated
-    public Variable(String id, boolean creadaEnExpansion) {
-        this(id, 0, creadaEnExpansion);
-    }
-    
-    @Deprecated
-    public Variable(String id, int valor, boolean creadaEnExpansion) {
-        super(Variable.normalizarID(id));
-
-        _valor = valor;
-        _creadaEnExpansion = creadaEnExpansion;
-
         _tipo = Variable.obtenerTipo(_id);
         _indice = Variable.obtenerIndice(_id);
     }
@@ -71,16 +53,6 @@ public class Variable extends Componente {
         if (this._valor > 0) {
             this._valor--;
         }
-    }
-
-    @Deprecated
-    public void creadaEnExpansion(boolean b) {
-        _creadaEnExpansion = b;
-    }
-
-    @Deprecated
-    public boolean creadaEnExpansion() {
-        return _creadaEnExpansion;
     }
 
     @Override
@@ -190,7 +162,7 @@ public class Variable extends Componente {
     /**
      * *************************************************************************
      * PURGA DE CARA A REFACTOR
-     */
+     *//*
     private static HashMap<Integer, Variable> _entrada = new HashMap<>();
     private static HashMap<Integer, Variable> _locales = new HashMap<>();
     private static Variable _salida = new Variable("Y");
@@ -345,5 +317,5 @@ public class Variable extends Componente {
         System.out.println("Variable de salida");
         System.out.println(_salida);
         System.out.println();
-    }
+    }*/
 }

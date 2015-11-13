@@ -20,7 +20,7 @@ public class GestorVariables extends GestorComponentes {
         
         _variablesEntrada = new HashMap<>();
         _variablesLocales = new HashMap<>();
-        _variableSalida = new Variable("Y");
+        _variableSalida = new Variable("Y", this);
 
         _mayorIndiceEntrada = 0;
         _mayorIndiceLocal = 0;
@@ -31,16 +31,11 @@ public class GestorVariables extends GestorComponentes {
     }
 
     public Variable nuevaVariable(String id, int valor) {
-        Variable v = new Variable(id, valor);
+        Variable v = new Variable(id, valor, this);
         int indice = v.indice();
 
         switch (v.tipo()) {
             case ENTRADA:
-                if (_variablesEntrada.containsKey(indice)) {
-                    boolean enExpansion = _variablesEntrada.get(indice)
-                            .creadaEnExpansion();
-                    v.creadaEnExpansion(enExpansion);
-                }
                 _variablesEntrada.put(indice, v);
 
                 if (indice > _mayorIndiceEntrada) {
@@ -49,11 +44,6 @@ public class GestorVariables extends GestorComponentes {
                 break;
 
             case LOCAL:
-                if (_variablesLocales.containsKey(indice)) {
-                    boolean enExpansion = _variablesLocales.get(indice)
-                            .creadaEnExpansion();
-                    v.creadaEnExpansion(enExpansion);
-                }
                 _variablesLocales.put(indice, v);
 
                 if (indice > _mayorIndiceLocal) {
@@ -80,14 +70,14 @@ public class GestorVariables extends GestorComponentes {
             case ENTRADA:
                 _mayorIndiceEntrada++;
 
-                variable = new Variable("X" + _mayorIndiceEntrada, valor);
+                variable = new Variable("X" + _mayorIndiceEntrada, valor, this);
                 _variablesEntrada.put(_mayorIndiceEntrada, variable);
                 break;
 
             case LOCAL:
                 _mayorIndiceLocal++;
 
-                variable = new Variable("Z" + _mayorIndiceLocal, valor);
+                variable = new Variable("Z" + _mayorIndiceLocal, valor, this);
                 _variablesLocales.put(_mayorIndiceLocal, variable);
                 break;
 
@@ -100,7 +90,7 @@ public class GestorVariables extends GestorComponentes {
     }
 
     public Variable obtenerVariable(String id) {
-        Variable v = new Variable(id);
+        Variable v = new Variable(id, this);
 
         switch (v.tipo()) {
             case ENTRADA:
@@ -129,7 +119,6 @@ public class GestorVariables extends GestorComponentes {
         ArrayList<Variable> variables = new ArrayList<>();
 
         _variablesLocales.values().stream()
-                .filter(v -> !v.creadaEnExpansion())
                 .forEach(v -> variables.add(v));
 
         variables.sort(new ComparadorVariables());
@@ -151,7 +140,7 @@ public class GestorVariables extends GestorComponentes {
     public void limpiar() {
         _variablesEntrada.clear();
         _variablesLocales.clear();
-        _variableSalida = new Variable("Y");
+        _variableSalida = new Variable("Y", this);
 
         _mayorIndiceEntrada = 0;
         _mayorIndiceLocal = 0;
@@ -176,12 +165,12 @@ public class GestorVariables extends GestorComponentes {
     }
 
     @Override
-    protected int count() {
+    public int count() {
         return _variablesEntrada.size() + _variablesLocales.size() + 1;
     }
 
     @Override
-    protected boolean vacio() {
+    public boolean vacio() {
         return _variablesEntrada.isEmpty() && _variablesLocales.isEmpty();
     }
 }

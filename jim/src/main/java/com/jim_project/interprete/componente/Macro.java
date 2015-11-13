@@ -6,6 +6,7 @@ import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.ContenedorParametrosExpansion;
 import com.jim_project.interprete.util.Error;
+import com.jim_project.interprete.util.gestor.GestorMacros;
 
 public class Macro extends Componente {
 
@@ -21,11 +22,10 @@ public class Macro extends Componente {
 
     private ArrayList<String> _llamadasAMacros = new ArrayList<>();
 
-    public Macro(String id) {
-        super(id);
+    public Macro(String id, GestorMacros gestorMacros) {
+        super(id, gestorMacros);
 
-        // esto habrá que cambiarlo
-        _definidaEn = Programa.ficheroEnProceso();
+        _definidaEn = _gestor.programa().ficheroEnProceso();
 
         if (_definidaEn.equals("jim.tmp")) {
             _definidaEn = "Editor";
@@ -65,7 +65,7 @@ public class Macro extends Componente {
     }
 
     public void nuevaVariable(String id) {
-        Variable v = new Variable(id);
+        Variable v = new Variable(id, null);
         id = v.id();
 
         switch (v.tipo()) {
@@ -139,7 +139,7 @@ public class Macro extends Componente {
     /**
      * **************************************************************
      * Refactor
-     */
+     *//*
     private static HashMap<String, Macro> _macros = new HashMap<>();
 
     public static void pintar() {
@@ -191,7 +191,7 @@ public class Macro extends Componente {
 
         return hayRecursividad;
     }
-
+*//*
     public static String expandir(ContenedorParametrosExpansion parametrosExpansion) {
         String idMacro = parametrosExpansion.idMacro;
         String idVariableSalida = parametrosExpansion.idVariableSalida;
@@ -254,7 +254,7 @@ public class Macro extends Componente {
 
         /* Se obtiene una nueva variable local y se reemplaza todas las
          * referencias a la variable de salida Y por esta nueva variable
-         */
+         
         String variableSalidaLocal = Variable.get(Variable.Tipo.LOCAL).id();
         expansion = "# Expansión de " + idMacro + separador
                 + asignaciones + expansion.replace("VY", variableSalidaLocal);
@@ -264,7 +264,7 @@ public class Macro extends Componente {
             ArrayList<String> etiquetasSalto = macro.etiquetasSalto();
 
             /* Reempaza las etiquetas que marcan un objetivo de salto
-             */
+             *
             HashMap<String, String> etiquetasReemplazadas = new HashMap<>();
             for (String etiqueta : etiquetas) {
                 // registrar el número de línea de la etiqueta desplazado según
@@ -277,7 +277,7 @@ public class Macro extends Componente {
             }
 
             /* Reemplaza todas las etiquetas que son objetivo de un salto
-             */
+             *
             String etiquetaSalida = Etiqueta.get().id();
             for (String etiqueta : etiquetasSalto) {
                 if (etiquetasReemplazadas.containsKey(etiqueta)) {
@@ -290,16 +290,17 @@ public class Macro extends Componente {
             /* Añadimos una última línea con la etiqueta designada como etiqueta
              * de salida de la macro y la asignación a la variable de salida
              * indicada por el usuario
-             */
+             *
             expansion = expansion + separador + "[" + etiquetaSalida + "] "
                     + idVariableSalida + " <- " + variableSalidaLocal;
         } else {
             /* Añadimos una última línea con la asignación a la variable de
              * salida indicada por el usuario
-             */
+             *
             expansion = expansion + idVariableSalida + " <- " + variableSalidaLocal;
         }
 
         return expansion + "\n# Fin expansión de " + idMacro + separador;
     }
+    */
 }
