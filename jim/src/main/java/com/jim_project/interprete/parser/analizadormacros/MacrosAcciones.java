@@ -8,8 +8,6 @@ import com.jim_project.interprete.componente.Variable;
 
 public class MacrosAcciones extends Acciones {
 
-    private static Macro _macroEnProceso;
-
     public static String filtrarIDVariable(String id) {
         id = Variable.normalizarID(id);
         
@@ -32,27 +30,28 @@ public class MacrosAcciones extends Acciones {
         return id;
     }
 
-    public static void nuevaMacro(Object idMacro) {
-        _macroEnProceso = Macro.set(idMacro.toString());
+    @Deprecated
+    public static Macro nuevaMacro(Object idMacro) {
+        return Macro.set(idMacro.toString());
     }
 
-    public static void nuevaVariable(Object idVariable) {
-        _macroEnProceso.nuevaVariable(idVariable.toString());
+    public static void nuevaVariable(Object idVariable, Macro macro) {
+        macro.nuevaVariable(idVariable.toString());
     }
 
-    public static void nuevaEtiqueta(Object idEtiqueta) {
-        _macroEnProceso.nuevaEtiqueta(idEtiqueta.toString());
+    public static void nuevaEtiqueta(Object idEtiqueta, Macro macro) {
+        macro.nuevaEtiqueta(idEtiqueta.toString());
     }
 
-    public static void nuevaEtiquetaSalto(Object idEtiqueta) {
-        _macroEnProceso.nuevaEtiquetaGoTo(idEtiqueta.toString());
+    public static void nuevaEtiquetaSalto(Object idEtiqueta, Macro macro) {
+        macro.nuevaEtiquetaGoTo(idEtiqueta.toString());
     }
 
-    public static void nuevaLlamadaAMacro(Object idMacro) {
-        _macroEnProceso.nuevaLlamadaAMacro(idMacro.toString());
+    public static void nuevaLlamadaAMacro(Object idMacro, Macro macro) {
+        macro.nuevaLlamadaAMacro(idMacro.toString());
     }
 
-    public static void cuerpo(Object cuerpoMacro) {
-        _macroEnProceso.cuerpo(cuerpoMacro.toString());
+    public static void cuerpo(Object cuerpoMacro, Macro macro) {
+        macro.cuerpo(cuerpoMacro.toString());
     }
 }

@@ -23,12 +23,12 @@
 inicio :  sentencia inicio
 	   |
 ;
-sentencia : DEFMACRO IDMACRO { MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.cuerpo($5); }
+sentencia : DEFMACRO IDMACRO { macroEnProceso = MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.cuerpo($5); }
 ;
-simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
-         |  IDMACRO { MacrosAcciones.nuevaLlamadaAMacro($1); } simbolos
-         |  '[' ETIQUETA ']' { MacrosAcciones.nuevaEtiqueta($2); } simbolos
-	 |  GOTO ETIQUETA { MacrosAcciones.nuevaEtiquetaSalto($2); } simbolos
+simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1, macroEnProceso); } simbolos
+         |  IDMACRO { MacrosAcciones.nuevaLlamadaAMacro($1, macroEnProceso); } simbolos
+         |  '[' ETIQUETA ']' { MacrosAcciones.nuevaEtiqueta($2, macroEnProceso); } simbolos
+	 |  GOTO ETIQUETA { MacrosAcciones.nuevaEtiquetaSalto($2, macroEnProceso); } simbolos
 	 |
 ;
 
@@ -37,6 +37,7 @@ simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1); } simbolos
 	/** referencia al analizador léxico
   **/
 	private MacrosLex analex;
+        private Macro macroEnProceso;
 
   /** constructor: crea el analizador léxico (lexer)
   **/
