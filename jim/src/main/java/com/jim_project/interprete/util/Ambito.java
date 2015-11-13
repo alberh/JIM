@@ -106,7 +106,7 @@ public class Ambito {
         sb.append("(").append(_controladorEjecucion.numeroLineaActual())
                 .append(", <");
 
-        ArrayList<Variable> variables = Variable.variablesEntrada();
+        ArrayList<Variable> variables = _gestorVariables.variablesEntrada();
         if (variables.size() > 0) {
             comaAlFinal = true;
             concatenarVariables(variables, sb);
@@ -117,7 +117,7 @@ public class Ambito {
             comaAlFinal = false;
         }
 
-        variables = Variable.variablesLocales();
+        variables = _gestorVariables.variablesLocales();
         if (variables.size() > 0) {
             comaAlFinal = true;
             concatenarVariables(variables, sb);
@@ -126,7 +126,7 @@ public class Ambito {
         if (comaAlFinal) {
             sb.append(", ");
         }
-        concatenarVariable(Variable.variableSalida(), sb);
+        concatenarVariable(_gestorVariables.variableSalida(), sb);
 
         sb.append(">)");
 
