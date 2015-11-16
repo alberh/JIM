@@ -3,6 +3,8 @@ package com.jim_project.interprete.util;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Programa.Estado;
 
+// Meter dentro de programa y fuera estáticos
+// programa().error().deBlahBlah();
 public class Error {
 
     // Métodos útiles

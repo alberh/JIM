@@ -1,28 +1,37 @@
 package com.jim_project.interprete.parser;
 
-import com.jim_project.interprete.componente.Etiqueta;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.util.Error;
 
 public class Acciones {
 
-    public static void asignacion(Object lvalue, Object rvalue) {
+    protected Programa _programa;
+
+    public Acciones(Programa programa) {
+        _programa = programa;
+    }
+
+    public Programa programa() {
+        return _programa;
+    }
+
+    public void asignacion(Object lvalue, Object rvalue) {
         Variable variable = obtenerVariable(lvalue);
         int valor = obtenerValor(rvalue);
 
         variable.valor(valor);
     }
 
-    public static void incremento(Object lvalue) {
+    public void incremento(Object lvalue) {
         obtenerVariable(lvalue).incremento();
     }
 
-    public static void decremento(Object lvalue) {
+    public void decremento(Object lvalue) {
         obtenerVariable(lvalue).decremento();
     }
 
-    public static int operacion(char operador, Object op1, Object op2) {
+    public int operacion(char operador, Object op1, Object op2) {
         int v1, v2;
 
         v1 = obtenerValor(op1);
@@ -86,7 +95,7 @@ public class Acciones {
          V <- MACRO(arg0, arg1, ..., argn)
          Asignación, suma, resta, producto y división de variables y números
          */
-        if (!Programa.modoExtendido()) {
+        if (!_programa.modoFlexible()) {
             // Comprobaciones comunes
             if (operador == '+') {
                 // Todos los modelos comparten la operación V <- V + 1
@@ -131,19 +140,19 @@ public class Acciones {
         }
     }
 
-    protected static Variable obtenerVariable(Object id) {
+    protected Variable obtenerVariable(Object id) {
         // tratamiento de errores
-        return Variable.get(id.toString());
+        return _programa.gestorAmbitos().ambitoActual().variables().obtenerVariable(id.toString());
     }
 
-    protected static int obtenerValor(Object o) {
+    protected int obtenerValor(Object o) {
         int valor = 0;
 
         if (esEntero(o)) {
             valor = (Integer) o;
         } else {
             try {
-                valor = Variable.get((String) o).valor();
+                valor = _programa.gestorAmbitos().ambitoActual().variables().obtenerVariable((String) o).valor();
             } catch (Exception ex) {
                 // Si el analizador previo se ha pasado debidamente, no debería
                 // llegarse a este punto.
@@ -160,10 +169,5 @@ public class Acciones {
 
     protected static boolean esCadena(Object o) {
         return o instanceof String;
-    }
-
-    protected static Etiqueta obtenerEtiqueta(Object id) {
-        // tratamiento de errores
-        return Etiqueta.get(id.toString());
     }
 }

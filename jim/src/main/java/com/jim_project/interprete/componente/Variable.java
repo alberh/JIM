@@ -1,8 +1,5 @@
 package com.jim_project.interprete.componente;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import com.jim_project.interprete.util.ComparadorVariables;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.gestor.GestorVariables;
 

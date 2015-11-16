@@ -5,53 +5,57 @@ import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.parser.Acciones;
 import com.jim_project.interprete.componente.Etiqueta;
 import com.jim_project.interprete.componente.Variable;
+import com.jim_project.interprete.util.gestor.GestorMacros;
 
 public class MacrosAcciones extends Acciones {
 
-    public static String filtrarIDVariable(String id) {
+    public MacrosAcciones(Programa programa) {
+        super(programa);
+    }
+    
+    public String filtrarIDVariable(String id) {
         id = Variable.normalizarID(id);
         
-        // if (programa.objetivo() == Programa.OBJETIVO.EXPANDIR) {
-        if (Programa.etapaFinal() == Programa.Etapa.EXPANDIENDO_MACROS) {
+        if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
             id = "V" + id;
         }
         
         return id;
     }
 
-    public static String filtrarIDEtiqueta(String id) {
+    public String filtrarIDEtiqueta(String id) {
         id = Etiqueta.normalizarID(id);
         
-        // if (programa.objetivo() == Programa.OBJETIVO.EXPANDIR) {
-        if (Programa.etapaFinal() == Programa.Etapa.EXPANDIENDO_MACROS) {
+        if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
             id = "L" + id;
         }
         
         return id;
     }
 
-    @Deprecated
-    public static Macro nuevaMacro(Object idMacro) {
-        return Macro.set(idMacro.toString());
+    public Macro nuevaMacro(Object idMacro) {
+        GestorMacros gm = _programa.gestorAmbitos().ambitoActual().macros();
+        
+        return gm.nuevaMacro(idMacro.toString());
     }
 
-    public static void nuevaVariable(Object idVariable, Macro macro) {
+    public void nuevaVariable(Object idVariable, Macro macro) {
         macro.nuevaVariable(idVariable.toString());
     }
 
-    public static void nuevaEtiqueta(Object idEtiqueta, Macro macro) {
+    public void nuevaEtiqueta(Object idEtiqueta, Macro macro) {
         macro.nuevaEtiqueta(idEtiqueta.toString());
     }
 
-    public static void nuevaEtiquetaSalto(Object idEtiqueta, Macro macro) {
+    public void nuevaEtiquetaSalto(Object idEtiqueta, Macro macro) {
         macro.nuevaEtiquetaGoTo(idEtiqueta.toString());
     }
 
-    public static void nuevaLlamadaAMacro(Object idMacro, Macro macro) {
+    public void nuevaLlamadaAMacro(Object idMacro, Macro macro) {
         macro.nuevaLlamadaAMacro(idMacro.toString());
     }
 
-    public static void cuerpo(Object cuerpoMacro, Macro macro) {
+    public void cuerpo(Object cuerpoMacro, Macro macro) {
         macro.cuerpo(cuerpoMacro.toString());
     }
 }
