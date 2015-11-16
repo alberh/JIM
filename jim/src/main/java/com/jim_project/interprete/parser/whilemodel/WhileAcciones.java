@@ -2,22 +2,26 @@ package com.jim_project.interprete.parser.whilemodel;
 
 import com.jim_project.interprete.componente.Bucle;
 import com.jim_project.interprete.componente.Variable;
-import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.parser.Acciones;
+import com.jim_project.interprete.componente.Ambito;
 
 public class WhileAcciones extends Acciones {
+    
+    public WhileAcciones(Ambito ambito) {
+        super(ambito);
+    }
 
-    public static void abreBucle(Object idVariable, int lineaApertura) {
-        Bucle bucle = Bucle.getPorLineaInicio(lineaApertura);
+    public void abreBucle(Object idVariable, int lineaApertura) {
+        Bucle bucle = _ambito.bucles().obtenerBucleLineaInicio(lineaApertura);
         Variable variable = obtenerVariable(idVariable);
 
         if (variable.valor() == 0) {
-            Programa.numeroLineaActual(bucle.lineaFin());
+            _ambito.controladorEjecucion().numeroLineaActual(bucle.lineaFin());
         }
     }
 
-    public static void cierraBucle(int lineaCierre) {
-        Bucle bucle = Bucle.getPorLineaFin(lineaCierre);
-        Programa.salto(bucle.lineaInicio());
+    public void cierraBucle(int lineaCierre) {
+        Bucle bucle = _ambito.bucles().obtenerBucleLineaFin(lineaCierre);
+        _ambito.controladorEjecucion().salto(bucle.lineaInicio());
     }
 }

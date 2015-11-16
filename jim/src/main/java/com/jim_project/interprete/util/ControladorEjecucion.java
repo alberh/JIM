@@ -1,5 +1,6 @@
 package com.jim_project.interprete.util;
 
+import com.jim_project.interprete.componente.Ambito;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -85,93 +86,6 @@ public class ControladorEjecucion {
             ejecutar(_programa.modelo().parser());
         } else {
             _programa.estado(Programa.Estado.ERROR);
-        }
-    }
-
-    public void cargarMacros() {
-        _etapa = Etapa.CARGANDO_MACROS;
-        System.out.println("Cargando macros...");
-
-        if (_programa.estadoOk()) {
-            procesarFicherosMacros(Configuracion.rutaMacros());
-        }
-
-        if (_programa.estadoOk()) {
-            procesarFicherosMacros(_programa.modelo().ruta());
-        }
-    }
-
-    private void procesarFicherosMacros(String rutaMacros) {
-        try {
-            ArrayList<Path> rutas = new ArrayList<>();
-            DirectoryStream<Path> directoryStream
-                    = Files.newDirectoryStream(Paths.get(rutaMacros));
-
-            for (Path path : directoryStream) {
-                if (path.toFile().isFile()) {
-                    rutas.add(path);
-                }
-            }
-            directoryStream.close();
-
-            for (Path p : rutas) {
-                if (_programa.estadoOk()) {
-                    System.out.println("   " + p.toAbsolutePath());
-
-                    String fichero = p.getFileName().toString();
-                    String rutaFichero = rutaMacros + "/" + fichero;
-                    _programa.ficheroEnProceso(rutaFichero);
-                    try {
-                        MacrosParser macrosParser
-                                = new MacrosParser(new FileReader(rutaFichero));
-                        macrosParser.parse();
-                    } catch (FileNotFoundException ex) {
-                        Error.alCargarMacros(rutaFichero);
-                    }
-                }
-            }
-        } catch (NotDirectoryException ex) {
-            Error.alComprobarDirectorio(rutaMacros);
-        } catch (IOException ex) {
-            Error.alObtenerListaFicherosMacros(rutaMacros);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    private void comprobarDirectoriosMacros() {
-        _etapa = Etapa.COMPROBANDO_DIRECTORIO_MACROS;
-        System.out.println("Comprobando directorios de macros...");
-        /* Esquema por defecto:
-         * macros/
-         * ...l/
-         * ...loop/
-         * ...while/
-         */
-        comprobarDirectorio(new File(Configuracion.rutaMacros()));
-        comprobarDirectorio(new File(Configuracion.rutaMacrosL()));
-        comprobarDirectorio(new File(Configuracion.rutaMacrosLoop()));
-        comprobarDirectorio(new File(Configuracion.rutaMacrosWhile()));
-    }
-
-    private void comprobarDirectorio(File directorio) {
-        System.out.println("   " + directorio.getAbsolutePath());
-
-        if (!directorio.exists()) {
-            boolean creados = directorio.mkdirs();
-
-            if (!creados) {
-                Error.alCrearDirectoriosMacros();
-            }
-        } else {
-            // es un directorio
-            if (!directorio.isDirectory()) {
-                Error.alComprobarDirectorio(directorio.getAbsolutePath());
-            }
-
-            if (!directorio.canRead()) {
-                Error.alComprobarAccesoDirectorio(directorio.getAbsolutePath());
-            }
         }
     }
 

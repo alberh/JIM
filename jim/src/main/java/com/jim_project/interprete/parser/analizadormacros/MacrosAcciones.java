@@ -5,18 +5,18 @@ import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.parser.Acciones;
 import com.jim_project.interprete.componente.Etiqueta;
 import com.jim_project.interprete.componente.Variable;
-import com.jim_project.interprete.util.gestor.GestorMacros;
+import com.jim_project.interprete.componente.Ambito;
 
 public class MacrosAcciones extends Acciones {
 
-    public MacrosAcciones(Programa programa) {
-        super(programa);
+    public MacrosAcciones(Ambito ambito) {
+        super(ambito);
     }
     
     public String filtrarIDVariable(String id) {
         id = Variable.normalizarID(id);
         
-        if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
+        if (_ambito.programa().objetivo() == Programa.Objetivo.EXPANDIR) {
             id = "V" + id;
         }
         
@@ -26,7 +26,7 @@ public class MacrosAcciones extends Acciones {
     public String filtrarIDEtiqueta(String id) {
         id = Etiqueta.normalizarID(id);
         
-        if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
+        if (_ambito.programa().objetivo() == Programa.Objetivo.EXPANDIR) {
             id = "L" + id;
         }
         
@@ -34,9 +34,7 @@ public class MacrosAcciones extends Acciones {
     }
 
     public Macro nuevaMacro(Object idMacro) {
-        GestorMacros gm = _programa.gestorAmbitos().ambitoActual().macros();
-        
-        return gm.nuevaMacro(idMacro.toString());
+        return _ambito.macros().nuevaMacro(idMacro.toString());
     }
 
     public void nuevaVariable(Object idVariable, Macro macro) {

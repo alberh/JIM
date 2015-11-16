@@ -1,17 +1,19 @@
-package com.jim_project.interprete.util;
+package com.jim_project.interprete.componente;
 
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.componente.Macro;
 import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Modelo;
+import com.jim_project.interprete.util.ControladorEjecucion;
+import com.jim_project.interprete.util.gestor.GestorAmbitos;
 import com.jim_project.interprete.util.gestor.GestorEtiquetas;
 import com.jim_project.interprete.util.gestor.GestorMacros;
 import com.jim_project.interprete.util.gestor.GestorBucles;
 import com.jim_project.interprete.util.gestor.GestorVariables;
 import java.util.Arrays;
 
-public class Ambito {
+public class Ambito extends Componente {
 
     private ControladorEjecucion _controladorEjecucion;
 
@@ -25,7 +27,12 @@ public class Ambito {
     private int[] _parametrosEntrada;
     private Macro _macroAsociada;
 
-    private Ambito(Programa programa, int[] parametrosEntrada) {
+    private Ambito(Programa programa,
+            int[] parametrosEntrada,
+            GestorAmbitos gestorAmbitos) {
+        
+        super(programa.ficheroEnProceso(), gestorAmbitos);
+        
         _programa = programa;
         _parametrosEntrada = parametrosEntrada;
 
@@ -37,9 +44,9 @@ public class Ambito {
 
     public Ambito(Programa programa,
             int[] parametrosEntrada,
-            Macro macroAsociada) {
+            Macro macroAsociada, GestorAmbitos gestorAmbitos) {
 
-        this(programa, parametrosEntrada);
+        this(programa, parametrosEntrada, gestorAmbitos);
 
         ArrayList<String> lineas = new ArrayList<>(
                 Arrays.asList(macroAsociada.cuerpo().split("[\n\r]+"))
@@ -51,9 +58,10 @@ public class Ambito {
 
     public Ambito(Programa programa,
             int[] parametrosEntrada,
-            ArrayList<String> lineas) {
+            ArrayList<String> lineas,
+            GestorAmbitos gestorAmbitos) {
 
-        this(programa, parametrosEntrada);
+        this(programa, parametrosEntrada, gestorAmbitos);
 
         _controladorEjecucion = new ControladorEjecucion(this, lineas);
         _macroAsociada = null;

@@ -6,7 +6,6 @@ import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.ContenedorParametrosExpansion;
 import com.jim_project.interprete.util.Error;
-import com.jim_project.interprete.componente.Etiqueta;
 import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.componente.Variable;
 

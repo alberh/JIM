@@ -1,11 +1,10 @@
 package com.jim_project.interprete.parser.previo;
 
-import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.ContenedorParametrosExpansion;
 import java.util.ArrayList;
 
 import com.jim_project.interprete.parser.Acciones;
-import com.jim_project.interprete.util.Ambito;
+import com.jim_project.interprete.componente.Ambito;
 
 public class PrevioAcciones extends Acciones {
 
@@ -13,13 +12,12 @@ public class PrevioAcciones extends Acciones {
     private ArrayList<ContenedorParametrosExpansion> _expansiones = new ArrayList<>();
     private ContenedorParametrosExpansion _ultimaExpansion;
 
-    public PrevioAcciones(Programa programa) {
-        super(programa);
+    public PrevioAcciones(Ambito ambito) {
+        super(ambito);
     }
 
     public void definirVariable(Object idVariable) {
-        Ambito ambitoActual = _programa.gestorAmbitos().ambitoActual();
-        ambitoActual.variables().nuevaVariable(idVariable.toString());
+        _ambito.variables().nuevaVariable(idVariable.toString());
     }
 
     public void definirVariableYMantener(Object idVariable) {
@@ -32,15 +30,13 @@ public class PrevioAcciones extends Acciones {
     }
 
     public void prepararParaExpandir(Object idMacro) {
-        Ambito ambitoActual = _programa.gestorAmbitos().ambitoActual();
-
         _ultimaExpansion = new ContenedorParametrosExpansion();
         _expansiones.add(_ultimaExpansion);
 
-        _ultimaExpansion.linea = ambitoActual.controladorEjecucion().numeroLineaActual();
+        _ultimaExpansion.linea = _ambito.controladorEjecucion().numeroLineaActual();
         _ultimaExpansion.idVariableSalida = _idUltimaVariable;
         _ultimaExpansion.idMacro = idMacro.toString();
-        _ultimaExpansion.variablesEntrada = new ArrayList<String>();
+        _ultimaExpansion.variablesEntrada = new ArrayList<>();
     }
 
     public void prepararVariableEntrada(Object parametro) {

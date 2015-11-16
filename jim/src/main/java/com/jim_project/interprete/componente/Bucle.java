@@ -1,9 +1,5 @@
 package com.jim_project.interprete.componente;
 
-import java.util.HashMap;
-import java.util.Stack;
-import com.jim_project.interprete.Programa;
-import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.gestor.GestorBucles;
 
 /**

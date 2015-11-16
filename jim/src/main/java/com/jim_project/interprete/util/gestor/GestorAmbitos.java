@@ -2,7 +2,7 @@ package com.jim_project.interprete.util.gestor;
 
 import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
-import com.jim_project.interprete.util.Ambito;
+import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.Macro;
 
 public class GestorAmbitos extends GestorComponentes {
@@ -17,14 +17,14 @@ public class GestorAmbitos extends GestorComponentes {
     }
 
     public Ambito nuevoAmbito(int[] parametrosEntrada, Macro macroAsociada) {
-        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, macroAsociada);
+        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, macroAsociada, this);
         _ambitos.add(_ultimoAmbito);
 
         return _ultimoAmbito;
     }
     
     public Ambito nuevoAmbito(int[] parametrosEntrada, ArrayList<String> lineas) {
-        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, lineas);
+        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, lineas, this);
         _ambitos.add(_ultimoAmbito);
 
         return _ultimoAmbito;

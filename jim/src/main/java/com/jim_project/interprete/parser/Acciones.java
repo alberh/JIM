@@ -1,19 +1,19 @@
 package com.jim_project.interprete.parser;
 
-import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Variable;
+import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.util.Error;
 
 public class Acciones {
 
-    protected Programa _programa;
+    protected Ambito _ambito;
 
-    public Acciones(Programa programa) {
-        _programa = programa;
+    public Acciones(Ambito ambito) {
+        _ambito = ambito;
     }
 
-    public Programa programa() {
-        return _programa;
+    public Ambito ambito() {
+        return _ambito;
     }
 
     public void asignacion(Object lvalue, Object rvalue) {
@@ -95,7 +95,7 @@ public class Acciones {
          V <- MACRO(arg0, arg1, ..., argn)
          Asignación, suma, resta, producto y división de variables y números
          */
-        if (!_programa.modoFlexible()) {
+        if (!_ambito.programa().modoFlexible()) {
             // Comprobaciones comunes
             if (operador == '+') {
                 // Todos los modelos comparten la operación V <- V + 1
@@ -142,7 +142,7 @@ public class Acciones {
 
     protected Variable obtenerVariable(Object id) {
         // tratamiento de errores
-        return _programa.gestorAmbitos().ambitoActual().variables().obtenerVariable(id.toString());
+        return _ambito.variables().obtenerVariable(id.toString());
     }
 
     protected int obtenerValor(Object o) {
@@ -152,7 +152,7 @@ public class Acciones {
             valor = (Integer) o;
         } else {
             try {
-                valor = _programa.gestorAmbitos().ambitoActual().variables().obtenerVariable((String) o).valor();
+                valor = _ambito.variables().obtenerVariable((String) o).valor();
             } catch (Exception ex) {
                 // Si el analizador previo se ha pasado debidamente, no debería
                 // llegarse a este punto.
