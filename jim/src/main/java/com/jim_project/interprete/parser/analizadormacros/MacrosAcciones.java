@@ -36,7 +36,7 @@ public class MacrosAcciones extends Acciones {
     }
 
     public Macro nuevaMacro(Object idMacro) {
-        _macroEnProceso = _ambito.macros().nuevaMacro(idMacro.toString());
+        _macroEnProceso = _ambito.programa().gestorMacros().nuevaMacro(idMacro.toString());
         return _macroEnProceso;
     }
 

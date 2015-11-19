@@ -2,7 +2,6 @@ package com.jim_project.interprete.parser;
 
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.componente.Ambito;
-import com.jim_project.interprete.util.Error;
 import java.util.ArrayList;
 
 public class Acciones {

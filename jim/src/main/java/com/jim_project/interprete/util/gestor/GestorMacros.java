@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Ambito;
-import com.jim_project.interprete.util.ContenedorParametrosExpansion;
+import com.jim_project.interprete.util.ParametrosExpansion;
 import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.componente.Variable;
 
@@ -78,16 +78,16 @@ public class GestorMacros extends GestorComponentes {
         return hayRecursividad;
     }
 
-    public String expandir(ContenedorParametrosExpansion parametrosExpansion) {
+    public String expandir(ParametrosExpansion parametrosExpansion) {
         //
         //
         // Usar salto de línea del sistema!
         //
         //
-        String idMacro = parametrosExpansion.idMacro;
-        String idVariableSalida = parametrosExpansion.idVariableSalida;
-        ArrayList<String> parametrosEntrada = parametrosExpansion.variablesEntrada;
-        int numeroLinea = parametrosExpansion.linea;
+        String idMacro = parametrosExpansion.idMacro();
+        String idVariableSalida = parametrosExpansion.idVariableSalida();
+        ArrayList<String> parametrosEntrada = parametrosExpansion.variablesEntrada();
+        int numeroLinea = parametrosExpansion.linea();
 
         Macro macro = _macros.get(idMacro);
 

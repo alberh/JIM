@@ -4,41 +4,25 @@ import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.util.ControladorEjecucion;
+import com.jim_project.interprete.util.ParametrosExpansion;
 import com.jim_project.interprete.util.gestor.GestorAmbitos;
 import com.jim_project.interprete.util.gestor.GestorEtiquetas;
-import com.jim_project.interprete.util.gestor.GestorMacros;
 import com.jim_project.interprete.util.gestor.GestorBucles;
 import com.jim_project.interprete.util.gestor.GestorVariables;
 import java.util.Arrays;
 
 public class Ambito extends Componente {
 
+    private Programa _programa;
     private ControladorEjecucion _controladorEjecucion;
 
     private GestorVariables _gestorVariables;
     private GestorBucles _gestorBucles;
     private GestorEtiquetas _gestorEtiquetas;
-    private GestorMacros _gestorMacros;
-
-    private Programa _programa;
+    private ArrayList<ParametrosExpansion> _expansiones;
 
     private int[] _parametrosEntrada;
     private Macro _macroAsociada;
-
-    private Ambito(Programa programa,
-            int[] parametrosEntrada,
-            GestorAmbitos gestorAmbitos) {
-        
-        super(programa.ficheroEnProceso(), gestorAmbitos);
-        
-        _programa = programa;
-        _parametrosEntrada = parametrosEntrada;
-
-        _gestorVariables = new GestorVariables(_programa, this);
-        _gestorBucles = new GestorBucles(_programa, this);
-        _gestorEtiquetas = new GestorEtiquetas(_programa, this);
-        _gestorMacros = new GestorMacros(_programa, this);
-    }
 
     public Ambito(Programa programa,
             int[] parametrosEntrada,
@@ -65,6 +49,21 @@ public class Ambito extends Componente {
         _macroAsociada = null;
     }
 
+    private Ambito(Programa programa,
+            int[] parametrosEntrada,
+            GestorAmbitos gestorAmbitos) {
+
+        super(programa.ficheroEnProceso(), gestorAmbitos);
+
+        _programa = programa;
+        _parametrosEntrada = parametrosEntrada;
+
+        _gestorVariables = new GestorVariables(_programa, this);
+        _gestorBucles = new GestorBucles(_programa, this);
+        _gestorEtiquetas = new GestorEtiquetas(_programa, this);
+        _expansiones = new ArrayList<>();
+    }
+
     public ControladorEjecucion controladorEjecucion() {
         return _controladorEjecucion;
     }
@@ -81,8 +80,8 @@ public class Ambito extends Componente {
         return _gestorEtiquetas;
     }
 
-    public GestorMacros macros() {
-        return _gestorMacros;
+    public ArrayList<ParametrosExpansion> expansiones() {
+        return _expansiones;
     }
 
     public Programa programa() {
@@ -168,14 +167,62 @@ public class Ambito extends Componente {
         } else {
             System.out.println(_gestorBucles);
         }
-
-        System.out.println(_gestorMacros);
     }
 
     public void limpiar() {
         _gestorVariables.limpiar();
         _gestorBucles.limpiar();
         _gestorEtiquetas.limpiar();
-        _gestorMacros.limpiar();
+
+        _expansiones.clear();
+    }
+    
+    /**
+     * Método expansión de macros.
+     * Decidir si dejar aquí o mover a nueva clase.
+     */
+    private int incrementoLineas;
+
+    private int getIncrementoLineas() {
+        return incrementoLineas;
+    }
+
+    private void addIncremento(int n) {
+        incrementoLineas += n;
+    }
+
+    private void setIncremento(int n) {
+        incrementoLineas = n;
+    }
+
+    public boolean expandir() {
+        /*
+        if (_programa.estadoOk()) {
+            setIncremento(0);
+
+            for (ParametrosExpansion contenedorExpansion : _expansiones) {
+                String resultadoExpansion = Macro.expandir(contenedorExpansion);
+
+                if (resultadoExpansion != null) {
+
+                    ArrayList<String> lineasExpansion = new ArrayList<>(
+                            Arrays.asList(resultadoExpansion.split("[\n\r]+"))
+                    );
+
+                    _programa.insertarExpansion(
+                            contenedorExpansion.linea() + getIncrementoLineas(),
+                            lineasExpansion
+                    );
+
+                    addIncremento(lineasExpansion.size() - 1);
+                } else {
+                    return false;
+                }
+            }
+
+            _expansiones.clear();
+        }
+        */
+        return true;
     }
 }

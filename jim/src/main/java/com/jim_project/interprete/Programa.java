@@ -2,7 +2,6 @@ package com.jim_project.interprete;
 
 import com.jim_project.interprete.parser.analizadormacros.MacrosParser;
 import com.jim_project.interprete.util.Error;
-import com.jim_project.interprete.parser.previo.PrevioAcciones;
 import com.jim_project.interprete.util.Configuracion;
 import com.jim_project.interprete.util.ControladorEjecucion;
 import java.io.File;
@@ -128,6 +127,10 @@ public class Programa {
 
     public GestorAmbitos gestorAmbitos() {
         return _gestorAmbitos;
+    }
+    
+    public GestorMacros gestorMacros() {
+        return _gestorMacros;
     }
 
     public void iniciar(int[] parametros) {

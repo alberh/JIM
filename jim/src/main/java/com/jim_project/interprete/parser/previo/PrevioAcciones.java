@@ -1,6 +1,6 @@
 package com.jim_project.interprete.parser.previo;
 
-import com.jim_project.interprete.util.ContenedorParametrosExpansion;
+import com.jim_project.interprete.util.ParametrosExpansion;
 import java.util.ArrayList;
 
 import com.jim_project.interprete.parser.Acciones;
@@ -9,11 +9,12 @@ import com.jim_project.interprete.componente.Ambito;
 public class PrevioAcciones extends Acciones {
 
     private String _idUltimaVariable;
-    private ArrayList<ContenedorParametrosExpansion> _expansiones = new ArrayList<>();
-    private ContenedorParametrosExpansion _ultimaExpansion;
+    private ArrayList<ParametrosExpansion> _expansiones;
+    private ParametrosExpansion _ultimaExpansion;
 
     public PrevioAcciones(Ambito ambito) {
         super(ambito);
+        _expansiones = _ambito.expansiones();
     }
 
     public void definirVariable(Object idVariable) {
@@ -30,65 +31,14 @@ public class PrevioAcciones extends Acciones {
     }
 
     public void prepararParaExpandir(Object idMacro) {
-        _ultimaExpansion = new ContenedorParametrosExpansion();
+        int linea = _ambito.controladorEjecucion().numeroLineaActual();
+        String vSalida = _idUltimaVariable;
+        
+        _ultimaExpansion = new ParametrosExpansion(linea, vSalida, idMacro.toString());
         _expansiones.add(_ultimaExpansion);
-
-        _ultimaExpansion.linea = _ambito.controladorEjecucion().numeroLineaActual();
-        _ultimaExpansion.idVariableSalida = _idUltimaVariable;
-        _ultimaExpansion.idMacro = idMacro.toString();
-        _ultimaExpansion.variablesEntrada = new ArrayList<>();
     }
 
     public void prepararVariableEntrada(Object parametro) {
-        _ultimaExpansion.variablesEntrada.add(parametro.toString());
-    }
-
-    private int incrementoLineas;
-
-    private int getIncrementoLineas() {
-        return incrementoLineas;
-    }
-
-    private void addIncremento(int n) {
-        incrementoLineas += n;
-    }
-
-    private void setIncremento(int n) {
-        incrementoLineas = n;
-    }
-
-    public boolean expandir() {
-        /*
-         if (_programa.estadoOk()) {
-         setIncremento(0);
-
-         for (ContenedorParametrosExpansion contenedorExpansion : _expansiones) {
-         String resultadoExpansion = Macro.expandir(contenedorExpansion);
-
-         if (resultadoExpansion != null) {
-
-         ArrayList<String> lineasExpansion = new ArrayList<>(
-         Arrays.asList(resultadoExpansion.split("[\n\r]+"))
-         );
-
-         _programa.insertarExpansion(
-         contenedorExpansion.linea + getIncrementoLineas(),
-         lineasExpansion
-         );
-
-         addIncremento(lineasExpansion.size() - 1);
-         } else {
-         return false;
-         }
-         }
-
-         _expansiones.clear();
-         }
-         */
-        return true;
-    }
-
-    public void limpiar() {
-        _expansiones.clear();
+        _ultimaExpansion.variablesEntrada().add(parametro.toString());
     }
 }
