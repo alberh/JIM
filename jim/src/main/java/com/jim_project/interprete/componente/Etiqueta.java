@@ -64,7 +64,7 @@ public class Etiqueta extends Componente {
                 return id;
             }
         } else {
-            Error.deIdentificadorDeEtiquetaVacio();
+            // Error.deIdentificadorDeEtiquetaVacio();
             return "";
         }
     }
@@ -94,7 +94,7 @@ public class Etiqueta extends Componente {
             try {
                 return Integer.parseInt(id.substring(indiceInicio));
             } catch (NumberFormatException ex) {
-                Error.alObtenerIndiceDeEtiqueta(id);
+                // Error.alObtenerIndiceDeEtiqueta(id);
             }
         } else {
             return 1;

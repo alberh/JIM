@@ -1,7 +1,5 @@
 package com.jim_project.interprete.componente;
 
-import com.jim_project.interprete.componente.Variable;
-import com.jim_project.interprete.componente.Macro;
 import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Modelo;
@@ -36,10 +34,10 @@ public class Ambito extends Componente {
         _programa = programa;
         _parametrosEntrada = parametrosEntrada;
 
-        _gestorVariables = new GestorVariables(_programa);
-        _gestorBucles = new GestorBucles(_programa);
-        _gestorEtiquetas = new GestorEtiquetas(_programa);
-        _gestorMacros = new GestorMacros(_programa);
+        _gestorVariables = new GestorVariables(_programa, this);
+        _gestorBucles = new GestorBucles(_programa, this);
+        _gestorEtiquetas = new GestorEtiquetas(_programa, this);
+        _gestorMacros = new GestorMacros(_programa, this);
     }
 
     public Ambito(Programa programa,

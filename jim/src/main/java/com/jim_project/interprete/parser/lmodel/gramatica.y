@@ -4,6 +4,7 @@
   import com.jim_project.interprete.*;
   import com.jim_project.interprete.componente.*;
   import com.jim_project.interprete.parser.*;
+  import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
 %token ETIQUETA
@@ -34,22 +35,22 @@ sentencia : etiqueta instruccion { $$ = new LParserVal(); }
 etiqueta : '[' ETIQUETA ']' { $$ = $2; }
          | { $$ = new LParserVal(); }
 ;
-instruccion : VARIABLE FLECHA finInstruccion { LAcciones.asignacion($1, $3); }
-            | VARIABLE INCREMENTO { LAcciones.incremento($1); }
-            | VARIABLE DECREMENTO { LAcciones.decremento($1); }
-            | IF VARIABLE DISTINTO GOTO ETIQUETA { LAcciones.saltoCondicional($2, $5); }
-            | GOTO ETIQUETA { LAcciones.saltoIncondicional($2); }
+instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
+            | VARIABLE INCREMENTO { _acciones.incremento($1); }
+            | VARIABLE DECREMENTO { _acciones.decremento($1); }
+            | IF VARIABLE DISTINTO GOTO ETIQUETA { _acciones.saltoCondicional($2, $5); }
+            | GOTO ETIQUETA { _acciones.saltoIncondicional($2); }
 ;
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
                |  operacion { $$ = $1; }
                |  IDMACRO { $$ = new LParserVal(); } '(' parametrosMacro ')' { /* Tratamiento de macros */ }
 ;
-operacion	   :  parametros '+' parametros { $$ = LAcciones.operacion('+', $1, $3); }
-			       |  parametros '-' parametros { $$ = LAcciones.operacion('-', $1, $3); }
-			       |  parametros '*' parametros { $$ = LAcciones.operacion('*', $1, $3); }
-			       |  parametros '/' parametros { $$ = LAcciones.operacion('/', $1, $3); }
-			       |  parametros '%' parametros { $$ = LAcciones.operacion('%', $1, $3); }
+operacion	   :  parametros '+' parametros { $$ = _acciones.operacion('+', $1, $3); }
+			       |  parametros '-' parametros { $$ = _acciones.operacion('-', $1, $3); }
+			       |  parametros '*' parametros { $$ = _acciones.operacion('*', $1, $3); }
+			       |  parametros '/' parametros { $$ = _acciones.operacion('/', $1, $3); }
+			       |  parametros '%' parametros { $$ = _acciones.operacion('%', $1, $3); }
 ;
 parametros :  NUMERO  { $$ = $1; }
            |  VARIABLE { $$ = $1; }
@@ -63,24 +64,14 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
 
 %%
 
-  /** referencia al analizador léxico
-  **/
-  private LLex analex;
-
-  /** constructor: crea el analizador léxico (lexer)
-  **/
-  public LParser(Reader r) {
-     analex = new LLex(r, this);
+  public LParser(Reader r, ControladorEjecucion controladorEjecucion) {
+     super(new LLex(r, this), controladorEjecucion);
+     _acciones = new LAcciones(_controladorEjecucion.ambito());
      //yydebug = true;
   }
 
   public int parse() {
     return this.yyparse();
-  }
-
-  public AnalizadorLexico analizadorLexico() {
-
-    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 

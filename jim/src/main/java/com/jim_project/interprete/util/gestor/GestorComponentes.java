@@ -6,21 +6,19 @@ import com.jim_project.interprete.componente.Ambito;
 public abstract class GestorComponentes {
 
     protected Programa _programa;
+    protected Ambito _ambito;
 
-    public GestorComponentes(Programa programa) {
+    public GestorComponentes(Programa programa, Ambito ambito) {
         _programa = programa;
+        _ambito = ambito;
     }
 
     public Programa programa() {
         return _programa;
     }
     
-    public GestorAmbitos gestorAmbitos() {
-        return _programa.gestorAmbitos();
-    }
-    
-    public Ambito ambitoActual() {
-        return _programa.gestorAmbitos().ambitoActual();
+    public Ambito ambito() {
+        return _ambito;
     }
 
     public abstract int count();

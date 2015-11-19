@@ -5,6 +5,7 @@
 	import com.jim_project.interprete.util.*;
         import com.jim_project.interprete.componente.*;
 	import com.jim_project.interprete.parser.*;
+        import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
 
@@ -40,19 +41,19 @@ sentencia : etiqueta instruccion { ; }
 etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, Programa.numeroLineaActual()); }
          | { ; }
 ;
-instruccion : VARIABLE { PrevioAcciones.definirVariableYMantener($1); } FLECHA finInstruccion
-            | VARIABLE INCREMENTO { PrevioAcciones.definirVariable($1); }
-            | VARIABLE DECREMENTO { PrevioAcciones.definirVariable($1); }
-            | IF VARIABLE DISTINTO GOTO ETIQUETA { PrevioAcciones.definirVariable($2); }
+instruccion : VARIABLE { _acciones.definirVariableYMantener($1); } FLECHA finInstruccion
+            | VARIABLE INCREMENTO { _acciones.definirVariable($1); }
+            | VARIABLE DECREMENTO { _acciones.definirVariable($1); }
+            | IF VARIABLE DISTINTO GOTO ETIQUETA { _acciones.definirVariable($2); }
             | GOTO ETIQUETA { ; }
-            | LOOP VARIABLE { PrevioAcciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }
-            | WHILE VARIABLE DISTINTO { PrevioAcciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }
+            | LOOP VARIABLE { _acciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }
+            | WHILE VARIABLE DISTINTO { _acciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }
             | END { Bucle.cerrar(Programa.numeroLineaActual()); }
 ;
-finInstruccion :  VARIABLE { PrevioAcciones.definirVariable($1); }
+finInstruccion :  VARIABLE { _acciones.definirVariable($1); }
                |  NUMERO { ; }
                |  operacion { ; }
-               |  IDMACRO { PrevioAcciones.prepararParaExpandir($1); } '(' parametrosMacro ')'
+               |  IDMACRO { _acciones.prepararParaExpandir($1); } '(' parametrosMacro ')'
 ;
 operacion	   :  operando '+' operando { ; }
 			   |  operando '-' operando { ; }
@@ -61,10 +62,10 @@ operacion	   :  operando '+' operando { ; }
 			   |  operando '%' operando { ; }
 ;
 operando :  NUMERO { ; }
-           |  VARIABLE { PrevioAcciones.definirVariable($1); }
+           |  VARIABLE { _acciones.definirVariable($1); }
 ;
-parametros :  NUMERO { PrevioAcciones.prepararVariableEntrada($1); }
-           	|  VARIABLE { PrevioAcciones.definirVariable($1); PrevioAcciones.prepararVariableEntrada($1); }
+parametros :  NUMERO { _acciones.prepararVariableEntrada($1); }
+           	|  VARIABLE { _acciones.definirVariable($1); _acciones.prepararVariableEntrada($1); }
 ;
 parametrosMacro : parametros masParametrosMacro { ; }
                 | { ; }
@@ -75,23 +76,14 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 
 %%
 
-	/** referencia al analizador léxico
-  **/
-	private PrevioLex analex;
-
-  /** constructor: crea el analizador léxico (lexer)
-  **/
-  public PrevioParser(Reader r) {
-	analex = new PrevioLex(r, this);
-	 //yydebug = true;
+  public PrevioParser(Reader r, ControladorEjecucion controladorEjecucion) {
+        super(new PrevioLex(r, this), controladorEjecucion);
+        _acciones = new PrevioAcciones(_controladorEjecucion.ambito());
+	//yydebug = true;
   }
 
   public int parse() {
     return this.yyparse();
-  }
-
-  public AnalizadorLexico analizadorLexico() {
-    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 

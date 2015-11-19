@@ -70,7 +70,7 @@ public class Variable extends Componente {
                 return id;
             }
         } else {
-            Error.deIdentificadorDeVariableVacio();
+            // Error.deIdentificadorDeVariableVacio();
             return "";
         }
     }
@@ -94,7 +94,7 @@ public class Variable extends Componente {
             try {
                 return Integer.parseInt(id.substring(indiceInicio));
             } catch (NumberFormatException ex) {
-                Error.alObtenerIndiceDeVariable(id);
+                // Error.alObtenerIndiceDeVariable(id);
             }
         } else {
             return 1;
@@ -151,7 +151,7 @@ public class Variable extends Componente {
                 return Tipo.LOCAL;
 
             default:
-                Error.deTipoDeVariableNoValido(tipo);
+                // Error.deTipoDeVariableNoValido(tipo);
                 return null;
         }
     }

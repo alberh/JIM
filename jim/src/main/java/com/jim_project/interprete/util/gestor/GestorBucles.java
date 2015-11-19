@@ -3,8 +3,8 @@ package com.jim_project.interprete.util.gestor;
 import java.util.HashMap;
 import java.util.Stack;
 import com.jim_project.interprete.Programa;
+import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.Bucle;
-import com.jim_project.interprete.util.Error;
 
 public class GestorBucles extends GestorComponentes {
 
@@ -14,7 +14,11 @@ public class GestorBucles extends GestorComponentes {
     private Stack<Integer> _lineasInicioBucles = new Stack<>();
 
     public GestorBucles(Programa programa) {
-        super(programa);
+        this(programa, null);
+    }
+    
+    public GestorBucles(Programa programa, Ambito ambito) {
+        super(programa, ambito);
     }
     
     /**
@@ -41,7 +45,7 @@ public class GestorBucles extends GestorComponentes {
             _buclesLineaInicio.put(lineaInicio, bucle);
             _buclesLineaFin.put(lineaFin, bucle);
         } else {
-            Error.alCerrarBucle(lineaFin);
+            _programa.error().alCerrarBucle(lineaFin);
         }
     }
 

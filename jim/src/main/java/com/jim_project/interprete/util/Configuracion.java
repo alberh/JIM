@@ -41,7 +41,7 @@ public abstract class Configuracion {
 
                 System.out.println("Fichero de configuración cargado con éxito.");
             } catch (Exception ex) {
-                Error.alCargarConfiguracion(ficheroConfig.getAbsolutePath());
+                // Error.alCargarConfiguracion(ficheroConfig.getAbsolutePath());
             }
         }
     }
@@ -67,7 +67,7 @@ public abstract class Configuracion {
 
             System.out.println("Fichero de configuración creado con éxito.");
         } catch (IOException ex) {
-            Error.alCrearFicheroConfiguracion(ficheroConfig.getAbsolutePath());
+            // Error.alCrearFicheroConfiguracion(ficheroConfig.getAbsolutePath());
         }
     }
 
@@ -83,7 +83,7 @@ public abstract class Configuracion {
             try (FileWriter fw = new FileWriter(ficheroConfig)) {
                 _propiedades.store(fw, null);
             } catch (Exception ex) {
-                Error.alGuardarConfiguracion();
+                // Error.alGuardarConfiguracion();
             }
         }
     }

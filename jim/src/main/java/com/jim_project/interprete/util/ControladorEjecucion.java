@@ -2,22 +2,11 @@ package com.jim_project.interprete.util;
 
 import com.jim_project.interprete.componente.Ambito;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.NotDirectoryException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.parser.AnalizadorLexico;
 import com.jim_project.interprete.parser.Parser;
-import com.jim_project.interprete.parser.analizadormacros.MacrosParser;
-import com.jim_project.interprete.parser.previo.PrevioAcciones;
 import com.jim_project.interprete.parser.previo.PrevioParser;
 
 public class ControladorEjecucion {
@@ -48,29 +37,24 @@ public class ControladorEjecucion {
         // para que devuelva uno vacío si es el caso
         _traza = new StringBuilder();
     }
+    
+    public Ambito ambito() {
+        return _ambito;
+    }
 
     public String traza() {
         return _traza.toString();
     }
+    
+    public Etapa etapa() {
+        return _etapa;
+    }
 
     public void iniciar(int[] parametros) {
         _ambito.limpiar();
-        comprobarDirectoriosMacros();
-        cargarMacros();
 
-        if (_programa.estadoOk()) {
-            System.out.println("Analizando el programa...");
-        }
+        System.out.println("Analizando el programa...");
         previo();
-
-        if (_programa.estadoOk()) {
-            do {
-                // Se vuelve a pasar el previo para establecer las nuevas variables y
-                // etiquetas tras la expansión de macros
-                PrevioAcciones.expandir();
-                previo();
-            } while (PrevioAcciones.llamadasAMacros() > 0 && _programa.estadoOk());
-        }
 
         if (_programa.estadoOk()) {
             // Asignar variables de entrada
@@ -84,8 +68,6 @@ public class ControladorEjecucion {
                     + "probablemente haya caído en un bucle infinito.");
 
             ejecutar(_programa.modelo().parser());
-        } else {
-            _programa.estado(Programa.Estado.ERROR);
         }
     }
 
@@ -126,7 +108,7 @@ public class ControladorEjecucion {
                 try {
                     lex.yyclose();
                 } catch (Exception ex) {
-                    Error.deEjecucion();
+                    _ambito.programa().error().deEjecucion();
                 }
                 lex.yyreset(new BufferedReader(new StringReader(linea)));
 
@@ -211,39 +193,39 @@ public class ControladorEjecucion {
             _ambito.variables().nuevaVariable("X" + (i + 1), parametros[i]);
         }
     }
-    
+
     public void iniciarExpansionMacros() {
         /*
-        limpiar();
-        comprobarDirectoriosMacros();
-        cargarMacros();
+         limpiar();
+         comprobarDirectoriosMacros();
+         cargarMacros();
 
-        if (estadoOk()) {
-            System.out.println("Analizando el programa...");
-        }
-        previo();
+         if (estadoOk()) {
+         System.out.println("Analizando el programa...");
+         }
+         previo();
 
-        if (estadoOk()) {
-            System.out.println("Expandiendo macros...");
+         if (estadoOk()) {
+         System.out.println("Expandiendo macros...");
 
-            int llamadas = PrevioAcciones.llamadasAMacros();
-            if (llamadas > 0) {
-                PrevioAcciones.expandir();
+         int llamadas = PrevioAcciones.llamadasAMacros();
+         if (llamadas > 0) {
+         PrevioAcciones.expandir();
 
-                System.out.println();
-                System.out.println(llamadas + " llamadas a macro expandidas.");
-            } else {
-                System.out.println();
-                System.out.println("No hay llamadas a macros en el programa.");
-            }
-        }
-        */
+         System.out.println();
+         System.out.println(llamadas + " llamadas a macro expandidas.");
+         } else {
+         System.out.println();
+         System.out.println("No hay llamadas a macros en el programa.");
+         }
+         }
+         */
     }
 
     public void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
         /*
-        _lineas.remove(linea - 1);
-        _lineas.addAll(linea - 1, lineasExpansion);
-        */
+         _lineas.remove(linea - 1);
+         _lineas.addAll(linea - 1, lineasExpansion);
+         */
     }
 }

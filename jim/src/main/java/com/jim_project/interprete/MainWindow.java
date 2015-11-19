@@ -645,9 +645,9 @@ public class MainWindow extends javax.swing.JFrame {
                 hayCambios(false);
             } catch (Exception ex) {
                 if (_ficheroAbierto != _ficheroTemporal) {
-                    Error.alGuardarFichero(_ficheroAbierto.getAbsolutePath());
+                    // Error.alGuardarFichero(_ficheroAbierto.getAbsolutePath());
                 } else {
-                    Error.alGuardarFicheroTemporal();
+                    // Error.alGuardarFicheroTemporal();
                 }
             }
         } else {

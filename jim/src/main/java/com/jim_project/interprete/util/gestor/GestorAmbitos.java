@@ -11,7 +11,11 @@ public class GestorAmbitos extends GestorComponentes {
     private Ambito _ultimoAmbito;
 
     public GestorAmbitos(Programa programa) {
-        super(programa);
+        this(programa, null);
+    }
+    
+    public GestorAmbitos(Programa programa, Ambito ambito) {
+        super(programa, ambito);
         _ambitos = new ArrayList<>();
         _ultimoAmbito = null;
     }
@@ -50,7 +54,6 @@ public class GestorAmbitos extends GestorComponentes {
         }
     }
 
-    @Override
     public Ambito ambitoActual() {
         return _ultimoAmbito;
     }

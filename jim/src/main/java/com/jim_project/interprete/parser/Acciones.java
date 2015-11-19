@@ -3,6 +3,7 @@ package com.jim_project.interprete.parser;
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.util.Error;
+import java.util.ArrayList;
 
 public class Acciones {
 
@@ -101,13 +102,13 @@ public class Acciones {
                 // Todos los modelos comparten la operación V <- V + 1
                 // Número distinto de 1
                 if (esEntero(op2) && v2 != 1) {
-                    Error.deSumaValorNoUnidad();
+                    _ambito.programa().error().deSumaValorNoUnidad();
                 }
             }
 
             // Operación entre variables
             if (esCadena(op2)) {
-                Error.deOperacionEntreVariables(operador);
+                _ambito.programa().error().deOperacionEntreVariables(operador);
             }
         }
 
@@ -138,6 +139,12 @@ public class Acciones {
                 // informar de error
                 return 0;
         }
+    }
+
+    public void llamadaAMacro(Object idVariable,
+            Object idMacro,
+            ArrayList<String> parametros) {
+
     }
 
     protected Variable obtenerVariable(Object id) {

@@ -35,9 +35,11 @@ public class Programa {
     private String _ficheroEnProceso;
 
     private Estado _estado;
+    private ControladorEjecucion.Etapa _etapa;
     private Objetivo _objetivo;
     private boolean _modoFlexible;
     private boolean _macrosPermitidas;
+    private Error _error;
 
     private Modelo _modelo;
     private GestorAmbitos _gestorAmbitos;
@@ -78,6 +80,14 @@ public class Programa {
     public boolean estadoOk() {
         return _estado == Estado.OK;
     }
+    
+    public ControladorEjecucion.Etapa etapa() {
+        if (_gestorAmbitos.vacio()) {
+            return _etapa;
+        } else {
+            return _gestorAmbitos.ambitoActual().controladorEjecucion().etapa();
+        }
+    }
 
     public void objetivo(Objetivo objetivo) {
         _objetivo = objetivo;
@@ -102,6 +112,10 @@ public class Programa {
     public boolean macrosPermitidas() {
         return _macrosPermitidas;
     }
+    
+    public Error error() {
+        return _error;
+    }
 
     public Modelo modelo() {
         return _modelo;
@@ -118,20 +132,25 @@ public class Programa {
 
     public void iniciar(int[] parametros) {
         if (estadoOk()) {
-            limpiar();
+            comprobarDirectoriosMacros();
+            cargarMacros();
 
-            ArrayList<String> lineas = new ArrayList<>();
+            if (estadoOk()) {
+                limpiar();
 
-            try (Scanner scanner = new Scanner(new File(_fichero))) {
-                while (scanner.hasNextLine()) {
-                    lineas.add(scanner.nextLine());
+                ArrayList<String> lineas = new ArrayList<>();
+
+                try (Scanner scanner = new Scanner(new File(_fichero))) {
+                    while (scanner.hasNextLine()) {
+                        lineas.add(scanner.nextLine());
+                    }
+                } catch (FileNotFoundException ex) {
+                    _error.alCargarPrograma(_fichero);
                 }
-            } catch (FileNotFoundException ex) {
-                Error.alCargarPrograma(_fichero);
-            }
 
-            _gestorAmbitos.nuevoAmbito(parametros, lineas);
-            _gestorAmbitos.ambitoActual().iniciar(parametros);
+                _gestorAmbitos.nuevoAmbito(parametros, lineas);
+                _gestorAmbitos.ambitoRaiz().iniciar(parametros);
+            }
         }
     }
 
@@ -145,7 +164,7 @@ public class Programa {
     public int resultado() {
         return _gestorAmbitos.ambitoRaiz().resultado();
     }
-    
+
     public String traza() {
         return _gestorAmbitos.ambitoRaiz().controladorEjecucion().traza();
     }
@@ -153,7 +172,6 @@ public class Programa {
     private void limpiar() {
         _gestorAmbitos.limpiar();
         _gestorMacros.limpiar();
-        PrevioAcciones.limpiar();
     }
 
     @Override
@@ -180,7 +198,7 @@ public class Programa {
 
         return sb.toString();
     }
-    
+
     /**
      * Delegar en clase GestorMacros?
      */
@@ -222,14 +240,14 @@ public class Programa {
                                 = new MacrosParser(new FileReader(rutaFichero));
                         macrosParser.parse();
                     } catch (FileNotFoundException ex) {
-                        Error.alCargarMacros(rutaFichero);
+                        _error.alCargarMacros(rutaFichero);
                     }
                 }
             }
         } catch (NotDirectoryException ex) {
-            Error.alComprobarDirectorio(rutaMacros);
+            _error.alComprobarDirectorio(rutaMacros);
         } catch (IOException ex) {
-            Error.alObtenerListaFicherosMacros(rutaMacros);
+            _error.alObtenerListaFicherosMacros(rutaMacros);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -257,16 +275,16 @@ public class Programa {
             boolean creados = directorio.mkdirs();
 
             if (!creados) {
-                Error.alCrearDirectoriosMacros();
+                _error.alCrearDirectoriosMacros();
             }
         } else {
             // es un directorio
             if (!directorio.isDirectory()) {
-                Error.alComprobarDirectorio(directorio.getAbsolutePath());
+                _error.alComprobarDirectorio(directorio.getAbsolutePath());
             }
 
             if (!directorio.canRead()) {
-                Error.alComprobarAccesoDirectorio(directorio.getAbsolutePath());
+                _error.alComprobarAccesoDirectorio(directorio.getAbsolutePath());
             }
         }
     }

@@ -5,6 +5,7 @@
   import com.jim_project.interprete.*;
   import com.jim_project.interprete.componente.*;
   import com.jim_project.interprete.parser.*;
+  import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
 %token VARIABLE
@@ -27,18 +28,18 @@
 inicio :  instruccion { $$ = $1; } inicio
        | { $$ = new LoopParserVal(); }
 ;
-instruccion : VARIABLE FLECHA finInstruccion { LoopAcciones.asignacion($1, $3); }
-            | VARIABLE INCREMENTO { LoopAcciones.incremento($1); }
-            | LOOP VARIABLE { LoopAcciones.abreBucle($2, Programa.numeroLineaActual()); }
-            | END { LoopAcciones.cierraBucle(Programa.numeroLineaActual()); }
+instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
+            | VARIABLE INCREMENTO { _acciones.incremento($1); }
+            | LOOP VARIABLE { _acciones.abreBucle($2, Programa.numeroLineaActual()); }
+            | END { _acciones.cierraBucle(Programa.numeroLineaActual()); }
 ;
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
                |  operacion { $$ = $1; }
                |  IDMACRO { $$ = new LoopParserVal(); } '(' parametrosMacro ')' { /* Tratamiento de macros */ }
 ;
-operacion    :  parametros '+' parametros { $$ = LoopAcciones.operacion('+', $1, $3); }
-             |  parametros '*' parametros { $$ = LoopAcciones.operacion('*', $1, $3); }
+operacion    :  parametros '+' parametros { $$ = _acciones.operacion('+', $1, $3); }
+             |  parametros '*' parametros { $$ = _acciones.operacion('*', $1, $3); }
 ;
 parametros :  NUMERO  { $$ = $1; }
            |  VARIABLE { $$ = $1; }
@@ -52,24 +53,14 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
 
 %%
 
-  /** referencia al analizador léxico
-  **/
-  private LoopLex analex;
-
-  /** constructor: crea el analizador léxico (lexer)
-  **/
-  public LoopParser(Reader r) {
-     analex = new LoopLex(r, this);
+  public LoopParser(Reader r, ControladorEjecucion controladorEjecucion) {
+     super(new LoopLex(r, this), controladorEjecucion);
+     _acciones = new LoopAcciones(_controladorEjecucion.ambito());
      //yydebug = true;
   }
 
   public int parse() {
     return this.yyparse();
-  }
-
-  public AnalizadorLexico analizadorLexico() {
-
-    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 

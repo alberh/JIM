@@ -4,6 +4,7 @@
   import com.jim_project.interprete.*;
   import com.jim_project.interprete.componente.*;
   import com.jim_project.interprete.parser.*;
+  import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
 %token VARIABLE
@@ -28,22 +29,22 @@
 inicio :  instruccion { $$ = $1; } inicio
        | { $$ = new WhileParserVal(); }
 ;
-instruccion : VARIABLE FLECHA finInstruccion { WhileAcciones.asignacion($1, $3); }
-            | VARIABLE INCREMENTO { WhileAcciones.incremento($1); }
-            | VARIABLE DECREMENTO { WhileAcciones.decremento($1); }
-            | WHILE VARIABLE DISTINTO { WhileAcciones.abreBucle($2, Programa.numeroLineaActual()); }
-            | END { WhileAcciones.cierraBucle(Programa.numeroLineaActual()); }
+instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
+            | VARIABLE INCREMENTO { _acciones.incremento($1); }
+            | VARIABLE DECREMENTO { _acciones.decremento($1); }
+            | WHILE VARIABLE DISTINTO { _acciones.abreBucle($2, Programa.numeroLineaActual()); }
+            | END { _acciones.cierraBucle(Programa.numeroLineaActual()); }
 ;
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
                |  operacion { $$ = $1; }
                |  IDMACRO { $$ = new WhileParserVal(); } '(' parametrosMacro ')' { /* Tratamiento de macros */ }
 ;
-operacion    :  parametros '+' parametros { $$ = WhileAcciones.operacion('+', $1, $3); }
-             |  parametros '-' parametros { $$ = WhileAcciones.operacion('-', $1, $3); }
-             |  parametros '*' parametros { $$ = WhileAcciones.operacion('*', $1, $3); }
-             |  parametros '/' parametros { $$ = WhileAcciones.operacion('/', $1, $3); }
-             |  parametros '%' parametros { $$ = WhileAcciones.operacion('%', $1, $3); }
+operacion    :  parametros '+' parametros { $$ = _acciones.operacion('+', $1, $3); }
+             |  parametros '-' parametros { $$ = _acciones.operacion('-', $1, $3); }
+             |  parametros '*' parametros { $$ = _acciones.operacion('*', $1, $3); }
+             |  parametros '/' parametros { $$ = _acciones.operacion('/', $1, $3); }
+             |  parametros '%' parametros { $$ = _acciones.operacion('%', $1, $3); }
 ;
 parametros :  NUMERO  { $$ = $1; }
            |  VARIABLE { $$ = $1; }
@@ -57,23 +58,14 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
 
 %%
 
-  /** referencia al analizador léxico
-  **/
-  private WhileLex analex;
-
-  /** constructor: crea el analizador léxico (lexer)
-  **/
-  public WhileParser(Reader r) {
-     analex = new WhileLex(r, this);
+  public WhileParser(Reader r, ControladorEjecucion controladorEjecucion) {
+     super(new WhileLex(r, this), controladorEjecucion);
+     _acciones = new WhileAcciones(_controladorEjecucion.ambito());
      //yydebug = true;
   }
 
   public int parse() {
     return this.yyparse();
-  }
-
-  public AnalizadorLexico analizadorLexico() {
-    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 

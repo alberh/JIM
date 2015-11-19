@@ -4,6 +4,7 @@
   	import com.jim_project.interprete.*;
         import com.jim_project.interprete.componente.*;
   	import com.jim_project.interprete.parser.*;
+        import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
 
@@ -23,35 +24,25 @@
 inicio :  sentencia inicio
 	   |
 ;
-sentencia : DEFMACRO IDMACRO { macroEnProceso = MacrosAcciones.nuevaMacro($2); } simbolos ENDMACRO { MacrosAcciones.cuerpo($5, macroEnProceso); }
+sentencia : DEFMACRO IDMACRO { _acciones.nuevaMacro($2); } simbolos ENDMACRO { _acciones.cuerpo($5); }
 ;
-simbolos :  VARIABLE { MacrosAcciones.nuevaVariable($1, macroEnProceso); } simbolos
-         |  IDMACRO { MacrosAcciones.nuevaLlamadaAMacro($1, macroEnProceso); } simbolos
-         |  '[' ETIQUETA ']' { MacrosAcciones.nuevaEtiqueta($2, macroEnProceso); } simbolos
-	 |  GOTO ETIQUETA { MacrosAcciones.nuevaEtiquetaSalto($2, macroEnProceso); } simbolos
+simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
+         |  IDMACRO { _acciones.nuevaLlamadaAMacro($1); } simbolos
+         |  '[' ETIQUETA ']' { _acciones.nuevaEtiqueta($2); } simbolos
+	 |  GOTO ETIQUETA { _acciones.nuevaEtiquetaSalto($2); } simbolos
 	 |
 ;
 
 %%
 
-	/** referencia al analizador léxico
-  **/
-	private MacrosLex analex;
-        private Macro macroEnProceso;
-
-  /** constructor: crea el analizador léxico (lexer)
-  **/
-  public MacrosParser(Reader r) {
-	analex = new MacrosLex(r, this);
+  public MacrosParser(Reader r, ControladorEjecucion controladorEjecucion) {
+        super(new MacrosLex(r, this), controladorEjecucion);
+        _acciones = new MacrosAcciones(_controladorEjecucion.ambito());
 	//yydebug = true;
   }
 
   public int parse() {
     return this.yyparse();
-  }
-
-  public AnalizadorLexico analizadorLexico() {
-    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 
