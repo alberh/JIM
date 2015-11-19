@@ -35,9 +35,10 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
 
 %%
 
-  public MacrosParser(Reader r, ControladorEjecucion controladorEjecucion) {
-        super(new MacrosLex(r, this), controladorEjecucion);
-        _acciones = new MacrosAcciones(_controladorEjecucion.ambito());
+  public MacrosParser(Reader r, Programa programa) {
+    super(null);
+    _analizadorLexico = new MacrosLex(r, this);
+    _acciones = new MacrosAcciones(programa);
 	//yydebug = true;
   }
 
@@ -53,9 +54,9 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
 
 	try {
 		yylval = new MacrosParserVal(0);
-		yyl_return = analex.yylex();
+		yyl_return = _analizadorLexico.yylex();
 	} catch (IOException e) {
-		com.jim_project.interprete.util.Error.deESEnAnalizadorLexico(77); //analex.lineaActual());
+		com.jim_project.interprete.util.Error.deESEnAnalizadorLexico(77); //_analizadorLexico.lineaActual());
 	}
 
 	return yyl_return;
@@ -65,10 +66,10 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-	com.jim_project.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), nombreToken, descripcion);
+	com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), nombreToken, descripcion);
   	
   	/*
-	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+	System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
 	System.err.println ("Token leído : "+yyname[token]);
 	System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -110,5 +111,5 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
 
   @Override
   public void yyerror(String descripcion) {
-  	com.jim_project.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
+  	com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), descripcion);
   }

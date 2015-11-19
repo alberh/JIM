@@ -77,7 +77,8 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 %%
 
   public PrevioParser(Reader r, ControladorEjecucion controladorEjecucion) {
-        super(new PrevioLex(r, this), controladorEjecucion);
+        super(controladorEjecucion);
+        _analizadorLexico = new PrevioLex(r, this);
         _acciones = new PrevioAcciones(_controladorEjecucion.ambito());
 	//yydebug = true;
   }
@@ -94,7 +95,7 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 
 	try {
 		yylval = new PrevioParserVal(0);
-		yyl_return = analex.yylex();
+		yyl_return = _analizadorLexico.yylex();
 	} catch (IOException e) {
 		com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
 	}
@@ -108,7 +109,7 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
   	String nombreToken = yyname[token];
   	com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
   	/*
-	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+	System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
 	System.err.println ("Token leído : "+yyname[token]);
 	System.err.print("Token(s) que se esperaba(n) : ");
 

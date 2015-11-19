@@ -10,15 +10,17 @@ import com.jim_project.interprete.componente.Ambito;
 public class MacrosAcciones extends Acciones {
     
     private Macro _macroEnProceso;
+    private Programa _programa;
 
-    public MacrosAcciones(Ambito ambito) {
-        super(ambito);
+    public MacrosAcciones(Programa programa) {
+        super(null);
+        _programa = programa;
     }
     
     public String filtrarIDVariable(String id) {
         id = Variable.normalizarID(id);
         
-        if (_ambito.programa().objetivo() == Programa.Objetivo.EXPANDIR) {
+        if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
             id = "V" + id;
         }
         
@@ -28,7 +30,7 @@ public class MacrosAcciones extends Acciones {
     public String filtrarIDEtiqueta(String id) {
         id = Etiqueta.normalizarID(id);
         
-        if (_ambito.programa().objetivo() == Programa.Objetivo.EXPANDIR) {
+        if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
             id = "L" + id;
         }
         
@@ -36,7 +38,7 @@ public class MacrosAcciones extends Acciones {
     }
 
     public Macro nuevaMacro(Object idMacro) {
-        _macroEnProceso = _ambito.programa().gestorMacros().nuevaMacro(idMacro.toString());
+        _macroEnProceso = _programa.gestorMacros().nuevaMacro(idMacro.toString());
         return _macroEnProceso;
     }
 

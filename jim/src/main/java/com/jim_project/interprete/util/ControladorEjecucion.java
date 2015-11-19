@@ -74,7 +74,7 @@ public class ControladorEjecucion {
     private void previo() {
         _etapa = Etapa.ANALIZANDO;
         if (_programa.estadoOk()) {
-            ejecutar(new PrevioParser(null));
+            ejecutar(new PrevioParser(null, null));
         }
     }
 

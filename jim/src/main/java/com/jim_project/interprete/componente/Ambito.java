@@ -26,7 +26,8 @@ public class Ambito extends Componente {
 
     public Ambito(Programa programa,
             int[] parametrosEntrada,
-            Macro macroAsociada, GestorAmbitos gestorAmbitos) {
+            Macro macroAsociada,
+            GestorAmbitos gestorAmbitos) {
 
         this(programa, parametrosEntrada, gestorAmbitos);
 

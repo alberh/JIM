@@ -22,7 +22,8 @@ package com.jim_project.interprete.parser.lmodel;
   import com.jim_project.interprete.*;
   import com.jim_project.interprete.componente.*;
   import com.jim_project.interprete.parser.*;
-//#line 22 "LParser.java"
+  import com.jim_project.interprete.util.ControladorEjecucion;
+//#line 23 "LParser.java"
 
 
 
@@ -335,26 +336,17 @@ final static String yyrule[] = {
 "masParametrosMacro :",
 };
 
-//#line 65 "gramatica.y"
+//#line 66 "gramatica.y"
 
-  /** referencia al analizador léxico
-  **/
-  private LLex analex;
-
-  /** constructor: crea el analizador léxico (lexer)
-  **/
-  public LParser(Reader r) {
-     analex = new LLex(r, this);
+  public LParser(Reader r, ControladorEjecucion controladorEjecucion) {
+     super(controladorEjecucion);
+     _analizadorLexico = new LLex(r, this);
+     _acciones = new LAcciones(_controladorEjecucion.ambito());
      //yydebug = true;
   }
 
   public int parse() {
     return this.yyparse();
-  }
-
-  public AnalizadorLexico analizadorLexico() {
-
-    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 
@@ -365,7 +357,7 @@ final static String yyrule[] = {
 
   try {
     yylval = new LParserVal(0);
-    yyl_return = analex.yylex();
+    yyl_return = _analizadorLexico.yylex();
   } catch (IOException e) {
     com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
   }
@@ -379,7 +371,7 @@ final static String yyrule[] = {
     String nombreToken = yyname[token];
     com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
     /*
-  System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+  System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
   System.err.println ("Token leído : "+yyname[token]);
   System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -418,7 +410,7 @@ final static String yyrule[] = {
   System.err.println(nombresTokens);
   */
   }
-//#line 348 "LParser.java"
+//#line 340 "LParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -573,110 +565,110 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 29 "gramatica.y"
+//#line 30 "gramatica.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 3:
-//#line 30 "gramatica.y"
+//#line 31 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 4:
-//#line 32 "gramatica.y"
+//#line 33 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 5:
-//#line 34 "gramatica.y"
+//#line 35 "gramatica.y"
 { yyval.obj = val_peek(1).sval; }
 break;
 case 6:
-//#line 35 "gramatica.y"
+//#line 36 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 7:
-//#line 37 "gramatica.y"
-{ LAcciones.asignacion(val_peek(2).sval, val_peek(0).obj); }
+//#line 38 "gramatica.y"
+{ _acciones.asignacion(val_peek(2).sval, val_peek(0).obj); }
 break;
 case 8:
-//#line 38 "gramatica.y"
-{ LAcciones.incremento(val_peek(1).sval); }
+//#line 39 "gramatica.y"
+{ _acciones.incremento(val_peek(1).sval); }
 break;
 case 9:
-//#line 39 "gramatica.y"
-{ LAcciones.decremento(val_peek(1).sval); }
+//#line 40 "gramatica.y"
+{ _acciones.decremento(val_peek(1).sval); }
 break;
 case 10:
-//#line 40 "gramatica.y"
-{ LAcciones.saltoCondicional(val_peek(3).sval, val_peek(0).sval); }
+//#line 41 "gramatica.y"
+{ _acciones.saltoCondicional(val_peek(3).sval, val_peek(0).sval); }
 break;
 case 11:
-//#line 41 "gramatica.y"
-{ LAcciones.saltoIncondicional(val_peek(0).sval); }
+//#line 42 "gramatica.y"
+{ _acciones.saltoIncondicional(val_peek(0).sval); }
 break;
 case 12:
-//#line 43 "gramatica.y"
+//#line 44 "gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 13:
-//#line 44 "gramatica.y"
-{ yyval.obj = val_peek(0).ival; }
-break;
-case 14:
 //#line 45 "gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
-case 15:
+case 14:
 //#line 46 "gramatica.y"
+{ yyval.obj = val_peek(0).ival; }
+break;
+case 15:
+//#line 47 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 16:
-//#line 46 "gramatica.y"
+//#line 47 "gramatica.y"
 { /* Tratamiento de macros */ }
 break;
 case 17:
-//#line 48 "gramatica.y"
-{ yyval.ival = LAcciones.operacion('+', val_peek(2).obj, val_peek(0).obj); }
+//#line 49 "gramatica.y"
+{ yyval.ival = _acciones.operacion('+', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 18:
-//#line 49 "gramatica.y"
-{ yyval.ival = LAcciones.operacion('-', val_peek(2).obj, val_peek(0).obj); }
+//#line 50 "gramatica.y"
+{ yyval.ival = _acciones.operacion('-', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 19:
-//#line 50 "gramatica.y"
-{ yyval.ival = LAcciones.operacion('*', val_peek(2).obj, val_peek(0).obj); }
+//#line 51 "gramatica.y"
+{ yyval.ival = _acciones.operacion('*', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 20:
-//#line 51 "gramatica.y"
-{ yyval.ival = LAcciones.operacion('/', val_peek(2).obj, val_peek(0).obj); }
+//#line 52 "gramatica.y"
+{ yyval.ival = _acciones.operacion('/', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 21:
-//#line 52 "gramatica.y"
-{ yyval.ival = LAcciones.operacion('%', val_peek(2).obj, val_peek(0).obj); }
+//#line 53 "gramatica.y"
+{ yyval.ival = _acciones.operacion('%', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 22:
-//#line 54 "gramatica.y"
+//#line 55 "gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 23:
-//#line 55 "gramatica.y"
+//#line 56 "gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 24:
-//#line 57 "gramatica.y"
+//#line 58 "gramatica.y"
 {yyval.obj = val_peek(0).obj; }
 break;
 case 26:
-//#line 58 "gramatica.y"
+//#line 59 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 27:
-//#line 60 "gramatica.y"
+//#line 61 "gramatica.y"
 {yyval.obj = val_peek(0).obj; }
 break;
 case 29:
-//#line 61 "gramatica.y"
+//#line 62 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
-//#line 601 "LParser.java"
+//#line 593 "LParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

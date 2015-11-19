@@ -26,15 +26,15 @@ public class Modelo {
 
         switch (_tipo) {
             case L:
-                _parser = new LParser(null);
+                _parser = new LParser(null, null);
                 break;
 
             case LOOP:
-                _parser = new LoopParser(null);
+                _parser = new LoopParser(null, null);
                 break;
 
             case WHILE:
-                _parser = new WhileParser(null);
+                _parser = new WhileParser(null, null);
                 break;
         }
         

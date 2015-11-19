@@ -4,6 +4,7 @@ import com.jim_project.interprete.parser.analizadormacros.MacrosParser;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.Configuracion;
 import com.jim_project.interprete.util.ControladorEjecucion;
+import com.jim_project.interprete.componente.Ambito;
 import java.io.File;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
@@ -240,7 +241,7 @@ public class Programa {
                     ficheroEnProceso(rutaFichero);
                     try {
                         MacrosParser macrosParser
-                                = new MacrosParser(new FileReader(rutaFichero));
+                                = new MacrosParser(new FileReader(rutaFichero), this);
                         macrosParser.parse();
                     } catch (FileNotFoundException ex) {
                         _error.alCargarMacros(rutaFichero);

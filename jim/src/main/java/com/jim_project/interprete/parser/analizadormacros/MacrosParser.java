@@ -22,7 +22,8 @@ package com.jim_project.interprete.parser.analizadormacros;
   	import com.jim_project.interprete.*;
         import com.jim_project.interprete.componente.*;
   	import com.jim_project.interprete.parser.*;
-//#line 22 "MacrosParser.java"
+        import com.jim_project.interprete.util.ControladorEjecucion;
+//#line 23 "MacrosParser.java"
 
 
 
@@ -283,26 +284,17 @@ final static String yyrule[] = {
 "simbolos :",
 };
 
-//#line 36 "gramatica.y"
+//#line 37 "gramatica.y"
 
-	/** referencia al analizador léxico
-  **/
-	private MacrosLex analex;
-        private Macro macroEnProceso;
-
-  /** constructor: crea el analizador léxico (lexer)
-  **/
-  public MacrosParser(Reader r) {
-	analex = new MacrosLex(r, this);
+  public MacrosParser(Reader r, Programa programa) {
+    super(null);
+    _analizadorLexico = new MacrosLex(r, this);
+    _acciones = new MacrosAcciones(programa);
 	//yydebug = true;
   }
 
   public int parse() {
     return this.yyparse();
-  }
-
-  public AnalizadorLexico analizadorLexico() {
-    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 
@@ -313,9 +305,9 @@ final static String yyrule[] = {
 
 	try {
 		yylval = new MacrosParserVal(0);
-		yyl_return = analex.yylex();
+		yyl_return = _analizadorLexico.yylex();
 	} catch (IOException e) {
-		com.jim_project.interprete.util.Error.deESEnAnalizadorLexico(77); //analex.lineaActual());
+		com.jim_project.interprete.util.Error.deESEnAnalizadorLexico(77); //_analizadorLexico.lineaActual());
 	}
 
 	return yyl_return;
@@ -325,10 +317,10 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-	com.jim_project.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), nombreToken, descripcion);
+	com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), nombreToken, descripcion);
   	
   	/*
-	System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+	System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
 	System.err.println ("Token leído : "+yyname[token]);
 	System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -370,9 +362,9 @@ final static String yyrule[] = {
 
   @Override
   public void yyerror(String descripcion) {
-  	com.jim_project.interprete.util.Error.deTokenNoEsperado(analex.lineaActual(), descripcion);
+  	com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), descripcion);
   }
-//#line 302 "MacrosParser.java"
+//#line 294 "MacrosParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -527,30 +519,30 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 3:
-//#line 26 "gramatica.y"
-{ macroEnProceso = MacrosAcciones.nuevaMacro(val_peek(0).sval); }
+//#line 27 "gramatica.y"
+{ _acciones.nuevaMacro(val_peek(0).sval); }
 break;
 case 4:
-//#line 26 "gramatica.y"
-{ MacrosAcciones.cuerpo(val_peek(0).sval, macroEnProceso); }
+//#line 27 "gramatica.y"
+{ _acciones.cuerpo(val_peek(0).sval); }
 break;
 case 5:
-//#line 28 "gramatica.y"
-{ MacrosAcciones.nuevaVariable(val_peek(0).sval, macroEnProceso); }
+//#line 29 "gramatica.y"
+{ _acciones.nuevaVariable(val_peek(0).sval); }
 break;
 case 7:
-//#line 29 "gramatica.y"
-{ MacrosAcciones.nuevaLlamadaAMacro(val_peek(0).sval, macroEnProceso); }
+//#line 30 "gramatica.y"
+{ _acciones.nuevaLlamadaAMacro(val_peek(0).sval); }
 break;
 case 9:
-//#line 30 "gramatica.y"
-{ MacrosAcciones.nuevaEtiqueta(val_peek(1).sval, macroEnProceso); }
+//#line 31 "gramatica.y"
+{ _acciones.nuevaEtiqueta(val_peek(1).sval); }
 break;
 case 11:
-//#line 31 "gramatica.y"
-{ MacrosAcciones.nuevaEtiquetaSalto(val_peek(0).sval, macroEnProceso); }
+//#line 32 "gramatica.y"
+{ _acciones.nuevaEtiquetaSalto(val_peek(0).sval); }
 break;
-//#line 475 "MacrosParser.java"
+//#line 467 "MacrosParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

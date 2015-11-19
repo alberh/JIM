@@ -59,7 +59,8 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
 %%
 
   public WhileParser(Reader r, ControladorEjecucion controladorEjecucion) {
-     super(new WhileLex(r, this), controladorEjecucion);
+     super(controladorEjecucion);
+     _analizadorLexico = new WhileLex(r, this);
      _acciones = new WhileAcciones(_controladorEjecucion.ambito());
      //yydebug = true;
   }
@@ -76,7 +77,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
 
   try {
     yylval = new WhileParserVal(0);
-    yyl_return = analex.yylex();
+    yyl_return = _analizadorLexico.yylex();
   } catch (IOException e) {
     com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
   }
@@ -90,7 +91,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
     String nombreToken = yyname[token];
     com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
     /*
-  System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+  System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
   System.err.println ("Token leído : "+yyname[token]);
   System.err.print("Token(s) que se esperaba(n) : ");
 

@@ -22,7 +22,8 @@ package com.jim_project.interprete.parser.whilemodel;
   import com.jim_project.interprete.*;
   import com.jim_project.interprete.componente.*;
   import com.jim_project.interprete.parser.*;
-//#line 22 "WhileParser.java"
+  import com.jim_project.interprete.util.ControladorEjecucion;
+//#line 23 "WhileParser.java"
 
 
 
@@ -329,25 +330,17 @@ final static String yyrule[] = {
 "masParametrosMacro :",
 };
 
-//#line 59 "gramatica.y"
+//#line 60 "gramatica.y"
 
-  /** referencia al analizador léxico
-  **/
-  private WhileLex analex;
-
-  /** constructor: crea el analizador léxico (lexer)
-  **/
-  public WhileParser(Reader r) {
-     analex = new WhileLex(r, this);
+  public WhileParser(Reader r, ControladorEjecucion controladorEjecucion) {
+     super(controladorEjecucion);
+     _analizadorLexico = new WhileLex(r, this);
+     _acciones = new WhileAcciones(_controladorEjecucion.ambito());
      //yydebug = true;
   }
 
   public int parse() {
     return this.yyparse();
-  }
-
-  public AnalizadorLexico analizadorLexico() {
-    return analex;
   }
 
   /** esta función se invoca por el analizador cuando necesita el 
@@ -358,7 +351,7 @@ final static String yyrule[] = {
 
   try {
     yylval = new WhileParserVal(0);
-    yyl_return = analex.yylex();
+    yyl_return = _analizadorLexico.yylex();
   } catch (IOException e) {
     com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
   }
@@ -372,7 +365,7 @@ final static String yyrule[] = {
     String nombreToken = yyname[token];
     com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
     /*
-  System.err.println ("Error en línea "+Integer.toString(analex.lineaActual())+" : "+descripcion);
+  System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
   System.err.println ("Token leído : "+yyname[token]);
   System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -411,7 +404,7 @@ final static String yyrule[] = {
   System.err.println(nombresTokens);
   */
   }
-//#line 341 "WhileParser.java"
+//#line 334 "WhileParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -566,98 +559,98 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 28 "gramatica.y"
+//#line 29 "gramatica.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 3:
-//#line 29 "gramatica.y"
+//#line 30 "gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
 case 4:
-//#line 31 "gramatica.y"
-{ WhileAcciones.asignacion(val_peek(2).sval, val_peek(0).obj); }
+//#line 32 "gramatica.y"
+{ _acciones.asignacion(val_peek(2).sval, val_peek(0).obj); }
 break;
 case 5:
-//#line 32 "gramatica.y"
-{ WhileAcciones.incremento(val_peek(1).sval); }
+//#line 33 "gramatica.y"
+{ _acciones.incremento(val_peek(1).sval); }
 break;
 case 6:
-//#line 33 "gramatica.y"
-{ WhileAcciones.decremento(val_peek(1).sval); }
+//#line 34 "gramatica.y"
+{ _acciones.decremento(val_peek(1).sval); }
 break;
 case 7:
-//#line 34 "gramatica.y"
-{ WhileAcciones.abreBucle(val_peek(1).sval, Programa.numeroLineaActual()); }
+//#line 35 "gramatica.y"
+{ _acciones.abreBucle(val_peek(1).sval, Programa.numeroLineaActual()); }
 break;
 case 8:
-//#line 35 "gramatica.y"
-{ WhileAcciones.cierraBucle(Programa.numeroLineaActual()); }
+//#line 36 "gramatica.y"
+{ _acciones.cierraBucle(Programa.numeroLineaActual()); }
 break;
 case 9:
-//#line 37 "gramatica.y"
+//#line 38 "gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 10:
-//#line 38 "gramatica.y"
-{ yyval.obj = val_peek(0).ival; }
-break;
-case 11:
 //#line 39 "gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
-case 12:
+case 11:
 //#line 40 "gramatica.y"
+{ yyval.obj = val_peek(0).ival; }
+break;
+case 12:
+//#line 41 "gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
 case 13:
-//#line 40 "gramatica.y"
+//#line 41 "gramatica.y"
 { /* Tratamiento de macros */ }
 break;
 case 14:
-//#line 42 "gramatica.y"
-{ yyval.ival = WhileAcciones.operacion('+', val_peek(2).obj, val_peek(0).obj); }
+//#line 43 "gramatica.y"
+{ yyval.ival = _acciones.operacion('+', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 15:
-//#line 43 "gramatica.y"
-{ yyval.ival = WhileAcciones.operacion('-', val_peek(2).obj, val_peek(0).obj); }
+//#line 44 "gramatica.y"
+{ yyval.ival = _acciones.operacion('-', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 16:
-//#line 44 "gramatica.y"
-{ yyval.ival = WhileAcciones.operacion('*', val_peek(2).obj, val_peek(0).obj); }
+//#line 45 "gramatica.y"
+{ yyval.ival = _acciones.operacion('*', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 17:
-//#line 45 "gramatica.y"
-{ yyval.ival = WhileAcciones.operacion('/', val_peek(2).obj, val_peek(0).obj); }
+//#line 46 "gramatica.y"
+{ yyval.ival = _acciones.operacion('/', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 18:
-//#line 46 "gramatica.y"
-{ yyval.ival = WhileAcciones.operacion('%', val_peek(2).obj, val_peek(0).obj); }
+//#line 47 "gramatica.y"
+{ yyval.ival = _acciones.operacion('%', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 19:
-//#line 48 "gramatica.y"
+//#line 49 "gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 20:
-//#line 49 "gramatica.y"
+//#line 50 "gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 21:
-//#line 51 "gramatica.y"
+//#line 52 "gramatica.y"
 {yyval.obj = val_peek(0).obj; }
 break;
 case 23:
-//#line 52 "gramatica.y"
+//#line 53 "gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
 case 24:
-//#line 54 "gramatica.y"
+//#line 55 "gramatica.y"
 {yyval.obj = val_peek(0).obj; }
 break;
 case 26:
-//#line 55 "gramatica.y"
+//#line 56 "gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
-//#line 582 "WhileParser.java"
+//#line 575 "WhileParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

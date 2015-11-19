@@ -8,6 +8,11 @@ public abstract class Parser {
     protected ControladorEjecucion _controladorEjecucion;
     protected Acciones _acciones;
     
+    public Parser(ControladorEjecucion controladorEjecucion) {
+        _controladorEjecucion = controladorEjecucion;
+    }
+
+    @Deprecated
     public Parser(AnalizadorLexico analizadorLexico, ControladorEjecucion controladorEjecucion) {
         _analizadorLexico = analizadorLexico;
         _controladorEjecucion = controladorEjecucion;
