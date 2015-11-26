@@ -6,10 +6,14 @@ public abstract class Parser {
     
     protected AnalizadorLexico _analizadorLexico;
     protected ControladorEjecucion _controladorEjecucion;
-    protected Acciones _acciones;
+    protected Programa _programa;
     
     public Parser(ControladorEjecucion controladorEjecucion) {
         _controladorEjecucion = controladorEjecucion;
+
+        if (_controladorEjecucion != null) {
+            _programa = _controladorEjecucion.ambito().programa();
+        }
     }
 
     @Deprecated
@@ -25,15 +29,11 @@ public abstract class Parser {
     public ControladorEjecucion controladorEjecucion() {
         return _controladorEjecucion;
     }
-    
-    public Acciones acciones() {
-        return _acciones;
-    }
 
     public abstract int parse();
 
     /**
-     * esta función se invoca por el analizador cuando necesita el ** siguiente
+     * esta función se invoca por el analizador cuando necesita el siguiente
      * token del analizador léxico
      *
      */

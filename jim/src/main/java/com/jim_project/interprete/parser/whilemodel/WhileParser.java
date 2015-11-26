@@ -332,6 +332,8 @@ final static String yyrule[] = {
 
 //#line 60 "gramatica.y"
 
+  private WhileAcciones _acciones;
+
   public WhileParser(Reader r, ControladorEjecucion controladorEjecucion) {
      super(controladorEjecucion);
      _analizadorLexico = new WhileLex(r, this);
@@ -353,7 +355,7 @@ final static String yyrule[] = {
     yylval = new WhileParserVal(0);
     yyl_return = _analizadorLexico.yylex();
   } catch (IOException e) {
-    com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
+    //com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
   }
 
   return yyl_return;
@@ -363,7 +365,7 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
     String nombreToken = yyname[token];
-    com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
+    //com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
     /*
   System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
   System.err.println ("Token leído : "+yyname[token]);
@@ -404,7 +406,7 @@ final static String yyrule[] = {
   System.err.println(nombresTokens);
   */
   }
-//#line 334 "WhileParser.java"
+//#line 336 "WhileParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -650,7 +652,7 @@ case 26:
 //#line 56 "gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
-//#line 575 "WhileParser.java"
+//#line 577 "WhileParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
@@ -709,24 +711,7 @@ public void run()
 
 
 //## Constructors ###############################################
-/**
- * Default constructor.  Turn off with -Jnoconstruct .
-
- */
-public WhileParser()
-{
-  //nothing to do
-}
-
-
-/**
- * Create a parser, setting the debug to true or false.
- * @param debugMe true for debugging, false for no debug.
- */
-public WhileParser(boolean debugMe)
-{
-  yydebug=debugMe;
-}
+//## The -Jnoconstruct option was used ##
 //###############################################################
 
 

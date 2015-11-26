@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=MacrosParser -Jpackage=com.jim_project.interprete.parser.analizadormacros -Jextends=Parser
+BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=MacrosParser -Jpackage=com.jim_project.interprete.parser.analizadormacros -Jextends=Parser -Jnoconstruct #-Jnodebug
 JAVAC = javac -d /home/alberto/Programación/tfg-int-rpretes/JIM/build/classes/main -classpath /home/alberto/Programación/tfg-int-rpretes/JIM/src/main/java
 
 all: MacrosLex.java MacrosParser.java MacrosParserVal.java

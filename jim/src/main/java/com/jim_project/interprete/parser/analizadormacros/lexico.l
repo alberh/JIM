@@ -73,7 +73,7 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                   }
 {LineTerminator}  { _lineaActual++; }
 {WhiteSpace}      { }
-.                 { com.jim_project.interprete.util.Error.deCaracterNoReconocido(_lineaActual, yytext());
+.                 { /*com.jim_project.interprete.util.Error.deCaracterNoReconocido(_lineaActual, yytext());*/
                     /*yyparser.yyerror("el(los) carácter(es) '"+yytext()+"' no forma(n) ningún token conocido");*/
                   }
 
@@ -96,7 +96,7 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                     _contenido.append(id);
                     return MacrosParser.VARIABLE;
                   }
-"defmacro"        { com.jim_project.interprete.util.Error.deDefinicionInterior(_lineaActual); }
+"defmacro"        { /* com.jim_project.interprete.util.Error.deDefinicionInterior(_lineaActual); */ }
 "endmacro"        { yyparser.yylval = new MacrosParserVal(_contenido.toString());
                     yybegin(YYINITIAL);
                     return MacrosParser.ENDMACRO;

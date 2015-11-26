@@ -320,6 +320,8 @@ final static String yyrule[] = {
 };
 
 //#line 55 "gramatica.y"
+  
+  private LoopAcciones _acciones;
 
   public LoopParser(Reader r, ControladorEjecucion controladorEjecucion) {
      super(controladorEjecucion);
@@ -342,7 +344,7 @@ final static String yyrule[] = {
     yylval = new LoopParserVal(0);
     yyl_return = _analizadorLexico.yylex();
   } catch (IOException e) {
-    com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
+    //com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
   }
 
   return yyl_return;
@@ -352,7 +354,7 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
     String nombreToken = yyname[token];
-    com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
+    //com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
     /*
   System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
   System.err.println ("Token leído : "+yyname[token]);
@@ -393,7 +395,7 @@ final static String yyrule[] = {
   System.err.println(nombresTokens);
   */
   }
-//#line 323 "LoopParser.java"
+//#line 325 "LoopParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -623,7 +625,7 @@ case 22:
 //#line 51 "gramatica.y"
 { yyval.obj = new LoopParserVal(); }
 break;
-//#line 548 "LoopParser.java"
+//#line 550 "LoopParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
@@ -682,24 +684,7 @@ public void run()
 
 
 //## Constructors ###############################################
-/**
- * Default constructor.  Turn off with -Jnoconstruct .
-
- */
-public LoopParser()
-{
-  //nothing to do
-}
-
-
-/**
- * Create a parser, setting the debug to true or false.
- * @param debugMe true for debugging, false for no debug.
- */
-public LoopParser(boolean debugMe)
-{
-  yydebug=debugMe;
-}
+//## The -Jnoconstruct option was used ##
 //###############################################################
 
 

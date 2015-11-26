@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=LoopParser -Jpackage=com.jim_project.interprete.parser.loopmodel -Jextends=Parser #-Jnodebug
+BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=LoopParser -Jpackage=com.jim_project.interprete.parser.loopmodel -Jextends=Parser -Jnoconstruct #-Jnodebug
 JAVAC = javac -d /home/alberto/Programación/tfg-int-rpretes/JIM/build/classes/main -classpath /home/alberto/Programación/tfg-int-rpretes/JIM/src/main/java/org
 
 all: LoopLex.java LoopParser.java LoopParserVal.java

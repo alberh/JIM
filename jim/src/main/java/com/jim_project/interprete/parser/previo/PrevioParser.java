@@ -353,6 +353,8 @@ final static String yyrule[] = {
 
 //#line 78 "gramatica.y"
 
+  private PrevioAcciones _acciones;
+
   public PrevioParser(Reader r, ControladorEjecucion controladorEjecucion) {
         super(controladorEjecucion);
         _analizadorLexico = new PrevioLex(r, this);
@@ -374,7 +376,7 @@ final static String yyrule[] = {
 		yylval = new PrevioParserVal(0);
 		yyl_return = _analizadorLexico.yylex();
 	} catch (IOException e) {
-		com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
+		//com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
 	}
 
 	return yyl_return;
@@ -384,7 +386,7 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-  	com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
+  	//com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
   	/*
 	System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
 	System.err.println ("Token leído : "+yyname[token]);
@@ -425,7 +427,7 @@ final static String yyrule[] = {
 	System.err.println(nombresTokens);
 	*/
   }
-//#line 355 "PrevioParser.java"
+//#line 357 "PrevioParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -699,7 +701,7 @@ case 33:
 //#line 74 "gramatica.y"
 { ; }
 break;
-//#line 624 "PrevioParser.java"
+//#line 626 "PrevioParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
@@ -758,24 +760,7 @@ public void run()
 
 
 //## Constructors ###############################################
-/**
- * Default constructor.  Turn off with -Jnoconstruct .
-
- */
-public PrevioParser()
-{
-  //nothing to do
-}
-
-
-/**
- * Create a parser, setting the debug to true or false.
- * @param debugMe true for debugging, false for no debug.
- */
-public PrevioParser(boolean debugMe)
-{
-  yydebug=debugMe;
-}
+//## The -Jnoconstruct option was used ##
 //###############################################################
 
 

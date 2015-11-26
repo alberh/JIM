@@ -286,6 +286,8 @@ final static String yyrule[] = {
 
 //#line 37 "gramatica.y"
 
+  private MacrosAcciones _acciones;
+
   public MacrosParser(Reader r, Programa programa) {
     super(null);
     _analizadorLexico = new MacrosLex(r, this);
@@ -307,7 +309,7 @@ final static String yyrule[] = {
 		yylval = new MacrosParserVal(0);
 		yyl_return = _analizadorLexico.yylex();
 	} catch (IOException e) {
-		com.jim_project.interprete.util.Error.deESEnAnalizadorLexico(77); //_analizadorLexico.lineaActual());
+		//com.jim_project.interprete.util.Error.deESEnAnalizadorLexico(77); //_analizadorLexico.lineaActual());
 	}
 
 	return yyl_return;
@@ -317,7 +319,7 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-	com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), nombreToken, descripcion);
+	//com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), nombreToken, descripcion);
   	
   	/*
 	System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
@@ -364,7 +366,7 @@ final static String yyrule[] = {
   public void yyerror(String descripcion) {
   	com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), descripcion);
   }
-//#line 294 "MacrosParser.java"
+//#line 296 "MacrosParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -542,7 +544,7 @@ case 11:
 //#line 32 "gramatica.y"
 { _acciones.nuevaEtiquetaSalto(val_peek(0).sval); }
 break;
-//#line 467 "MacrosParser.java"
+//#line 469 "MacrosParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
@@ -601,24 +603,7 @@ public void run()
 
 
 //## Constructors ###############################################
-/**
- * Default constructor.  Turn off with -Jnoconstruct .
-
- */
-public MacrosParser()
-{
-  //nothing to do
-}
-
-
-/**
- * Create a parser, setting the debug to true or false.
- * @param debugMe true for debugging, false for no debug.
- */
-public MacrosParser(boolean debugMe)
-{
-  yydebug=debugMe;
-}
+//## The -Jnoconstruct option was used ##
 //###############################################################
 
 

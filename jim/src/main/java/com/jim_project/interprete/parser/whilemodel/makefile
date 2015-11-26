@@ -1,5 +1,5 @@
 JFLEX  = jflex 
-BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=WhileParser -Jpackage=com.jim_project.interprete.parser.whilemodel -Jextends=Parser #-Jnodebug
+BYACCJ = ../../../../../byaccj/yacc.linux -Jclass=WhileParser -Jpackage=com.jim_project.interprete.parser.whilemodel -Jextends=Parser -Jnoconstruct #-Jnodebug
 JAVAC = javac -d /home/alberto/Programación/tfg-int-rpretes/JIM/build/classes/main -classpath /home/alberto/Programación/tfg-int-rpretes/JIM/src/main/java/org
 
 all: WhileLex.java WhileParser.java WhileParserVal.java
