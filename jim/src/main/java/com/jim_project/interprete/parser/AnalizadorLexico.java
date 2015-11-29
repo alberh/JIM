@@ -6,5 +6,5 @@ public abstract class AnalizadorLexico {
 
     public abstract void yyclose() throws java.io.IOException;
 
-    public abstract int yylex ();
+    public abstract int yylex() throws java.io.IOException;
 }

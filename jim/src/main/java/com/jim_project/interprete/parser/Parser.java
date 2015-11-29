@@ -1,18 +1,25 @@
 package com.jim_project.interprete.parser;
 
 import com.jim_project.interprete.util.ControladorEjecucion;
+import com.jim_project.interprete.Programa;
+import com.jim_project.interprete.componente.Ambito;
 
 public abstract class Parser {
     
     protected AnalizadorLexico _analizadorLexico;
     protected ControladorEjecucion _controladorEjecucion;
+    protected Ambito _ambito;
     protected Programa _programa;
     
     public Parser(ControladorEjecucion controladorEjecucion) {
         _controladorEjecucion = controladorEjecucion;
 
         if (_controladorEjecucion != null) {
-            _programa = _controladorEjecucion.ambito().programa();
+            _ambito = _controladorEjecucion.ambito();
+            _programa = _ambito.programa();
+        } else {
+            _ambito = null;
+            _programa = null;
         }
     }
 
@@ -28,6 +35,14 @@ public abstract class Parser {
     
     public ControladorEjecucion controladorEjecucion() {
         return _controladorEjecucion;
+    }
+
+    public Ambito ambito() {
+        return _ambito;
+    }
+
+    public Programa programa() {
+        return _programa;
     }
 
     public abstract int parse();

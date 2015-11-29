@@ -567,11 +567,11 @@ case 5:
 break;
 case 6:
 //#line 33 "gramatica.y"
-{ _acciones.abreBucle(val_peek(0).sval, Programa.numeroLineaActual()); }
+{ _acciones.abreBucle(val_peek(0).sval, _controladorEjecucion.numeroLineaActual()); }
 break;
 case 7:
 //#line 34 "gramatica.y"
-{ _acciones.cierraBucle(Programa.numeroLineaActual()); }
+{ _acciones.cierraBucle(_controladorEjecucion.numeroLineaActual()); }
 break;
 case 8:
 //#line 36 "gramatica.y"

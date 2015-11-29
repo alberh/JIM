@@ -364,7 +364,7 @@ final static String yyrule[] = {
 
   @Override
   public void yyerror(String descripcion) {
-  	com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), descripcion);
+  	// com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), descripcion);
   }
 //#line 296 "MacrosParser.java"
 //###############################################################

@@ -113,5 +113,5 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
 
   @Override
   public void yyerror(String descripcion) {
-  	com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), descripcion);
+  	// com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), descripcion);
   }

@@ -17,23 +17,23 @@ public class MacrosAcciones extends Acciones {
         _programa = programa;
     }
     
-    public String filtrarIDVariable(String id) {
+    public static String filtrarIDVariable(String id) {
         id = Variable.normalizarID(id);
-        
+        /*
         if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
             id = "V" + id;
         }
-        
+        */
         return id;
     }
 
-    public String filtrarIDEtiqueta(String id) {
+    public static String filtrarIDEtiqueta(String id) {
         id = Etiqueta.normalizarID(id);
-        
+        /*
         if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
             id = "L" + id;
         }
-        
+        */
         return id;
     }
 

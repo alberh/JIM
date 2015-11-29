@@ -38,7 +38,7 @@ inicio : sentencia { $$ = $1; } inicio
 ;
 sentencia : etiqueta instruccion { ; }
 ;
-etiqueta :  '[' ETIQUETA ']' { Etiqueta.set($2, Programa.numeroLineaActual()); }
+etiqueta :  '[' ETIQUETA ']' { _acciones.definirEtiqueta($2, _controladorEjecucion.numeroLineaActual()); }
          | { ; }
 ;
 instruccion : VARIABLE { _acciones.definirVariableYMantener($1); } FLECHA finInstruccion
@@ -46,9 +46,9 @@ instruccion : VARIABLE { _acciones.definirVariableYMantener($1); } FLECHA finIns
             | VARIABLE DECREMENTO { _acciones.definirVariable($1); }
             | IF VARIABLE DISTINTO GOTO ETIQUETA { _acciones.definirVariable($2); }
             | GOTO ETIQUETA { ; }
-            | LOOP VARIABLE { _acciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }
-            | WHILE VARIABLE DISTINTO { _acciones.definirVariable($2); Bucle.abrir(Programa.numeroLineaActual()); }
-            | END { Bucle.cerrar(Programa.numeroLineaActual()); }
+            | LOOP VARIABLE { _acciones.definirVariable($2); _acciones.definirInicioBucle(_controladorEjecucion.numeroLineaActual()); }
+            | WHILE VARIABLE DISTINTO { _acciones.definirVariable($2); _acciones.definirInicioBucle(_controladorEjecucion.numeroLineaActual()); }
+            | END { _acciones.definirFinBucle(_controladorEjecucion.numeroLineaActual()); }
 ;
 finInstruccion :  VARIABLE { _acciones.definirVariable($1); }
                |  NUMERO { ; }

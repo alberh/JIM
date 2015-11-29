@@ -595,7 +595,7 @@ case 4:
 break;
 case 5:
 //#line 41 "gramatica.y"
-{ Etiqueta.set(val_peek(1).sval, Programa.numeroLineaActual()); }
+{ _acciones.definirEtiqueta(val_peek(1).sval, _controladorEjecucion.numeroLineaActual()); }
 break;
 case 6:
 //#line 42 "gramatica.y"
@@ -623,15 +623,15 @@ case 12:
 break;
 case 13:
 //#line 49 "gramatica.y"
-{ _acciones.definirVariable(val_peek(0).sval); Bucle.abrir(Programa.numeroLineaActual()); }
+{ _acciones.definirVariable(val_peek(0).sval); _acciones.definirInicioBucle(_controladorEjecucion.numeroLineaActual()); }
 break;
 case 14:
 //#line 50 "gramatica.y"
-{ _acciones.definirVariable(val_peek(1).sval); Bucle.abrir(Programa.numeroLineaActual()); }
+{ _acciones.definirVariable(val_peek(1).sval); _acciones.definirInicioBucle(_controladorEjecucion.numeroLineaActual()); }
 break;
 case 15:
 //#line 51 "gramatica.y"
-{ Bucle.cerrar(Programa.numeroLineaActual()); }
+{ _acciones.definirFinBucle(_controladorEjecucion.numeroLineaActual()); }
 break;
 case 16:
 //#line 53 "gramatica.y"

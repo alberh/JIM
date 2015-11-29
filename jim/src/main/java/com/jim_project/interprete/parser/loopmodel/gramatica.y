@@ -30,8 +30,8 @@ inicio :  instruccion { $$ = $1; } inicio
 ;
 instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
             | VARIABLE INCREMENTO { _acciones.incremento($1); }
-            | LOOP VARIABLE { _acciones.abreBucle($2, Programa.numeroLineaActual()); }
-            | END { _acciones.cierraBucle(Programa.numeroLineaActual()); }
+            | LOOP VARIABLE { _acciones.abreBucle($2, _controladorEjecucion.numeroLineaActual()); }
+            | END { _acciones.cierraBucle(_controladorEjecucion.numeroLineaActual()); }
 ;
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }

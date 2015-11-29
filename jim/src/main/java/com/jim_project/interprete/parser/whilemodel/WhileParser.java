@@ -582,11 +582,11 @@ case 6:
 break;
 case 7:
 //#line 35 "gramatica.y"
-{ _acciones.abreBucle(val_peek(1).sval, Programa.numeroLineaActual()); }
+{ _acciones.abreBucle(val_peek(1).sval, _controladorEjecucion.numeroLineaActual()); }
 break;
 case 8:
 //#line 36 "gramatica.y"
-{ _acciones.cierraBucle(Programa.numeroLineaActual()); }
+{ _acciones.cierraBucle(_controladorEjecucion.numeroLineaActual()); }
 break;
 case 9:
 //#line 38 "gramatica.y"

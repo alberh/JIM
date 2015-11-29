@@ -26,6 +26,18 @@ public class PrevioAcciones extends Acciones {
         _idUltimaVariable = idVariable.toString();
     }
 
+    public void definirEtiqueta(Object idEtiqueta, Object numeroLinea) {
+        _ambito.etiquetas().nuevaEtiqueta(idEtiqueta.toString(), obtenerValor(numeroLinea));
+    }
+
+    public void definirInicioBucle(Object numeroLinea) {
+        _ambito.bucles().definirLineaInicio(obtenerValor(numeroLinea));
+    }
+
+    public void definirFinBucle(Object numeroLinea) {
+        _ambito.bucles().definirLineaFin(obtenerValor(numeroLinea));
+    }
+
     public int llamadasAMacros() {
         return _expansiones.size();
     }
