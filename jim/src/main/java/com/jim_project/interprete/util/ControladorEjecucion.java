@@ -1,5 +1,6 @@
 package com.jim_project.interprete.util;
 
+import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.componente.Ambito;
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -7,7 +8,11 @@ import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.parser.AnalizadorLexico;
 import com.jim_project.interprete.parser.Parser;
+import com.jim_project.interprete.parser.lmodel.LParser;
+import com.jim_project.interprete.parser.loopmodel.LoopParser;
 import com.jim_project.interprete.parser.previo.PrevioParser;
+import com.jim_project.interprete.parser.whilemodel.WhileParser;
+import java.io.Reader;
 
 public class ControladorEjecucion {
 
@@ -67,19 +72,41 @@ public class ControladorEjecucion {
             System.out.println("Si el programa no termina en unos segundos, "
                     + "probablemente haya caído en un bucle infinito.");
 
-            ejecutar(_programa.modelo().parser());
+            ejecutar(_programa.modelo().tipo());
         }
     }
 
     private void previo() {
         _etapa = Etapa.ANALIZANDO;
         if (_programa.estadoOk()) {
-            ejecutar(new PrevioParser(null, null));
+            ejecutar(Modelo.Tipo.PREVIO);
+        }
+    }
+    
+    private Parser obtenerParser(Modelo.Tipo tipo, String lineaReader) {
+        
+        BufferedReader reader = new BufferedReader(new StringReader(lineaReader));
+        
+        switch (tipo) {
+            case PREVIO:
+                return new PrevioParser(reader, this);
+                
+            case L:
+                return new LParser(reader, this);
+                
+            case LOOP:
+                return new LoopParser(reader, this);
+                
+            case WHILE:
+                return new WhileParser(reader, this);
+                
+            default:
+                return null;
         }
     }
 
-    private int ejecutar(Parser parser) {
-        if (!(parser instanceof PrevioParser)) {
+    private int ejecutar(Modelo.Tipo tipoParser) {
+        if (tipoParser != Modelo.Tipo.PREVIO) {
             _etapa = Etapa.EJECUTANDO;
         }
         // System.out.println("Etapa en ejecutar: " + _etapa);
@@ -87,23 +114,22 @@ public class ControladorEjecucion {
         _traza = new StringBuilder("[");
         _lineaActual = 0;
         _salto = false;
-        AnalizadorLexico lex = parser.analizadorLexico();
         int instruccionesEjecutadas = 0;
 
         if (numeroLineas() > 0) {
             String linea = lineaSiguiente();
+            Parser parser = obtenerParser(tipoParser, linea);
+            AnalizadorLexico lex = parser.analizadorLexico();
 
             do {
-                if (_etapa == Etapa.EJECUTANDO) {
-                    // System.out.println(_lineaActual + ": " + linea);
-                    _traza.append(_ambito.estadoMemoria());
+                // System.out.println(_lineaActual + ": " + linea);
+                _traza.append(_ambito.estadoMemoria());
 
-                    if (instruccionesEjecutadas > 0) {
-                        _traza.append(",")
-                                .append(System.getProperty("line.separator"));
-                    }
-                    _traza.append(_ambito.estadoMemoria());
+                if (instruccionesEjecutadas > 0) {
+                    _traza.append(",")
+                            .append(System.getProperty("line.separator"));
                 }
+                _traza.append(_ambito.estadoMemoria());
 
                 try {
                     lex.yyclose();

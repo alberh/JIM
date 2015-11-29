@@ -30,7 +30,7 @@ public class GestorEtiquetas extends GestorComponentes {
         if (_etiquetas.containsKey(et.id())) {
             return _etiquetas.get(et.id());
         } else {
-            _etiquetas.put(id, et);
+            _etiquetas.put(et.id(), et);
 
             if (et.grupo() == 'A' && et.indice() > _indiceUltimaA) {
                 _indiceUltimaA = et.indice();

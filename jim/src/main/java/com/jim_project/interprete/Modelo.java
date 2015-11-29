@@ -1,20 +1,15 @@
 package com.jim_project.interprete;
 
-import com.jim_project.interprete.parser.Parser;
-import com.jim_project.interprete.parser.lmodel.LParser;
-import com.jim_project.interprete.parser.loopmodel.LoopParser;
-import com.jim_project.interprete.parser.whilemodel.WhileParser;
 import com.jim_project.interprete.util.Configuracion;
 
 public class Modelo {
 
     public enum Tipo {
 
-        L, LOOP, WHILE
+        PREVIO, L, LOOP, WHILE
     };
 
     private Tipo _tipo;
-    private Parser _parser;
     private String _ruta;
 
     public Modelo(String nombre) {
@@ -23,30 +18,11 @@ public class Modelo {
 
     public Modelo(Tipo tipo) {
         _tipo = tipo;
-
-        switch (_tipo) {
-            case L:
-                _parser = new LParser(null, null);
-                break;
-
-            case LOOP:
-                _parser = new LoopParser(null, null);
-                break;
-
-            case WHILE:
-                _parser = new WhileParser(null, null);
-                break;
-        }
-        
         _ruta = Modelo.obtenerRuta(_tipo);
     }
 
     public Tipo tipo() {
         return _tipo;
-    }
-
-    public Parser parser() {
-        return _parser;
     }
     
     public String ruta() {

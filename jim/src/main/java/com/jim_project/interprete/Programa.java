@@ -151,7 +151,7 @@ public class Programa {
                     _error.alCargarPrograma(_fichero);
                 }
 
-                _gestorAmbitos.nuevoAmbito(parametros, lineas);
+                _gestorAmbitos.nuevoAmbito(parametros, lineas); // .iniciar(parametros);
                 _gestorAmbitos.ambitoRaiz().iniciar(parametros);
             }
         }
