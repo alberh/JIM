@@ -4,7 +4,6 @@ import com.jim_project.interprete.parser.analizadormacros.MacrosParser;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.Configuracion;
 import com.jim_project.interprete.util.ControladorEjecucion;
-import com.jim_project.interprete.componente.Ambito;
 import java.io.File;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;

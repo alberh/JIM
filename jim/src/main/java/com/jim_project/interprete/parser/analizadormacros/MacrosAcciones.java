@@ -5,7 +5,6 @@ import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.parser.Acciones;
 import com.jim_project.interprete.componente.Etiqueta;
 import com.jim_project.interprete.componente.Variable;
-import com.jim_project.interprete.componente.Ambito;
 
 public class MacrosAcciones extends Acciones {
     
