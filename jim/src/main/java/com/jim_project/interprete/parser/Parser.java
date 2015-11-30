@@ -11,6 +11,12 @@ public abstract class Parser {
     protected Ambito _ambito;
     protected Programa _programa;
     
+    public Parser(Programa programa) {
+        _programa = programa;
+        _controladorEjecucion = null;
+        _ambito = null;
+    }
+    
     public Parser(ControladorEjecucion controladorEjecucion) {
         _controladorEjecucion = controladorEjecucion;
 
@@ -21,12 +27,6 @@ public abstract class Parser {
             _ambito = null;
             _programa = null;
         }
-    }
-
-    @Deprecated
-    public Parser(AnalizadorLexico analizadorLexico, ControladorEjecucion controladorEjecucion) {
-        _analizadorLexico = analizadorLexico;
-        _controladorEjecucion = controladorEjecucion;
     }
     
     public AnalizadorLexico analizadorLexico() {
@@ -61,7 +61,7 @@ public abstract class Parser {
     public abstract void yyerror(String descripcion, int yystate, int token);
 
     public void yyerror(String descripcion) {
-        _controladorEjecucion.ambito().programa().error().deTokenNoEsperado(descripcion);
+        _programa.error().deTokenNoEsperado(descripcion);
     }
 
     /*

@@ -237,7 +237,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         taEditor.setColumns(20);
         taEditor.setRows(5);
-        taEditor.setText("[a1]\tif x1 != 0 goto a2\n\ty <- z\n\tgoto e\n# sumo x2 en z1\n[a2]\tz <- z + x2\n\tx1--\n\tgoto a1\n");
+        taEditor.setText("while x1 != 0\n\tz++\n\tx1--\nend\n\ny <- z1");
         taEditor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 taEditorKeyPressed(evt);
@@ -645,9 +645,9 @@ public class MainWindow extends javax.swing.JFrame {
                 hayCambios(false);
             } catch (Exception ex) {
                 if (_ficheroAbierto != _ficheroTemporal) {
-                    // Error.alGuardarFichero(_ficheroAbierto.getAbsolutePath());
+                    Error.alGuardarFichero(_ficheroAbierto.getAbsolutePath());
                 } else {
-                    // Error.alGuardarFicheroTemporal();
+                    Error.alGuardarFicheroTemporal();
                 }
             }
         } else {

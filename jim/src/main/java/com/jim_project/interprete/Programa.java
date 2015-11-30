@@ -54,6 +54,7 @@ public class Programa {
         _objetivo = objetivo;
         _modoFlexible = modoFlexible;
         _macrosPermitidas = macrosPermitidas;
+        _error = new Error(this);
         _modelo = modelo;
         _gestorAmbitos = new GestorAmbitos(this);
         _gestorMacros = new GestorMacros(this);

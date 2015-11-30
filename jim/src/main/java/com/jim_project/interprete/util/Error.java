@@ -5,33 +5,36 @@ import com.jim_project.interprete.Programa.Estado;
 
 // Meter dentro de programa y fuera estáticos
 // programa().error().deBlahBlah();
-@Deprecated
 public class Error {
 
     private Programa _programa;
-    
+
     public Error(Programa programa) {
         _programa = programa;
     }
-    
+
     // Métodos útiles
-    private void imprimir(String s) {
-        if (_programa.estadoOk()) {
-            System.err.println(s);
-            _programa.estado(Estado.ERROR);
+    private static void imprimir(String mensaje) {
+        imprimir(mensaje, null);
+    }
+    
+    private static void imprimir(String mensaje, Programa programa) {
+        System.err.println(mensaje);
+        if (programa != null && programa.estadoOk()) {
+            programa.estado(Estado.ERROR);
         }
     }
 
-    private void imprimir(String s, int n) {
+    private void imprimir(String mensaje, int numeroLinea) {
         if (_programa.ficheroEnProceso().equals("jim.tmp")) {
-            imprimir("Línea " + n + ". " + s);
+            imprimir("Línea " + numeroLinea + ". " + mensaje);
         } else {
-            imprimir(_programa.ficheroEnProceso() + ":" + n + ". " + s);
+            imprimir(_programa.ficheroEnProceso() + ":" + numeroLinea + ". " + mensaje);
         }
     }
 
     private int numeroLineaActual() {
-        return 0; //_programa.numeroLineaActual();
+        return _programa.gestorAmbitos().ambitoActual().controladorEjecucion().numeroLineaActual();
     }
 
     // Programa
@@ -86,66 +89,69 @@ public class Error {
                 + "\" porque contiene llamadas recursivas.",
                 n);
     }
+    
+    // Main
+    public static void deModeloNoValido(String cadena) {
+        Error.imprimir("Error X5: No se pudo instanciar el modelo \"" + cadena + "\".");
+    }
 
     // GUI
     public static void alCargarProgramaGUI(String f) {
-        //imprimir("Error 10: No se pudo abrir el fichero \"" + f + "\".");
+        Error.imprimir("Error 10: No se pudo abrir el fichero \"" + f + "\".");
     }
 
-    public void alGuardarFichero(String f) {
-        imprimir("Error 11: No se pudo guardar el fichero \"" + f + "\".");
+    public static void alGuardarFichero(String f) {
+        Error.imprimir("Error 11: No se pudo guardar el fichero \"" + f + "\".");
     }
 
-    public void alGuardarFicheroTemporal() {
-        imprimir("Error 12: No se pudo guardar el fichero temporal.");
+    public static void alGuardarFicheroTemporal() {
+        Error.imprimir("Error 12: No se pudo guardar el fichero temporal.");
     }
 
     // Variable
-    public void alObtenerIndiceDeVariable(String v) {
+    public static void alObtenerIndiceDeVariable(String v) {
         imprimir("Error 27: No se pudo obtener el índice de la variable "
-                + "\"" + v + "\".",
-                numeroLineaActual());
+                + "\"" + v + "\"."); //, numeroLineaActual());
     }
-    
-    public void deIdentificadorDeVariableVacio() {
+
+    public static void deIdentificadorDeVariableVacio() {
         imprimir("Error 24: Nombre de variable vacío.");
     }
-    
-    public void deTipoDeVariableNoValido(String tipo) {
+
+    public static void deTipoDeVariableNoValido(String tipo) {
         // Para después del refactor
-        imprimir("Error 26: Tipo de variable '" + tipo + "' no válido.",
-                0 /*_programa.numeroLineaActual()*/);
+        imprimir("Error 26: Tipo de variable '" + tipo + "' no válido.");
+                // , numeroLineaActual());
     }
 
     // Bucle
-    public void alCerrarBucle(int linea ){
+    public void alCerrarBucle(int linea) {
         imprimir("Error 13: No se esperaba cierre de bucle en la línea "
                 + linea + ".");
     }
-    
+
     // Etiqueta
-    public void deIdentificadorDeEtiquetaVacio() {
+    public static void deIdentificadorDeEtiquetaVacio() {
         imprimir("Error 25: Nombre de etiqueta vacío.");
     }
-    
+
     public void alObtenerIndiceDeEtiqueta(String e) {
         imprimir("Error 28: No se pudo obtener el índice de la etiqueta "
-                + "\"" + e + "\".",
-                numeroLineaActual());
+                + "\"" + e + "\".", numeroLineaActual());
     }
 
     // Configuración
-    public void alCargarConfiguracion(String f) {
+    public static void alCargarConfiguracion(String f) {
         imprimir("Error 14: No se pudo cargar el fichero de configuración \""
                 + f + "\".");
     }
 
-    public void alCrearFicheroConfiguracion(String f) {
+    public static void alCrearFicheroConfiguracion(String f) {
         imprimir("Error 15: No se pudo crear el fichero de configuración \""
                 + f + "\".");
     }
 
-    public void alGuardarConfiguracion() {
+    public static void alGuardarConfiguracion() {
         imprimir("Error 16: No se pudo guardar la configuración.");
     }
 
@@ -216,14 +222,13 @@ public class Error {
     public void deESEnAnalizadorLexico(int n) {
         imprimir("Error 21: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", n);
     }
-    
+
     // Operaciones
     /*
-    public void deDivisionPorCero() {
-        imprimir("Error 24: División por cero.", Programa.numeroLineaActual());
-    }
-    */
-    
+     public void deDivisionPorCero() {
+     imprimir("Error 24: División por cero.", Programa.numeroLineaActual());
+     }
+     */
     // Operaciones extendidas
     public void deSumaValorNoUnidad() {
         imprimir("Error 22: No se puede sumar un valor distinto de la unidad "

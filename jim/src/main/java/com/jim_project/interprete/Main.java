@@ -28,10 +28,10 @@ public class Main {
             String fichero = args[1];
 
             Modelo modelo = new Modelo(cadenaModelo);
-            boolean modoFlexible = false;
-            boolean macrosPermitidas = true;
 
             if (modelo.tipo() != null) {
+                boolean modoFlexible = false;
+                boolean macrosPermitidas = true;
                 int[] parametros = null;
 
                 if (args.length > 2) {
@@ -59,11 +59,6 @@ public class Main {
                 }
 
                 iniciar(fichero, modelo, modoFlexible, macrosPermitidas, parametros);
-            } else {
-                // Añadir soporte para expansión de macros en terminal
-
-                // Error.deModeloNoValido(cadenaModelo);
-                System.err.println("Error x: modelo no válido.");
             }
         } else {
             System.out.println("Uso: jim modelo fichero [param1 [param2 [...]]]");
@@ -95,8 +90,8 @@ public class Main {
             Modelo modelo,
             boolean modoFlexible,
             boolean macrosPermitidas
-            ) {
-        
+    ) {
+
         Programa programa = new Programa(fichero,
                 modelo,
                 Programa.Objetivo.EJECUTAR,

@@ -70,7 +70,6 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
      super(controladorEjecucion);
      _analizadorLexico = new LLex(r, this);
      _acciones = new LAcciones(_controladorEjecucion.ambito());
-     //yydebug = true;
   }
 
   public int parse() {
@@ -87,7 +86,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
     yylval = new LParserVal(0);
     yyl_return = _analizadorLexico.yylex();
   } catch (IOException e) {
-    //com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
+    _programa.error().deESEnAnalizadorLexico();
   }
 
   return yyl_return;
@@ -97,7 +96,7 @@ masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
   **/
   public void yyerror (String descripcion, int yystate, int token) {
     String nombreToken = yyname[token];
-    // com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
+    _programa.error().deTokenNoEsperado(nombreToken, descripcion);
     /*
   System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
   System.err.println ("Token leído : "+yyname[token]);

@@ -1,6 +1,5 @@
 package com.jim_project.interprete.componente;
 
-import java.util.HashMap;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.gestor.GestorEtiquetas;
 
@@ -20,8 +19,8 @@ public class Etiqueta extends Componente {
     public Etiqueta(String id, int linea, GestorEtiquetas gestorEtiquetas) {
         super(Etiqueta.normalizarID(id), gestorEtiquetas);
 
-        _grupo = Etiqueta.obtenerGrupo(id);
-        _indice = Etiqueta.obtenerIndice(id);
+        _grupo = obtenerGrupo(id);
+        _indice = obtenerIndice(id);
         _linea = linea;
     }
 
@@ -64,12 +63,12 @@ public class Etiqueta extends Componente {
                 return id;
             }
         } else {
-            // Error.deIdentificadorDeEtiquetaVacio();
+            Error.deIdentificadorDeEtiquetaVacio();
             return "";
         }
     }
 
-    public static char obtenerGrupo(String id) {
+    private char obtenerGrupo(String id) {
         id = Etiqueta.normalizarID(id);
         if (Character.isDigit(id.charAt(1))) {
             return id.charAt(0);
@@ -79,7 +78,7 @@ public class Etiqueta extends Componente {
     }
 
     // Interfaz con los métodos comunes entre Etiqueta y Variable?
-    public static int obtenerIndice(String id) {
+    private int obtenerIndice(String id) {
         id = Etiqueta.normalizarID(id);
 
         if (id.length() > 1) {
@@ -94,7 +93,7 @@ public class Etiqueta extends Componente {
             try {
                 return Integer.parseInt(id.substring(indiceInicio));
             } catch (NumberFormatException ex) {
-                // Error.alObtenerIndiceDeEtiqueta(id);
+                _gestor.ambito().programa().error().alObtenerIndiceDeEtiqueta(id);
             }
         } else {
             return 1;
@@ -102,77 +101,4 @@ public class Etiqueta extends Componente {
 
         return 0;
     }
-
-    /**
-     * *************************************************************
-     * Refactor
-     */
-    /*
-    private static HashMap<String, Etiqueta> _etiquetas = new HashMap<>();
-    private static int _ultimaA = 0;
-*/
-    /**
-     * Imprime en pantalla todas las etiquetas.
-     *//*
-    public static void pintar() {
-        System.out.println("Etiquetas");
-        System.out.println(_etiquetas);
-        System.out.println();
-    }
-*/
-    /**
-     * Define una nueva etiqueta.
-     *//*
-    public static Etiqueta set(String id, int linea) {
-        id = normalizarID(id);
-
-        if (_etiquetas.containsKey(id)) {
-            return _etiquetas.get(id);
-        }
-
-        char letra = id.charAt(0);
-        int indice = Integer.parseInt(id.substring(1, id.length()));
-
-        Etiqueta et = new Etiqueta(id, linea);
-        _etiquetas.put(id, et);
-
-        if (letra == 'A' && indice > _ultimaA) {
-            _ultimaA = indice;
-        }
-
-        return et;
-    }
-*/
-    /**
-     * Obtiene una etiqueta previamente creada, según su identificador.
-     *//*
-    public static Etiqueta get(String id) {
-        return _etiquetas.get(normalizarID(id));
-    }
-*/
-    /**
-     * Crea y devuelve una nueva etiqueta etiquetada como An, donde n es una
-     * unidad superior al mayor índice de cualquier etiqueta A creada.
-     *//*
-    public static Etiqueta get() {
-        ++_ultimaA;
-        Etiqueta etiqueta = new Etiqueta("A" + _ultimaA, 0);
-
-        return etiqueta;
-    }
-*/
-    /**
-     * Devuelve el identificador de la última etiqueta A creada.
-     *//*
-    public static String ultimaEtiqueta() {
-        return "A" + _ultimaA;
-    }
-*/
-    /**
-     * Elimina todas las etiquetas.
-     *//*
-    public static void limpiar() {
-        _etiquetas.clear();
-        _ultimaA = 0;
-    }*/
 }

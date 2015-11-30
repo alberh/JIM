@@ -1,6 +1,7 @@
 package com.jim_project.interprete;
 
 import com.jim_project.interprete.util.Configuracion;
+import com.jim_project.interprete.util.Error;
 
 public class Modelo {
 
@@ -42,6 +43,7 @@ public class Modelo {
                 return Tipo.WHILE;
 
             default:
+                Error.deModeloNoValido(nombre);
                 return null;
         }
     }

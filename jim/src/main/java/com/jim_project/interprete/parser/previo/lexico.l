@@ -81,5 +81,5 @@ Number = 0|[1-9]+[0-9]*
                     return PrevioParser.IDMACRO;
                   }
 {LineTerminator}  { }
-.                 { //com.jim_project.interprete.util.Error.deCaracterNoReconocido(yytext());
+.                 { yyparser.programa().error().deCaracterNoReconocido(yytext());
                   }
