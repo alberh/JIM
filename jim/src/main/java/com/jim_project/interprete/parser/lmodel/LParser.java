@@ -344,7 +344,6 @@ final static String yyrule[] = {
      super(controladorEjecucion);
      _analizadorLexico = new LLex(r, this);
      _acciones = new LAcciones(_controladorEjecucion.ambito());
-     //yydebug = true;
   }
 
   public int parse() {
@@ -361,7 +360,7 @@ final static String yyrule[] = {
     yylval = new LParserVal(0);
     yyl_return = _analizadorLexico.yylex();
   } catch (IOException e) {
-    //com.jim_project.interprete.util.Error.deESEnAnalizadorLexico();
+    _programa.error().deESEnAnalizadorLexico();
   }
 
   return yyl_return;
@@ -371,7 +370,7 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
     String nombreToken = yyname[token];
-    // com.jim_project.interprete.util.Error.deTokenNoEsperado(nombreToken, descripcion);
+    _programa.error().deTokenNoEsperado(nombreToken, descripcion);
     /*
   System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
   System.err.println ("Token leído : "+yyname[token]);
@@ -412,7 +411,7 @@ final static String yyrule[] = {
   System.err.println(nombresTokens);
   */
   }
-//#line 342 "LParser.java"
+//#line 341 "LParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -670,7 +669,7 @@ case 29:
 //#line 62 "gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
-//#line 595 "LParser.java"
+//#line 594 "LParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

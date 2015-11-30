@@ -58,7 +58,7 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
 		yylval = new MacrosParserVal(0);
 		yyl_return = _analizadorLexico.yylex();
 	} catch (IOException e) {
-		_programa.error().deESEnAnalizadorLexico(_analizadorLexico.lineaActual());
+		_programa.error().deESEnAnalizadorLexico(((MacrosLex)_analizadorLexico).lineaActual());
 	}
 
 	return yyl_return;
@@ -68,7 +68,7 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-	_programa.error().deTokenNoEsperado(_analizadorLexico.lineaActual(), nombreToken, descripcion);
+	_programa.error().deTokenNoEsperado(((MacrosLex)_analizadorLexico).lineaActual(), nombreToken, descripcion);
   	
   	/*
 	System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);

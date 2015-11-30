@@ -289,7 +289,7 @@ final static String yyrule[] = {
   private MacrosAcciones _acciones;
 
   public MacrosParser(Reader r, Programa programa) {
-    super(null);
+    super(programa);
     _analizadorLexico = new MacrosLex(r, this);
     _acciones = new MacrosAcciones(programa);
 	//yydebug = true;
@@ -309,7 +309,7 @@ final static String yyrule[] = {
 		yylval = new MacrosParserVal(0);
 		yyl_return = _analizadorLexico.yylex();
 	} catch (IOException e) {
-		//com.jim_project.interprete.util.Error.deESEnAnalizadorLexico(77); //_analizadorLexico.lineaActual());
+		_programa.error().deESEnAnalizadorLexico(((MacrosLex)_analizadorLexico).lineaActual());
 	}
 
 	return yyl_return;
@@ -319,7 +319,7 @@ final static String yyrule[] = {
   **/
   public void yyerror (String descripcion, int yystate, int token) {
   	String nombreToken = yyname[token];
-	//com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), nombreToken, descripcion);
+	_programa.error().deTokenNoEsperado(((MacrosLex)_analizadorLexico).lineaActual(), nombreToken, descripcion);
   	
   	/*
 	System.err.println ("Error en línea "+Integer.toString(_analizadorLexico.lineaActual())+" : "+descripcion);
@@ -361,12 +361,7 @@ final static String yyrule[] = {
 	System.err.println(nombresTokens);
 	*/
   }
-
-  @Override
-  public void yyerror(String descripcion) {
-  	// com.jim_project.interprete.util.Error.deTokenNoEsperado(_analizadorLexico.lineaActual(), descripcion);
-  }
-//#line 296 "MacrosParser.java"
+//#line 291 "MacrosParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -544,7 +539,7 @@ case 11:
 //#line 32 "gramatica.y"
 { _acciones.nuevaEtiquetaSalto(val_peek(0).sval); }
 break;
-//#line 469 "MacrosParser.java"
+//#line 464 "MacrosParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
