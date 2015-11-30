@@ -138,6 +138,7 @@ public class Programa {
         if (estadoOk()) {
             comprobarDirectoriosMacros();
             cargarMacros();
+            ficheroEnProceso(_fichero);
 
             if (estadoOk()) {
                 limpiar();
@@ -152,8 +153,7 @@ public class Programa {
                     _error.alCargarPrograma(_fichero);
                 }
 
-                _gestorAmbitos.nuevoAmbito(parametros, lineas); // .iniciar(parametros);
-                _gestorAmbitos.ambitoRaiz().iniciar(parametros);
+                _gestorAmbitos.nuevoAmbito(parametros, lineas).iniciar(parametros);
             }
         }
     }

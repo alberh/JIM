@@ -39,16 +39,16 @@ public class Variable extends Componente {
     }
 
     public void valor(int nuevoValor) {
-        this._valor = Math.max(0, nuevoValor);
+        _valor = Math.max(0, nuevoValor);
     }
 
     public void incremento() {
-        this._valor++;
+        _valor++;
     }
 
     public void decremento() {
-        if (this._valor > 0) {
-            this._valor--;
+        if (_valor > 0) {
+            _valor--;
         }
     }
 

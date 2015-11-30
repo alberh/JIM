@@ -3,8 +3,6 @@ package com.jim_project.interprete.util;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Programa.Estado;
 
-// Meter dentro de programa y fuera estáticos
-// programa().error().deBlahBlah();
 public class Error {
 
     private Programa _programa;
@@ -20,6 +18,10 @@ public class Error {
     
     private static void imprimir(String mensaje, Programa programa) {
         System.err.println(mensaje);
+        Error.estadoErroneo(programa);;
+    }
+    
+    private static void estadoErroneo(Programa programa) {
         if (programa != null && programa.estadoOk()) {
             programa.estado(Estado.ERROR);
         }
@@ -27,9 +29,9 @@ public class Error {
 
     private void imprimir(String mensaje, int numeroLinea) {
         if (_programa.ficheroEnProceso().equals("jim.tmp")) {
-            imprimir("Línea " + numeroLinea + ". " + mensaje);
+            Error.imprimir("Línea " + numeroLinea + ". " + mensaje, _programa);
         } else {
-            imprimir(_programa.ficheroEnProceso() + ":" + numeroLinea + ". " + mensaje);
+            Error.imprimir(_programa.ficheroEnProceso() + ":" + numeroLinea + ". " + mensaje, _programa);
         }
     }
 
@@ -78,6 +80,7 @@ public class Error {
 
     public void enNumeroParametros(int n, String id,
             int numVariablesEntrada, int numParametros) {
+        
         imprimir("Error 8 : La macro \"" + id + "\" acepta un máximo de "
                 + numVariablesEntrada + " parámetros y ha sido llamada con "
                 + numParametros + ".",
@@ -164,13 +167,9 @@ public class Error {
         deCaracterNoReconocido(numeroLineaActual(), s);
     }
 
-    public void deDefinicionInterior(int n) {
+    public void deDefinicionInterior(int numeroLinea) {
         imprimir("Error 18 en línea: Las definiciones de macros "
-                + "no pueden ser anidadas.", 0);
-    }
-
-    public void deDefinicionInterior() {
-        deDefinicionInterior(numeroLineaActual());
+                + "no pueden ser anidadas.", numeroLinea);
     }
 
     // Analizador sintáctico
@@ -178,29 +177,29 @@ public class Error {
         deTokenNoEsperado(numeroLineaActual(), token, descripcion);
     }
 
-    public void deTokenNoEsperado(int n, String token, String descripcion) {
+    public void deTokenNoEsperado(int numeroLinea, String token, String descripcion) {
         switch (token) {
             case "IDMACRO":
                 imprimir("Error 19: Definición o llamada a macro no esperada.",
-                        n);
+                        numeroLinea);
                 break;
 
             case "FLECHA":
-                imprimir("Error 19: Asignación no esperada.", n);
+                imprimir("Error 19: Asignación no esperada.", numeroLinea);
                 break;
 
             case "end-of-file":
-                imprimir("Error 19: Encontrado final de fichero.", n);
+                imprimir("Error 19: No se esperaba el final de fichero.", numeroLinea);
                 break;
 
             case "')'":
-                imprimir("Error 19: Cierre de llamada a macro no esperado.", n);
+                imprimir("Error 19: Cierre de llamada a macro no esperado.", numeroLinea);
                 break;
 
             default:
                 imprimir("Error 19: No se esperaba el símbolo \"" + token
                         + "\"." /* + Descripción: " + descripcion */,
-                        n);
+                        numeroLinea);
                 break;
         }
     }
@@ -209,18 +208,20 @@ public class Error {
         deTokenNoEsperado(numeroLineaActual(), descripcion);
     }
 
-    public void deTokenNoEsperado(int n, String descripcion) {
+    public void deTokenNoEsperado(int numeroLinea, String descripcion) {
+        /*
         imprimir("Error 20: No se esperaba un símbolo. Descripción: "
-                + descripcion,
-                n);
+                + descripcion, numeroLinea);
+        */
+        Error.estadoErroneo(_programa);
     }
 
     public void deESEnAnalizadorLexico() {
         deESEnAnalizadorLexico(numeroLineaActual());
     }
 
-    public void deESEnAnalizadorLexico(int n) {
-        imprimir("Error 21: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", n);
+    public void deESEnAnalizadorLexico(int numeroLinea) {
+        imprimir("Error 21: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", numeroLinea);
     }
 
     // Operaciones

@@ -8,10 +8,10 @@ import com.jim_project.interprete.componente.Bucle;
 
 public class GestorBucles extends GestorComponentes {
 
-    private HashMap<Integer, Bucle> _buclesLineaInicio = new HashMap<>();
-    private HashMap<Integer, Bucle> _buclesLineaFin = new HashMap<>();
+    private HashMap<Integer, Bucle> _buclesLineaInicio;
+    private HashMap<Integer, Bucle> _buclesLineaFin;
     
-    private Stack<Integer> _lineasInicioBucles = new Stack<>();
+    private Stack<Integer> _lineasInicioBucles;
 
     public GestorBucles(Programa programa) {
         this(programa, null);
@@ -19,6 +19,10 @@ public class GestorBucles extends GestorComponentes {
     
     public GestorBucles(Programa programa, Ambito ambito) {
         super(programa, ambito);
+        
+        _buclesLineaInicio = new HashMap<>();
+        _buclesLineaFin = new HashMap<>();
+        _lineasInicioBucles = new Stack<>();
     }
     
     /**
