@@ -172,46 +172,44 @@ public final static short END=263;
 public final static short YYERRCODE=256;
 final static short yylhs[] = {                           -1,
     7,    0,    0,    4,    4,    4,    4,    2,    2,    2,
-    8,    2,    3,    3,    1,    1,    9,    5,    5,   10,
-    6,    6,
+    8,    2,    3,    3,    1,    1,    5,    5,    6,    6,
 };
 final static short yylen[] = {                            2,
     0,    3,    0,    3,    2,    2,    1,    1,    1,    1,
-    0,    5,    3,    3,    1,    1,    0,    3,    0,    0,
-    4,    0,
+    0,    5,    3,    3,    1,    1,    2,    0,    3,    0,
 };
 final static short yydefred[] = {                         0,
     0,    0,    7,    0,    1,    0,    5,    6,    0,    0,
     0,   11,    0,    4,   10,    2,    0,    0,    0,    0,
-   16,   15,   13,   14,   17,    0,    0,   12,    0,   18,
-   20,    0,   21,
+   16,   15,   13,   14,    0,    0,    0,   17,   12,    0,
+   19,
 };
 final static short yydgoto[] = {                          4,
-   13,   14,   15,    5,   26,   30,    9,   17,   27,   32,
+   13,   14,   15,    5,   26,   28,    9,   17,
 };
 final static short yysindex[] = {                      -255,
- -242, -257,    0,    0,    0, -248,    0,    0, -255,    0,
-    0,    0,  -24,    0,    0,    0,  -30, -246, -246, -246,
-    0,    0,    0,    0,    0,  -21,  -23,    0, -246,    0,
-    0,  -23,    0,
+ -242, -257,    0,    0,    0, -246,    0,    0, -255,    0,
+    0,    0,  -24,    0,    0,    0,  -30, -248, -248, -248,
+    0,    0,    0,    0,  -23,  -21, -248,    0,    0,  -23,
+    0,
 };
 final static short yyrindex[] = {                        22,
     0,    0,    0,    0,    0,    0,    0,    0,   22,    1,
     3,    0,    0,    0,    0,    0,    0,    0,    0,  -18,
-    0,    0,    0,    0,    0,    0,  -17,    0,    0,    0,
-    0,  -17,    0,
+    0,    0,    0,    0,  -17,    0,    0,    0,    0,  -17,
+    0,
 };
 final static short yygindex[] = {                        16,
-  -14,    0,    0,    0,    0,   -6,    0,    0,    0,    0,
+  -14,    0,    0,    0,    0,   -4,    0,    0,
 };
 final static int YYTABLESIZE=266;
 static short yytable[];
 static { yytable();}
 static void yytable(){
 yytable = new short[]{                          8,
-    8,    1,    9,   23,   24,   25,    2,    3,   10,   20,
-   21,   11,   12,   22,   31,    6,    7,   19,   18,   28,
-   29,    3,   19,   22,   16,   33,    0,    0,    0,    0,
+    8,    1,    9,   23,   24,   25,    2,    3,   21,   20,
+   10,   22,   30,   11,   12,    6,    7,   19,   18,   29,
+   27,    3,   18,   20,   16,   31,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,   16,   16,   15,   15,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -243,8 +241,8 @@ static { yycheck(); }
 static void yycheck() {
 yycheck = new short[] {                        257,
     0,  257,    0,   18,   19,   20,  262,  263,  257,   40,
-  257,  260,  261,  260,   29,  258,  259,   42,   43,   41,
-   44,    0,   41,   41,    9,   32,   -1,   -1,   -1,   -1,
+  257,  260,   27,  260,  261,  258,  259,   42,   43,   41,
+   44,    0,   41,   41,    9,   30,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   42,   43,   42,   43,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
@@ -307,15 +305,13 @@ final static String yyrule[] = {
 "finInstruccion : operacion",
 "$$2 :",
 "finInstruccion : IDMACRO $$2 '(' parametrosMacro ')'",
-"operacion : parametros '+' parametros",
-"operacion : parametros '*' parametros",
-"parametros : NUMERO",
-"parametros : VARIABLE",
-"$$3 :",
-"parametrosMacro : parametros $$3 masParametrosMacro",
+"operacion : operando '+' operando",
+"operacion : operando '*' operando",
+"operando : NUMERO",
+"operando : VARIABLE",
+"parametrosMacro : operando masParametrosMacro",
 "parametrosMacro :",
-"$$4 :",
-"masParametrosMacro : ',' parametros $$4 masParametrosMacro",
+"masParametrosMacro : ',' operando masParametrosMacro",
 "masParametrosMacro :",
 };
 
@@ -395,7 +391,7 @@ final static String yyrule[] = {
   System.err.println(nombresTokens);
   */
   }
-//#line 325 "LoopParser.java"
+//#line 321 "LoopParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -587,11 +583,7 @@ case 10:
 break;
 case 11:
 //#line 39 "gramatica.y"
-{ yyval.obj = new LoopParserVal(); }
-break;
-case 12:
-//#line 39 "gramatica.y"
-{ /* Tratamiento de macros */ }
+{ yyval.obj = _acciones.llamadaAMacro(val_peek(0).sval); }
 break;
 case 13:
 //#line 41 "gramatica.y"
@@ -609,23 +601,15 @@ case 16:
 //#line 45 "gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
-case 17:
-//#line 47 "gramatica.y"
-{yyval.obj = val_peek(0).obj; }
-break;
-case 19:
+case 18:
 //#line 48 "gramatica.y"
-{ yyval.obj = new LoopParserVal(); }
+{ ; }
 break;
 case 20:
-//#line 50 "gramatica.y"
-{yyval.obj = val_peek(0).obj; }
-break;
-case 22:
 //#line 51 "gramatica.y"
-{ yyval.obj = new LoopParserVal(); }
+{ ; }
 break;
-//#line 550 "LoopParser.java"
+//#line 534 "LoopParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
