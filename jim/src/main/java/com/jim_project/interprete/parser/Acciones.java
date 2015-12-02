@@ -161,7 +161,7 @@ public class Acciones {
     }
     
     public int llamadaAMacro(Object idMacro) {
-        return 0;
+        return 777;
     }
 
     protected Variable obtenerVariable(Object id) {
