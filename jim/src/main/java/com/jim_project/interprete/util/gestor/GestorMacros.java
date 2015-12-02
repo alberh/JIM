@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
-import com.jim_project.interprete.componente.Ambito;
-import com.jim_project.interprete.util.ParametrosExpansion;
+import com.jim_project.interprete.componente.LlamadaAMacro;
 import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.componente.Variable;
 
@@ -14,11 +13,7 @@ public class GestorMacros extends GestorComponentes {
     private HashMap<String, Macro> _macros;
 
     public GestorMacros(Programa programa) {
-        this(programa, null);
-    }
-    
-    public GestorMacros(Programa programa, Ambito ambito) {
-        super(programa, ambito);
+        super(programa);
         _macros = new HashMap<>();
     }
 
@@ -78,7 +73,7 @@ public class GestorMacros extends GestorComponentes {
         return hayRecursividad;
     }
 
-    public String expandir(ParametrosExpansion parametrosExpansion) {
+    public String expandir(LlamadaAMacro parametrosExpansion) {
         //
         //
         // Usar salto de línea del sistema!

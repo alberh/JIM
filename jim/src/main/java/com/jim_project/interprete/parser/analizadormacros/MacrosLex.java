@@ -638,7 +638,7 @@ public class MacrosLex extends AnalizadorLexico {
           }
         case 15: break;
         case 6: 
-          { String id = MacrosAcciones.filtrarIDEtiqueta(yytext());
+          { String id = yytext();
                     yyparser.yylval = new MacrosParserVal(id);
                     _contenido.append(id);
                     return MacrosParser.ETIQUETA;
@@ -700,7 +700,7 @@ public class MacrosLex extends AnalizadorLexico {
           }
         case 27: break;
         case 7: 
-          { String id = MacrosAcciones.filtrarIDVariable(yytext());
+          { String id = yytext();
                     yyparser.yylval = new MacrosParserVal(id);
                     _contenido.append(id);
                     return MacrosParser.VARIABLE;

@@ -12,7 +12,6 @@ import com.jim_project.interprete.parser.lmodel.LParser;
 import com.jim_project.interprete.parser.loopmodel.LoopParser;
 import com.jim_project.interprete.parser.previo.PrevioParser;
 import com.jim_project.interprete.parser.whilemodel.WhileParser;
-import java.io.Reader;
 
 public class ControladorEjecucion {
 

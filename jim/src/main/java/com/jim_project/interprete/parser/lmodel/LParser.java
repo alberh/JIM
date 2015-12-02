@@ -627,23 +627,23 @@ case 16:
 break;
 case 17:
 //#line 49 "gramatica.y"
-{ yyval.ival = _acciones.operacion('+', val_peek(2).obj, val_peek(0).obj); }
+{ yyval.ival = _acciones.operacionBinaria('+', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 18:
 //#line 50 "gramatica.y"
-{ yyval.ival = _acciones.operacion('-', val_peek(2).obj, val_peek(0).obj); }
+{ yyval.ival = _acciones.operacionBinaria('-', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 19:
 //#line 51 "gramatica.y"
-{ yyval.ival = _acciones.operacion('*', val_peek(2).obj, val_peek(0).obj); }
+{ yyval.ival = _acciones.operacionBinaria('*', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 20:
 //#line 52 "gramatica.y"
-{ yyval.ival = _acciones.operacion('/', val_peek(2).obj, val_peek(0).obj); }
+{ yyval.ival = _acciones.operacionBinaria('/', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 21:
 //#line 53 "gramatica.y"
-{ yyval.ival = _acciones.operacion('%', val_peek(2).obj, val_peek(0).obj); }
+{ yyval.ival = _acciones.operacionBinaria('%', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 22:
 //#line 55 "gramatica.y"

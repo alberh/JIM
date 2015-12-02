@@ -603,7 +603,7 @@ case 6:
 break;
 case 7:
 //#line 44 "gramatica.y"
-{ _acciones.definirVariableYMantener(val_peek(0).sval); }
+{ _acciones.definirVariable(val_peek(0).sval); }
 break;
 case 9:
 //#line 45 "gramatica.y"
@@ -647,7 +647,7 @@ case 18:
 break;
 case 19:
 //#line 56 "gramatica.y"
-{ _acciones.prepararParaExpandir(val_peek(0).sval); }
+{ _acciones.definirLlamadaAMacro(val_peek(0).sval); }
 break;
 case 21:
 //#line 58 "gramatica.y"
@@ -679,11 +679,11 @@ case 27:
 break;
 case 28:
 //#line 67 "gramatica.y"
-{ _acciones.prepararVariableEntrada(val_peek(0).sval); }
+{ _acciones.definirVariableEntradaMacro(val_peek(0).sval); }
 break;
 case 29:
 //#line 68 "gramatica.y"
-{ _acciones.definirVariable(val_peek(0).sval); _acciones.prepararVariableEntrada(val_peek(0).sval); }
+{ _acciones.definirVariable(val_peek(0).sval); _acciones.definirVariableEntradaMacro(val_peek(0).sval); }
 break;
 case 30:
 //#line 70 "gramatica.y"

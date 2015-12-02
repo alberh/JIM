@@ -41,7 +41,7 @@ sentencia : etiqueta instruccion { ; }
 etiqueta :  '[' ETIQUETA ']' { _acciones.definirEtiqueta($2, _controladorEjecucion.numeroLineaActual()); }
          | { ; }
 ;
-instruccion : VARIABLE { _acciones.definirVariableYMantener($1); } FLECHA finInstruccion
+instruccion : VARIABLE { _acciones.definirVariable($1); } FLECHA finInstruccion
             | VARIABLE INCREMENTO { _acciones.definirVariable($1); }
             | VARIABLE DECREMENTO { _acciones.definirVariable($1); }
             | IF VARIABLE DISTINTO GOTO ETIQUETA { _acciones.definirVariable($2); }
@@ -53,7 +53,7 @@ instruccion : VARIABLE { _acciones.definirVariableYMantener($1); } FLECHA finIns
 finInstruccion :  VARIABLE { _acciones.definirVariable($1); }
                |  NUMERO { ; }
                |  operacion { ; }
-               |  IDMACRO { _acciones.prepararParaExpandir($1); } '(' parametrosMacro ')'
+               |  IDMACRO { _acciones.definirLlamadaAMacro($1); } '(' parametrosMacro ')'
 ;
 operacion	   :  operando '+' operando { ; }
 			   |  operando '-' operando { ; }
@@ -64,8 +64,8 @@ operacion	   :  operando '+' operando { ; }
 operando :  NUMERO { ; }
            |  VARIABLE { _acciones.definirVariable($1); }
 ;
-parametros :  NUMERO { _acciones.prepararVariableEntrada($1); }
-           	|  VARIABLE { _acciones.definirVariable($1); _acciones.prepararVariableEntrada($1); }
+parametros :  NUMERO { _acciones.definirVariableEntradaMacro($1); }
+           	|  VARIABLE { _acciones.definirVariable($1); _acciones.definirVariableEntradaMacro($1); }
 ;
 parametrosMacro : parametros masParametrosMacro { ; }
                 | { ; }

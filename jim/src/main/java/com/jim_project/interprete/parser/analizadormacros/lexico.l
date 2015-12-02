@@ -85,12 +85,12 @@ Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
                   }
 {Reserved}        { _contenido.append(yytext());
                   }
-{Label}           { String id = MacrosAcciones.filtrarIDEtiqueta(yytext());
+{Label}           { String id = yytext();
                     yyparser.yylval = new MacrosParserVal(id);
                     _contenido.append(id);
                     return MacrosParser.ETIQUETA;
                   }
-{Variable}        { String id = MacrosAcciones.filtrarIDVariable(yytext());
+{Variable}        { String id = yytext();
                     yyparser.yylval = new MacrosParserVal(id);
                     _contenido.append(id);
                     return MacrosParser.VARIABLE;

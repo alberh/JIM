@@ -19,8 +19,8 @@ public class Etiqueta extends Componente {
     public Etiqueta(String id, int linea, GestorEtiquetas gestorEtiquetas) {
         super(Etiqueta.normalizarID(id), gestorEtiquetas);
 
-        _grupo = obtenerGrupo(id);
-        _indice = obtenerIndice(id);
+        _grupo = obtenerGrupo(_id);
+        _indice = obtenerIndice(_id);
         _linea = linea;
     }
 
@@ -47,17 +47,17 @@ public class Etiqueta extends Componente {
         return "(" + _id + ", " + _linea + ")";
     }
 
-    // Métodos estáticos
+    /* Métodos auxiliares para la construcción */
     /**
      * Cambia a mayúsculas el identificador de una etiqueta, y concatena un "1"
      * al final si no ha sido indicado.
      */
     public static String normalizarID(String id) {
-        id = id.toUpperCase();
-        int len = id.length();
+        if (id != null) {
+            id = id.toUpperCase();
+            int len = id.length();
 
-        if (len > 0) {
-            if (len == 1 || (len == 2 && id.charAt(0) == 'L')) {
+            if (len == 1) {
                 return id + "1";
             } else {
                 return id;
@@ -69,34 +69,15 @@ public class Etiqueta extends Componente {
     }
 
     private char obtenerGrupo(String id) {
-        id = Etiqueta.normalizarID(id);
-        if (Character.isDigit(id.charAt(1))) {
-            return id.charAt(0);
-        } else {
-            return id.charAt(1);
-        }
+        return id.toUpperCase().charAt(0);
     }
 
     // Interfaz con los métodos comunes entre Etiqueta y Variable?
     private int obtenerIndice(String id) {
-        id = Etiqueta.normalizarID(id);
-
-        if (id.length() > 1) {
-            int indiceInicio;
-
-            if (Character.isDigit(id.charAt(1))) {
-                indiceInicio = 1;
-            } else {
-                indiceInicio = 2;
-            }
-
-            try {
-                return Integer.parseInt(id.substring(indiceInicio));
-            } catch (NumberFormatException ex) {
-                _gestor.ambito().programa().error().alObtenerIndiceDeEtiqueta(id);
-            }
-        } else {
-            return 1;
+        try {
+            return Integer.parseInt(id.substring(1));
+        } catch (NumberFormatException ex) {
+            _gestor.ambito().programa().error().alObtenerIndiceDeEtiqueta(id);
         }
 
         return 0;

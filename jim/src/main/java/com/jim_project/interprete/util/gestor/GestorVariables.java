@@ -16,12 +16,8 @@ public class GestorVariables extends GestorComponentes {
     private int _mayorIndiceEntrada;
     private int _mayorIndiceLocal;
 
-    public GestorVariables(Programa programa) {
-        this(programa, null);
-    }
-
-    public GestorVariables(Programa programa, Ambito ambito) {
-        super(programa, ambito);
+    public GestorVariables(Ambito ambito) {
+        super(ambito);
 
         _variablesEntrada = new HashMap<>();
         _variablesLocales = new HashMap<>();
@@ -176,6 +172,6 @@ public class GestorVariables extends GestorComponentes {
 
     @Override
     public boolean vacio() {
-        return _variablesEntrada.isEmpty() && _variablesLocales.isEmpty();
+        return false;
     }
 }

@@ -595,11 +595,11 @@ case 12:
 break;
 case 13:
 //#line 41 "gramatica.y"
-{ yyval.ival = _acciones.operacion('+', val_peek(2).obj, val_peek(0).obj); }
+{ yyval.ival = _acciones.operacionBinaria('+', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 14:
 //#line 42 "gramatica.y"
-{ yyval.ival = _acciones.operacion('*', val_peek(2).obj, val_peek(0).obj); }
+{ yyval.ival = _acciones.operacionBinaria('*', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 15:
 //#line 44 "gramatica.y"

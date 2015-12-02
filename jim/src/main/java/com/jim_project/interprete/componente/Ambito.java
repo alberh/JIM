@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.util.ControladorEjecucion;
-import com.jim_project.interprete.util.ParametrosExpansion;
 import com.jim_project.interprete.util.gestor.GestorAmbitos;
 import com.jim_project.interprete.util.gestor.GestorEtiquetas;
 import com.jim_project.interprete.util.gestor.GestorBucles;
+import com.jim_project.interprete.util.gestor.GestorLlamadasAMacro;
 import com.jim_project.interprete.util.gestor.GestorVariables;
 import java.util.Arrays;
 
@@ -19,7 +19,7 @@ public class Ambito extends Componente {
     private GestorVariables _gestorVariables;
     private GestorBucles _gestorBucles;
     private GestorEtiquetas _gestorEtiquetas;
-    private ArrayList<ParametrosExpansion> _expansiones;
+    private GestorLlamadasAMacro _gestorLlamadasAMacro;
 
     private int[] _parametrosEntrada;
     private Macro _macroAsociada;
@@ -59,10 +59,10 @@ public class Ambito extends Componente {
         _programa = programa;
         _parametrosEntrada = parametrosEntrada;
 
-        _gestorVariables = new GestorVariables(_programa, this);
-        _gestorBucles = new GestorBucles(_programa, this);
-        _gestorEtiquetas = new GestorEtiquetas(_programa, this);
-        _expansiones = new ArrayList<>();
+        _gestorVariables = new GestorVariables(this);
+        _gestorBucles = new GestorBucles(this);
+        _gestorEtiquetas = new GestorEtiquetas(this);
+        _gestorLlamadasAMacro = new GestorLlamadasAMacro(this);
     }
 
     public ControladorEjecucion controladorEjecucion() {
@@ -81,8 +81,8 @@ public class Ambito extends Componente {
         return _gestorEtiquetas;
     }
 
-    public ArrayList<ParametrosExpansion> expansiones() {
-        return _expansiones;
+    public GestorLlamadasAMacro llamadasAMacro() {
+        return _gestorLlamadasAMacro;
     }
 
     public Programa programa() {
@@ -174,8 +174,7 @@ public class Ambito extends Componente {
         _gestorVariables.limpiar();
         _gestorBucles.limpiar();
         _gestorEtiquetas.limpiar();
-
-        _expansiones.clear();
+        _gestorLlamadasAMacro.limpiar();
     }
     
     /**
@@ -201,7 +200,7 @@ public class Ambito extends Componente {
         if (_programa.estadoOk()) {
             setIncremento(0);
 
-            for (ParametrosExpansion contenedorExpansion : _expansiones) {
+            for (LlamadaAMacro contenedorExpansion : _expansiones) {
                 String resultadoExpansion = Macro.expandir(contenedorExpansion);
 
                 if (resultadoExpansion != null) {

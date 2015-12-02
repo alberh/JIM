@@ -121,7 +121,7 @@ public class Error {
         imprimir("Error 24: Nombre de variable vacío.");
     }
 
-    public static void deTipoDeVariableNoValido(String tipo) {
+    public static void deTipoDeVariableNoValido(char tipo) {
         // Para después del refactor
         imprimir("Error 26: Tipo de variable '" + tipo + "' no válido.");
                 // , numeroLineaActual());

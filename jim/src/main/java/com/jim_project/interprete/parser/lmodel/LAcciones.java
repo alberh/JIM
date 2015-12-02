@@ -25,7 +25,6 @@ public class LAcciones extends Acciones {
         if (et == null) {
             _ambito.controladorEjecucion().terminar();
         } else {
-            // el -1 es para que cuando se llame a Programa.lineaSiguiente() no se salte la línea a la que queremos ir
             _ambito.controladorEjecucion().salto(et.linea());
         }
     }

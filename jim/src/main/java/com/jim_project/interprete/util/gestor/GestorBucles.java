@@ -13,12 +13,8 @@ public class GestorBucles extends GestorComponentes {
     
     private Stack<Integer> _lineasInicioBucles;
 
-    public GestorBucles(Programa programa) {
-        this(programa, null);
-    }
-    
-    public GestorBucles(Programa programa, Ambito ambito) {
-        super(programa, ambito);
+    public GestorBucles(Ambito ambito) {
+        super(ambito);
         
         _buclesLineaInicio = new HashMap<>();
         _buclesLineaFin = new HashMap<>();

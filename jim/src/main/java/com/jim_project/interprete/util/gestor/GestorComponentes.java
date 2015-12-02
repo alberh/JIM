@@ -8,9 +8,14 @@ public abstract class GestorComponentes {
     protected Programa _programa;
     protected Ambito _ambito;
 
-    public GestorComponentes(Programa programa, Ambito ambito) {
+    public GestorComponentes(Programa programa) {
         _programa = programa;
+        _ambito = null;
+    }
+    
+    public GestorComponentes(Ambito ambito) {
         _ambito = ambito;
+        _programa = _ambito.programa();
     }
 
     public Programa programa() {
@@ -21,6 +26,8 @@ public abstract class GestorComponentes {
         return _ambito;
     }
 
+    public abstract void limpiar();
+    
     public abstract int count();
 
     public abstract boolean vacio();

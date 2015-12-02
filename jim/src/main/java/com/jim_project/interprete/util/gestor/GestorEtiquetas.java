@@ -1,22 +1,16 @@
 package com.jim_project.interprete.util.gestor;
 
 import java.util.HashMap;
-import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.Etiqueta;
-import static com.jim_project.interprete.componente.Etiqueta.normalizarID;
 
 public class GestorEtiquetas extends GestorComponentes {
 
     private HashMap<String, Etiqueta> _etiquetas;
     private int _indiceUltimaA;
-
-    public GestorEtiquetas(Programa programa) {
-        this(programa, null);
-    }
     
-    public GestorEtiquetas(Programa programa, Ambito ambito) {
-        super(programa, ambito);
+    public GestorEtiquetas(Ambito ambito) {
+        super(ambito);
         _etiquetas = new HashMap<>();
         _indiceUltimaA = 0;
     }
@@ -55,7 +49,7 @@ public class GestorEtiquetas extends GestorComponentes {
      * Obtiene una etiqueta previamente creada, según su identificador.
      */
     public Etiqueta obtenerEtiqueta(String id) {
-        return _etiquetas.get(normalizarID(id));
+        return _etiquetas.get(Etiqueta.normalizarID(id));
     }
 
     /**

@@ -11,11 +11,7 @@ public class GestorAmbitos extends GestorComponentes {
     private Ambito _ultimoAmbito;
 
     public GestorAmbitos(Programa programa) {
-        this(programa, null);
-    }
-    
-    public GestorAmbitos(Programa programa, Ambito ambito) {
-        super(programa, ambito);
+        super(programa);
         _ambitos = new ArrayList<>();
         _ultimoAmbito = null;
     }

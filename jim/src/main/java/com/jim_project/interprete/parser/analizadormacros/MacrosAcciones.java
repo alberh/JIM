@@ -3,8 +3,6 @@ package com.jim_project.interprete.parser.analizadormacros;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.parser.Acciones;
-import com.jim_project.interprete.componente.Etiqueta;
-import com.jim_project.interprete.componente.Variable;
 
 public class MacrosAcciones extends Acciones {
     
@@ -16,26 +14,6 @@ public class MacrosAcciones extends Acciones {
         _programa = programa;
     }
     
-    public static String filtrarIDVariable(String id) {
-        id = Variable.normalizarID(id);
-        /*
-        if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
-            id = "V" + id;
-        }
-        */
-        return id;
-    }
-
-    public static String filtrarIDEtiqueta(String id) {
-        id = Etiqueta.normalizarID(id);
-        /*
-        if (_programa.objetivo() == Programa.Objetivo.EXPANDIR) {
-            id = "L" + id;
-        }
-        */
-        return id;
-    }
-
     public Macro nuevaMacro(Object idMacro) {
         _macroEnProceso = _programa.gestorMacros().nuevaMacro(idMacro.toString());
         return _macroEnProceso;

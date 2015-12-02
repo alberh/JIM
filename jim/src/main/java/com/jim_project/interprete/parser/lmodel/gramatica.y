@@ -21,7 +21,7 @@
 %token <sval> VARIABLE ETIQUETA IDMACRO
 %token <ival> NUMERO
 
-%type <obj> parametros finInstruccion
+%type <obj> operando finInstruccion
 %type <ival> operacion
 %type <obj> inicio sentencia etiqueta instruccion parametrosMacro masParametrosMacro
 
@@ -44,22 +44,22 @@ instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
                |  operacion { $$ = $1; }
-               |  IDMACRO { $$ = new LParserVal(); } '(' parametrosMacro ')' { /* Tratamiento de macros */ }
+               |  IDMACRO { $$ = _acciones.llamadaAMacro($1); } '(' parametrosMacro ')'
 ;
-operacion	   :  parametros '+' parametros { $$ = _acciones.operacion('+', $1, $3); }
-			       |  parametros '-' parametros { $$ = _acciones.operacion('-', $1, $3); }
-			       |  parametros '*' parametros { $$ = _acciones.operacion('*', $1, $3); }
-			       |  parametros '/' parametros { $$ = _acciones.operacion('/', $1, $3); }
-			       |  parametros '%' parametros { $$ = _acciones.operacion('%', $1, $3); }
+operacion   :  operando '+' operando { $$ = _acciones.operacionBinaria('+', $1, $3); }
+                |  operando '-' operando { $$ = _acciones.operacionBinaria('-', $1, $3); }
+                |  operando '*' operando { $$ = _acciones.operacionBinaria('*', $1, $3); }
+                |  operando '/' operando { $$ = _acciones.operacionBinaria('/', $1, $3); }
+                |  operando '%' operando { $$ = _acciones.operacionBinaria('%', $1, $3); }
 ;
-parametros :  NUMERO  { $$ = $1; }
+operando :  NUMERO  { $$ = $1; }
            |  VARIABLE { $$ = $1; }
 ;
-parametrosMacro : parametros {$$ = $1; } masParametrosMacro
-                | { $$ = new LParserVal(); }
+parametrosMacro : operando masParametrosMacro
+                | { ; }
 ;
-masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
-                   | { $$ = new LParserVal(); }
+masParametrosMacro :  ',' operando masParametrosMacro
+                   | { ; }
 ;
 
 %%

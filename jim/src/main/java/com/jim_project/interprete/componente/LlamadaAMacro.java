@@ -1,22 +1,22 @@
-package com.jim_project.interprete.util;
+package com.jim_project.interprete.componente;
 
 import java.util.ArrayList;
 
-public class ParametrosExpansion {
+public class LlamadaAMacro {
 
     private int _linea;
     private String _idVariableSalida;
     private String _idMacro;
     private ArrayList<String> _variablesEntrada;
 
-    public ParametrosExpansion(int linea,
+    public LlamadaAMacro(int linea,
             String idVariableSalida,
             String idMacro) {
 
         this(linea, idVariableSalida, idMacro, new ArrayList<>());
     }
 
-    public ParametrosExpansion(int linea,
+    public LlamadaAMacro(int linea,
             String idVariableSalida,
             String idMacro,
             ArrayList<String> variablesEntrada) {

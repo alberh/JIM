@@ -20,7 +20,7 @@
 %token <sval> VARIABLE IDMACRO
 %token <ival> NUMERO
 
-%type <obj> parametros finInstruccion
+%type <obj> operando finInstruccion
 %type <ival> operacion
 %type <obj> inicio instruccion parametrosMacro masParametrosMacro
 
@@ -40,19 +40,19 @@ finInstruccion :  VARIABLE { $$ = $1; }
                |  operacion { $$ = $1; }
                |  IDMACRO { $$ = new WhileParserVal(); } '(' parametrosMacro ')' { /* Tratamiento de macros */ }
 ;
-operacion    :  parametros '+' parametros { $$ = _acciones.operacion('+', $1, $3); }
-             |  parametros '-' parametros { $$ = _acciones.operacion('-', $1, $3); }
-             |  parametros '*' parametros { $$ = _acciones.operacion('*', $1, $3); }
-             |  parametros '/' parametros { $$ = _acciones.operacion('/', $1, $3); }
-             |  parametros '%' parametros { $$ = _acciones.operacion('%', $1, $3); }
+operacion    :  operando '+' operando { $$ = _acciones.operacionBinaria('+', $1, $3); }
+             |  operando '-' operando { $$ = _acciones.operacionBinaria('-', $1, $3); }
+             |  operando '*' operando { $$ = _acciones.operacionBinaria('*', $1, $3); }
+             |  operando '/' operando { $$ = _acciones.operacionBinaria('/', $1, $3); }
+             |  operando '%' operando { $$ = _acciones.operacionBinaria('%', $1, $3); }
 ;
-parametros :  NUMERO  { $$ = $1; }
+operando :  NUMERO  { $$ = $1; }
            |  VARIABLE { $$ = $1; }
 ;
-parametrosMacro : parametros {$$ = $1; } masParametrosMacro
+parametrosMacro : operando {$$ = $1; } masParametrosMacro
                 | { $$ = new WhileParserVal(); }
 ;
-masParametrosMacro :  ',' parametros {$$ = $2; } masParametrosMacro
+masParametrosMacro :  ',' operando {$$ = $2; } masParametrosMacro
                    | { $$ = new WhileParserVal(); }
 ;
 

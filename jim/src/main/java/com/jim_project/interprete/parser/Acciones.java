@@ -2,18 +2,23 @@ package com.jim_project.interprete.parser;
 
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.componente.Ambito;
-import java.util.ArrayList;
 
 public class Acciones {
 
     protected Ambito _ambito;
+    protected Variable _ultimaVariableAsignada;
 
     public Acciones(Ambito ambito) {
         _ambito = ambito;
+        _ultimaVariableAsignada = null;
     }
 
     public Ambito ambito() {
         return _ambito;
+    }
+
+    public Variable ultimaVariableAsignada() {
+        return _ultimaVariableAsignada;
     }
 
     public void asignacion(Object lvalue, Object rvalue) {
@@ -31,11 +36,54 @@ public class Acciones {
         obtenerVariable(lvalue).decremento();
     }
 
-    public int operacion(char operador, Object op1, Object op2) {
-        int v1, v2;
+    public int operacionBinaria(char operador, Object op1, Object op2) {
+        int v1 = obtenerValor(op1);
+        int v2 = obtenerValor(op2);
+        int resultado = 0;
 
-        v1 = obtenerValor(op1);
-        v2 = obtenerValor(op2);
+        comprobacionesBinarias(operador, op1, op2, v1, v2);
+
+        if (_ambito.programa().estadoOk()) {
+            switch (operador) {
+                case '+':
+                    resultado = v1 + v2;
+                    break;
+
+                case '-':
+                    int dif = v1 - v2;
+                    resultado = dif > 0 ? dif : 0;
+                    break;
+
+                case '*':
+                    resultado = v1 * v2;
+                    break;
+
+                case '/':
+                    if (v2 != 0) {
+                        resultado = v1 / v2;
+                    }
+                    break;
+
+                case '%':
+                    if (v2 != 0) {
+                        resultado = v1 % v2;
+                    }
+                    break;
+
+                default:
+                // informar de error
+            }
+        }
+
+        return resultado;
+    }
+
+    private void comprobacionesBinarias(
+            char operador,
+            Object op1,
+            Object op2,
+            int valor1,
+            int valor2) {
 
         /*
          ===========
@@ -100,7 +148,7 @@ public class Acciones {
             if (operador == '+') {
                 // Todos los modelos comparten la operación V <- V + 1
                 // Número distinto de 1
-                if (esEntero(op2) && v2 != 1) {
+                if (esEntero(op2) && valor2 != 1) {
                     _ambito.programa().error().deSumaValorNoUnidad();
                 }
             }
@@ -110,40 +158,10 @@ public class Acciones {
                 _ambito.programa().error().deOperacionEntreVariables(operador);
             }
         }
-
-        switch (operador) {
-            case '+':
-                return v1 + v2;
-
-            case '-':
-                int dif = v1 - v2;
-                return dif >= 0 ? dif : 0;
-
-            case '*':
-                return v1 * v2;
-
-            case '/':
-                if (v2 == 0) {
-                    return 0;
-                }
-                return v1 / v2;
-
-            case '%':
-                if (v2 == 0) {
-                    return 0;
-                }
-                return v1 % v2;
-
-            default:
-                // informar de error
-                return 0;
-        }
     }
-
-    public void llamadaAMacro(Object idVariable,
-            Object idMacro,
-            ArrayList<String> parametros) {
-
+    
+    public int llamadaAMacro(Object idMacro) {
+        return 0;
     }
 
     protected Variable obtenerVariable(Object id) {

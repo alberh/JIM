@@ -13,7 +13,7 @@ public class Variable extends Componente {
     private int _valor;
     private Tipo _tipo;
     private int _indice;
-    
+
     public Variable(String id, GestorVariables gestorVariables) {
         this(id, 0, gestorVariables);
     }
@@ -22,8 +22,8 @@ public class Variable extends Componente {
         super(Variable.normalizarID(id), gestorVariables);
 
         _valor = valor;
-        _tipo = Variable.obtenerTipo(_id);
-        _indice = Variable.obtenerIndice(_id);
+        _tipo = obtenerTipo(_id);
+        _indice = obtenerIndice(_id);
     }
 
     public Tipo tipo() {
@@ -57,14 +57,14 @@ public class Variable extends Componente {
         return "(" + _id + ", " + _valor + ")";
     }
 
-    /* Métodos estáticos
+    /* Métodos auxiliares para la construcción
      */
     public static String normalizarID(String id) {
-        id = id.toUpperCase();
-        int len = id.length();
+        if (id != null) {
+            id = id.toUpperCase();
+            int len = id.length();
 
-        if (len > 0) {
-            if (!id.contains("Y") && (len == 1 || (len == 2 && id.charAt(0) == 'V'))) {
+            if (!id.contains("Y") && len == 1) {
                 return id + "1";
             } else {
                 return id;
@@ -75,79 +75,31 @@ public class Variable extends Componente {
         }
     }
 
-    public static int obtenerIndice(String id) {
-        id = Variable.normalizarID(id);
-        
-        if (id.equals("Y") || id.equals("VY")) {
+    private int obtenerIndice(String id) {
+        if (id.equals("Y")) {
             return 1;
-        }
-
-        if (id.length() > 1) {
-            int indiceInicio;
-
-            if (Character.isDigit(id.charAt(1))) {
-                indiceInicio = 1;
-            } else {
-                indiceInicio = 2;
-            }
-            
+        } else {
             try {
-                return Integer.parseInt(id.substring(indiceInicio));
+                return Integer.parseInt(id.substring(1));
             } catch (NumberFormatException ex) {
                 Error.alObtenerIndiceDeVariable(id);
             }
-        } else {
-            return 1;
         }
 
         return 0;
     }
 
-    public static Tipo obtenerTipo(String id) {
-        /* Después del refactor? Porque al final hice que se pusieran las V
-         * o las L según si estaba expandiendo o no...
-         char charTipo = Variable.normalizarID(id).charAt(0);
-         char charTipo;
-         if (id.charAt(0) == 'V') {
-         charTipo = Variable.normalizarID(id).charAt(1);
-         } else {
-         charTipo = Variable.normalizarID(id).charAt(0);
-         }
-
-         switch (charTipo) {
-         case 'X':
-         return Tipo.ENTRADA;
-
-         case 'Y':
-         return Tipo.SALIDA;
-
-         case 'Z':
-         return Tipo.LOCAL;
-
-         default:
-         Error.deTipoDeVariableNoValido(charTipo);
-         return null;
-         }
-         */
-
-        String tipo;
-        if (id.charAt(0) == 'V') {
-            tipo = Variable.normalizarID(id).substring(0, 2);
-        } else {
-            tipo = Variable.normalizarID(id).substring(0, 1);
-        }
+    private Tipo obtenerTipo(String id) {
+        char tipo = id.toUpperCase().charAt(0);
 
         switch (tipo) {
-            case "X":
-            case "VX":
+            case 'X':
                 return Tipo.ENTRADA;
 
-            case "Y":
-            case "VY":
+            case 'Y':
                 return Tipo.SALIDA;
 
-            case "Z":
-            case "VZ":
+            case 'Z':
                 return Tipo.LOCAL;
 
             default:
