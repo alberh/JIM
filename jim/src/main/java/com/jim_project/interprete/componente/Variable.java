@@ -60,7 +60,7 @@ public class Variable extends Componente {
     /* Métodos auxiliares para la construcción
      */
     public static String normalizarID(String id) {
-        if (id != null) {
+       if (id != null) {
             id = id.toUpperCase();
             int len = id.length();
 

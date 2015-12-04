@@ -29,7 +29,7 @@
 inicio :  instruccion { $$ = $1; } inicio
        | { $$ = new WhileParserVal(); }
 ;
-instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
+instruccion : VARIABLE { _acciones.variableAsignada($1); } FLECHA finInstruccion { _acciones.asignacion($1, $4); }
             | VARIABLE INCREMENTO { _acciones.incremento($1); }
             | VARIABLE DECREMENTO { _acciones.decremento($1); }
             | WHILE VARIABLE DISTINTO { _acciones.abreBucle($2, _controladorEjecucion.numeroLineaActual()); }
@@ -38,7 +38,7 @@ instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
                |  operacion { $$ = $1; }
-               |  IDMACRO { $$ = new WhileParserVal(); } '(' parametrosMacro ')' { /* Tratamiento de macros */ }
+               |  IDMACRO { _acciones.llamadaAMacro($1); '(' parametrosMacro ')'
 ;
 operacion    :  operando '+' operando { $$ = _acciones.operacionBinaria('+', $1, $3); }
              |  operando '-' operando { $$ = _acciones.operacionBinaria('-', $1, $3); }
@@ -50,10 +50,10 @@ operando :  NUMERO  { $$ = $1; }
            |  VARIABLE { $$ = $1; }
 ;
 parametrosMacro : operando {$$ = $1; } masParametrosMacro
-                | { $$ = new WhileParserVal(); }
+                | { ; }
 ;
 masParametrosMacro :  ',' operando {$$ = $2; } masParametrosMacro
-                   | { $$ = new WhileParserVal(); }
+                   | { ; }
 ;
 
 %%

@@ -28,7 +28,7 @@
 inicio :  instruccion { $$ = $1; } inicio
        | { $$ = new LoopParserVal(); }
 ;
-instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
+instruccion : VARIABLE { _acciones.variableAsignada($1); } FLECHA finInstruccion { _acciones.asignacion($1, $4); }
             | VARIABLE INCREMENTO { _acciones.incremento($1); }
             | LOOP VARIABLE { _acciones.abreBucle($2, _controladorEjecucion.numeroLineaActual()); }
             | END { _acciones.cierraBucle(_controladorEjecucion.numeroLineaActual()); }
@@ -36,7 +36,7 @@ instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
                |  operacion { $$ = $1; }
-               |  IDMACRO { $$ = _acciones.llamadaAMacro($1); } '(' parametrosMacro ')'
+               |  IDMACRO { _acciones.llamadaAMacro($1); } '(' parametrosMacro ')'
 ;
 operacion    :  operando '+' operando { $$ = _acciones.operacionBinaria('+', $1, $3); }
              |  operando '*' operando { $$ = _acciones.operacionBinaria('*', $1, $3); }

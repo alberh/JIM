@@ -54,7 +54,7 @@ public class ControladorEjecucion {
         return _etapa;
     }
 
-    public void iniciar(int[] parametros) {
+    public void iniciar(String[] parametros) {
         _ambito.limpiar();
 
         System.out.println("Analizando el programa...");
@@ -121,9 +121,6 @@ public class ControladorEjecucion {
             AnalizadorLexico lex = parser.analizadorLexico();
 
             do {
-                // System.out.println(_lineaActual + ": " + linea);
-                _traza.append(_ambito.estadoMemoria());
-
                 if (instruccionesEjecutadas > 0) {
                     _traza.append(",")
                             .append(System.getProperty("line.separator"));
@@ -213,9 +210,9 @@ public class ControladorEjecucion {
         _salto = true;
     }
 
-    private void asignarVariablesEntrada(int[] parametros) {
+    private void asignarVariablesEntrada(String[] parametros) {
         for (int i = 0; i < parametros.length; ++i) {
-            _ambito.variables().nuevaVariable("X" + (i + 1), parametros[i]);
+            _ambito.variables().nuevaVariable("X" + (i + 1), Integer.parseInt(parametros[i]));
         }
     }
 

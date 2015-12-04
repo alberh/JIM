@@ -21,11 +21,11 @@ public class Ambito extends Componente {
     private GestorEtiquetas _gestorEtiquetas;
     private GestorLlamadasAMacro _gestorLlamadasAMacro;
 
-    private int[] _parametrosEntrada;
+    private String[] _parametrosEntrada;
     private Macro _macroAsociada;
 
     public Ambito(Programa programa,
-            int[] parametrosEntrada,
+            String[] parametrosEntrada,
             Macro macroAsociada,
             GestorAmbitos gestorAmbitos) {
 
@@ -40,7 +40,7 @@ public class Ambito extends Componente {
     }
 
     public Ambito(Programa programa,
-            int[] parametrosEntrada,
+            String[] parametrosEntrada,
             ArrayList<String> lineas,
             GestorAmbitos gestorAmbitos) {
 
@@ -51,7 +51,7 @@ public class Ambito extends Componente {
     }
 
     private Ambito(Programa programa,
-            int[] parametrosEntrada,
+            String[] parametrosEntrada,
             GestorAmbitos gestorAmbitos) {
 
         super(programa.ficheroEnProceso(), gestorAmbitos);
@@ -89,7 +89,7 @@ public class Ambito extends Componente {
         return _programa;
     }
 
-    public int[] parametrosEntrada() {
+    public String[] parametrosEntrada() {
         return _parametrosEntrada;
     }
 
@@ -101,8 +101,8 @@ public class Ambito extends Componente {
         return _macroAsociada != null;
     }
 
-    public void iniciar(int[] parametros) {
-        _controladorEjecucion.iniciar(parametros);
+    public void iniciar() {
+        _controladorEjecucion.iniciar(_parametrosEntrada);
     }
 
     public String estadoMemoria() {

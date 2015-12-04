@@ -20,7 +20,7 @@ public class GestorMacros extends GestorComponentes {
     public Macro nuevaMacro(String id) {
         Macro macro = new Macro(id, this);
         _macros.put(id, macro);
-
+        
         return macro;
     }
 

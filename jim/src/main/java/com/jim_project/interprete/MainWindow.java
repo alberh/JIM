@@ -237,7 +237,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         taEditor.setColumns(20);
         taEditor.setRows(5);
-        taEditor.setText("while x1 != 0\n\tz++\n\tx1--\nend\n\ny <- z1");
+        taEditor.setText("y <- asd()");
         taEditor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 taEditorKeyPressed(evt);
@@ -495,17 +495,18 @@ public class MainWindow extends javax.swing.JFrame {
                 modoFlexible(),
                 macrosPermitidas());
 
-        int[] parametros = null;
+        String[] parametros = null;
         if (!tfEntradaPrograma.getText().isEmpty()) {
             String[] parametrosComoCadenas = tfEntradaPrograma.getText().split(" ");
             int tam = parametrosComoCadenas.length;
-            parametros = new int[tam];
+            parametros = new String[tam];
 
             for (int i = 0; i < tam; ++i) {
                 try {
-                    parametros[i] = Integer.parseInt(parametrosComoCadenas[i]);
+                    Integer.parseInt(parametrosComoCadenas[i]);
+                    parametros[i] = parametrosComoCadenas[i];
                 } catch (NumberFormatException ex) {
-                    parametros[i] = 0;
+                    parametros[i] = "0";
                 }
             }
         }

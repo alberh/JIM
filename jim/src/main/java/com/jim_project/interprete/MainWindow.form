@@ -408,7 +408,7 @@
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="while x1 != 0&#xa;&#x9;z++&#xa;&#x9;x1--&#xa;end&#xa;&#xa;y &lt;- z1"/>
+                <Property name="text" type="java.lang.String" value="y &lt;- asd()"/>
               </Properties>
               <Events>
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="taEditorKeyPressed"/>

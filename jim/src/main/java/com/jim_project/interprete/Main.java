@@ -32,7 +32,7 @@ public class Main {
             if (modelo.tipo() != null) {
                 boolean modoFlexible = false;
                 boolean macrosPermitidas = true;
-                int[] parametros = null;
+                String[] parametros = null;
 
                 if (args.length > 2) {
                     int indiceParametros = 2;
@@ -43,14 +43,15 @@ public class Main {
                     }
 
                     if (args.length > indiceParametros) {
-                        parametros = new int[args.length - indiceParametros];
+                        parametros = new String[args.length - indiceParametros];
 
                         int cont = 0;
                         for (int i = indiceParametros; i < args.length; ++i) {
                             try {
-                                parametros[cont] = Integer.parseInt(args[i]);
+                                Integer.parseInt(args[i]);
+                                parametros[cont] = args[i];
                             } catch (Exception ex) {
-                                parametros[cont] = 0;
+                                parametros[cont] = "0";
                             }
 
                             cont++;
@@ -70,7 +71,7 @@ public class Main {
             Modelo modelo,
             boolean modoFlexible,
             boolean macrosPermitidas,
-            int[] parametros) {
+            String[] parametros) {
 
         Programa programa = new Programa(fichero,
                 modelo,

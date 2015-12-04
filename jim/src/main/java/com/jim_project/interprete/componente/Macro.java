@@ -9,13 +9,11 @@ public class Macro extends Componente {
     private String _cuerpo;
 
     // Componentes usados en la expansión de macros ilustrativa
-    private ArrayList<String> _variablesEntrada = new ArrayList<>();
-    private ArrayList<String> _variablesLocales = new ArrayList<>();
-
-    private ArrayList<String> _etiquetas = new ArrayList<>();
-    private ArrayList<String> _etiquetasGoTo = new ArrayList<>();
-
-    private ArrayList<String> _llamadasAMacros = new ArrayList<>();
+    private ArrayList<String> _variablesEntrada;
+    private ArrayList<String> _variablesLocales;
+    private ArrayList<String> _etiquetas;
+    private ArrayList<String> _etiquetasGoTo;
+    private ArrayList<String> _llamadasAMacros;
 
     public Macro(String id, GestorMacros gestorMacros) {
         super(id, gestorMacros);
@@ -25,6 +23,12 @@ public class Macro extends Componente {
         if (_definidaEn.equals("jim.tmp")) {
             _definidaEn = "Editor";
         }
+
+        _variablesEntrada = new ArrayList<>();
+        _variablesLocales = new ArrayList<>();
+        _etiquetas = new ArrayList<>();
+        _etiquetasGoTo = new ArrayList<>();
+        _llamadasAMacros = new ArrayList<>();
     }
 
     public String definidaEn() {

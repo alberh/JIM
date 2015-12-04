@@ -583,7 +583,7 @@ case 10:
 break;
 case 11:
 //#line 39 "gramatica.y"
-{ yyval.obj = _acciones.llamadaAMacro(val_peek(0).sval); }
+{ _acciones.llamadaAMacro(val_peek(0).sval); }
 break;
 case 13:
 //#line 41 "gramatica.y"

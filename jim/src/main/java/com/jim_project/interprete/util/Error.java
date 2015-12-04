@@ -118,7 +118,7 @@ public class Error {
     }
 
     public static void deIdentificadorDeVariableVacio() {
-        imprimir("Error 24: Nombre de variable vacío.");
+        // imprimir("Error 24: Nombre de variable vacío.");
     }
 
     public static void deTipoDeVariableNoValido(char tipo) {

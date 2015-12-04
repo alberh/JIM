@@ -602,7 +602,7 @@ case 11:
 break;
 case 12:
 //#line 41 "gramatica.y"
-{ yyval.obj = new WhileParserVal(); }
+{ _acciones.llamadaAMacro(val_peek(0).sval); }
 break;
 case 13:
 //#line 41 "gramatica.y"

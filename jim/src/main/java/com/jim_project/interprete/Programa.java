@@ -134,15 +134,14 @@ public class Programa {
         return _gestorMacros;
     }
 
-    public void iniciar(int[] parametros) {
+    public void iniciar(String[] parametros) {
         if (estadoOk()) {
+            limpiar();
             comprobarDirectoriosMacros();
             cargarMacros();
             ficheroEnProceso(_fichero);
 
             if (estadoOk()) {
-                limpiar();
-
                 ArrayList<String> lineas = new ArrayList<>();
 
                 try (Scanner scanner = new Scanner(new File(_fichero))) {
@@ -153,7 +152,7 @@ public class Programa {
                     _error.alCargarPrograma(_fichero);
                 }
 
-                _gestorAmbitos.nuevoAmbito(parametros, lineas).iniciar(parametros);
+                _gestorAmbitos.nuevoAmbito(parametros, lineas).iniciar();
             }
         }
     }

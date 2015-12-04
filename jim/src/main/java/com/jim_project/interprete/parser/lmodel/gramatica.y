@@ -35,7 +35,7 @@ sentencia : etiqueta instruccion { $$ = new LParserVal(); }
 etiqueta : '[' ETIQUETA ']' { $$ = $2; }
          | { $$ = new LParserVal(); }
 ;
-instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
+instruccion : VARIABLE { _acciones.variableAsignada($1); } FLECHA finInstruccion { _acciones.asignacion($1, $4); }
             | VARIABLE INCREMENTO { _acciones.incremento($1); }
             | VARIABLE DECREMENTO { _acciones.decremento($1); }
             | IF VARIABLE DISTINTO GOTO ETIQUETA { _acciones.saltoCondicional($2, $5); }
@@ -44,7 +44,7 @@ instruccion : VARIABLE FLECHA finInstruccion { _acciones.asignacion($1, $3); }
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
                |  operacion { $$ = $1; }
-               |  IDMACRO { $$ = _acciones.llamadaAMacro($1); } '(' parametrosMacro ')'
+               |  IDMACRO { _acciones.llamadaAMacro($1); } '(' parametrosMacro ')'
 ;
 operacion   :  operando '+' operando { $$ = _acciones.operacionBinaria('+', $1, $3); }
                 |  operando '-' operando { $$ = _acciones.operacionBinaria('-', $1, $3); }

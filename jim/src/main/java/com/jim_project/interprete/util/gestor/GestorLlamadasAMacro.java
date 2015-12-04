@@ -9,15 +9,15 @@ public class GestorLlamadasAMacro extends GestorComponentes {
 
     private ArrayList<LlamadaAMacro> _llamadasAMacros;
     private LlamadaAMacro _ultimaLlamadaAMacro;
-    
+
     public GestorLlamadasAMacro(Ambito ambito) {
         super(ambito);
-        
+
         _llamadasAMacros = new ArrayList<>();
         _ultimaLlamadaAMacro = null;
     }
-    
-    public void definirMacro(Variable ultimaVariableAsignada, Object idMacro) {
+
+    public void definirLlamadaAMacro(Variable ultimaVariableAsignada, Object idMacro) {
         int linea = _ambito.controladorEjecucion().numeroLineaActual();
 
         _ultimaLlamadaAMacro
@@ -30,7 +30,21 @@ public class GestorLlamadasAMacro extends GestorComponentes {
     public void definirVariableEntradaMacro(Object parametro) {
         _ultimaLlamadaAMacro.variablesEntrada().add(parametro.toString());
     }
-    
+
+    public LlamadaAMacro obtenerLlamadaAMacro(String idMacro) {
+        for (LlamadaAMacro llamada : _llamadasAMacros) {
+            if (llamada.idMacro().equalsIgnoreCase(idMacro)
+                    && llamada.linea()
+                    == _programa.gestorAmbitos().ambitoActual()
+                    .controladorEjecucion().numeroLineaActual()) {
+
+                return llamada;
+            }
+        }
+        
+        return null;
+    }
+
     @Override
     public void limpiar() {
         _llamadasAMacros.clear();
@@ -45,5 +59,5 @@ public class GestorLlamadasAMacro extends GestorComponentes {
     public boolean vacio() {
         return _llamadasAMacros.isEmpty();
     }
-    
+
 }

@@ -2,6 +2,8 @@ package com.jim_project.interprete.parser;
 
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.componente.Ambito;
+import com.jim_project.interprete.componente.LlamadaAMacro;
+import com.jim_project.interprete.componente.Macro;
 
 public class Acciones {
 
@@ -20,12 +22,14 @@ public class Acciones {
     public Variable ultimaVariableAsignada() {
         return _ultimaVariableAsignada;
     }
+    
+    public void variableAsignada(Object idVariable) {
+        _ultimaVariableAsignada = obtenerVariable(idVariable);
+    }
 
     public void asignacion(Object lvalue, Object rvalue) {
-        Variable variable = obtenerVariable(lvalue);
         int valor = obtenerValor(rvalue);
-
-        variable.valor(valor);
+        obtenerVariable(lvalue).valor(valor);
     }
 
     public void incremento(Object lvalue) {
@@ -159,9 +163,24 @@ public class Acciones {
             }
         }
     }
-    
-    public int llamadaAMacro(Object idMacro) {
-        return 777;
+
+    public void llamadaAMacro(Object idMacro) {
+        Macro macro = _ambito.programa().gestorMacros().obtenerMacro(idMacro.toString());
+        int valor = 0;
+
+        if (macro != null) {
+            LlamadaAMacro llamada = _ambito.llamadasAMacro().obtenerLlamadaAMacro(idMacro.toString());
+            String[] parametros = (String[]) llamada.variablesEntrada().toArray();
+
+            Ambito nuevoAmbito = _ambito.programa().gestorAmbitos().nuevoAmbito(parametros, macro);
+            nuevoAmbito.iniciar();
+            
+            if (_ambito.programa().estadoOk()) {
+                _ultimaVariableAsignada.valor(_ambito.resultado());
+            }
+        }
+
+        _ultimaVariableAsignada.valor(valor);
     }
 
     protected Variable obtenerVariable(Object id) {
