@@ -21,9 +21,8 @@
 %token <sval> VARIABLE ETIQUETA IDMACRO
 %token <ival> NUMERO
 
-%type <obj> operando finInstruccion
 %type <ival> operacion
-%type <obj> inicio sentencia etiqueta instruccion parametrosMacro masParametrosMacro
+%type <obj> inicio sentencia operando instruccion finInstruccion etiqueta parametrosMacro masParametrosMacro
 
 %%
 

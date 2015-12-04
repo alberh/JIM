@@ -19,9 +19,8 @@
 %token <sval> VARIABLE IDMACRO
 %token <ival> NUMERO
 
-%type <obj> operando finInstruccion
 %type <ival> operacion
-%type <obj> inicio instruccion parametrosMacro masParametrosMacro
+%type <obj> inicio operando finInstruccion instruccion parametrosMacro masParametrosMacro
 
 %%
 
