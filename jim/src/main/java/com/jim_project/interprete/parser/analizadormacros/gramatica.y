@@ -7,15 +7,8 @@
         import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
-
-// lista de tokens por orden de prioridad
-
-%token DEFMACRO   // comienzo de la declaración de una macro
-%token IDMACRO    // identificador de la macro
-%token VARIABLE
+%token DEFMACRO
 %token GOTO
-%token ETIQUETA
-%token ENDMACRO   // fin de la declaración de una macro
 
 %token <sval> VARIABLE ETIQUETA IDMACRO ENDMACRO
 

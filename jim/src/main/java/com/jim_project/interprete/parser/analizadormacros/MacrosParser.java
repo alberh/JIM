@@ -163,10 +163,10 @@ final MacrosParserVal dup_yyval(MacrosParserVal val)
 }
 //#### end semantic value section ####
 public final static short DEFMACRO=257;
-public final static short IDMACRO=258;
+public final static short GOTO=258;
 public final static short VARIABLE=259;
-public final static short GOTO=260;
-public final static short ETIQUETA=261;
+public final static short ETIQUETA=260;
+public final static short IDMACRO=261;
 public final static short ENDMACRO=262;
 public final static short YYERRCODE=256;
 final static short yylhs[] = {                           -1,
@@ -178,33 +178,33 @@ final static short yylen[] = {                            2,
     0,    4,    0,
 };
 final static short yydefred[] = {                         0,
-    0,    0,    0,    3,    1,    0,    7,    5,    0,    0,
-    0,    0,    0,   11,    0,    4,    8,    6,    0,    9,
+    0,    0,    0,    3,    1,    0,    0,    5,    7,    0,
+    0,   11,    0,    0,    0,    4,    0,    6,    8,    9,
    12,    0,   10,
 };
 final static short yydgoto[] = {                          2,
-    3,   11,    6,   13,   12,   22,   19,
+    3,   11,    6,   13,   14,   22,   17,
 };
 final static short yysindex[] = {                      -254,
- -253,    0, -254,    0,    0,  -91,    0,    0, -257, -255,
- -252,  -91,  -91,    0,  -86,    0,    0,    0,  -91,    0,
+ -257,    0, -254,    0,    0,  -91, -253,    0,    0, -252,
+ -256,    0,  -91,  -91,  -84,    0,  -91,    0,    0,    0,
     0,  -91,    0,
 };
-final static short yyrindex[] = {                         9,
-    0,    0,    9,    0,    0, -250,    0,    0,    0,    0,
-    0, -250, -250,    0,    0,    0,    0,    0, -250,    0,
+final static short yyrindex[] = {                        11,
+    0,    0,   11,    0,    0, -250,    0,    0,    0,    0,
+    0,    0, -250, -250,    0,    0, -250,    0,    0,    0,
     0, -250,    0,
 };
 final static short yygindex[] = {                        10,
-    0,  -11,    0,    0,    0,    0,    0,
+    0,  -12,    0,    0,    0,    0,    0,
 };
-final static int YYTABLESIZE=169;
+final static int YYTABLESIZE=170;
 static short yytable[];
 static { yytable();}
 static void yytable(){
 yytable = new short[]{                         10,
-   17,   18,    1,   14,    4,   15,   20,   21,    2,   16,
-   23,   13,    5,    0,    0,    0,    0,    0,    0,    0,
+   18,   19,    1,    4,   21,   16,   12,   15,   20,   23,
+    2,   13,    5,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -219,15 +219,15 @@ yytable = new short[]{                         10,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    7,    8,    9,
+    0,    0,    0,    0,    0,    0,    7,    8,    0,    9,
 };
 }
 static short yycheck[];
 static { yycheck(); }
 static void yycheck() {
 yycheck = new short[] {                         91,
-   12,   13,  257,  261,  258,  261,   93,   19,    0,  262,
-   22,  262,    3,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   13,   14,  257,  261,   17,  262,  260,  260,   93,   22,
+    0,  262,    3,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
@@ -242,7 +242,7 @@ yycheck = new short[] {                         91,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,  258,  259,  260,
+   -1,   -1,   -1,   -1,   -1,   -1,  258,  259,   -1,  261,
 };
 }
 final static short YYFINAL=2;
@@ -264,7 +264,7 @@ null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
-null,null,null,null,null,"DEFMACRO","IDMACRO","VARIABLE","GOTO","ETIQUETA",
+null,null,null,null,null,"DEFMACRO","GOTO","VARIABLE","ETIQUETA","IDMACRO",
 "ENDMACRO",
 };
 final static String yyrule[] = {
@@ -284,7 +284,7 @@ final static String yyrule[] = {
 "simbolos :",
 };
 
-//#line 37 "gramatica.y"
+//#line 30 "gramatica.y"
 
   private MacrosAcciones _acciones;
 
@@ -516,27 +516,27 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 3:
-//#line 27 "gramatica.y"
+//#line 20 "gramatica.y"
 { _acciones.nuevaMacro(val_peek(0).sval); }
 break;
 case 4:
-//#line 27 "gramatica.y"
+//#line 20 "gramatica.y"
 { _acciones.cuerpo(val_peek(0).sval); }
 break;
 case 5:
-//#line 29 "gramatica.y"
+//#line 22 "gramatica.y"
 { _acciones.nuevaVariable(val_peek(0).sval); }
 break;
 case 7:
-//#line 30 "gramatica.y"
+//#line 23 "gramatica.y"
 { _acciones.nuevaLlamadaAMacro(val_peek(0).sval); }
 break;
 case 9:
-//#line 31 "gramatica.y"
+//#line 24 "gramatica.y"
 { _acciones.nuevaEtiqueta(val_peek(1).sval); }
 break;
 case 11:
-//#line 32 "gramatica.y"
+//#line 25 "gramatica.y"
 { _acciones.nuevaEtiquetaSalto(val_peek(0).sval); }
 break;
 //#line 464 "MacrosParser.java"

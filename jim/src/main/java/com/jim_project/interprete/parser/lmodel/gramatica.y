@@ -7,22 +7,20 @@
   import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
-%token ETIQUETA
-%token VARIABLE
 %token FLECHA
 %token INCREMENTO
 %token DECREMENTO
 %token IF
 %token DISTINTO
 %token GOTO
-%token NUMERO
-%token IDMACRO
 
-%token <sval> VARIABLE ETIQUETA IDMACRO
+%token <sval> VARIABLE
+%token <sval> ETIQUETA
+%token <sval> IDMACRO
 %token <ival> NUMERO
 
 %type <ival> operacion
-%type <obj> inicio sentencia operando instruccion finInstruccion etiqueta parametrosMacro masParametrosMacro
+%type <obj> inicio sentencia etiqueta instruccion finInstruccion operando parametrosMacro masParametrosMacro
 
 %%
 
@@ -43,7 +41,7 @@ instruccion : VARIABLE { _acciones.variableAsignada($1); } FLECHA finInstruccion
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
                |  operacion { $$ = $1; }
-               |  IDMACRO { _acciones.llamadaAMacro($1); } '(' parametrosMacro ')'
+               |  IDMACRO { _acciones.llamadaAMacro($1); } '(' parametrosMacro ')' { $$ = new LParserVal(); }
 ;
 operacion   :  operando '+' operando { $$ = _acciones.operacionBinaria('+', $1, $3); }
                 |  operando '-' operando { $$ = _acciones.operacionBinaria('-', $1, $3); }
@@ -51,14 +49,14 @@ operacion   :  operando '+' operando { $$ = _acciones.operacionBinaria('+', $1, 
                 |  operando '/' operando { $$ = _acciones.operacionBinaria('/', $1, $3); }
                 |  operando '%' operando { $$ = _acciones.operacionBinaria('%', $1, $3); }
 ;
-operando :  NUMERO  { $$ = $1; }
-           |  VARIABLE { $$ = $1; }
+operando : NUMERO  { $$ = $1; }
+         |  VARIABLE { $$ = $1; }
 ;
-parametrosMacro : operando masParametrosMacro
-                | { ; }
+parametrosMacro : operando masParametrosMacro { $$ = new LParserVal(); }
+                | { $$ = new LParserVal(); }
 ;
-masParametrosMacro :  ',' operando masParametrosMacro
-                   | { ; }
+masParametrosMacro :  ',' operando masParametrosMacro { $$ = new LParserVal(); }
+                   | { $$ = new LParserVal(); }
 ;
 
 %%

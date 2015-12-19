@@ -8,19 +8,17 @@
   import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
-%token VARIABLE
 %token FLECHA
 %token INCREMENTO
-%token NUMERO
-%token IDMACRO
 %token LOOP
 %token END
 
-%token <sval> VARIABLE IDMACRO
+%token <sval> VARIABLE
+%token <sval> IDMACRO
 %token <ival> NUMERO
 
 %type <ival> operacion
-%type <obj> inicio operando finInstruccion instruccion parametrosMacro masParametrosMacro
+%type <obj> inicio instruccion finInstruccion operando parametrosMacro masParametrosMacro
 
 %%
 
@@ -35,19 +33,19 @@ instruccion : VARIABLE { _acciones.variableAsignada($1); } FLECHA finInstruccion
 finInstruccion :  VARIABLE { $$ = $1; }
                |  NUMERO { $$ = $1; }
                |  operacion { $$ = $1; }
-               |  IDMACRO { _acciones.llamadaAMacro($1); } '(' parametrosMacro ')'
+               |  IDMACRO { _acciones.llamadaAMacro($1); } '(' parametrosMacro ')' { $$ = new LoopParserVal(); }
 ;
 operacion    :  operando '+' operando { $$ = _acciones.operacionBinaria('+', $1, $3); }
              |  operando '*' operando { $$ = _acciones.operacionBinaria('*', $1, $3); }
 ;
-operando :  NUMERO  { $$ = $1; }
-           |  VARIABLE { $$ = $1; }
+operando : NUMERO  { $$ = $1; }
+         |  VARIABLE { $$ = $1; }
 ;
-parametrosMacro : operando masParametrosMacro
-                | { ; }
+parametrosMacro : operando masParametrosMacro { $$ = new LoopParserVal(); }
+                | { $$ = new LoopParserVal(); }
 ;
-masParametrosMacro :  ',' operando masParametrosMacro
-                   | { ; }
+masParametrosMacro :  ',' operando masParametrosMacro { $$ = new LoopParserVal(); }
+                   | { $$ = new LoopParserVal(); }
 ;
 
 %%

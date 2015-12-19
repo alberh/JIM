@@ -8,28 +8,21 @@
         import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
+// lista tokens por orden de prioridad
 
-// lista de tokens por orden de prioridad
-
-%token ETIQUETA
-%token VARIABLE
 %token FLECHA
 %token INCREMENTO
 %token DECREMENTO
 %token IF
 %token DISTINTO
 %token GOTO
-%token NUMERO
-%token IDMACRO
 %token WHILE
 %token LOOP
 %token END
 
-%token <sval> ETIQUETA VARIABLE IDMACRO
-%token <sval> NUMERO
+%token <sval> ETIQUETA VARIABLE IDMACRO NUMERO
 
-%type <sval> operacion
-%type <sval> inicio sentencia etiqueta finInstruccion operando parametros parametrosMacro masParametrosMacro
+%type <sval> inicio sentencia etiqueta instruccion finInstruccion operacion operando parametros parametrosMacro masParametrosMacro
 
 %%
 
