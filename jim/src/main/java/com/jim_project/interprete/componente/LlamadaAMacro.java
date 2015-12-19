@@ -13,7 +13,10 @@ public class LlamadaAMacro {
             String idVariableSalida,
             String idMacro) {
 
-        this(linea, idVariableSalida, idMacro, new ArrayList<>());
+        _linea = linea;
+        _idVariableSalida = idVariableSalida;
+        _idMacro = idMacro;
+        _variablesEntrada = new ArrayList<>();
     }
 
     public LlamadaAMacro(int linea,
@@ -21,10 +24,7 @@ public class LlamadaAMacro {
             String idMacro,
             ArrayList<String> variablesEntrada) {
 
-        _linea = linea;
-        _idVariableSalida = idVariableSalida;
-        _idMacro = idMacro;
-        _variablesEntrada = variablesEntrada;
+        
     }
 
     public int linea() {

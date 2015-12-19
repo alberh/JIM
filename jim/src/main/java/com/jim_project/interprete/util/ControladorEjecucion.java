@@ -6,12 +6,14 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
+import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.parser.AnalizadorLexico;
 import com.jim_project.interprete.parser.Parser;
 import com.jim_project.interprete.parser.lmodel.LParser;
 import com.jim_project.interprete.parser.loopmodel.LoopParser;
 import com.jim_project.interprete.parser.previo.PrevioParser;
 import com.jim_project.interprete.parser.whilemodel.WhileParser;
+import com.jim_project.interprete.util.gestor.GestorAmbitos;
 
 public class ControladorEjecucion {
 
@@ -41,7 +43,7 @@ public class ControladorEjecucion {
         // para que devuelva uno vacío si es el caso
         _traza = new StringBuilder();
     }
-    
+
     public Ambito ambito() {
         return _ambito;
     }
@@ -49,15 +51,24 @@ public class ControladorEjecucion {
     public String traza() {
         return _traza.toString();
     }
-    
+
     public Etapa etapa() {
         return _etapa;
     }
 
     public void iniciar(String[] parametros) {
-        _ambito.limpiar();
+        // No es necesario ahora mismo puesto que el programa crea un nuevo
+        // ámbito cada vez que se realiza una ejecución, pero lo dejo para
+        // futuras optimizaciones
+        // _ambito.limpiar();
 
-        System.out.println("Analizando el programa...");
+        Ambito ambitoRaiz = _ambito.programa().gestorAmbitos().ambitoRaiz();
+
+        if (_ambito == ambitoRaiz) {
+            System.out.println("Analizando el programa...");
+        } else {
+            // System.out.println("Analizando la macro ...");
+        }
         previo();
 
         if (_programa.estadoOk()) {
@@ -67,9 +78,11 @@ public class ControladorEjecucion {
             }
 
             // Lanzar
-            System.out.println("Ejecutando...");
-            System.out.println("Si el programa no termina en unos segundos, "
-                    + "probablemente haya caído en un bucle infinito.");
+            if (_ambito == ambitoRaiz) {
+                System.out.println("Ejecutando...");
+                System.out.println("Si el programa no termina en unos segundos, "
+                        + "probablemente haya caído en un bucle infinito.");
+            }
 
             ejecutar(_programa.modelo().tipo());
         }
@@ -81,24 +94,23 @@ public class ControladorEjecucion {
             ejecutar(Modelo.Tipo.PREVIO);
         }
     }
-    
+
     private Parser obtenerParser(Modelo.Tipo tipo, String lineaReader) {
-        
         BufferedReader reader = new BufferedReader(new StringReader(lineaReader));
-        
+
         switch (tipo) {
             case PREVIO:
                 return new PrevioParser(reader, this);
-                
+
             case L:
                 return new LParser(reader, this);
-                
+
             case LOOP:
                 return new LoopParser(reader, this);
-                
+
             case WHILE:
                 return new WhileParser(reader, this);
-                
+
             default:
                 return null;
         }
@@ -211,8 +223,29 @@ public class ControladorEjecucion {
     }
 
     private void asignarVariablesEntrada(String[] parametros) {
-        for (int i = 0; i < parametros.length; ++i) {
-            _ambito.variables().nuevaVariable("X" + (i + 1), Integer.parseInt(parametros[i]));
+        if (_ambito == _ambito.programa().gestorAmbitos().ambitoRaiz()) {
+            // En el caso del ámbito raíz no es necesario envolver la llamada a
+            // parseInt en un bloque try-catch.
+            for (int i = 0; i < parametros.length; ++i) {
+                int valor = Integer.parseInt(parametros[i]);
+                _ambito.variables().nuevaVariable("X" + (i + 1), valor);
+            }
+        } else {
+            GestorAmbitos gestor = (GestorAmbitos)_ambito.gestor();
+            Ambito ambitoPadre = gestor.ambitoPadre(_ambito.profundidad());
+            
+            for (int i = 0; i < parametros.length; ++i) {
+                int valor = 0;
+                try {
+                    valor = Integer.parseInt(parametros[i]);
+                } catch (NumberFormatException ex) {
+                    Variable v = ambitoPadre.variables().obtenerVariable(parametros[i]);
+                    if (v != null) {
+                        valor = v.valor();
+                    }
+                }
+                _ambito.variables().nuevaVariable("X" + (i + 1), valor);
+            }
         }
     }
 

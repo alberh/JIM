@@ -23,13 +23,15 @@ public class Ambito extends Componente {
 
     private String[] _parametrosEntrada;
     private Macro _macroAsociada;
+    private int _profundidad;
 
     public Ambito(Programa programa,
             String[] parametrosEntrada,
             Macro macroAsociada,
+            int profundidad,
             GestorAmbitos gestorAmbitos) {
 
-        this(programa, parametrosEntrada, gestorAmbitos);
+        this(programa, parametrosEntrada, profundidad, gestorAmbitos);
 
         ArrayList<String> lineas = new ArrayList<>(
                 Arrays.asList(macroAsociada.cuerpo().split("[\n\r]+"))
@@ -44,7 +46,7 @@ public class Ambito extends Componente {
             ArrayList<String> lineas,
             GestorAmbitos gestorAmbitos) {
 
-        this(programa, parametrosEntrada, gestorAmbitos);
+        this(programa, parametrosEntrada, 0, gestorAmbitos);
 
         _controladorEjecucion = new ControladorEjecucion(this, lineas);
         _macroAsociada = null;
@@ -52,12 +54,14 @@ public class Ambito extends Componente {
 
     private Ambito(Programa programa,
             String[] parametrosEntrada,
+            int profundidad,
             GestorAmbitos gestorAmbitos) {
 
         super(programa.ficheroEnProceso(), gestorAmbitos);
 
         _programa = programa;
         _parametrosEntrada = parametrosEntrada;
+        _profundidad = profundidad;
 
         _gestorVariables = new GestorVariables(this);
         _gestorBucles = new GestorBucles(this);
@@ -95,6 +99,10 @@ public class Ambito extends Componente {
 
     public Macro macroAsociada() {
         return _macroAsociada;
+    }
+    
+    public int profundidad() {
+        return _profundidad;
     }
 
     public boolean tieneMacroAsociada() {

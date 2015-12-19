@@ -29,7 +29,10 @@ public class Acciones {
 
     public void asignacion(Object lvalue, Object rvalue) {
         int valor = obtenerValor(rvalue);
-        obtenerVariable(lvalue).valor(valor);
+        
+        if (valor > -1) {
+            obtenerVariable(lvalue).valor(valor);
+        }
     }
 
     public void incremento(Object lvalue) {
@@ -170,14 +173,23 @@ public class Acciones {
 
         if (macro != null) {
             LlamadaAMacro llamada = _ambito.llamadasAMacro().obtenerLlamadaAMacro(idMacro.toString());
-            String[] parametros = (String[]) llamada.variablesEntrada().toArray();
+            
+            int tam = llamada.variablesEntrada().size();
+            String[] parametros = new String[tam];
+            
+            for (int i = 0; i < tam; ++i) {
+                parametros[i] = llamada.variablesEntrada().get(i);
+            }
 
-            Ambito nuevoAmbito = _ambito.programa().gestorAmbitos().nuevoAmbito(parametros, macro);
+            int profundidad = _ambito.profundidad() + 1;
+            Ambito nuevoAmbito = _ambito.programa().gestorAmbitos().nuevoAmbito(parametros, macro, profundidad);
             nuevoAmbito.iniciar();
             
-            if (_ambito.programa().estadoOk()) {
-                _ultimaVariableAsignada.valor(_ambito.resultado());
+            if (nuevoAmbito.programa().estadoOk()) {
+                valor = nuevoAmbito.resultado();
             }
+            
+            _ambito.programa().gestorAmbitos().eliminarUltimoAmbito();
         }
 
         _ultimaVariableAsignada.valor(valor);
@@ -197,9 +209,9 @@ public class Acciones {
             try {
                 valor = _ambito.variables().obtenerVariable((String) o).valor();
             } catch (Exception ex) {
-                // Si el analizador previo se ha pasado debidamente, no debería
-                // llegarse a este punto.
-                valor = 0;
+                // Pequeño parche para que no asigne valor 0 tras una llamada
+                // a macro.
+                valor = -1;
             }
         }
 

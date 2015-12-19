@@ -16,8 +16,8 @@ public class GestorAmbitos extends GestorComponentes {
         _ultimoAmbito = null;
     }
 
-    public Ambito nuevoAmbito(String[] parametrosEntrada, Macro macroAsociada) {
-        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, macroAsociada, this);
+    public Ambito nuevoAmbito(String[] parametrosEntrada, Macro macroAsociada, int profundidad) {
+        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, macroAsociada, profundidad, this);
         _ambitos.add(_ultimoAmbito);
 
         return _ultimoAmbito;
@@ -30,7 +30,7 @@ public class GestorAmbitos extends GestorComponentes {
         return _ultimoAmbito;
     }
     
-    public void eliminarAmbitoActual() {
+    public void eliminarUltimoAmbito() {
         if (!_ambitos.isEmpty()) {
             _ambitos.remove(_ultimoAmbito);
 
@@ -45,6 +45,14 @@ public class GestorAmbitos extends GestorComponentes {
     public Ambito ambitoRaiz() {
         if (!_ambitos.isEmpty()) {
             return _ambitos.get(0);
+        } else {
+            return null;
+        }
+    }
+    
+    public Ambito ambitoPadre(int profundidad) {
+        if (profundidad > 0 && profundidad < _ambitos.size()) {
+            return _ambitos.get(profundidad - 1);
         } else {
             return null;
         }

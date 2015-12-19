@@ -21,9 +21,7 @@ public class GestorLlamadasAMacro extends GestorComponentes {
         int linea = _ambito.controladorEjecucion().numeroLineaActual();
 
         _ultimaLlamadaAMacro
-                = new LlamadaAMacro(linea,
-                        ultimaVariableAsignada.id(),
-                        idMacro.toString());
+                = new LlamadaAMacro(linea, ultimaVariableAsignada.id(), idMacro.toString());
         _llamadasAMacros.add(_ultimaLlamadaAMacro);
     }
 
@@ -41,7 +39,7 @@ public class GestorLlamadasAMacro extends GestorComponentes {
                 return llamada;
             }
         }
-        
+
         return null;
     }
 
