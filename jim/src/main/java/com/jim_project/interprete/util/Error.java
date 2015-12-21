@@ -98,6 +98,15 @@ public class Error {
         Error.imprimir("Error X5: No se pudo instanciar el modelo \"" + modelo + "\".");
     }
 
+    public static void deParametrosNoIndicados() {
+        Error.imprimir("Error X6: No se han indicado argumentos suficientes. "
+                + "Debe indicar al menos el modelo de computación.");
+    }
+    
+    public static void deModificadorNoValido(char modificador) {
+        Error.imprimir("Error X7: Modificador " + modificador + " no válido.");
+    }
+
     // Consola
     public static void deParametroNoValido(String param) {
         Error.imprimir("Error X6: Parámetro " + param + " no válido. "

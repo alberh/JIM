@@ -2,6 +2,7 @@ package com.jim_project.interprete;
 
 import com.jim_project.interprete.util.Configuracion;
 import com.jim_project.interprete.util.Error;
+import java.util.Scanner;
 
 /* Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
  * mayor que, etc...
@@ -14,64 +15,165 @@ import com.jim_project.interprete.util.Error;
  Planificación: tiempos memoria, diseño, programación, etc
  */
 
-/* Uso: jim modelo fichero [ex|extendido] [param1 [param2 [...]]]
- *            0       1          2          2/3     3/4
+/* Uso: jim fichero modelo [ex|extendido] [param1 [param2 [...]]]
+ *             0      1          2          2/3     3/4
  */
 public class Main {
 
     public static void main(String[] args) {
-        bienvenida();
+        Configuracion.cargar();
 
-        if (args.length >= 2) {
-            Configuracion.cargar();
+        switch (args.length) {
+            case 0:
+                bienvenida();
+                break;
 
-            String fichero = args[0];
-            String cadenaModelo = args[1];
+            case 1:
+                if (args[0].equalsIgnoreCase("--help")) {
+                    ayuda();
+                } else {
+                    cargarArgumentosDesdeFichero(args);
+                }
+                break;
 
-            Modelo modelo = new Modelo(cadenaModelo);
+            default:
+                cargarConArgumentos(args);
+        }
+    }
 
-            if (modelo.tipo() != null) {
-                boolean modoFlexible = false;
-                boolean macrosPermitidas = true;
-                String[] parametros = null;
-                boolean ok = true;
+    private static void cargarResto(String[] args) {
+        Modelo modelo = new Modelo(argsFichero[2]);
+        if (modelo.tipo() != null) {
+            boolean mostrarTraza = false;
+            boolean modoFlexible = false;
+            boolean macrosPermitidas = true;
+            boolean verbose = false;
+            String[] parametros = null;
+            boolean ok = true;
 
-                if (args.length > 2) {
-                    int indiceParametros = 2;
+            if (nA > 3) {
+                String arg = argsFichero[3];
+                int siguienteIndice = 3;
+                // Asignar modificadores
+                if (!Character.isDigit(arg.charAt(0))) {
+                    siguienteIndice = 4;
 
-                    if (args[2].equals("ex") || args[2].equals("extendido")) {
-                        modoFlexible = true;
-                        indiceParametros = 3;
-                    }
-
-                    if (args.length > indiceParametros) {
-                        parametros = new String[args.length - indiceParametros];
-
-                        int cont = 0;
-                        for (int i = indiceParametros; i < args.length && ok; ++i) {
-                            try {
-                                Integer.parseInt(args[i]);
-                                parametros[cont] = args[i];
-                            } catch (Exception ex) {
-                                Error.deParametroNoValido(args[i]);
+                    for (int i = 0; i < arg.length(); ++i) {
+                        System.out.println("Cargando modificador " + arg.charAt(i));
+                        switch (new String(arg.charAt(i))) {
+                            case 't':
+                                mostrarTraza = true;
+                                break;
+                            case 'f':
+                                modoFlexible = true;
+                                break;
+                            case 'm':
+                                macrosPermitidas = true;
+                                break;
+                            case 'v':
+                                verbose = true;
+                                break;
+                            default:
+                                Error.deModificadorNoValido(arg.charAt(i));
                                 ok = false;
-                            }
-
-                            cont++;
                         }
                     }
                 }
 
-                if (ok) {
-                    iniciar(fichero, modelo, modoFlexible, macrosPermitidas, parametros);
+                // Asignar parámetros entrada
+                if (siguienteIndice < nA && ok) {
+                    parametros = new String[nA - siguienteIndice];
+                    int cont = 0;
+                    for (int i = siguienteIndice; i < nA && ok; ++i) {
+                        try {
+                            Integer.parseInt(args[i]);
+                            parametros[cont] = args[i];
+                        } catch (Exception ex) {
+                            Error.deParametroNoValido(args[i]);
+                            ok = false;
+                        }
+
+                        cont++;
+                    }
                 }
             }
-        } else {
-            System.out.println("Uso: jim fichero modelo [ex|extendido] [param1 [param2 [...]]]");
+
+            if (ok) {
+                iniciar(fichero, modelo, modoFlexible, macrosPermitidas, parametros);
+            }
         }
     }
 
-    public static void iniciar(
+    private static String[] cargarArgumentosDesdeFichero(String[] args) {
+        String fichero = args[0];
+
+        // Búsqueda de parámetros
+        Scanner sc = new Scanner(fichero);
+        if (sc.hasNextLine()) {
+            String linea = sc.nextLine();
+            String[] argsFichero = linea.split(" ");
+
+            int nA = argsFichero.length;
+            if (nA > 2
+                    && argsFichero[0].equals("#")
+                    && argsFichero[1].equalsIgnoreCase("args:")) {
+
+                // LLamada a cargarResto con la lista de parámetros
+                // menos los dos primeros (#, args:)
+                String[] nuevosArgs = new String[]
+            } else {
+                Error.deParametrosNoIndicados();
+            }
+        }
+        sc.close();
+    }
+
+    private static void cargarConArgumentos(String[] args) {
+        Configuracion.cargar();
+        String fichero = args[0];
+        Modelo modelo = new Modelo(args[1]);
+
+        if (modelo.tipo() != null) {
+            boolean mostrarTraza = false;
+            boolean modoFlexible = false;
+            boolean macrosPermitidas = true;
+            boolean verbose = false;
+            String[] parametros = null;
+            boolean ok = true;
+
+            if (args.length > 2) {
+                int indiceParametros = 2;
+
+                if (args[2].equals("ex") || args[2].equals("extendido")) {
+                    modoFlexible = true;
+                    indiceParametros = 3;
+                }
+
+                if (args.length > indiceParametros) {
+                    parametros = new String[args.length - indiceParametros];
+
+                    int cont = 0;
+                    for (int i = indiceParametros; i < args.length && ok; ++i) {
+                        try {
+                            Integer.parseInt(args[i]);
+                            parametros[cont] = args[i];
+                        } catch (Exception ex) {
+                            Error.deParametroNoValido(args[i]);
+                            ok = false;
+                        }
+
+                        cont++;
+                    }
+                }
+            }
+
+            if (ok) {
+                iniciar(fichero, modelo, modoFlexible, macrosPermitidas, parametros);
+            }
+        }
+    }
+
+    private static void iniciar(
             String fichero,
             Modelo modelo,
             boolean modoFlexible,
@@ -91,19 +193,18 @@ public class Main {
         }
     }
 
-    public static void iniciarExpansionMacros(
+    private static void iniciarExpansionMacros(
             String fichero,
             Modelo modelo,
             boolean modoFlexible,
-            boolean macrosPermitidas
-    ) {
+            boolean macrosPermitidas) {
 
         Programa programa = new Programa(fichero,
                 modelo,
                 Programa.Objetivo.EJECUTAR,
                 modoFlexible,
                 macrosPermitidas);
-        
+
         programa.iniciarExpansionMacros();
 
         if (programa.estadoOk()) {
@@ -114,11 +215,33 @@ public class Main {
         }
     }
 
-    public static void bienvenida() {
+    private static void bienvenida() {
         System.out.println("JIM - Intérprete de Modelos");
-        System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
         System.out.println("Versión " + Configuracion.version());
+        System.out.println("Para ver la ayuda: java Jim --help");
+    }
+
+    private static void ayuda() {
+        System.out.println("Uso:");
+        System.out.println("java Jim fichero");
+        System.out.println("java Jim fichero modelo [t|f|m|v] [param1 [param2 [...]]]");
         System.out.println();
+        System.out.println("t: Muestra la traza del programa.");
+        System.out.println("f: Activa el modo flexible.");
+        System.out.println("m: Activa la ejecución de macros.");
+        System.out.println("v: Hace la salida del programa más detallada.");
+        System.out.println();
+        System.out.println("Ejemplos:");
+        System.out.println("\tjava Jim p1 l");
+        System.out.println("\tjava Jim p2 loop 1 2");
+        System.out.println("\tjava Jim p3 while tm 2 3 5");
+        System.out.println();
+        System.out.println("Para ejecutar el programa indicando sólo el "
+                + "fichero, debe especificar los argumentos de entrada en la "
+                + "primera línea del mismo mediante la siguiente notación:");
+        System.out.println("\t# args: modelo [t|f|m|v] [param1 [param2 [...]]]");
+        System.out.println("Si indica los argumentos en la llamada al programa, "
+                + "no se tendrán en cuenta los del fichero.");
     }
 
     /*
