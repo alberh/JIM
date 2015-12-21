@@ -158,10 +158,8 @@ public class Programa {
     }
 
     public void iniciarExpansionMacros() {
-        if (estadoOk()) {
-            limpiar();
-            _gestorAmbitos.ambitoRaiz().iniciarExpansionMacros();
-        }
+        limpiar();
+        _gestorAmbitos.ambitoRaiz().iniciarExpansionMacros();
     }
 
     public int resultado() {

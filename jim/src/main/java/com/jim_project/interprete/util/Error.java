@@ -15,12 +15,12 @@ public class Error {
     private static void imprimir(String mensaje) {
         imprimir(mensaje, null);
     }
-    
+
     private static void imprimir(String mensaje, Programa programa) {
         System.err.println(mensaje);
         Error.estadoErroneo(programa);;
     }
-    
+
     private static void estadoErroneo(Programa programa) {
         if (programa != null && programa.estadoOk()) {
             programa.estado(Estado.ERROR);
@@ -80,7 +80,7 @@ public class Error {
 
     public void enNumeroParametros(int n, String id,
             int numVariablesEntrada, int numParametros) {
-        
+
         imprimir("Error 8 : La macro \"" + id + "\" acepta un máximo de "
                 + numVariablesEntrada + " parámetros y ha sido llamada con "
                 + numParametros + ".",
@@ -92,10 +92,17 @@ public class Error {
                 + "\" porque contiene llamadas recursivas.",
                 n);
     }
-    
+
     // Main
-    public static void deModeloNoValido(String cadena) {
-        Error.imprimir("Error X5: No se pudo instanciar el modelo \"" + cadena + "\".");
+    public static void deModeloNoValido(String modelo) {
+        Error.imprimir("Error X5: No se pudo instanciar el modelo \"" + modelo + "\".");
+    }
+
+    // Consola
+    public static void deParametroNoValido(String param) {
+        Error.imprimir("Error X6: Parámetro " + param + " no válido. "
+                + "Todos los parámetros de entrada del programa deben ser "
+                + "numéricos.");
     }
 
     // GUI
@@ -124,7 +131,7 @@ public class Error {
     public static void deTipoDeVariableNoValido(char tipo) {
         // Para después del refactor
         imprimir("Error 26: Tipo de variable '" + tipo + "' no válido.");
-                // , numeroLineaActual());
+        // , numeroLineaActual());
     }
 
     // Bucle
@@ -210,9 +217,9 @@ public class Error {
 
     public void deTokenNoEsperado(int numeroLinea, String descripcion) {
         /*
-        imprimir("Error 20: No se esperaba un símbolo. Descripción: "
-                + descripcion, numeroLinea);
-        */
+         imprimir("Error 20: No se esperaba un símbolo. Descripción: "
+         + descripcion, numeroLinea);
+         */
         Error.estadoErroneo(_programa);
     }
 

@@ -496,24 +496,30 @@ public class MainWindow extends javax.swing.JFrame {
                 macrosPermitidas());
 
         String[] parametros = null;
+        boolean ok = true;
+        
         if (!tfEntradaPrograma.getText().isEmpty()) {
             String[] parametrosComoCadenas = tfEntradaPrograma.getText().split(" ");
             int tam = parametrosComoCadenas.length;
             parametros = new String[tam];
 
-            for (int i = 0; i < tam; ++i) {
+            for (int i = 0; i < tam && ok; ++i) {
                 try {
                     Integer.parseInt(parametrosComoCadenas[i]);
                     parametros[i] = parametrosComoCadenas[i];
                 } catch (NumberFormatException ex) {
-                    parametros[i] = "0";
+                    Error.deParametroNoValido(parametrosComoCadenas[i]);
+                    ok = false;
                 }
             }
         }
 
-        programa.iniciar(parametros);
+        if (ok) {
+            programa.iniciar(parametros);
+            ok = programa.estadoOk();
+        }
 
-        if (programa.estadoOk()) {
+        if (ok) {
             System.out.println();
             System.out.println("Resultado: " + programa.resultado());
             taTraza.setText(programa.traza());

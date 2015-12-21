@@ -1,6 +1,7 @@
 package com.jim_project.interprete;
 
 import com.jim_project.interprete.util.Configuracion;
+import com.jim_project.interprete.util.Error;
 
 /* Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
  * mayor que, etc...
@@ -24,8 +25,8 @@ public class Main {
         if (args.length >= 2) {
             Configuracion.cargar();
 
-            String cadenaModelo = args[0];
-            String fichero = args[1];
+            String fichero = args[0];
+            String cadenaModelo = args[1];
 
             Modelo modelo = new Modelo(cadenaModelo);
 
@@ -33,6 +34,7 @@ public class Main {
                 boolean modoFlexible = false;
                 boolean macrosPermitidas = true;
                 String[] parametros = null;
+                boolean ok = true;
 
                 if (args.length > 2) {
                     int indiceParametros = 2;
@@ -46,12 +48,13 @@ public class Main {
                         parametros = new String[args.length - indiceParametros];
 
                         int cont = 0;
-                        for (int i = indiceParametros; i < args.length; ++i) {
+                        for (int i = indiceParametros; i < args.length && ok; ++i) {
                             try {
                                 Integer.parseInt(args[i]);
                                 parametros[cont] = args[i];
                             } catch (Exception ex) {
-                                parametros[cont] = "0";
+                                Error.deParametroNoValido(args[i]);
+                                ok = false;
                             }
 
                             cont++;
@@ -59,10 +62,12 @@ public class Main {
                     }
                 }
 
-                iniciar(fichero, modelo, modoFlexible, macrosPermitidas, parametros);
+                if (ok) {
+                    iniciar(fichero, modelo, modoFlexible, macrosPermitidas, parametros);
+                }
             }
         } else {
-            System.out.println("Uso: jim modelo fichero [param1 [param2 [...]]]");
+            System.out.println("Uso: jim fichero modelo [ex|extendido] [param1 [param2 [...]]]");
         }
     }
 
@@ -98,6 +103,7 @@ public class Main {
                 Programa.Objetivo.EJECUTAR,
                 modoFlexible,
                 macrosPermitidas);
+        
         programa.iniciarExpansionMacros();
 
         if (programa.estadoOk()) {
