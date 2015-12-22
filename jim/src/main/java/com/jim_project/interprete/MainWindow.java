@@ -32,28 +32,24 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        Configuracion.cargar();
+        setTitle("JIM " + Configuracion.version());
 
         Consola.inicializar(taSalida, taSalida);
         System.setOut(Consola.estandar());
         System.setErr(Consola.errores());
 
-        Configuracion.cargar();
-
         menuProgramaPermitirMacros.setSelected(Configuracion.macrosPermitidas());
         menuProgramaModoFlexible.setSelected(Configuracion.modoFlexible());
         menuProgramaSalidaDetallada.setSelected(Configuracion.salidaDetallada());
 
-        if (verbose()) {
-            MainWindow.bienvenida();
-        }
+        MainWindow.bienvenida();
     }
 
     public static void bienvenida() {
-        System.out.println("--------------------------------------------------------");
-        System.out.println("JIM " + Configuracion.version());
-        System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Directorio actual: " + System.getProperty("user.dir"));
+        //System.out.println("JIM " + Configuracion.version());
+        //System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
+        //System.out.println("Directorio actual: " + System.getProperty("user.dir"));
     }
 
     /**
@@ -111,7 +107,7 @@ public class MainWindow extends javax.swing.JFrame {
         menuAyuda = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("JIM 0.1");
+        setTitle("JIM");
         setMinimumSize(new java.awt.Dimension(640, 480));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
