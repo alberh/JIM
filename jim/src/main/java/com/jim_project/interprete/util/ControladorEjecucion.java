@@ -64,10 +64,12 @@ public class ControladorEjecucion {
 
         Ambito ambitoRaiz = _ambito.programa().gestorAmbitos().ambitoRaiz();
 
-        if (_ambito == ambitoRaiz) {
-            System.out.println("Analizando el programa...");
-        } else {
-            // System.out.println("Analizando la macro ...");
+        if (_ambito.programa().verbose()) {
+            if (_ambito == ambitoRaiz) {
+                System.out.println("Analizando el programa");
+            } else {
+                System.out.println("Analizando macro \"" + _ambito.macroAsociada().id() + "\"");
+            }
         }
         previo();
 
@@ -78,10 +80,14 @@ public class ControladorEjecucion {
             }
 
             // Lanzar
-            if (_ambito == ambitoRaiz) {
-                System.out.println("Ejecutando...");
-                System.out.println("Si el programa no termina en unos segundos, "
-                        + "probablemente haya caído en un bucle infinito.");
+            if (_ambito.programa().verbose()) {
+                if (_ambito == ambitoRaiz) {
+                    System.out.println("Ejecutando el programa");
+                    //System.out.println("Si el programa no termina en unos segundos, "
+                    //        + "probablemente haya caído en un bucle infinito.");
+                } else {
+                    System.out.println("Ejecutando macro \"" + _ambito.macroAsociada().id() + "\"");
+                }
             }
 
             ejecutar(_programa.modelo().tipo());
@@ -231,9 +237,9 @@ public class ControladorEjecucion {
                 _ambito.variables().nuevaVariable("X" + (i + 1), valor);
             }
         } else {
-            GestorAmbitos gestor = (GestorAmbitos)_ambito.gestor();
+            GestorAmbitos gestor = (GestorAmbitos) _ambito.gestor();
             Ambito ambitoPadre = gestor.ambitoPadre(_ambito.profundidad());
-            
+
             for (int i = 0; i < parametros.length; ++i) {
                 int valor = 0;
                 try {

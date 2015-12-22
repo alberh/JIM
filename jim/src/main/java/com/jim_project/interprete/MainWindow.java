@@ -38,7 +38,14 @@ public class MainWindow extends javax.swing.JFrame {
         System.setErr(Consola.errores());
 
         Configuracion.cargar();
-        MainWindow.bienvenida();
+
+        menuProgramaPermitirMacros.setSelected(Configuracion.macrosPermitidas());
+        menuProgramaModoFlexible.setSelected(Configuracion.modoFlexible());
+        menuProgramaSalidaDetallada.setSelected(Configuracion.salidaDetallada());
+
+        if (verbose()) {
+            MainWindow.bienvenida();
+        }
     }
 
     public static void bienvenida() {
@@ -66,14 +73,11 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         comboModelos = new javax.swing.JComboBox();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(8, 0), new java.awt.Dimension(8, 0), new java.awt.Dimension(12, 32767));
-        cbModoExtendido = new javax.swing.JCheckBox();
         jSeparator9 = new javax.swing.JToolBar.Separator();
         jLabel2 = new javax.swing.JLabel();
         tfEntradaPrograma = new javax.swing.JTextField();
         btnIniciarEjecucion = new javax.swing.JButton();
         btnPararEjecucion = new javax.swing.JButton();
-        btnIniciarDebug = new javax.swing.JButton();
-        btnSiguienteInstruccion = new javax.swing.JButton();
         jSeparator8 = new javax.swing.JToolBar.Separator();
         btnExpandirMacros = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -98,13 +102,12 @@ public class MainWindow extends javax.swing.JFrame {
         menuPrograma = new javax.swing.JMenu();
         menuProgramaIniciar = new javax.swing.JMenuItem();
         menuProgramaDetener = new javax.swing.JMenuItem();
-        menuProgramaIniciarDebug = new javax.swing.JMenuItem();
-        menuProgramaSiguienteInstruccion = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        menuProgramaExpandirMacros = new javax.swing.JMenuItem();
-        jSeparator7 = new javax.swing.JPopupMenu.Separator();
         menuProgramaPermitirMacros = new javax.swing.JCheckBoxMenuItem();
-        menuProgramaPermitirInstruccionesExtra = new javax.swing.JCheckBoxMenuItem();
+        menuProgramaModoFlexible = new javax.swing.JCheckBoxMenuItem();
+        menuProgramaSalidaDetallada = new javax.swing.JCheckBoxMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
+        menuProgramaExpandirMacros = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -169,12 +172,6 @@ public class MainWindow extends javax.swing.JFrame {
         comboModelos.setPreferredSize(new java.awt.Dimension(20, 20));
         barraHerramientas.add(comboModelos);
         barraHerramientas.add(filler1);
-
-        cbModoExtendido.setText("Modo Extendido");
-        cbModoExtendido.setFocusable(false);
-        cbModoExtendido.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        cbModoExtendido.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraHerramientas.add(cbModoExtendido);
         barraHerramientas.add(jSeparator9);
 
         jLabel2.setText("Entrada:  ");
@@ -203,21 +200,6 @@ public class MainWindow extends javax.swing.JFrame {
         btnPararEjecucion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnPararEjecucion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         barraHerramientas.add(btnPararEjecucion);
-
-        btnIniciarDebug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/debug.png"))); // NOI18N
-        btnIniciarDebug.setToolTipText("Iniciar paso a paso");
-        btnIniciarDebug.setFocusable(false);
-        btnIniciarDebug.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnIniciarDebug.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraHerramientas.add(btnIniciarDebug);
-
-        btnSiguienteInstruccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/next.png"))); // NOI18N
-        btnSiguienteInstruccion.setToolTipText("Siguiente instrucción");
-        btnSiguienteInstruccion.setEnabled(false);
-        btnSiguienteInstruccion.setFocusable(false);
-        btnSiguienteInstruccion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSiguienteInstruccion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraHerramientas.add(btnSiguienteInstruccion);
         barraHerramientas.add(jSeparator8);
 
         btnExpandirMacros.setText("Expandir macros");
@@ -335,18 +317,37 @@ public class MainWindow extends javax.swing.JFrame {
         });
         menuPrograma.add(menuProgramaIniciar);
 
+        menuProgramaDetener.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         menuProgramaDetener.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/stop.png"))); // NOI18N
         menuProgramaDetener.setText("Detener");
         menuPrograma.add(menuProgramaDetener);
-
-        menuProgramaIniciarDebug.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/debug.png"))); // NOI18N
-        menuProgramaIniciarDebug.setText("Iniciar paso a paso");
-        menuPrograma.add(menuProgramaIniciarDebug);
-
-        menuProgramaSiguienteInstruccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/next.png"))); // NOI18N
-        menuProgramaSiguienteInstruccion.setText("Siguiente instrucción");
-        menuPrograma.add(menuProgramaSiguienteInstruccion);
         menuPrograma.add(jSeparator6);
+
+        menuProgramaPermitirMacros.setSelected(true);
+        menuProgramaPermitirMacros.setText("Permitir macros");
+        menuProgramaPermitirMacros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProgramaPermitirMacrosActionPerformed(evt);
+            }
+        });
+        menuPrograma.add(menuProgramaPermitirMacros);
+
+        menuProgramaModoFlexible.setText("Modo flexible");
+        menuProgramaModoFlexible.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProgramaModoFlexibleActionPerformed(evt);
+            }
+        });
+        menuPrograma.add(menuProgramaModoFlexible);
+
+        menuProgramaSalidaDetallada.setText("Salida detallada");
+        menuProgramaSalidaDetallada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProgramaSalidaDetalladaActionPerformed(evt);
+            }
+        });
+        menuPrograma.add(menuProgramaSalidaDetallada);
+        menuPrograma.add(jSeparator7);
 
         menuProgramaExpandirMacros.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
         menuProgramaExpandirMacros.setText("Expandir macros");
@@ -356,15 +357,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         menuPrograma.add(menuProgramaExpandirMacros);
-        menuPrograma.add(jSeparator7);
-
-        menuProgramaPermitirMacros.setSelected(true);
-        menuProgramaPermitirMacros.setText("Permitir macros");
-        menuPrograma.add(menuProgramaPermitirMacros);
-
-        menuProgramaPermitirInstruccionesExtra.setSelected(true);
-        menuProgramaPermitirInstruccionesExtra.setText("Permitir instrucciones extra");
-        menuPrograma.add(menuProgramaPermitirInstruccionesExtra);
 
         barraMenu.add(menuPrograma);
 
@@ -447,6 +439,18 @@ public class MainWindow extends javax.swing.JFrame {
         iniciarExpansionMacros();
     }//GEN-LAST:event_menuProgramaExpandirMacrosActionPerformed
 
+    private void menuProgramaPermitirMacrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaPermitirMacrosActionPerformed
+        Configuracion.macrosPermitidas(menuProgramaPermitirMacros.isSelected());
+    }//GEN-LAST:event_menuProgramaPermitirMacrosActionPerformed
+
+    private void menuProgramaModoFlexibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaModoFlexibleActionPerformed
+        Configuracion.modoFlexible(menuProgramaModoFlexible.isSelected());
+    }//GEN-LAST:event_menuProgramaModoFlexibleActionPerformed
+
+    private void menuProgramaSalidaDetalladaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaSalidaDetalladaActionPerformed
+        Configuracion.salidaDetallada(menuProgramaSalidaDetallada.isSelected());
+    }//GEN-LAST:event_menuProgramaSalidaDetalladaActionPerformed
+
     private void comprobacionesPreviasAEjecucion() {
         taSalida.setText("");
         taTraza.setText("");
@@ -465,15 +469,15 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private boolean modoFlexible() {
-        if (cbModoExtendido.isSelected()) {
-            return true;
-        } else {
-            return false;
-        }
+        return menuProgramaModoFlexible.isSelected();
     }
 
     private boolean macrosPermitidas() {
-        return true;
+        return menuProgramaPermitirMacros.isSelected();
+    }
+
+    private boolean verbose() {
+        return menuProgramaSalidaDetallada.isSelected();
     }
 
     private void moverCursorAlFinal() {
@@ -484,29 +488,26 @@ public class MainWindow extends javax.swing.JFrame {
     private void iniciarPrograma() {
         comprobacionesPreviasAEjecucion();
 
-        String ruta = _ficheroAbierto.getAbsolutePath();
-
         String cadenaModelo = comboModelos.getSelectedItem().toString();
-        Modelo modelo = new Modelo(cadenaModelo);
 
-        Programa programa = new Programa(ruta,
-                modelo,
-                Programa.Objetivo.EJECUTAR,
-                modoFlexible(),
-                macrosPermitidas());
+        ArgumentosPrograma argumentos = new ArgumentosPrograma();
+        argumentos.fichero = _ficheroAbierto.getAbsolutePath();
+        argumentos.modelo = new Modelo(cadenaModelo);
+        argumentos.macrosPermitidas = macrosPermitidas();
+        argumentos.modoFlexible = modoFlexible();
+        argumentos.verbose = verbose();
+        argumentos.objetivo = Programa.Objetivo.EJECUTAR;
 
-        String[] parametros = null;
         boolean ok = true;
-        
         if (!tfEntradaPrograma.getText().isEmpty()) {
             String[] parametrosComoCadenas = tfEntradaPrograma.getText().split(" ");
             int tam = parametrosComoCadenas.length;
-            parametros = new String[tam];
+            argumentos.parametros = new String[tam];
 
             for (int i = 0; i < tam && ok; ++i) {
                 try {
                     Integer.parseInt(parametrosComoCadenas[i]);
-                    parametros[i] = parametrosComoCadenas[i];
+                    argumentos.parametros[i] = parametrosComoCadenas[i];
                 } catch (NumberFormatException ex) {
                     Error.deParametroNoValido(parametrosComoCadenas[i]);
                     ok = false;
@@ -514,17 +515,16 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
 
+        Programa programa = new Programa(argumentos);
         if (ok) {
-            programa.iniciar(parametros);
-            ok = programa.estadoOk();
-        }
+            programa.iniciar();
 
-        if (ok) {
-            System.out.println();
-            System.out.println("Resultado: " + programa.resultado());
-            taTraza.setText(programa.traza());
-        } else {
-            tabPanelSalida.setSelectedIndex(0);
+            if (programa.estadoOk()) {
+                System.out.println("Resultado: " + programa.resultado());
+                taTraza.setText(programa.traza());
+            } else {
+                tabPanelSalida.setSelectedIndex(0);
+            }
         }
 
         moverCursorAlFinal();
@@ -533,17 +533,17 @@ public class MainWindow extends javax.swing.JFrame {
     private void iniciarExpansionMacros() {
         comprobacionesPreviasAEjecucion();
 
-        String ruta = _ficheroAbierto.getAbsolutePath();
-
         String cadenaModelo = comboModelos.getSelectedItem().toString();
-        Modelo modelo = new Modelo(cadenaModelo);
 
-        Programa programa = new Programa(ruta,
-                modelo,
-                Programa.Objetivo.EJECUTAR,
-                modoFlexible(),
-                macrosPermitidas());
+        ArgumentosPrograma argumentos = new ArgumentosPrograma();
+        argumentos.fichero = _ficheroAbierto.getAbsolutePath();
+        argumentos.modelo = new Modelo(cadenaModelo);
+        //argumentos.macrosPermitidas = macrosPermitidas();
+        //argumentos.modoFlexible = modoFlexible();
+        argumentos.verbose = verbose();
+        argumentos.objetivo = Programa.Objetivo.EXPANDIR;
 
+        Programa programa = new Programa(argumentos);
         programa.iniciarExpansionMacros();
 
         taEditor.setText(programa.toString());
@@ -580,6 +580,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void salir() {
+        Configuracion.guardar(verbose());
+        
         if (_hayCambios) {
             int n = JOptionPane.showConfirmDialog(this,
                     "¿Desea guardar el fichero actual antes de salir?",
@@ -747,12 +749,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnAbrirFichero;
     private javax.swing.JButton btnExpandirMacros;
     private javax.swing.JButton btnGuardarFichero;
-    private javax.swing.JButton btnIniciarDebug;
     private javax.swing.JButton btnIniciarEjecucion;
     private javax.swing.JButton btnNuevoFichero;
     private javax.swing.JButton btnPararEjecucion;
-    private javax.swing.JButton btnSiguienteInstruccion;
-    private javax.swing.JCheckBox cbModoExtendido;
     private javax.swing.JComboBox comboModelos;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel1;
@@ -781,10 +780,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuProgramaDetener;
     private javax.swing.JMenuItem menuProgramaExpandirMacros;
     private javax.swing.JMenuItem menuProgramaIniciar;
-    private javax.swing.JMenuItem menuProgramaIniciarDebug;
-    private javax.swing.JCheckBoxMenuItem menuProgramaPermitirInstruccionesExtra;
+    private javax.swing.JCheckBoxMenuItem menuProgramaModoFlexible;
     private javax.swing.JCheckBoxMenuItem menuProgramaPermitirMacros;
-    private javax.swing.JMenuItem menuProgramaSiguienteInstruccion;
+    private javax.swing.JCheckBoxMenuItem menuProgramaSalidaDetallada;
     private javax.swing.JTextArea taEditor;
     private javax.swing.JTextArea taSalida;
     private javax.swing.JTextArea taTraza;

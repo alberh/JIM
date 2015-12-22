@@ -99,19 +99,28 @@ public class Error {
     }
 
     public static void deParametrosNoIndicados() {
-        Error.imprimir("Error X6: No se han indicado argumentos suficientes. "
+        Error.imprimir("Error X6: Debe indicar al menos el modelo de computación "
+                + "para iniciar el programa.");
+    }
+
+    public static void deParametrosNoIndicadosEnFichero(String fichero) {
+        Error.imprimir("Error X7: No se han encontrado argumentos suficientes "
+                + "en el fichero \"" + fichero + "\". "
                 + "Debe indicar al menos el modelo de computación.");
     }
-    
+
     public static void deModificadorNoValido(char modificador) {
         Error.imprimir("Error X7: Modificador " + modificador + " no válido.");
     }
 
-    // Consola
     public static void deParametroNoValido(String param) {
         Error.imprimir("Error X6: Parámetro " + param + " no válido. "
                 + "Todos los parámetros de entrada del programa deben ser "
                 + "numéricos.");
+    }
+
+    public static void deFicheroNoExistente(String f) {
+        Error.imprimir("Error X7: El fichero \"" + f + "\" no existe.");
     }
 
     // GUI
@@ -172,6 +181,12 @@ public class Error {
 
     public static void alGuardarConfiguracion() {
         imprimir("Error 16: No se pudo guardar la configuración.");
+    }
+
+    // Acciones
+    public void deLlamadasAMacroNoPermitidas() {
+        imprimir("Error 77: La ejecución de macros está deshabilitada.",
+                numeroLineaActual());
     }
 
     // Analizador léxico

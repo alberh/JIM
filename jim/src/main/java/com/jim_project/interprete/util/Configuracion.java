@@ -13,33 +13,44 @@ import java.io.IOException;
 public abstract class Configuracion {
 
     private final static Properties _propiedades = new Properties();
-    private final static String _version = "0.1";
+    private final static String _version = "0.9";
 
     /**
      * Carga la configuración del programa desde el fichero "jim.cfg". Si el
      * fichero no existe, lo crea.
      */
     public static void cargar() {
+        cargar(false);
+    }
+
+    public static void cargar(boolean verbose) {
         File ficheroConfig = new File("jim.cfg");
-        System.out.println("Cargando configuración del programa...");
+        if (verbose) {
+            System.out.println("Cargando configuración del programa.");
+        }
 
         if (!ficheroConfig.exists()) {
-            crearFicheroConfiguracion(ficheroConfig);
+            crearFicheroConfiguracion(ficheroConfig, verbose);
         } else {
             try (FileReader fr = new FileReader(ficheroConfig)) {
                 _propiedades.load(fr);
 
-                if (_propiedades.stringPropertyNames().size() != 3) {
+                if (_propiedades.stringPropertyNames().size() != 7) {
                     // Asigna las propiedades que no estén en el fichero de configuración
                     _propiedades.setProperty("rutaMacros", _propiedades.getProperty("rutaMacros", "macros"));
                     _propiedades.setProperty("rutaMacrosL", _propiedades.getProperty("rutaMacrosL", "macros/l"));
                     _propiedades.setProperty("rutaMacrosLoop", _propiedades.getProperty("rutaMacrosLoop", "macros/loop"));
                     _propiedades.setProperty("rutaMacrosWhile", _propiedades.getProperty("rutaMacrosWhile", "macros/while"));
+                    _propiedades.setProperty("macrosPermitidas", _propiedades.getProperty("macrosPermitidas", "true"));
+                    _propiedades.setProperty("modoFlexible", _propiedades.getProperty("modoFlexible", "false"));
+                    _propiedades.setProperty("salidaDetallada", _propiedades.getProperty("salidaDetallada", "false"));
 
-                    guardar();
+                    guardar(verbose);
                 }
 
-                System.out.println("Fichero de configuración cargado con éxito.");
+                if (verbose) {
+                    System.out.println("Fichero de configuración cargado con éxito.");
+                }
             } catch (Exception ex) {
                 Error.alCargarConfiguracion(ficheroConfig.getAbsolutePath());
             }
@@ -53,8 +64,10 @@ public abstract class Configuracion {
      * @param	ficheroConfig	El objeto File que hace referencia al fichero.
      * @see File
      */
-    private static void crearFicheroConfiguracion(File ficheroConfig) {
-        System.out.println("Creando fichero de configuración...");
+    private static void crearFicheroConfiguracion(File ficheroConfig, boolean verbose) {
+        if (verbose) {
+            System.out.println("Creando fichero de configuración.");
+        }
 
         try (FileWriter fw = new FileWriter(ficheroConfig)) {
             ficheroConfig.createNewFile();
@@ -63,9 +76,14 @@ public abstract class Configuracion {
             _propiedades.setProperty("rutaMacrosL", "macros/l");
             _propiedades.setProperty("rutaMacrosLoop", "macros/loop");
             _propiedades.setProperty("rutaMacrosWhile", "macros/while");
+            _propiedades.setProperty("macrosPermitidas", "true");
+            _propiedades.setProperty("modoFlexible", "false");
+            _propiedades.setProperty("salidaDetallada", "false");
             _propiedades.store(fw, null);
 
-            System.out.println("Fichero de configuración creado con éxito.");
+            if (verbose) {
+                System.out.println("Fichero de configuración creado con éxito.");
+            }
         } catch (IOException ex) {
             Error.alCrearFicheroConfiguracion(ficheroConfig.getAbsolutePath());
         }
@@ -74,11 +92,15 @@ public abstract class Configuracion {
     /**
      * Almacena el fichero de configuración en el disco.
      */
-    public static void guardar() {
+    public static void guardar(boolean verbose) {
+        if (verbose) {
+            System.out.println("Guardando configuración.");
+        }
+        
         File ficheroConfig = new File("jim.cfg");
 
         if (!ficheroConfig.exists()) {
-            crearFicheroConfiguracion(ficheroConfig);
+            crearFicheroConfiguracion(ficheroConfig, verbose);
         } else {
             try (FileWriter fw = new FileWriter(ficheroConfig)) {
                 _propiedades.store(fw, null);
@@ -87,7 +109,7 @@ public abstract class Configuracion {
             }
         }
     }
-    
+
     /**
      * Devuelve la ruta al directorio de macros comunes.
      *
@@ -97,7 +119,7 @@ public abstract class Configuracion {
     public static String rutaMacros() {
         return _propiedades.getProperty("rutaMacros");
     }
-    
+
     /**
      * Define la ruta al directorio de macros comunes.
      *
@@ -137,7 +159,7 @@ public abstract class Configuracion {
     public static String rutaMacrosLoop() {
         return _propiedades.getProperty("rutaMacrosLoop");
     }
-    
+
     /**
      * Define la ruta al directorio de macros del modelo Loop.
      *
@@ -166,6 +188,30 @@ public abstract class Configuracion {
      */
     public static void rutaMacrosWhile(String nuevaRuta) {
         _propiedades.setProperty("rutaMacrosWhile", nuevaRuta);
+    }
+    
+    public static boolean macrosPermitidas() {
+        return _propiedades.getProperty("macrosPermitidas").equalsIgnoreCase("true");
+    }
+    
+    public static void macrosPermitidas(boolean b) {
+        _propiedades.setProperty("macrosPermitidas", b ? "true" : "false");
+    }
+    
+    public static boolean modoFlexible() {
+        return _propiedades.getProperty("modoFlexible").equalsIgnoreCase("true");
+    }
+    
+    public static void modoFlexible(boolean b) {
+        _propiedades.setProperty("modoFlexible", b ? "true" : "false");
+    }
+    
+    public static boolean salidaDetallada() {
+        return _propiedades.getProperty("verbose").equalsIgnoreCase("true");
+    }
+    
+    public static void salidaDetallada(boolean b) {
+        _propiedades.setProperty("verbose", b ? "true" : "false");
     }
 
     /**

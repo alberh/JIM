@@ -168,6 +168,10 @@ public class Acciones {
     }
 
     public void llamadaAMacro(Object idMacro) {
+        if (!_ambito.programa().macrosPermitidas()) {
+            _ambito.programa().error().deLlamadasAMacroNoPermitidas();
+        }
+        
         Macro macro = _ambito.programa().gestorMacros().obtenerMacro(idMacro.toString());
         int valor = 0;
 

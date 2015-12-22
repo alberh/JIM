@@ -2,10 +2,17 @@ package com.jim_project.interprete.util.gestor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Ambito;
-import com.jim_project.interprete.util.ComparadorVariables;
 import com.jim_project.interprete.componente.Variable;
+import java.util.Comparator;
+
+class ComparadorVariables implements Comparator<Variable> {
+
+    @Override
+    public int compare(Variable v1, Variable v2) {
+        return v1.id().compareToIgnoreCase(v2.id());
+    }
+}
 
 public class GestorVariables extends GestorComponentes {
 

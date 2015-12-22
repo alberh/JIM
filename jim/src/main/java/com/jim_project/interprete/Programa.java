@@ -1,5 +1,6 @@
 package com.jim_project.interprete;
 
+import com.jim_project.interprete.Programa.Objetivo;
 import com.jim_project.interprete.parser.analizadormacros.MacrosParser;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.Configuracion;
@@ -30,35 +31,22 @@ public class Programa {
         EJECUTAR, EXPANDIR
     };
 
-    private String _fichero;
+    private ArgumentosPrograma _argumentos;
     private String _ficheroEnProceso;
-
-    private Estado _estado;
     private ControladorEjecucion.Etapa _etapa;
-    private Objetivo _objetivo;
-    private boolean _modoFlexible;
-    private boolean _macrosPermitidas;
     private Error _error;
+    private Estado _estado;
 
-    private Modelo _modelo;
     private GestorAmbitos _gestorAmbitos;
     private GestorMacros _gestorMacros;
 
-    public Programa(String fichero, Modelo modelo,
-            Objetivo objetivo, boolean modoFlexible,
-            boolean macrosPermitidas) {
-
-        _fichero = fichero;
-        _ficheroEnProceso = fichero;
+    public Programa(ArgumentosPrograma argumentos) {
+        _argumentos = argumentos;
+        _ficheroEnProceso = argumentos.fichero;
         _estado = Estado.OK;
-        _objetivo = objetivo;
-        _modoFlexible = modoFlexible;
-        _macrosPermitidas = macrosPermitidas;
         _error = new Error(this);
-        _modelo = modelo;
         _gestorAmbitos = new GestorAmbitos(this);
         _gestorMacros = new GestorMacros(this);
-        _ficheroEnProceso = fichero;
     }
 
     public String ficheroEnProceso() {
@@ -80,7 +68,7 @@ public class Programa {
     public boolean estadoOk() {
         return _estado == Estado.OK;
     }
-    
+
     public ControladorEjecucion.Etapa etapa() {
         if (_gestorAmbitos.vacio()) {
             return _etapa;
@@ -90,48 +78,67 @@ public class Programa {
     }
 
     public void objetivo(Objetivo objetivo) {
-        _objetivo = objetivo;
+        _argumentos.objetivo = objetivo;
     }
 
     public Objetivo objetivo() {
-        return _objetivo;
-    }
-
-    public void modoFlexible(boolean b) {
-        _modoFlexible = b;
+        return _argumentos.objetivo;
     }
 
     public boolean modoFlexible() {
-        return _modoFlexible;
-    }
-
-    public void macrosPermitidas(boolean b) {
-        _macrosPermitidas = b;
+        return _argumentos.modoFlexible;
     }
 
     public boolean macrosPermitidas() {
-        return _macrosPermitidas;
+        return _argumentos.macrosPermitidas;
     }
-    
+
+    public boolean verbose() {
+        return _argumentos.verbose;
+    }
+
     public Error error() {
         return _error;
     }
 
     public Modelo modelo() {
-        return _modelo;
+        return _argumentos.modelo;
     }
 
     public String nombreModelo() {
-        String modelo = _modelo.toString();
+        String modelo = _argumentos.modelo.toString();
         return modelo.charAt(0) + modelo.substring(1).toLowerCase();
     }
 
     public GestorAmbitos gestorAmbitos() {
         return _gestorAmbitos;
     }
-    
+
     public GestorMacros gestorMacros() {
         return _gestorMacros;
+    }
+
+    public void iniciar() {
+        if (estadoOk()) {
+            limpiar();
+            comprobarDirectoriosMacros();
+            cargarMacros();
+            ficheroEnProceso(_argumentos.fichero);
+
+            if (estadoOk()) {
+                ArrayList<String> lineas = new ArrayList<>();
+
+                try (Scanner scanner = new Scanner(new File(_argumentos.fichero))) {
+                    while (scanner.hasNextLine()) {
+                        lineas.add(scanner.nextLine());
+                    }
+                } catch (FileNotFoundException ex) {
+                    _error.alCargarPrograma(_argumentos.fichero);
+                }
+
+                _gestorAmbitos.nuevoAmbito(_argumentos.parametros, lineas).iniciar();
+            }
+        }
     }
 
     public void iniciar(String[] parametros) {
@@ -139,17 +146,17 @@ public class Programa {
             limpiar();
             comprobarDirectoriosMacros();
             cargarMacros();
-            ficheroEnProceso(_fichero);
+            ficheroEnProceso(_argumentos.fichero);
 
             if (estadoOk()) {
                 ArrayList<String> lineas = new ArrayList<>();
 
-                try (Scanner scanner = new Scanner(new File(_fichero))) {
+                try (Scanner scanner = new Scanner(new File(_argumentos.fichero))) {
                     while (scanner.hasNextLine()) {
                         lineas.add(scanner.nextLine());
                     }
                 } catch (FileNotFoundException ex) {
-                    _error.alCargarPrograma(_fichero);
+                    _error.alCargarPrograma(_argumentos.fichero);
                 }
 
                 _gestorAmbitos.nuevoAmbito(parametros, lineas).iniciar();
@@ -205,14 +212,16 @@ public class Programa {
      */
     public void cargarMacros() {
         _etapa = ControladorEjecucion.Etapa.CARGANDO_MACROS;
-        System.out.println("Cargando macros...");
+        if (_argumentos.verbose) {
+        System.out.println("Cargando macros");
+        }
 
         if (estadoOk()) {
             procesarFicherosMacros(Configuracion.rutaMacros());
         }
 
         if (estadoOk()) {
-            procesarFicherosMacros(_modelo.ruta());
+            procesarFicherosMacros(_argumentos.modelo.ruta());
         }
     }
 
@@ -231,7 +240,9 @@ public class Programa {
 
             for (Path p : rutas) {
                 if (estadoOk()) {
-                    System.out.println("   " + p.toAbsolutePath());
+                    if (_argumentos.verbose) {
+                        System.out.println("   " + p.toAbsolutePath());
+                    }
 
                     String fichero = p.getFileName().toString();
                     String rutaFichero = rutaMacros + "/" + fichero;
@@ -256,7 +267,9 @@ public class Programa {
 
     private void comprobarDirectoriosMacros() {
         _etapa = ControladorEjecucion.Etapa.COMPROBANDO_DIRECTORIO_MACROS;
-        System.out.println("Comprobando directorios de macros...");
+        if (_argumentos.verbose) {
+            System.out.println("Comprobando directorios de macros");
+        }
         /* Esquema por defecto:
          * macros/
          * ...l/
@@ -270,7 +283,9 @@ public class Programa {
     }
 
     private void comprobarDirectorio(File directorio) {
-        System.out.println("   " + directorio.getAbsolutePath());
+        if (_argumentos.verbose) {
+            System.out.println("   " + directorio.getAbsolutePath());
+        }
 
         if (!directorio.exists()) {
             boolean creados = directorio.mkdirs();
