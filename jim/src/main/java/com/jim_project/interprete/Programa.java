@@ -107,7 +107,7 @@ public class Programa {
     }
 
     public String nombreModelo() {
-        String modelo = _argumentos.modelo.toString();
+        String modelo = _argumentos.modelo.tipo().toString();
         return modelo.charAt(0) + modelo.substring(1).toLowerCase();
     }
 

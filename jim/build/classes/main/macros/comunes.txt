@@ -1,3 +1,12 @@
+defmacro etiquetas
+	[a] if x != 0 goto b
+		y <- y + x2
+		goto e
+	[b] y <- y + 2
+		x--
+		goto a
+endmacro
+
 defmacro dieciseis
 z <- ocho()
 z2 <- ocho()

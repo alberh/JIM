@@ -1,1 +1,44 @@
-y <- x1 % x2
+# args: l mf
+
+Y <- 0
+# Expansión de OCHO
+Z1 <- 0
+# Expansión de CUATRO
+Z4 <- 0
+Z10 <- DOS()
+Z101 <- DOS()
+Z102 <- Z10 + Z101
+[A4] Z4 <- Z12
+# Fin expansión de CUATRO
+# Expansión de CUATRO
+Z5 <- 0
+Z13 <- DOS()
+Z134 <- DOS()
+Z135 <- Z13 + Z134
+[A5] Z5 <- Z15
+# Fin expansión de CUATRO
+Z6 <- Z4 + Z5
+[A2] Z1 <- Z6
+# Fin expansión de OCHO
+# Expansión de OCHO
+Z2 <- 0
+# Expansión de CUATRO
+Z7 <- 0
+Z16 <- DOS()
+Z167 <- DOS()
+Z168 <- Z16 + Z167
+[A6] Z7 <- Z18
+# Fin expansión de CUATRO
+# Expansión de CUATRO
+Z8 <- 0
+Z19 <- DOS()
+Z20 <- DOS()
+Z201 <- Z19 + Z20
+[A7] Z8 <- Z21
+# Fin expansión de CUATRO
+Z9 <- Z7 + Z8
+[A3] Z2 <- Z9
+# Fin expansión de OCHO
+Z3 <- Z1 + Z2
+[A1] Y <- Z3
+
