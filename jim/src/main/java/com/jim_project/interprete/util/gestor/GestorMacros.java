@@ -75,18 +75,18 @@ public class GestorMacros extends GestorComponentes {
         return hayRecursividad;
     }
 
-    public String expandir(LlamadaAMacro parametrosExpansion) {
+    public String expandir(LlamadaAMacro llamadaAMacro) {
         //
         //
         // Usar salto de línea del sistema!
         //
         //
         String separador = System.getProperty("line.separator");
-        String idMacro = parametrosExpansion.idMacro();
-        ArrayList<String> parametrosEntrada = parametrosExpansion.variablesEntrada();
-        int numeroLinea = parametrosExpansion.linea();
+        String idMacro = llamadaAMacro.idMacro();
+        ArrayList<String> parametrosEntrada = llamadaAMacro.variablesEntrada();
+        int numeroLinea = llamadaAMacro.linea();
 
-        String idVariableSalida = parametrosExpansion.idVariableSalida().toUpperCase();
+        String idVariableSalida = llamadaAMacro.idVariableSalida().toUpperCase();
         String asignaciones = idVariableSalida + " <- 0" + separador;
 
         Macro macro = obtenerMacro(idMacro);
@@ -138,7 +138,8 @@ public class GestorMacros extends GestorComponentes {
             reemplazosEntrada.put(vAntigua, vNueva);
         }
 
-        for (String vAntigua : variablesLocales) {
+        for (int i = 0; i < variablesLocales.size(); ++i) {
+            String vAntigua = variablesLocales.get(i);
             String vNueva = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL).id();
             reemplazosLocales.put(vAntigua, vNueva);
         }

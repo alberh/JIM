@@ -124,8 +124,8 @@ public class ControladorEjecucion {
             }
             
             llamada.linea(llamada.linea() + incremento);
-
             String resultadoExpansion = _programa.gestorMacros().expandir(llamada);
+            
             if (resultadoExpansion != null) {
                 ArrayList<String> lineasExpansion = new ArrayList<>(
                         Arrays.asList(resultadoExpansion.split("[\n\r]+"))
