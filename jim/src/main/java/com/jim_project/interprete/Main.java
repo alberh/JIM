@@ -56,6 +56,7 @@ public class Main {
         ArgumentosPrograma argsPrograma = new ArgumentosPrograma();
         argsPrograma.fichero = args[0];
         argsPrograma.modelo = new Modelo(args[1]);
+        argsPrograma.objetivo = Programa.Objetivo.EJECUTAR;
 
         if (argsPrograma.modelo.tipo() != null) {
             boolean ok = true;
@@ -81,6 +82,9 @@ public class Main {
                                 break;
                             case 'v':
                                 argsPrograma.verbose = true;
+                                break;
+                            case 'e':
+                                argsPrograma.objetivo = Programa.Objetivo.EXPANDIR;
                                 break;
                             default:
                                 Error.deModificadorNoValido(cadenaMods.charAt(i));
@@ -109,7 +113,12 @@ public class Main {
 
             if (ok) {
                 Configuracion.cargar();
-                iniciar(argsPrograma, mostrarTraza);
+
+                if (argsPrograma.objetivo == Programa.Objetivo.EJECUTAR) {
+                    iniciar(argsPrograma, mostrarTraza);
+                } else {
+                    iniciarExpansionMacros(argsPrograma);
+                }
             }
         }
     }
@@ -170,13 +179,13 @@ public class Main {
 
     private static void iniciarExpansionMacros(ArgumentosPrograma argumentos) {
         Programa programa = new Programa(argumentos);
-        programa.iniciarExpansionMacros();
+        String expansion = programa.iniciar();
 
         if (programa.estadoOk()) {
-            System.out.println();
-            System.out.println("Programa tras la expansión");
-            System.out.println();
-            System.out.println(programa);
+            if (programa.verbose()) {
+                System.out.println("Programa tras la expansión:");
+            }
+            System.out.println(expansion);
         }
     }
 
@@ -189,12 +198,15 @@ public class Main {
     private static void ayuda() {
         System.out.println("Uso:");
         System.out.println("java Jim fichero");
-        System.out.println("java Jim fichero modelo [t|f|m|v] [param1 [param2 [...]]]");
+        System.out.println("java Jim fichero modelo [t|f|m|v|e] [param1 [param2 [...]]]");
         System.out.println();
         System.out.println("t: Muestra la traza del programa.");
         System.out.println("f: Activa el modo flexible.");
         System.out.println("m: Activa la ejecución de macros.");
         System.out.println("v: Hace la salida del programa más detallada.");
+        System.out.println("e: Expande las macros del programa y muestra el código "
+                + "resultante en pantalla. Se ignorarán la mayoría de modificadores y "
+                + "los parámetros de entrada.");
         System.out.println();
         System.out.println("Ejemplos:");
         System.out.println("\tjava Jim p1 l");

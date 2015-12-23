@@ -1,6 +1,7 @@
 package com.jim_project.interprete;
 
 import com.jim_project.interprete.Programa.Objetivo;
+import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.parser.analizadormacros.MacrosParser;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.Configuracion;
@@ -118,7 +119,7 @@ public class Programa {
         return _gestorMacros;
     }
 
-    public void iniciar() {
+    public String iniciar() {
         if (estadoOk()) {
             limpiar();
             comprobarDirectoriosMacros();
@@ -136,37 +137,17 @@ public class Programa {
                     _error.alCargarPrograma(_argumentos.fichero);
                 }
 
-                _gestorAmbitos.nuevoAmbito(_argumentos.parametros, lineas).iniciar();
-            }
-        }
-    }
-
-    public void iniciar(String[] parametros) {
-        if (estadoOk()) {
-            limpiar();
-            comprobarDirectoriosMacros();
-            cargarMacros();
-            ficheroEnProceso(_argumentos.fichero);
-
-            if (estadoOk()) {
-                ArrayList<String> lineas = new ArrayList<>();
-
-                try (Scanner scanner = new Scanner(new File(_argumentos.fichero))) {
-                    while (scanner.hasNextLine()) {
-                        lineas.add(scanner.nextLine());
-                    }
-                } catch (FileNotFoundException ex) {
-                    _error.alCargarPrograma(_argumentos.fichero);
+                Ambito ambito = _gestorAmbitos.nuevoAmbito(_argumentos.parametros, lineas);
+                
+                if (_argumentos.objetivo == Objetivo.EJECUTAR) {
+                    ambito.iniciar();
+                } else {
+                    return ambito.expandir();
                 }
-
-                _gestorAmbitos.nuevoAmbito(parametros, lineas).iniciar();
             }
         }
-    }
-
-    public void iniciarExpansionMacros() {
-        limpiar();
-        _gestorAmbitos.ambitoRaiz().iniciarExpansionMacros();
+        
+        return "";
     }
 
     public int resultado() {
@@ -213,7 +194,7 @@ public class Programa {
     public void cargarMacros() {
         _etapa = ControladorEjecucion.Etapa.CARGANDO_MACROS;
         if (_argumentos.verbose) {
-        System.out.println("Cargando macros");
+            System.out.println("Cargando macros");
         }
 
         if (estadoOk()) {

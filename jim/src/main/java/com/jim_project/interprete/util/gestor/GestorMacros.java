@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
+import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.LlamadaAMacro;
 import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.componente.Variable;
@@ -18,14 +19,15 @@ public class GestorMacros extends GestorComponentes {
     }
 
     public Macro nuevaMacro(String id) {
+        id = id.toUpperCase();
         Macro macro = new Macro(id, this);
         _macros.put(id, macro);
-        
+
         return macro;
     }
 
     public Macro obtenerMacro(String id) {
-        return _macros.get(id);
+        return _macros.get(id.toUpperCase());
     }
 
     public void limpiar() {
@@ -64,7 +66,7 @@ public class GestorMacros extends GestorComponentes {
         ArrayList<String> llamadas = macro.llamadasAMacros();
 
         for (int i = 0; i < llamadas.size() && !hayRecursividad; ++i) {
-            Macro m = _macros.get(llamadas.get(i));
+            Macro m = obtenerMacro(llamadas.get(i));
             hayRecursividad = hayRecursividad || hayRecursividadEnMacros(m, marcas);
         }
         // si hay recursividad, no borrar
@@ -79,12 +81,15 @@ public class GestorMacros extends GestorComponentes {
         // Usar salto de línea del sistema!
         //
         //
+        String separador = System.getProperty("line.separator");
         String idMacro = parametrosExpansion.idMacro();
-        String idVariableSalida = parametrosExpansion.idVariableSalida();
         ArrayList<String> parametrosEntrada = parametrosExpansion.variablesEntrada();
         int numeroLinea = parametrosExpansion.linea();
 
-        Macro macro = _macros.get(idMacro);
+        String idVariableSalida = parametrosExpansion.idVariableSalida().toUpperCase();
+        String asignaciones = idVariableSalida + " <- 0" + separador;
+
+        Macro macro = obtenerMacro(idMacro);
 
         if (macro == null) {
             _programa.error().deMacroNoDefinida(numeroLinea, idMacro);
@@ -98,79 +103,105 @@ public class GestorMacros extends GestorComponentes {
         int nP = parametrosEntrada.size();
         int nV = macro.variablesEntrada().size();
 
-        if (nP > nV) {
+        if (nP != nV) {
             _programa.error().enNumeroParametros(numeroLinea, idMacro, nV, nP);
             return null;
         }
 
         // Comprobamos que no hay llamadas recursivas directas ni indirectas
         // en la macro a expandir
-        if (hayRecursividadEnMacros(macro)) {
-            _programa.error().deRecursividadEnMacros(numeroLinea, idMacro);
-            return null;
+        /*
+         if (hayRecursividadEnMacros(macro)) {
+         _programa.error().deRecursividadEnMacros(numeroLinea, idMacro);
+         return null;
+         }
+         */
+        String expansion = new String(macro.cuerpo());
+
+        ArrayList<String> variablesEntrada = macro.variablesEntrada();
+        variablesEntrada.sort(null);
+
+        ArrayList<String> variablesLocales = macro.variablesLocales();
+        Ambito ambitoRaiz = _programa.gestorAmbitos().ambitoRaiz();
+
+        ArrayList<String> etiquetas = macro.etiquetas();
+        ArrayList<String> etiquetasSalto = macro.etiquetasSalto();
+
+        HashMap<String, String> reemplazosEntrada = new HashMap<>();
+        HashMap<String, String> reemplazosLocales = new HashMap<>();
+        HashMap<String, String> reemplazosEtiquetas = null;
+        String variableSalidaLocal = null;
+
+        for (int i = 0; i < variablesEntrada.size(); ++i) {
+            String vAntigua = variablesEntrada.get(i).toUpperCase();
+            String vNueva = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL).id().toUpperCase();
+            reemplazosEntrada.put(vAntigua, vNueva);
         }
 
-        idVariableSalida = idVariableSalida.toUpperCase();
+        for (String vAntigua : variablesLocales) {
+            String vNueva = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL).id();
+            reemplazosLocales.put(vAntigua, vNueva);
+        }
 
-        String separador = System.getProperty("line.separator");
-        String expansion = new String(macro.cuerpo());
-        String asignaciones = idVariableSalida + " <- 0" + separador;
-
-        ArrayList<String> vEntrada = macro.variablesEntrada();
-        vEntrada.sort(null);
-
-        ArrayList<String> vLocales = macro.variablesLocales();
-
-        for (int i = 0; i < vEntrada.size(); ++i) {
-            String variable = vEntrada.get(i);
-            String nuevaVariable = _ambito.variables().nuevaVariable(Variable.Tipo.LOCAL).id();
-
-            expansion = expansion.replace(variable, nuevaVariable);
-
-            if (i < parametrosEntrada.size()) {
-                asignaciones += nuevaVariable + " <- "
-                        + parametrosEntrada.get(i).toUpperCase() + separador;
+        if (programa().modelo().tipo() == Modelo.Tipo.L) {
+            /* Se tienen en cuenta sólo las etiquetas que indican un objetivo de salto
+             */
+            reemplazosEtiquetas = new HashMap<>();
+            for (String etiqueta : etiquetas) {
+                String nuevaEtiqueta = ambitoRaiz.etiquetas().nuevaEtiqueta().id();
+                reemplazosEtiquetas.put(etiqueta, nuevaEtiqueta);
             }
         }
 
-        for (String variable : vLocales) {
-            String nuevaVariable = _ambito.variables().nuevaVariable(Variable.Tipo.LOCAL).id();
-            expansion = expansion.replace(variable, nuevaVariable);
+        variableSalidaLocal = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL).id();
+
+        // Insertar y reemplazar
+        String vAntigua;
+        String vNueva;
+        for (int i = variablesEntrada.size() - 1; i >= 0; --i) {
+            vAntigua = variablesEntrada.get(i);
+            vNueva = reemplazosEntrada.get(vAntigua);
+            asignaciones += vNueva + " <- "
+                    + parametrosEntrada.get(i).toUpperCase() + separador;
         }
 
-        /* Se obtiene una nueva variable local y se reemplaza todas las
-         * referencias a la variable de salida Y por esta nueva variable
-         */
-        String variableSalidaLocal = _ambito.variables().nuevaVariable(Variable.Tipo.LOCAL).id();
-        expansion = "# Expansión de " + idMacro + separador
-                + asignaciones + expansion.replace("VY", variableSalidaLocal);
+        expansion = expansion.replace("Y", variableSalidaLocal);
 
-        if (programa().modelo().tipo() == Modelo.Tipo.L) {
-            ArrayList<String> etiquetas = macro.etiquetas();
-            ArrayList<String> etiquetasSalto = macro.etiquetasSalto();
+        for (int i = variablesLocales.size() - 1; i >= 0; --i) {
+            vAntigua = variablesLocales.get(i);
+            vNueva = reemplazosLocales.get(vAntigua);
 
-            /* Reempaza las etiquetas que marcan un objetivo de salto
+            expansion = expansion.replace(vAntigua, vNueva);
+        }
+
+        for (int i = variablesEntrada.size() - 1; i >= 0; --i) {
+            vAntigua = variablesEntrada.get(i);
+            vNueva = reemplazosEntrada.get(vAntigua);
+
+            expansion = expansion.replace(vAntigua, vNueva);
+        }
+
+        expansion = "# Expansión de " + idMacro
+                + separador + asignaciones
+                + expansion;
+
+        if (reemplazosEtiquetas != null) {
+            /* Reempaza las etiquetas que indican un objetivo de salto
              */
-            HashMap<String, String> etiquetasReemplazadas = new HashMap<>();
-            for (String etiqueta : etiquetas) {
-                // registrar el número de línea de la etiqueta desplazado según
-                // el número de línea de la llamada a la macro + el número de
-                // asignaciones añadidas al código expandido
-                String nuevaEtiqueta = _ambito.etiquetas().nuevaEtiqueta().id();
-                etiquetasReemplazadas.put(etiqueta, nuevaEtiqueta);
-
-                expansion = expansion.replace(etiqueta, nuevaEtiqueta);
+            for (String eAntigua : etiquetas) {
+                String eNueva = reemplazosEtiquetas.get(eAntigua);
+                expansion = expansion.replace(eAntigua, eNueva);
             }
 
             /* Reemplaza todas las etiquetas que son objetivo de un salto
              */
-            String etiquetaSalida = _ambito.etiquetas().nuevaEtiqueta().id();
-            for (String etiqueta : etiquetasSalto) {
-                if (etiquetasReemplazadas.containsKey(etiqueta)) {
-                    expansion = expansion.replace(etiqueta,
-                            etiquetasReemplazadas.get(etiqueta));
+            String etiquetaSalida = ambitoRaiz.etiquetas().nuevaEtiqueta().id();
+            for (String eAntigua : etiquetasSalto) {
+                if (reemplazosEtiquetas.containsKey(eAntigua)) {
+                    String eNueva = reemplazosEtiquetas.get(eAntigua);
+                    expansion = expansion.replace(eAntigua, eNueva);
                 } else {
-                    expansion = expansion.replace(etiqueta, etiquetaSalida);
+                    expansion = expansion.replace(eAntigua, etiquetaSalida);
                 }
             }
             /* Añadimos una última línea con la etiqueta designada como etiqueta

@@ -40,7 +40,7 @@ public class Macro extends Componente {
     }
 
     public void cuerpo(String cuerpo) {
-        _cuerpo = cuerpo;
+        _cuerpo = cuerpo.toUpperCase();
     }
 
     public ArrayList<String> variablesEntrada() {

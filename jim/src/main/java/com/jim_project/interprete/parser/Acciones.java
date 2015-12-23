@@ -176,7 +176,7 @@ public class Acciones {
         int valor = 0;
 
         if (macro != null) {
-            LlamadaAMacro llamada = _ambito.llamadasAMacro().obtenerLlamadaAMacro(idMacro.toString());
+            LlamadaAMacro llamada = _ambito.gestorLlamadasAMacro().obtenerLlamadaAMacro(idMacro.toString());
             
             int tam = llamada.variablesEntrada().size();
             String[] parametros = new String[tam];

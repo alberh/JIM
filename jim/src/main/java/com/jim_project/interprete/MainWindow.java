@@ -215,7 +215,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         taEditor.setColumns(20);
         taEditor.setRows(5);
-        taEditor.setText("y <- macroA(x1)");
+        taEditor.setText("y <- dieciseis()");
         taEditor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 taEditorKeyPressed(evt);
@@ -540,9 +540,9 @@ public class MainWindow extends javax.swing.JFrame {
         argumentos.objetivo = Programa.Objetivo.EXPANDIR;
 
         Programa programa = new Programa(argumentos);
-        programa.iniciarExpansionMacros();
+        String expansion = programa.iniciar();
 
-        taEditor.setText(programa.toString());
+        taEditor.setText(expansion);
         hayCambios();
 
         moverCursorAlFinal();

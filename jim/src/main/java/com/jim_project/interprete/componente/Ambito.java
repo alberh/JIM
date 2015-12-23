@@ -85,7 +85,7 @@ public class Ambito extends Componente {
         return _gestorEtiquetas;
     }
 
-    public GestorLlamadasAMacro llamadasAMacro() {
+    public GestorLlamadasAMacro gestorLlamadasAMacro() {
         return _gestorLlamadasAMacro;
     }
 
@@ -100,7 +100,7 @@ public class Ambito extends Componente {
     public Macro macroAsociada() {
         return _macroAsociada;
     }
-    
+
     public int profundidad() {
         return _profundidad;
     }
@@ -111,6 +111,10 @@ public class Ambito extends Componente {
 
     public void iniciar() {
         _controladorEjecucion.iniciar(_parametrosEntrada);
+    }
+    
+    public String expandir() {
+        return _controladorEjecucion.expandir();
     }
 
     public String estadoMemoria() {
@@ -164,10 +168,6 @@ public class Ambito extends Componente {
         return _gestorVariables.variableSalida().valor();
     }
 
-    public void iniciarExpansionMacros() {
-        _controladorEjecucion.iniciarExpansionMacros();
-    }
-
     public void imprimirComponentes() {
         System.out.println(_gestorVariables);
 
@@ -183,54 +183,5 @@ public class Ambito extends Componente {
         _gestorBucles.limpiar();
         _gestorEtiquetas.limpiar();
         _gestorLlamadasAMacro.limpiar();
-    }
-    
-    /**
-     * Método expansión de macros.
-     * Decidir si dejar aquí o mover a nueva clase.
-     */
-    private int incrementoLineas;
-
-    private int getIncrementoLineas() {
-        return incrementoLineas;
-    }
-
-    private void addIncremento(int n) {
-        incrementoLineas += n;
-    }
-
-    private void setIncremento(int n) {
-        incrementoLineas = n;
-    }
-
-    public boolean expandir() {
-        /*
-        if (_programa.estadoOk()) {
-            setIncremento(0);
-
-            for (LlamadaAMacro contenedorExpansion : _expansiones) {
-                String resultadoExpansion = Macro.expandir(contenedorExpansion);
-
-                if (resultadoExpansion != null) {
-
-                    ArrayList<String> lineasExpansion = new ArrayList<>(
-                            Arrays.asList(resultadoExpansion.split("[\n\r]+"))
-                    );
-
-                    _programa.insertarExpansion(
-                            contenedorExpansion.linea() + getIncrementoLineas(),
-                            lineasExpansion
-                    );
-
-                    addIncremento(lineasExpansion.size() - 1);
-                } else {
-                    return false;
-                }
-            }
-
-            _expansiones.clear();
-        }
-        */
-        return true;
     }
 }

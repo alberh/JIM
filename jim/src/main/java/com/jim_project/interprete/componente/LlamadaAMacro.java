@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class LlamadaAMacro {
 
     private int _linea;
-    private String _idVariableSalida;
-    private String _idMacro;
-    private ArrayList<String> _variablesEntrada;
+    private final String _idVariableSalida;
+    private final String _idMacro;
+    private final ArrayList<String> _variablesEntrada;
 
     public LlamadaAMacro(int linea,
             String idVariableSalida,
@@ -19,16 +19,12 @@ public class LlamadaAMacro {
         _variablesEntrada = new ArrayList<>();
     }
 
-    public LlamadaAMacro(int linea,
-            String idVariableSalida,
-            String idMacro,
-            ArrayList<String> variablesEntrada) {
-
-        
-    }
-
     public int linea() {
         return _linea;
+    }
+    
+    public void linea(int nuevaLinea) {
+        _linea = nuevaLinea;
     }
 
     public String idVariableSalida() {

@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
+import com.jim_project.interprete.componente.LlamadaAMacro;
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.parser.AnalizadorLexico;
 import com.jim_project.interprete.parser.Parser;
@@ -14,6 +15,7 @@ import com.jim_project.interprete.parser.loopmodel.LoopParser;
 import com.jim_project.interprete.parser.previo.PrevioParser;
 import com.jim_project.interprete.parser.whilemodel.WhileParser;
 import com.jim_project.interprete.util.gestor.GestorAmbitos;
+import java.util.Arrays;
 
 public class ControladorEjecucion {
 
@@ -92,6 +94,58 @@ public class ControladorEjecucion {
 
             ejecutar(_programa.modelo().tipo());
         }
+    }
+
+    public String expandir() {
+        if (_ambito.programa().verbose()) {
+            System.out.println("Analizando el programa");
+        }
+        previo();
+        
+        ArrayList<LlamadaAMacro> llamadas
+                = new ArrayList(_ambito.gestorLlamadasAMacro().llamadasAMacro());
+        // llamadas.sort(new ComparadorLlamadasAMacro());
+        if (llamadas.isEmpty() && _ambito.programa().verbose()) {
+            System.out.println("No hay llamadas a macros");
+        }
+
+        String expansion = "";
+        ArrayList<String> lineas = new ArrayList(_lineas);
+        int incremento = 0;
+
+        if (_ambito.programa().verbose()) {
+            System.out.println("Expandiendo macros");
+        }
+        for (int i = 0; i < llamadas.size() && _programa.estadoOk(); ++i) {
+            LlamadaAMacro llamada = llamadas.get(i);
+            
+            if (_ambito.programa().verbose()) {
+                System.out.println("   Expandiendo llamada a macro \"" + llamada.idMacro() + "\" en línea " + llamada.linea());
+            }
+            
+            llamada.linea(llamada.linea() + incremento);
+
+            String resultadoExpansion = _programa.gestorMacros().expandir(llamada);
+            if (resultadoExpansion != null) {
+                ArrayList<String> lineasExpansion = new ArrayList<>(
+                        Arrays.asList(resultadoExpansion.split("[\n\r]+"))
+                );
+
+                lineas.remove(llamada.linea() - 1);
+                lineas.addAll(llamada.linea() - 1, lineasExpansion);
+                incremento += lineasExpansion.size() - 1;
+            }
+        }
+
+        if (_programa.estadoOk()) {
+            StringBuilder sb = new StringBuilder();
+            lineas.forEach(
+                    linea -> sb.append(linea).append("\n")
+            );
+            expansion = sb.toString();
+        }
+
+        return expansion;
     }
 
     private void previo() {
@@ -253,40 +307,5 @@ public class ControladorEjecucion {
                 _ambito.variables().nuevaVariable("X" + (i + 1), valor);
             }
         }
-    }
-
-    public void iniciarExpansionMacros() {
-        /*
-         limpiar();
-         comprobarDirectoriosMacros();
-         cargarMacros();
-
-         if (estadoOk()) {
-         System.out.println("Analizando el programa...");
-         }
-         previo();
-
-         if (estadoOk()) {
-         System.out.println("Expandiendo macros...");
-
-         int llamadas = PrevioAcciones.llamadasAMacros();
-         if (llamadas > 0) {
-         PrevioAcciones.expandir();
-
-         System.out.println();
-         System.out.println(llamadas + " llamadas a macro expandidas.");
-         } else {
-         System.out.println();
-         System.out.println("No hay llamadas a macros en el programa.");
-         }
-         }
-         */
-    }
-
-    public void insertarExpansion(int linea, ArrayList<String> lineasExpansion) {
-        /*
-         _lineas.remove(linea - 1);
-         _lineas.addAll(linea - 1, lineasExpansion);
-         */
     }
 }

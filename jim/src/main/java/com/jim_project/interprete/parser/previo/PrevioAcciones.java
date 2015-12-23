@@ -27,10 +27,10 @@ public class PrevioAcciones extends Acciones {
     }
     
     public void definirLlamadaAMacro(Object idMacro) {
-        _ambito.llamadasAMacro().definirLlamadaAMacro(_ultimaVariableAsignada, idMacro);
+        _ambito.gestorLlamadasAMacro().definirLlamadaAMacro(_ultimaVariableAsignada, idMacro);
     }
 
     public void definirVariableEntradaMacro(Object parametro) {
-        _ambito.llamadasAMacro().definirVariableEntradaMacro(parametro.toString());
+        _ambito.gestorLlamadasAMacro().definirVariableEntradaMacro(parametro.toString());
     }
 }

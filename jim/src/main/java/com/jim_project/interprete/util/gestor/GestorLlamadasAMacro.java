@@ -42,6 +42,10 @@ public class GestorLlamadasAMacro extends GestorComponentes {
 
         return null;
     }
+    
+    public ArrayList<LlamadaAMacro> llamadasAMacro() {
+        return _llamadasAMacros;
+    }
 
     @Override
     public void limpiar() {

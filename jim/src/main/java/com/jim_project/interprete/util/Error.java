@@ -81,10 +81,9 @@ public class Error {
     public void enNumeroParametros(int n, String id,
             int numVariablesEntrada, int numParametros) {
 
-        imprimir("Error 8 : La macro \"" + id + "\" acepta un máximo de "
-                + numVariablesEntrada + " parámetros y ha sido llamada con "
-                + numParametros + ".",
-                n);
+        imprimir("Error 8 : La macro \"" + id + "\" requiere "
+                + numVariablesEntrada + " parámetros de entrada y ha sido "
+                + "llamada con " + numParametros + ".", n);
     }
 
     public void deRecursividadEnMacros(int n, String id) {
