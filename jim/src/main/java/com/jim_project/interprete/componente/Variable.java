@@ -29,6 +29,21 @@ public class Variable extends Componente {
     public Tipo tipo() {
         return _tipo;
     }
+    
+    public char tokenTipo() {
+        switch (_tipo) {
+            case ENTRADA:
+                return 'X';
+                
+            case LOCAL:
+                return 'Z';
+                
+            case SALIDA:
+                return 'Y';
+        }
+        
+        return '0';
+    }
 
     public int indice() {
         return _indice;

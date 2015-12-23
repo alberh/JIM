@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Ambito;
+import com.jim_project.interprete.componente.Etiqueta;
 import com.jim_project.interprete.componente.LlamadaAMacro;
 import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.componente.Variable;
@@ -83,7 +84,7 @@ public class GestorMacros extends GestorComponentes {
         //
         String separador = System.getProperty("line.separator");
         String idMacro = llamadaAMacro.idMacro();
-        ArrayList<String> parametrosEntrada = llamadaAMacro.variablesEntrada();
+        ArrayList<String> parametrosEntrada = llamadaAMacro.parametros();
         int numeroLinea = llamadaAMacro.linea();
 
         String idVariableSalida = llamadaAMacro.idVariableSalida().toUpperCase();
@@ -132,15 +133,20 @@ public class GestorMacros extends GestorComponentes {
         HashMap<String, String> reemplazosEtiquetas = null;
         String variableSalidaLocal = null;
 
+        Variable vAuxiliar;
         for (int i = 0; i < variablesEntrada.size(); ++i) {
             String vAntigua = variablesEntrada.get(i).toUpperCase();
-            String vNueva = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL).id().toUpperCase();
+            vAuxiliar = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL);
+            String vNueva = vAuxiliar.tokenTipo() + "_" + vAuxiliar.indice();
+            
             reemplazosEntrada.put(vAntigua, vNueva);
         }
 
         for (int i = 0; i < variablesLocales.size(); ++i) {
             String vAntigua = variablesLocales.get(i);
-            String vNueva = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL).id();
+            vAuxiliar = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL);
+            String vNueva = vAuxiliar.tokenTipo() + "_" + vAuxiliar.indice();
+            
             reemplazosLocales.put(vAntigua, vNueva);
         }
 
@@ -149,12 +155,14 @@ public class GestorMacros extends GestorComponentes {
              */
             reemplazosEtiquetas = new HashMap<>();
             for (String etiqueta : etiquetas) {
-                String nuevaEtiqueta = ambitoRaiz.etiquetas().nuevaEtiqueta().id();
+                Etiqueta eAuxiliar = ambitoRaiz.etiquetas().nuevaEtiqueta();
+                String nuevaEtiqueta = eAuxiliar.grupo() + "_" + eAuxiliar.indice();
                 reemplazosEtiquetas.put(etiqueta, nuevaEtiqueta);
             }
         }
 
-        variableSalidaLocal = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL).id();
+        vAuxiliar = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL);
+        variableSalidaLocal = "_" + vAuxiliar.tokenTipo() + "_" + vAuxiliar.indice() + "_";
 
         // Insertar y reemplazar
         String vAntigua;
@@ -218,6 +226,7 @@ public class GestorMacros extends GestorComponentes {
             expansion = expansion + idVariableSalida + " <- " + variableSalidaLocal;
         }
 
+        expansion = expansion.replace("_", "");
         return expansion + "\n# Fin expansión de " + idMacro + separador;
     }
 

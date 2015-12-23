@@ -7,7 +7,7 @@ public class LlamadaAMacro {
     private int _linea;
     private final String _idVariableSalida;
     private final String _idMacro;
-    private final ArrayList<String> _variablesEntrada;
+    private final ArrayList<String> _parametros;
 
     public LlamadaAMacro(int linea,
             String idVariableSalida,
@@ -16,7 +16,7 @@ public class LlamadaAMacro {
         _linea = linea;
         _idVariableSalida = idVariableSalida;
         _idMacro = idMacro;
-        _variablesEntrada = new ArrayList<>();
+        _parametros = new ArrayList<>();
     }
 
     public int linea() {
@@ -35,7 +35,7 @@ public class LlamadaAMacro {
         return _idMacro;
     }
 
-    public ArrayList<String> variablesEntrada() {
-        return _variablesEntrada;
+    public ArrayList<String> parametros() {
+        return _parametros;
     }
 }

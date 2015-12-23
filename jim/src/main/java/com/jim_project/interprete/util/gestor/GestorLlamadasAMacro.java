@@ -26,7 +26,7 @@ public class GestorLlamadasAMacro extends GestorComponentes {
     }
 
     public void definirVariableEntradaMacro(Object parametro) {
-        _ultimaLlamadaAMacro.variablesEntrada().add(parametro.toString());
+        _ultimaLlamadaAMacro.parametros().add(parametro.toString());
     }
 
     public LlamadaAMacro obtenerLlamadaAMacro(String idMacro) {

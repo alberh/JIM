@@ -178,11 +178,11 @@ public class Acciones {
         if (macro != null) {
             LlamadaAMacro llamada = _ambito.gestorLlamadasAMacro().obtenerLlamadaAMacro(idMacro.toString());
             
-            int tam = llamada.variablesEntrada().size();
+            int tam = llamada.parametros().size();
             String[] parametros = new String[tam];
             
             for (int i = 0; i < tam; ++i) {
-                parametros[i] = llamada.variablesEntrada().get(i);
+                parametros[i] = llamada.parametros().get(i);
             }
 
             int profundidad = _ambito.profundidad() + 1;

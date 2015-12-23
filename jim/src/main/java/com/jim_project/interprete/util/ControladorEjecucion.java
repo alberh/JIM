@@ -101,31 +101,32 @@ public class ControladorEjecucion {
             System.out.println("Analizando el programa");
         }
         previo();
-        
+
         ArrayList<LlamadaAMacro> llamadas
                 = new ArrayList(_ambito.gestorLlamadasAMacro().llamadasAMacro());
         // llamadas.sort(new ComparadorLlamadasAMacro());
-        if (llamadas.isEmpty() && _ambito.programa().verbose()) {
-            System.out.println("No hay llamadas a macros");
+        if (_ambito.programa().verbose()) {
+            if (!llamadas.isEmpty()) {
+                System.out.println("Expandiendo macros");
+            } else {
+                System.out.println("No hay llamadas a macros");
+            }
         }
 
         String expansion = "";
         ArrayList<String> lineas = new ArrayList(_lineas);
         int incremento = 0;
 
-        if (_ambito.programa().verbose()) {
-            System.out.println("Expandiendo macros");
-        }
         for (int i = 0; i < llamadas.size() && _programa.estadoOk(); ++i) {
             LlamadaAMacro llamada = llamadas.get(i);
-            
+
             if (_ambito.programa().verbose()) {
                 System.out.println("   Expandiendo llamada a macro \"" + llamada.idMacro() + "\" en línea " + llamada.linea());
             }
-            
+
             llamada.linea(llamada.linea() + incremento);
             String resultadoExpansion = _programa.gestorMacros().expandir(llamada);
-            
+
             if (resultadoExpansion != null) {
                 ArrayList<String> lineasExpansion = new ArrayList<>(
                         Arrays.asList(resultadoExpansion.split("[\n\r]+"))
