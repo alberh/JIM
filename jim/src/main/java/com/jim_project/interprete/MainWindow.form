@@ -103,6 +103,7 @@
                   <Image iconType="3" name="/iconos/stop.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Detener"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator6">

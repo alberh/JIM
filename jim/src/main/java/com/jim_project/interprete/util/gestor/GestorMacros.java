@@ -76,11 +76,6 @@ public class GestorMacros extends GestorComponentes {
     }
 
     public String expandir(LlamadaAMacro llamadaAMacro) {
-        //
-        //
-        // Usar salto de línea del sistema!
-        //
-        //
         String separador = System.getProperty("line.separator");
         String idMacro = llamadaAMacro.idMacro();
         ArrayList<String> parametrosEntrada = llamadaAMacro.parametros();

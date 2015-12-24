@@ -134,6 +134,14 @@ public class Error {
     public static void alGuardarFicheroTemporal() {
         Error.imprimir("Error 12: No se pudo guardar el fichero temporal.");
     }
+    
+    public static void deDesbordamientoDePila() {
+        Error.imprimir("Error XY: Desbordamiento de pila.");
+    }
+    
+    public static void deTrabajadorInterrumpido() {
+        Error.imprimir("Error XZ: La ejecución finalizó de forma inesperada.");
+    }
 
     // Variable
     public static void alObtenerIndiceDeVariable(String v) {
