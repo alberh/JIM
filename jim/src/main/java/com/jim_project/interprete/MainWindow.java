@@ -13,6 +13,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -28,6 +29,7 @@ public class MainWindow extends javax.swing.JFrame {
     private File _ficheroAbierto = null;
     private final File _ficheroTemporal = new File("jim.tmp");
     private boolean _hayCambios = false;
+    private SwingWorker _worker;
 
     /**
      * Creates new form MainWindow
@@ -197,6 +199,11 @@ public class MainWindow extends javax.swing.JFrame {
         btnPararEjecucion.setFocusable(false);
         btnPararEjecucion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnPararEjecucion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnPararEjecucion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPararEjecucionActionPerformed(evt);
+            }
+        });
         barraHerramientas.add(btnPararEjecucion);
         barraHerramientas.add(jSeparator8);
 
@@ -319,6 +326,11 @@ public class MainWindow extends javax.swing.JFrame {
         menuProgramaDetener.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/stop.png"))); // NOI18N
         menuProgramaDetener.setText("Detener");
         menuProgramaDetener.setEnabled(false);
+        menuProgramaDetener.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProgramaDetenerActionPerformed(evt);
+            }
+        });
         menuPrograma.add(menuProgramaDetener);
         menuPrograma.add(jSeparator6);
 
@@ -450,6 +462,14 @@ public class MainWindow extends javax.swing.JFrame {
         Configuracion.salidaDetallada(menuProgramaSalidaDetallada.isSelected());
     }//GEN-LAST:event_menuProgramaSalidaDetalladaActionPerformed
 
+    private void btnPararEjecucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPararEjecucionActionPerformed
+        detenerPrograma();
+    }//GEN-LAST:event_btnPararEjecucionActionPerformed
+
+    private void menuProgramaDetenerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaDetenerActionPerformed
+        detenerPrograma();
+    }//GEN-LAST:event_menuProgramaDetenerActionPerformed
+
     private void comprobacionesPreviasAEjecucion() {
         taSalida.setText("");
         taTraza.setText("");
@@ -514,29 +534,23 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
 
-        Programa programa = new Programa(argumentos);
+        Programa programa;
         if (ok) {
-            btnIniciarEjecucion.setEnabled(false);
-            btnPararEjecucion.setEnabled(true);
-            btnExpandirMacros.setEnabled(false);
-            menuProgramaIniciar.setEnabled(false);
-            menuProgramaDetener.setEnabled(true);
-            menuProgramaExpandirMacros.setEnabled(false);
+            programa = new Programa(argumentos);
+            
+            bloquearInterfaz(true);
 
-            (new SwingWorker<String, Object>() {
+            _worker = new SwingWorker<String, Object>() {
                 @Override
                 protected String doInBackground() {
+                    programa.worker(_worker);
                     return programa.iniciar();
                 }
 
                 @Override
                 protected void done() {
-                    btnIniciarEjecucion.setEnabled(true);
-                    btnPararEjecucion.setEnabled(false);
-                    btnExpandirMacros.setEnabled(true);
-                    menuProgramaIniciar.setEnabled(true);
-                    menuProgramaDetener.setEnabled(false);
-                    menuProgramaExpandirMacros.setEnabled(true);
+                    _worker = null;
+                    bloquearInterfaz(false);
 
                     try {
                         get();
@@ -548,10 +562,14 @@ public class MainWindow extends javax.swing.JFrame {
                         Error.deTrabajadorInterrumpido();
                         moverCursorAlFinal();
                         return;
+                    } catch (CancellationException ex) {
+                        System.out.println("Ejecución detenida manualmente");
                     }
 
                     if (programa.estadoOk()) {
-                        System.out.println("Resultado: " + programa.resultado());
+                        if (!isCancelled()) {
+                            System.out.println("Resultado: " + programa.resultado());
+                        }
                         taTraza.setText(programa.traza());
                     } else {
                         tabPanelSalida.setSelectedIndex(0);
@@ -560,7 +578,8 @@ public class MainWindow extends javax.swing.JFrame {
                     moverCursorAlFinal();
                 }
 
-            }).execute();
+            };
+            _worker.execute();
         }
     }
 
@@ -576,26 +595,21 @@ public class MainWindow extends javax.swing.JFrame {
         //argumentos.modoFlexible = modoFlexible();
         argumentos.verbose = verbose();
         argumentos.objetivo = Programa.Objetivo.EXPANDIR;
-
         Programa programa = new Programa(argumentos);
-
-        btnExpandirMacros.setEnabled(false);
-        btnIniciarEjecucion.setEnabled(false);
-        menuProgramaIniciar.setEnabled(false);
-        menuProgramaExpandirMacros.setEnabled(false);
-
-        (new SwingWorker<String, Object>() {
+        
+        bloquearInterfaz(true);
+        
+        _worker = new SwingWorker<String, Object>() {
             @Override
             protected String doInBackground() {
+                programa.worker(_worker);
                 return programa.iniciar();
             }
 
             @Override
             protected void done() {
-                btnExpandirMacros.setEnabled(true);
-                btnIniciarEjecucion.setEnabled(true);
-                menuProgramaIniciar.setEnabled(true);
-                menuProgramaExpandirMacros.setEnabled(true);
+                _worker = null;
+                bloquearInterfaz(false);
 
                 try {
                     taEditor.setText(get());
@@ -604,13 +618,34 @@ public class MainWindow extends javax.swing.JFrame {
                     Error.deDesbordamientoDePila();
                 } catch (InterruptedException ex) {
                     Error.deTrabajadorInterrumpido();
+                } catch (CancellationException ex) {
+                    System.out.println("Ejecución detenida manualmente");
                 } finally {
                     tabPanelSalida.setSelectedIndex(0);
                     moverCursorAlFinal();
                 }
             }
 
-        }).execute();
+        };
+        _worker.execute();
+    }
+
+    private void bloquearInterfaz(boolean b) {
+        btnIniciarEjecucion.setEnabled(!b);
+        menuProgramaIniciar.setEnabled(!b);
+
+        btnPararEjecucion.setEnabled(b);
+        menuProgramaDetener.setEnabled(b);
+
+        btnExpandirMacros.setEnabled(!b);
+        menuProgramaExpandirMacros.setEnabled(!b);
+    }
+
+    private void detenerPrograma() {
+        if (_worker != null) {
+            _worker.cancel(false);
+            _worker = null;
+        }
     }
 
     private void hayCambios() {

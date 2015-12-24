@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.RunnableFuture;
 
 public class Programa {
 
@@ -33,6 +34,8 @@ public class Programa {
     };
 
     private ArgumentosPrograma _argumentos;
+    private RunnableFuture<String> _worker;
+    
     private String _ficheroEnProceso;
     private ControladorEjecucion.Etapa _etapa;
     private Error _error;
@@ -48,6 +51,14 @@ public class Programa {
         _error = new Error(this);
         _gestorAmbitos = new GestorAmbitos(this);
         _gestorMacros = new GestorMacros(this);
+    }
+    
+    public RunnableFuture<String> worker() {
+        return _worker;
+    }
+    
+    public void worker(RunnableFuture<String> worker) {
+        _worker = worker;
     }
 
     public String ficheroEnProceso() {
@@ -118,7 +129,7 @@ public class Programa {
     public GestorMacros gestorMacros() {
         return _gestorMacros;
     }
-
+    
     public String iniciar() {
         if (estadoOk()) {
             limpiar();

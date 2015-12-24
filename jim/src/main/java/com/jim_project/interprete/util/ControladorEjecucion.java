@@ -16,6 +16,7 @@ import com.jim_project.interprete.parser.previo.PrevioParser;
 import com.jim_project.interprete.parser.whilemodel.WhileParser;
 import com.jim_project.interprete.util.gestor.GestorAmbitos;
 import java.util.Arrays;
+import java.util.concurrent.RunnableFuture;
 
 public class ControladorEjecucion {
 
@@ -136,6 +137,10 @@ public class ControladorEjecucion {
                 lineas.addAll(llamada.linea() - 1, lineasExpansion);
                 incremento += lineasExpansion.size() - 1;
             }
+            
+            if (_programa.worker() != null && _programa.worker().isCancelled()) {
+                terminar();
+            }
         }
 
         if (_programa.estadoOk()) {
@@ -217,6 +222,10 @@ public class ControladorEjecucion {
                 }
 
                 ++instruccionesEjecutadas;
+
+                if (_programa.worker() != null && _programa.worker().isCancelled()) {
+                    terminar();
+                }
             } while (!finalizado() && _programa.estadoOk());
         }
 
