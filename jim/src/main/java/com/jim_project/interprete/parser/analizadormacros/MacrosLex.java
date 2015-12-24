@@ -650,7 +650,7 @@ public class MacrosLex extends AnalizadorLexico {
           }
         case 17: break;
         case 6: 
-          { String id = yytext();
+          { String id = Etiqueta.normalizarID(yytext());
                     yyparser.yylval = new MacrosParserVal(id);
                     _contenido.append(id);
                     return MacrosParser.ETIQUETA;

@@ -15,7 +15,7 @@ public class LlamadaAMacro {
 
         _linea = linea;
         _idVariableSalida = idVariableSalida;
-        _idMacro = idMacro;
+        _idMacro = idMacro.toUpperCase();
         _parametros = new ArrayList<>();
     }
 

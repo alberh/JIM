@@ -16,7 +16,7 @@ public class Macro extends Componente {
     private ArrayList<String> _llamadasAMacros;
 
     public Macro(String id, GestorMacros gestorMacros) {
-        super(id, gestorMacros);
+        super(id.toUpperCase(), gestorMacros);
 
         _definidaEn = _gestor.programa().ficheroEnProceso();
 
@@ -66,7 +66,6 @@ public class Macro extends Componente {
     public void nuevaVariable(String id) {
         Variable v = new Variable(id, null);
         id = v.id();
-
         switch (v.tipo()) {
             case ENTRADA:
                 if (!_variablesEntrada.contains(id)) {
@@ -86,19 +85,22 @@ public class Macro extends Componente {
     }
 
     public void nuevaEtiqueta(String id) {
-        if (!_etiquetas.contains(id)) {
-            _etiquetas.add(id);
+        Etiqueta e = new Etiqueta(id, 0, null);
+        if (!_etiquetas.contains(e.id())) {
+            _etiquetas.add(e.id());
         }
     }
 
     public void nuevaEtiquetaGoTo(String id) {
-        if (!_etiquetasGoTo.contains(id)) {
-            _etiquetasGoTo.add(id);
+        Etiqueta e = new Etiqueta(id, 0, null);
+        if (!_etiquetasGoTo.contains(e.id())) {
+            _etiquetasGoTo.add(e.id());
         }
     }
 
     public void nuevaLlamadaAMacro(String id) {
-        _llamadasAMacros.add(id);
+        LlamadaAMacro llm = new LlamadaAMacro(0, "", id);
+        _llamadasAMacros.add(llm.idMacro());
     }
 
     @Override

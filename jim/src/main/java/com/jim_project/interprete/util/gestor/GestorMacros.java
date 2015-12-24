@@ -20,9 +20,8 @@ public class GestorMacros extends GestorComponentes {
     }
 
     public Macro nuevaMacro(String id) {
-        id = id.toUpperCase();
         Macro macro = new Macro(id, this);
-        _macros.put(id, macro);
+        _macros.put(macro.id(), macro);
 
         return macro;
     }
@@ -170,6 +169,7 @@ public class GestorMacros extends GestorComponentes {
         for (int i = variablesEntrada.size() - 1; i >= 0; --i) {
             vAntigua = variablesEntrada.get(i);
             vNueva = reemplazosEntrada.get(vAntigua);
+            
             asignaciones += vNueva + " <- "
                     + parametrosEntrada.get(i).toUpperCase() + separador;
         }
@@ -190,7 +190,7 @@ public class GestorMacros extends GestorComponentes {
             expansion = expansion.replace(vAntigua, vNueva);
         }
 
-        expansion = "# Expansión de " + idMacro
+        expansion = "# Expansion de" + idMacro
                 + separador + asignaciones
                 + expansion;
 
@@ -204,7 +204,8 @@ public class GestorMacros extends GestorComponentes {
 
             /* Reemplaza todas las etiquetas que son objetivo de un salto
              */
-            String etiquetaSalida = ambitoRaiz.etiquetas().nuevaEtiqueta().id();
+            Etiqueta eAuxiliar = ambitoRaiz.etiquetas().nuevaEtiqueta();
+            String etiquetaSalida = eAuxiliar.grupo() + "_" + eAuxiliar.indice();
             for (String eAntigua : etiquetasSalto) {
                 if (reemplazosEtiquetas.containsKey(eAntigua)) {
                     String eNueva = reemplazosEtiquetas.get(eAntigua);
