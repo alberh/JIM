@@ -16,7 +16,6 @@ import com.jim_project.interprete.parser.previo.PrevioParser;
 import com.jim_project.interprete.parser.whilemodel.WhileParser;
 import com.jim_project.interprete.util.gestor.GestorAmbitos;
 import java.util.Arrays;
-import java.util.concurrent.RunnableFuture;
 
 public class ControladorEjecucion {
 
@@ -137,7 +136,7 @@ public class ControladorEjecucion {
                 lineas.addAll(llamada.linea() - 1, lineasExpansion);
                 incremento += lineasExpansion.size() - 1;
             }
-            
+
             if (_programa.worker() != null && _programa.worker().isCancelled()) {
                 terminar();
             }
@@ -199,11 +198,14 @@ public class ControladorEjecucion {
             AnalizadorLexico lex = parser.analizadorLexico();
 
             do {
-                if (instruccionesEjecutadas > 0) {
-                    _traza.append(",")
-                            .append(System.getProperty("line.separator"));
+                // Límite de tamaño a la traza
+                if (_traza.length() < 10000) {
+                    if (instruccionesEjecutadas > 0) {
+                        _traza.append(",")
+                                .append(System.getProperty("line.separator"));
+                    }
+                    _traza.append(_ambito.estadoMemoria());
                 }
-                _traza.append(_ambito.estadoMemoria());
 
                 try {
                     lex.yyclose();
@@ -222,6 +224,11 @@ public class ControladorEjecucion {
                 }
 
                 ++instruccionesEjecutadas;
+                
+                // Limpieza forzada cada 100 instrucciones
+                if (instruccionesEjecutadas % 1000 == 0) {
+                    Runtime.getRuntime().gc();
+                }
 
                 if (_programa.worker() != null && _programa.worker().isCancelled()) {
                     terminar();

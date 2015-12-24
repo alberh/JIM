@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jim_project.interprete;
+package com.jim_project.interprete.gui;
 
+import com.jim_project.interprete.ArgumentosPrograma;
+import com.jim_project.interprete.Modelo;
+import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.Configuracion;
-import com.jim_project.interprete.gui.Consola;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -549,6 +551,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                 @Override
                 protected void done() {
+                    Runtime.getRuntime().gc();
                     _worker = null;
                     bloquearInterfaz(false);
 
@@ -608,6 +611,7 @@ public class MainWindow extends javax.swing.JFrame {
 
             @Override
             protected void done() {
+                Runtime.getRuntime().gc();
                 _worker = null;
                 bloquearInterfaz(false);
 
@@ -792,9 +796,6 @@ public class MainWindow extends javax.swing.JFrame {
         taEditor.requestFocus();
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

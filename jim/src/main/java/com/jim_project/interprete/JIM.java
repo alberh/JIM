@@ -19,10 +19,11 @@ import java.util.Scanner;
 /* java Jim fichero modelo [t|f|m|v] [param1 [param2 [...]]]
  *             0      1        2       2/3     3/4
  */
-public class Main {
+public class JIM {
 
     public static void main(String[] args) {
 
+        Configuracion.cargar();
         args = new String[]{"asd.txt"};
 
         switch (args.length) {
