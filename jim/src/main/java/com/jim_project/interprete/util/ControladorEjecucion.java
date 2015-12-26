@@ -64,12 +64,31 @@ public class ControladorEjecucion {
         // futuras optimizaciones
         // _ambito.limpiar();
 
-        Ambito ambitoRaiz = _ambito.programa().gestorAmbitos().ambitoRaiz();
+        Ambito ambitoRaiz = _programa.gestorAmbitos().ambitoRaiz();
+        Ambito ambitoPadre = _programa.gestorAmbitos().ambitoPadre(_ambito.profundidad());
+        String idMacro = "";
+        int lineaLlamada = -1;
+
+        if (_ambito == ambitoRaiz) {
+            lineaLlamada = numeroLineaActual();
+        } else {
+            if (ambitoPadre != ambitoRaiz) {
+                idMacro = ambitoPadre.macroAsociada().id();
+            }
+            
+            lineaLlamada = ambitoPadre.controladorEjecucion().numeroLineaActual();
+        }
 
         if (_ambito.programa().verbose()) {
             if (_ambito == ambitoRaiz) {
                 System.out.println("Analizando el programa");
             } else {
+                for (int i = 0; i < _ambito.profundidad() - 1; ++i) {
+                    System.out.print("..");
+                }
+                if (ambitoPadre != ambitoRaiz) {
+                    System.out.print(idMacro + ", línea " + lineaLlamada + ": ");
+                }
                 System.out.println("Analizando macro \"" + _ambito.macroAsociada().id() + "\"");
             }
         }
@@ -85,9 +104,13 @@ public class ControladorEjecucion {
             if (_ambito.programa().verbose()) {
                 if (_ambito == ambitoRaiz) {
                     System.out.println("Ejecutando el programa");
-                    //System.out.println("Si el programa no termina en unos segundos, "
-                    //        + "probablemente haya caído en un bucle infinito.");
                 } else {
+                    for (int i = 0; i < _ambito.profundidad() - 1; ++i) {
+                        System.out.print("..");
+                    }
+                    if (ambitoPadre != ambitoRaiz) {
+                        System.out.print(idMacro + ", línea " + lineaLlamada + ": ");
+                    }
                     System.out.println("Ejecutando macro \"" + _ambito.macroAsociada().id() + "\"");
                 }
             }
@@ -181,7 +204,7 @@ public class ControladorEjecucion {
         }
     }
 
-    private int ejecutar(Modelo.Tipo tipoParser) {
+    private void ejecutar(Modelo.Tipo tipoParser) {
         if (tipoParser != Modelo.Tipo.PREVIO) {
             _etapa = Etapa.EJECUTANDO;
         }
@@ -224,8 +247,8 @@ public class ControladorEjecucion {
                 }
 
                 ++instruccionesEjecutadas;
-                
-                // Limpieza forzada cada 100 instrucciones
+
+                // Limpieza cada 1000 instrucciones ejecutadas
                 if (instruccionesEjecutadas % 1000 == 0) {
                     Runtime.getRuntime().gc();
                 }
@@ -240,9 +263,6 @@ public class ControladorEjecucion {
                 .append(System.getProperty("line.separator"));
         _traza.append(_ambito.estadoMemoria());
         _traza.append("]");
-
-        // falta sumar las instrucciones ejecutadas por las macros
-        return instruccionesEjecutadas;
     }
 
     public int numeroLineaActual() {

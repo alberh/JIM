@@ -1,0 +1,37 @@
+
+# prueba definitiva expansión
+defmacro dieciseis
+z <- ocho()
+z2 <- ocho()
+y <- z + z2
+endmacro
+
+defmacro ocho
+z1 <- cuatro()
+Z2 <- cuatro()
+y <- z1 + z2
+endmacro
+
+defmacro cuatro
+z2 <- dos()
+Z <- dos()
+y <- Z + z2
+endmacro
+
+defmacro dos
+Z1 <- uno()
+z2 <- uno()
+y <- z + z2
+endmacro
+
+defmacro uno
+y <- 1
+endmacro
+
+defmacro suma
+y <- x1 + x2
+endmacro
+
+defmacro producto
+y <- x1 * x2
+endmacro

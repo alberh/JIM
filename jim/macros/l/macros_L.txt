@@ -1,3 +1,25 @@
+
+defmacro fiboL #x1
+		# comprobar si se pide el primer elemento de la serie
+		z <- x1 - 1
+		if z != 0 goto a
+		y <- 0
+		goto e
+
+		# comprobar si se pide el segundo elemento
+[a]		z--
+		if z != 0 goto a2
+		y <- 1
+		goto e
+
+		# caso general
+[a2]	z <- x1 - 1
+		z2 <- fiboL(z)
+		z--
+		z3 <- fiboL(z)
+		y <- z2 + z3
+endmacro
+
 defmacro mul
 	Y <- X1 * X2
 endmacro
