@@ -2,6 +2,8 @@ package com.jim_project.interprete.util;
 
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Programa.Estado;
+import com.jim_project.interprete.componente.Ambito;
+import com.jim_project.interprete.util.gestor.GestorAmbitos;
 
 public class Error {
 
@@ -18,7 +20,7 @@ public class Error {
 
     private static void imprimir(String mensaje, Programa programa) {
         System.err.println(mensaje);
-        Error.estadoErroneo(programa);;
+        Error.estadoErroneo(programa);
     }
 
     private static void estadoErroneo(Programa programa) {
@@ -28,10 +30,55 @@ public class Error {
     }
 
     private void imprimir(String mensaje, int numeroLinea) {
-        if (_programa.ficheroEnProceso().equals("jim.tmp")) {
+        GestorAmbitos gA = _programa.gestorAmbitos();
+        Ambito ambito = gA.ambitoActual();
+
+        if (ambito == gA.ambitoRaiz()) {
             Error.imprimir("Línea " + numeroLinea + ". " + mensaje, _programa);
         } else {
-            Error.imprimir(_programa.ficheroEnProceso() + ":" + numeroLinea + ". " + mensaje, _programa);
+            StringBuilder sb = new StringBuilder();
+            
+            sb.append("Error en macro ").append(ambito.macroAsociada().id())
+                    .append(", línea ").append(numeroLinea)
+                    .append(", definida en ").append(ambito.macroAsociada().definidaEn())
+                    .append(":\n")
+                    .append("   ").append(mensaje).append("\n");
+
+            Ambito ambitoPadre = gA.ambitoPadre(ambito.profundidad());
+            String idMacroPadre;
+            String ficheroMacro;
+            int profundidadBase = ambito.profundidad() + 1;
+            int linea;
+            while (ambitoPadre != gA.ambitoRaiz()) {
+                //puntos(ambito.profundidad(), sb);
+                idMacroPadre = ambitoPadre.macroAsociada().id();
+                ficheroMacro = ambitoPadre.macroAsociada().definidaEn();
+                linea = ambitoPadre.controladorEjecucion().numeroLineaActual();
+
+                for (int i = 0; i < profundidadBase - ambito.profundidad(); ++i) {
+                    sb.append("   ");
+                }
+                sb.append("\\-Llamada desde macro ").append(idMacroPadre)
+                        .append(", línea").append(linea)
+                        .append(", definida en ").append(ficheroMacro)
+                        .append(".\n");
+
+                ambito = ambitoPadre;
+                ambitoPadre = gA.ambitoPadre(ambito.profundidad());
+                /*
+                 puntos(ambito, sb);
+                 sb.append("Error en " + ambito.macroAsociada().id() + ", línea "
+                 + ambito.controladorEjecucion().numeroLineaActual());
+                 */
+            }
+
+            linea = gA.ambitoRaiz().controladorEjecucion().numeroLineaActual();
+            for (int i = 0; i < profundidadBase - ambito.profundidad(); ++i) {
+                sb.append("   ");
+            }
+            sb.append("\\-Llamada desde línea ").append(linea).append(".");
+
+            Error.imprimir(sb.toString(), _programa);
         }
     }
 
@@ -134,11 +181,11 @@ public class Error {
     public static void alGuardarFicheroTemporal() {
         Error.imprimir("Error 12: No se pudo guardar el fichero temporal.");
     }
-    
+
     public static void deDesbordamientoDePila() {
         Error.imprimir("Error XY: Desbordamiento de pila.");
     }
-    
+
     public static void deTrabajadorInterrumpido() {
         Error.imprimir("Error XZ: La ejecución finalizó de forma inesperada.");
     }
@@ -268,10 +315,10 @@ public class Error {
      imprimir("Error 24: División por cero.", Programa.numeroLineaActual());
      }
      */
-    // Operaciones extendidas
+    // Operaciones del modo flexible
     public void deSumaValorNoUnidad() {
         imprimir("Error 22: No se puede sumar un valor distinto de la unidad "
-                + "sin activar el modo extendido.", numeroLineaActual());
+                + "sin activar el modo flexible.", numeroLineaActual());
     }
 
     public void deOperacionEntreVariables(char operador) {
@@ -302,7 +349,7 @@ public class Error {
         }
 
         imprimir("Error 23: No se puede realizar " + operacion + " entre dos "
-                + "variables sin activar el modo extendido.",
+                + "variables sin activar el modo flexible.",
                 numeroLineaActual());
     }
 }

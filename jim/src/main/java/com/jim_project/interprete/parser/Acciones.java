@@ -22,14 +22,14 @@ public class Acciones {
     public Variable ultimaVariableAsignada() {
         return _ultimaVariableAsignada;
     }
-    
+
     public void variableAsignada(Object idVariable) {
         _ultimaVariableAsignada = obtenerVariable(idVariable);
     }
 
     public void asignacion(Object lvalue, Object rvalue) {
         int valor = obtenerValor(rvalue);
-        
+
         if (valor > -1) {
             obtenerVariable(lvalue).valor(valor);
         }
@@ -171,28 +171,36 @@ public class Acciones {
         if (!_ambito.programa().macrosPermitidas()) {
             _ambito.programa().error().deLlamadasAMacroNoPermitidas();
         }
-        
+
         Macro macro = _ambito.programa().gestorMacros().obtenerMacro(idMacro.toString());
         int valor = 0;
 
         if (macro != null) {
             LlamadaAMacro llamada = _ambito.gestorLlamadasAMacro().obtenerLlamadaAMacro(idMacro.toString());
-            
-            int tam = llamada.parametros().size();
-            String[] parametros = new String[tam];
-            
-            for (int i = 0; i < tam; ++i) {
+
+            int nP = llamada.parametros().size();
+            int nV = macro.variablesEntrada().size();
+
+            if (nP != nV) {
+                int n = _ambito.controladorEjecucion().numeroLineaActual();
+                _ambito.programa().error().enNumeroParametros(n, idMacro.toString(), nV, nP);
+                return;
+            }
+
+            String[] parametros = new String[nP];
+
+            for (int i = 0; i < nP; ++i) {
                 parametros[i] = llamada.parametros().get(i);
             }
 
             int profundidad = _ambito.profundidad() + 1;
             Ambito nuevoAmbito = _ambito.programa().gestorAmbitos().nuevoAmbito(parametros, macro, profundidad);
             nuevoAmbito.iniciar();
-            
+
             if (nuevoAmbito.programa().estadoOk()) {
                 valor = nuevoAmbito.resultado();
             }
-            
+
             _ambito.programa().gestorAmbitos().eliminarUltimoAmbito();
         }
 

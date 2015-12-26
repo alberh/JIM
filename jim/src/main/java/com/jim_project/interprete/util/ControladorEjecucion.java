@@ -67,7 +67,7 @@ public class ControladorEjecucion {
         Ambito ambitoRaiz = _programa.gestorAmbitos().ambitoRaiz();
         Ambito ambitoPadre = _programa.gestorAmbitos().ambitoPadre(_ambito.profundidad());
         String idMacro = "";
-        int lineaLlamada = -1;
+        int lineaLlamada;
 
         if (_ambito == ambitoRaiz) {
             lineaLlamada = numeroLineaActual();
@@ -75,23 +75,26 @@ public class ControladorEjecucion {
             if (ambitoPadre != ambitoRaiz) {
                 idMacro = ambitoPadre.macroAsociada().id();
             }
-            
             lineaLlamada = ambitoPadre.controladorEjecucion().numeroLineaActual();
         }
 
-        if (_ambito.programa().verbose()) {
-            if (_ambito == ambitoRaiz) {
-                System.out.println("Analizando el programa");
-            } else {
-                for (int i = 0; i < _ambito.profundidad() - 1; ++i) {
-                    System.out.print("..");
-                }
-                if (ambitoPadre != ambitoRaiz) {
-                    System.out.print(idMacro + ", línea " + lineaLlamada + ": ");
-                }
-                System.out.println("Analizando macro \"" + _ambito.macroAsociada().id() + "\"");
-            }
-        }
+        /*
+         if (_ambito.programa().verbose()) {
+         if (_ambito == ambitoRaiz) {
+         System.out.println("Analizando el programa");
+         } else {
+         for (int i = 0; i < _ambito.profundidad() - 1; ++i) {
+         System.out.print("   ");
+         }
+         if (ambitoPadre != ambitoRaiz) {
+         System.out.print(ficheroMacro + ", macro \"" + idMacro + "\", línea " + lineaLlamada);
+         } else {
+         System.out.print("Línea " + lineaLlamada);
+         }
+         System.out.println(": Analizando macro \"" + _ambito.macroAsociada().id() + "\"");
+         }
+         }
+         */
         previo();
 
         if (_programa.estadoOk()) {
@@ -106,12 +109,14 @@ public class ControladorEjecucion {
                     System.out.println("Ejecutando el programa");
                 } else {
                     for (int i = 0; i < _ambito.profundidad() - 1; ++i) {
-                        System.out.print("..");
+                        System.out.print("   ");
                     }
                     if (ambitoPadre != ambitoRaiz) {
-                        System.out.print(idMacro + ", línea " + lineaLlamada + ": ");
+                        System.out.print(idMacro + ", línea " + lineaLlamada);
+                    } else {
+                        System.out.print("Línea " + lineaLlamada);
                     }
-                    System.out.println("Ejecutando macro \"" + _ambito.macroAsociada().id() + "\"");
+                    System.out.println(": Ejecutando macro " + _ambito.macroAsociada().id());
                 }
             }
 

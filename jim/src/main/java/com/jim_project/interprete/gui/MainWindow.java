@@ -539,7 +539,7 @@ public class MainWindow extends javax.swing.JFrame {
         Programa programa;
         if (ok) {
             programa = new Programa(argumentos);
-            
+
             bloquearInterfaz(true);
 
             _worker = new SwingWorker<String, Object>() {
@@ -599,9 +599,9 @@ public class MainWindow extends javax.swing.JFrame {
         argumentos.verbose = verbose();
         argumentos.objetivo = Programa.Objetivo.EXPANDIR;
         Programa programa = new Programa(argumentos);
-        
+
         bloquearInterfaz(true);
-        
+
         _worker = new SwingWorker<String, Object>() {
             @Override
             protected String doInBackground() {
@@ -616,8 +616,11 @@ public class MainWindow extends javax.swing.JFrame {
                 bloquearInterfaz(false);
 
                 try {
-                    taEditor.setText(get());
-                    hayCambios();
+                    String resultado = get();
+                    if (programa.estadoOk()) {
+                        taEditor.setText(resultado);
+                        hayCambios();
+                    }
                 } catch (ExecutionException ex) {
                     Error.deDesbordamientoDePila();
                 } catch (InterruptedException ex) {

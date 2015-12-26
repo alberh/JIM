@@ -62,7 +62,7 @@ public class Programa {
     }
 
     public String ficheroEnProceso() {
-        return new File(_ficheroEnProceso).getName();
+        return new File(_ficheroEnProceso).getPath();
     }
 
     public void ficheroEnProceso(String ficheroEnProceso) {
