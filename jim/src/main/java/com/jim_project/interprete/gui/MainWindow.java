@@ -20,6 +20,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+import javax.swing.text.DefaultCaret;
 
 /**
  *
@@ -44,6 +45,9 @@ public class MainWindow extends javax.swing.JFrame {
         Consola.inicializar(taSalida, taSalida);
         System.setOut(Consola.estandar());
         System.setErr(Consola.errores());
+
+        DefaultCaret cursor = (DefaultCaret) taSalida.getCaret();
+        cursor.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         menuProgramaPermitirMacros.setSelected(Configuracion.macrosPermitidas());
         menuProgramaModoFlexible.setSelected(Configuracion.modoFlexible());
@@ -501,11 +505,6 @@ public class MainWindow extends javax.swing.JFrame {
         return menuProgramaSalidaDetallada.isSelected();
     }
 
-    public void moverCursorAlFinal() {
-        int posicionFinal = taSalida.getDocument().getLength();
-        taSalida.setCaretPosition(posicionFinal);
-    }
-
     private void iniciarPrograma() {
         comprobacionesPreviasAEjecucion();
 
@@ -559,11 +558,9 @@ public class MainWindow extends javax.swing.JFrame {
                         get();
                     } catch (ExecutionException ex) {
                         Error.deDesbordamientoDePila();
-                        moverCursorAlFinal();
                         return;
                     } catch (InterruptedException ex) {
                         Error.deTrabajadorInterrumpido();
-                        moverCursorAlFinal();
                         return;
                     } catch (CancellationException ex) {
                         System.out.println("Ejecución detenida manualmente");
@@ -577,8 +574,6 @@ public class MainWindow extends javax.swing.JFrame {
                     } else {
                         tabPanelSalida.setSelectedIndex(0);
                     }
-
-                    moverCursorAlFinal();
                 }
 
             };
@@ -629,7 +624,6 @@ public class MainWindow extends javax.swing.JFrame {
                     System.out.println("Ejecución detenida manualmente");
                 } finally {
                     tabPanelSalida.setSelectedIndex(0);
-                    moverCursorAlFinal();
                 }
             }
 
