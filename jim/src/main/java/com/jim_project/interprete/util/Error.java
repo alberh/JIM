@@ -272,19 +272,19 @@ public class Error {
             case "FLECHA":
                 imprimir("Error 19: Asignación no esperada.", numeroLinea);
                 break;
-
+/*
             case "end-of-file":
                 imprimir("Error 19: No se esperaba el final de fichero.", numeroLinea);
                 break;
-
+*/
             case "')'":
                 imprimir("Error 19: Cierre de llamada a macro no esperado.", numeroLinea);
                 break;
 
             default:
-                imprimir("Error 19: No se esperaba el símbolo \"" + token
-                        + "\"." /* + Descripción: " + descripcion */,
-                        numeroLinea);
+                //imprimir("Error 19: No se esperaba el símbolo \"" + token
+                //        + "\"." /* + Descripción: " + descripcion */,
+                //        numeroLinea);
                 break;
         }
     }
@@ -335,6 +335,16 @@ public class Error {
     public void deOperacionEntreVariables() {
         imprimir("Error 23: No se puede realizar una operación entre dos variables "
                 + "sin activar el modo flexible.",
+                numeroLineaActual());
+    }
+    
+    public void deOperacionNoPermitida() {
+        imprimir("Error 2R: Operación no permitida sin activar el modo flexible.",
+                numeroLineaActual());
+    }
+    
+    public void deAsignacionNoPermitida() {
+        imprimir("Error 3R: Asignación no permitida sin activar el modo flexible.",
                 numeroLineaActual());
     }
 }

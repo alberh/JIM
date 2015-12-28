@@ -47,8 +47,6 @@ public class MainWindow extends javax.swing.JFrame {
         ImageIcon img = cargarIcono("/iconos/bob.ico");
         if (img != null) {
             setIconImage(img.getImage());
-        } else {
-            //System.out.println("Es nula");
         }
         
         initComponents();

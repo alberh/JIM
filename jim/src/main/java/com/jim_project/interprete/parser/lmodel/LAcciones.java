@@ -15,11 +15,19 @@ public class LAcciones extends Acciones {
         Variable v = obtenerVariable(idVariable);
 
         if (v.valor() != 0) {
-            saltoIncondicional(idEtiqueta);
+            saltoIncondicional(idEtiqueta, true);
         }
     }
-
+    
     public void saltoIncondicional(Object idEtiqueta) {
+        saltoIncondicional(idEtiqueta, false);
+    }
+
+    public void saltoIncondicional(Object idEtiqueta, boolean vieneDeCondicion) {
+        if (!vieneDeCondicion && !_ambito.programa().modoFlexible()) {
+            _ambito.programa().error().deOperacionNoPermitida();
+        }
+        
         Etiqueta et = obtenerEtiqueta(idEtiqueta);
 
         if (et == null) {

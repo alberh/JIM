@@ -10,10 +10,12 @@ public class Acciones {
 
     protected Ambito _ambito;
     protected Variable _ultimaVariableAsignada;
+    protected boolean _ultimaOperacionEraBinaria;
 
     public Acciones(Ambito ambito) {
         _ambito = ambito;
         _ultimaVariableAsignada = null;
+        _ultimaOperacionEraBinaria = false;
     }
 
     public Ambito ambito() {
@@ -29,18 +31,59 @@ public class Acciones {
     }
 
     public void asignacion(Object lvalue, Object rvalue) {
+        if (!_ultimaOperacionEraBinaria) {
+            comprobarAsignacion(rvalue);
+        } else {
+            _ultimaOperacionEraBinaria = false;
+        }
+
         int valor = obtenerValor(rvalue);
 
-        if (valor > -1) {
+        if (_ambito.programa().estadoOk() && valor > -1) {
             obtenerVariable(lvalue).valor(valor);
         }
     }
 
+    public void comprobarAsignacion(Object o) {
+        if (!_ambito.programa().modoFlexible()) {
+            com.jim_project.interprete.util.Error error = _ambito.programa().error();
+
+            switch (_ambito.programa().modelo().tipo()) {
+                case L:
+                    // Comprobar que lo que se asigna no es ni un número,
+                    // ni una variable distinta de la que está siendo asignada
+                    if (esEntero(o) || !(new Variable(o.toString(), null).id().equals(_ultimaVariableAsignada.id()))) {
+                        error.deAsignacionNoPermitida();
+                    }
+                    break;
+
+                case LOOP:
+                case WHILE:
+                    // Comprobar que lo que se asigna sea una variable o el 0
+                    if (!esCadena(o) && obtenerValor(o) != 0) {
+                        error.deAsignacionNoPermitida();
+                    }
+                    break;
+
+                default:
+            }
+        }
+    }
+
     public void incremento(Object lvalue) {
+        if (!_ambito.programa().modoFlexible()) {
+            _ambito.programa().error().deOperacionNoPermitida();
+        }
+
         obtenerVariable(lvalue).incremento();
     }
 
     public void decremento(Object lvalue) {
+        if (!_ambito.programa().modoFlexible()
+                && _ambito.programa().modelo().tipo() == Modelo.Tipo.L) {
+            _ambito.programa().error().deOperacionNoPermitida();
+        }
+
         obtenerVariable(lvalue).decremento();
     }
 
@@ -48,8 +91,9 @@ public class Acciones {
         int v1 = obtenerValor(op1);
         int v2 = obtenerValor(op2);
         int resultado = 0;
+        _ultimaOperacionEraBinaria = true;
 
-        comprobacionesBinarias(operador, op1, op2, v1, v2);
+        comprobarOperacionBinaria(operador, op1, op2, v1, v2);
 
         if (_ambito.programa().estadoOk()) {
             switch (operador) {
@@ -86,7 +130,7 @@ public class Acciones {
         return resultado;
     }
 
-    private void comprobacionesBinarias(
+    private void comprobarOperacionBinaria(
             char operador,
             Object op1,
             Object op2,
@@ -102,93 +146,140 @@ public class Acciones {
              ---------------------
              Instrucciones básicas
              ---------------------
-             V <- V + 1
-             V <- V - 1
-             V <- V
-             IF V != 0 GOTO L
+             [X] V <- V + 1
+             [X] V <- V - 1
+             [X] V <- V
+             [ ] IF V != 0 GOTO L
              -------------------
              Instrucciones extra
              -------------------
-             V++
-             V--
-             V <- {N, V'}
-             V <- {N, V'} {+,-,*,/,%} {N', V''}
-             V <- MACRO(arg0, arg1, ..., argn)
-             GOTO E
+             [X] V++
+             [X] V--
+             [X] V <- {N, V'}
+             [X] V <- {N, V'} {+,-,*,/,%} {N', V''}
+             [X] V <- MACRO(arg0, arg1, ..., argn)
+             [X] GOTO E
              Asignación, suma, resta, producto, división y módulo de variables y números
              */
 
-            /* Comprobaciones comunes a todos los modelos
-             */
             if (modelo.tipo() == Modelo.Tipo.L) {
-                // V <- V + 1
+                // V <- V + 1 y V <- V - 1
                 if (operador == '+' || operador == '-') {
-                    // Comprobar que la variable destino de la asignación es la
-                    // misma que se ha incrementado
+                    // Comprobar que el primer operando es una variable
                     if (esCadena(op1)) {
-                        Variable variable = new Variable(op1.toString(), null);
-                        
-                        if (!variable.id().equals(_ultimaVariableAsignada.id())) {
-                            error.deOperacionYAsignacionDiferente();
-                        } else {
-                            // Comprobar que no se sume un número distinto de 1
-                            if (esEntero(op2) && valor2 != 1) {
-                                error.deOperacionValorNoUnidad(operador);
+                        Variable v1 = new Variable(op1.toString(), null);
+                        // Comprobar que se trata de la misma variable que va a ser asignada
+                        if (v1.id().equals(_ultimaVariableAsignada.id())) {
+                            // Comprobar que el segundo operador es un entero
+                            if (esEntero(op2)) {
+                                // Comprobar que no se sume un valor distinto de 1
+                                if (valor2 != 1) {
+                                    error.deOperacionValorNoUnidad(operador);
+                                }
+                            } else {
+                                error.deOperacionEntreVariables();
                             }
+                        } else {
+                            error.deOperacionYAsignacionDiferente();
                         }
+                    } else {
+                        error.deOperacionNoPermitida();
                     }
                 } else {
                     error.deOperadorNoPermitido();
                 }
-
-                // 
-                // Operación entre variables
-                if (esCadena(op2)) {
-                    error.deOperacionEntreVariables();
-                }
-            }
-
-
-            /*
+            } /*
              ==============
              Modelo Loop =
              ---------------------
              Instrucciones básicas
              ---------------------
-             V <- 0
-             V <- V + 1
-             V <- V'
-             LOOP V
-             END
+             [X] V <- 0
+             [X] V <- V + 1
+             [X] V <- V'
+             [ ] LOOP V
+             [ ] END
              -------------------
              Instrucciones extra
              -------------------
-             V++
-             V <- {N, V'}
-             V <- {N, V'} {+, *} {N', V''}
-             V <- MACRO(arg0, arg1, ..., argn)
+             [X] V++
+             [X] V <- {N, V'}
+             [X] V <- {N, V'} {+, *} {N', V''}
+             [X] V <- MACRO(arg0, arg1, ..., argn)
              Asignación, suma y producto de variables y números
-        
+             */ else if (modelo.tipo() == Modelo.Tipo.LOOP) {
+                // V <- V + 1
+                if (operador == '+') {
+                    // Comprobar que el primer operando es una variable
+                    if (esCadena(op1)) {
+                        Variable v1 = new Variable(op1.toString(), null);
+                        // Comprobar que se trata de la misma variable que va a ser asignada
+                        if (v1.id().equals(_ultimaVariableAsignada.id())) {
+                            // Comprobar que el segundo operador es un entero
+                            if (esEntero(op2)) {
+                                // Comprobar que no se sume un valor distinto de 1
+                                if (valor2 != 1) {
+                                    error.deOperacionValorNoUnidad(operador);
+                                }
+                            } else {
+                                error.deOperacionEntreVariables();
+                            }
+                        } else {
+                            error.deOperacionYAsignacionDiferente();
+                        }
+                    } else {
+                        error.deOperacionNoPermitida();
+                    }
+                } else {
+                    error.deOperadorNoPermitido();
+                }
+            } /*
              ===============
              Modelo While =
              ---------------------
              Instrucciones básicas
              ---------------------
-             V <- 0
-             V <- V + 1
-             V <- V'
-             V--
-             WHILE V != 0
-             END
+             [X] V <- 0
+             [X] V <- V + 1
+             [X] V <- V'
+             [X] V--
+             [ ] WHILE V != 0
+             [ ] END
              -------------------
              Instrucciones extra
              -------------------
-             V++
-             V <- {N, V'}
-             V <- {N, V'} {+,-,*,/,%} {N', V''}
-             V <- MACRO(arg0, arg1, ..., argn)
+             [X] V++
+             [X] V <- {N, V'}
+             [X] V <- {N, V'} {+,-,*,/,%} {N', V''}
+             [X] V <- MACRO(arg0, arg1, ..., argn)
              Asignación, suma, resta, producto y división de variables y números
-             */
+             */ else { //if (modelo.tipo() == Modelo.Tipo.WHILE) {
+                // V <- V + 1
+                if (operador == '+') {
+                    // Comprobar que el primer operando es una variable
+                    if (esCadena(op1)) {
+                        Variable v1 = new Variable(op1.toString(), null);
+                        // Comprobar que se trata de la misma variable que va a ser asignada
+                        if (v1.id().equals(_ultimaVariableAsignada.id())) {
+                            // Comprobar que el segundo operador es un entero
+                            if (esEntero(op2)) {
+                                // Comprobar que no se sume un valor distinto de 1
+                                if (valor2 != 1) {
+                                    error.deOperacionValorNoUnidad(operador);
+                                }
+                            } else {
+                                error.deOperacionEntreVariables();
+                            }
+                        } else {
+                            error.deOperacionYAsignacionDiferente();
+                        }
+                    } else {
+                        error.deOperacionNoPermitida();
+                    }
+                } else {
+                    error.deOperadorNoPermitido();
+                }
+            }
         }
     }
 
