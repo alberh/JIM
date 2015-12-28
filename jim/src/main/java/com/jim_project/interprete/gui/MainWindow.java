@@ -15,8 +15,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.net.URL;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
@@ -38,9 +40,18 @@ public class MainWindow extends javax.swing.JFrame {
      * Creates new form MainWindow
      */
     public MainWindow() {
-        initComponents();
         Configuracion.cargar();
         setTitle("JIM " + Configuracion.version());
+
+        System.out.println(System.getProperty("user.dir"));
+        ImageIcon img = cargarIcono("/iconos/bob.ico");
+        if (img != null) {
+            setIconImage(img.getImage());
+        } else {
+            System.out.println("Es nula");
+        }
+        
+        initComponents();
 
         Consola.inicializar(taSalida, taSalida);
         System.setOut(Consola.estandar());
@@ -54,6 +65,16 @@ public class MainWindow extends javax.swing.JFrame {
         menuProgramaSalidaDetallada.setSelected(Configuracion.salidaDetallada());
 
         MainWindow.bienvenida();
+    }
+
+    private ImageIcon cargarIcono(String ruta) {
+        System.out.println("Cargando " + ruta);
+        URL urlIcono = getClass().getResource(ruta);
+        if (urlIcono != null) {
+            return new ImageIcon(urlIcono);
+        } else {
+            return null;
+        }
     }
 
     public static void bienvenida() {
@@ -826,11 +847,13 @@ public class MainWindow extends javax.swing.JFrame {
          } catch (Exception ex) {}
          */
         /* Create and display the form */
+        /*
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainWindow().setVisible(true);
             }
         });
+        */
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

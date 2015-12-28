@@ -207,11 +207,11 @@ public abstract class Configuracion {
     }
     
     public static boolean salidaDetallada() {
-        return _propiedades.getProperty("verbose").equalsIgnoreCase("true");
+        return _propiedades.getProperty("salidaDetallada").equalsIgnoreCase("true");
     }
     
     public static void salidaDetallada(boolean b) {
-        _propiedades.setProperty("verbose", b ? "true" : "false");
+        _propiedades.setProperty("salidaDetallada", b ? "true" : "false");
     }
 
     /**
