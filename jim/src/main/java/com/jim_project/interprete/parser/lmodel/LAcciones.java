@@ -24,8 +24,9 @@ public class LAcciones extends Acciones {
     }
 
     public void saltoIncondicional(Object idEtiqueta, boolean vieneDeCondicion) {
-        if (!vieneDeCondicion && !_ambito.programa().modoFlexible()) {
-            _ambito.programa().error().deOperacionNoPermitida();
+        // La instrucción GOTO L del modelo L es considerada una macro.
+        if (!vieneDeCondicion && !_ambito.programa().macrosPermitidas()) {
+            _ambito.programa().error().deLlamadasAMacroNoPermitidas();
         }
         
         Etiqueta et = obtenerEtiqueta(idEtiqueta);

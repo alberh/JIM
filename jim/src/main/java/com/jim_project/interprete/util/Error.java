@@ -239,7 +239,7 @@ public class Error {
 
     // Acciones
     public void deLlamadasAMacroNoPermitidas() {
-        imprimir("Error 77: La ejecución de macros está deshabilitada.",
+        imprimir("Error 77: No se permite la ejecución de macros.",
                 numeroLineaActual());
     }
 
@@ -270,15 +270,17 @@ public class Error {
                 break;
 
             case "FLECHA":
-                imprimir("Error 19: Asignación no esperada.", numeroLinea);
+                imprimir("Error 19: Asignación no esperada.",
+                        numeroLinea);
                 break;
-/*
-            case "end-of-file":
-                imprimir("Error 19: No se esperaba el final de fichero.", numeroLinea);
-                break;
-*/
+            /*
+             case "end-of-file":
+             imprimir("Error 19: No se esperaba el final de fichero.", numeroLinea);
+             break;
+             */
             case "')'":
-                imprimir("Error 19: Cierre de llamada a macro no esperado.", numeroLinea);
+                imprimir("Error 19: Cierre de llamada a macro no esperado.",
+                        numeroLinea);
                 break;
 
             default:
@@ -337,14 +339,15 @@ public class Error {
                 + "sin activar el modo flexible.",
                 numeroLineaActual());
     }
-    
+
     public void deOperacionNoPermitida() {
         imprimir("Error 2R: Operación no permitida sin activar el modo flexible.",
                 numeroLineaActual());
     }
-    
+
     public void deAsignacionNoPermitida() {
         imprimir("Error 3R: Asignación no permitida sin activar el modo flexible.",
                 numeroLineaActual());
     }
+    
 }

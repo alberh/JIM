@@ -41,6 +41,8 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         Configuracion.cargar();
+        
+        initComponents();
         setTitle("JIM " + Configuracion.version());
 
         //System.out.println(System.getProperty("user.dir"));
@@ -48,8 +50,6 @@ public class MainWindow extends javax.swing.JFrame {
         if (img != null) {
             setIconImage(img.getImage());
         }
-        
-        initComponents();
 
         Consola.inicializar(taSalida, taSalida);
         System.setOut(Consola.estandar());

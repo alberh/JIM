@@ -10,12 +10,12 @@ public class Acciones {
 
     protected Ambito _ambito;
     protected Variable _ultimaVariableAsignada;
-    protected boolean _ultimaOperacionEraBinaria;
+    protected boolean _ignorarComprobacionAsignacion;
 
     public Acciones(Ambito ambito) {
         _ambito = ambito;
         _ultimaVariableAsignada = null;
-        _ultimaOperacionEraBinaria = false;
+        _ignorarComprobacionAsignacion = false;
     }
 
     public Ambito ambito() {
@@ -31,10 +31,10 @@ public class Acciones {
     }
 
     public void asignacion(Object lvalue, Object rvalue) {
-        if (!_ultimaOperacionEraBinaria) {
+        if (!_ignorarComprobacionAsignacion) {
             comprobarAsignacion(rvalue);
         } else {
-            _ultimaOperacionEraBinaria = false;
+            _ignorarComprobacionAsignacion = false;
         }
 
         int valor = obtenerValor(rvalue);
@@ -45,7 +45,8 @@ public class Acciones {
     }
 
     public void comprobarAsignacion(Object o) {
-        if (!_ambito.programa().modoFlexible()) {
+        // Como con la instrucción GOTO L, 
+        if (!_ambito.programa().macrosPermitidas()) {
             com.jim_project.interprete.util.Error error = _ambito.programa().error();
 
             switch (_ambito.programa().modelo().tipo()) {
@@ -91,7 +92,7 @@ public class Acciones {
         int v1 = obtenerValor(op1);
         int v2 = obtenerValor(op2);
         int resultado = 0;
-        _ultimaOperacionEraBinaria = true;
+        _ignorarComprobacionAsignacion = true;
 
         comprobarOperacionBinaria(operador, op1, op2, v1, v2);
 
@@ -113,12 +114,16 @@ public class Acciones {
                 case '/':
                     if (v2 != 0) {
                         resultado = v1 / v2;
+                    } else {
+                        resultado = v1;
                     }
                     break;
 
                 case '%':
                     if (v2 != 0) {
                         resultado = v1 % v2;
+                    } else {
+                        resultado = 0;
                     }
                     break;
 
@@ -288,6 +293,7 @@ public class Acciones {
             _ambito.programa().error().deLlamadasAMacroNoPermitidas();
         }
 
+        _ignorarComprobacionAsignacion = true;
         Macro macro = _ambito.programa().gestorMacros().obtenerMacro(idMacro.toString());
         int valor = 0;
 
