@@ -43,12 +43,12 @@ public class MainWindow extends javax.swing.JFrame {
         Configuracion.cargar();
         setTitle("JIM " + Configuracion.version());
 
-        System.out.println(System.getProperty("user.dir"));
+        //System.out.println(System.getProperty("user.dir"));
         ImageIcon img = cargarIcono("/iconos/bob.ico");
         if (img != null) {
             setIconImage(img.getImage());
         } else {
-            System.out.println("Es nula");
+            //System.out.println("Es nula");
         }
         
         initComponents();
@@ -68,7 +68,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private ImageIcon cargarIcono(String ruta) {
-        System.out.println("Cargando " + ruta);
+        //System.out.println("Cargando " + ruta);
         URL urlIcono = getClass().getResource(ruta);
         if (urlIcono != null) {
             return new ImageIcon(urlIcono);

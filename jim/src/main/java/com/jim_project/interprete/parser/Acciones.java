@@ -1,5 +1,6 @@
 package com.jim_project.interprete.parser;
 
+import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.LlamadaAMacro;
@@ -92,78 +93,102 @@ public class Acciones {
             int valor1,
             int valor2) {
 
-        /*
-         ===========
-         Modelo L =
-         ---------------------
-         Instrucciones básicas
-         ---------------------
-         V <- V + 1
-         V <- V - 1
-         V <- V
-         IF V != 0 GOTO L
-         -------------------
-         Instrucciones extra
-         -------------------
-         V++
-         V--
-         V <- {N, V'}
-         V <- {N, V'} {+,-,*,/,%} {N', V''}
-         V <- MACRO(arg0, arg1, ..., argn)
-         GOTO E
-         Asignación, suma, resta, producto, división y módulo de variables y números
-         ==============
-         Modelo Loop =
-         ---------------------
-         Instrucciones básicas
-         ---------------------
-         V <- 0
-         V <- V + 1
-         V <- V'
-         LOOP V
-         END
-         -------------------
-         Instrucciones extra
-         -------------------
-         V++
-         V <- {N, V'}
-         V <- {N, V'} {+, *} {N', V''}
-         V <- MACRO(arg0, arg1, ..., argn)
-         Asignación, suma y producto de variables y números
-         ===============
-         Modelo While =
-         ---------------------
-         Instrucciones básicas
-         ---------------------
-         V <- 0
-         V <- V + 1
-         V <- V'
-         V--
-         WHILE V != 0
-         END
-         -------------------
-         Instrucciones extra
-         -------------------
-         V++
-         V <- {N, V'}
-         V <- {N, V'} {+,-,*,/,%} {N', V''}
-         V <- MACRO(arg0, arg1, ..., argn)
-         Asignación, suma, resta, producto y división de variables y números
-         */
         if (!_ambito.programa().modoFlexible()) {
-            // Comprobaciones comunes
-            if (operador == '+') {
-                // Todos los modelos comparten la operación V <- V + 1
-                // Número distinto de 1
-                if (esEntero(op2) && valor2 != 1) {
-                    _ambito.programa().error().deSumaValorNoUnidad();
+            Modelo modelo = _ambito.programa().modelo();
+            com.jim_project.interprete.util.Error error = _ambito.programa().error();
+            /*
+             ===========
+             Modelo L =
+             ---------------------
+             Instrucciones básicas
+             ---------------------
+             V <- V + 1
+             V <- V - 1
+             V <- V
+             IF V != 0 GOTO L
+             -------------------
+             Instrucciones extra
+             -------------------
+             V++
+             V--
+             V <- {N, V'}
+             V <- {N, V'} {+,-,*,/,%} {N', V''}
+             V <- MACRO(arg0, arg1, ..., argn)
+             GOTO E
+             Asignación, suma, resta, producto, división y módulo de variables y números
+             */
+
+            /* Comprobaciones comunes a todos los modelos
+             */
+            if (modelo.tipo() == Modelo.Tipo.L) {
+                // V <- V + 1
+                if (operador == '+' || operador == '-') {
+                    // Comprobar que la variable destino de la asignación es la
+                    // misma que se ha incrementado
+                    if (esCadena(op1)) {
+                        Variable variable = new Variable(op1.toString(), null);
+                        
+                        if (!variable.id().equals(_ultimaVariableAsignada.id())) {
+                            error.deOperacionYAsignacionDiferente();
+                        } else {
+                            // Comprobar que no se sume un número distinto de 1
+                            if (esEntero(op2) && valor2 != 1) {
+                                error.deOperacionValorNoUnidad(operador);
+                            }
+                        }
+                    }
+                } else {
+                    error.deOperadorNoPermitido();
+                }
+
+                // 
+                // Operación entre variables
+                if (esCadena(op2)) {
+                    error.deOperacionEntreVariables();
                 }
             }
 
-            // Operación entre variables
-            if (esCadena(op2)) {
-                _ambito.programa().error().deOperacionEntreVariables(operador);
-            }
+
+            /*
+             ==============
+             Modelo Loop =
+             ---------------------
+             Instrucciones básicas
+             ---------------------
+             V <- 0
+             V <- V + 1
+             V <- V'
+             LOOP V
+             END
+             -------------------
+             Instrucciones extra
+             -------------------
+             V++
+             V <- {N, V'}
+             V <- {N, V'} {+, *} {N', V''}
+             V <- MACRO(arg0, arg1, ..., argn)
+             Asignación, suma y producto de variables y números
+        
+             ===============
+             Modelo While =
+             ---------------------
+             Instrucciones básicas
+             ---------------------
+             V <- 0
+             V <- V + 1
+             V <- V'
+             V--
+             WHILE V != 0
+             END
+             -------------------
+             Instrucciones extra
+             -------------------
+             V++
+             V <- {N, V'}
+             V <- {N, V'} {+,-,*,/,%} {N', V''}
+             V <- MACRO(arg0, arg1, ..., argn)
+             Asignación, suma, resta, producto y división de variables y números
+             */
         }
     }
 

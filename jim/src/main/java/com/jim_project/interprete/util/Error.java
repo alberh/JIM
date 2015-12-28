@@ -37,7 +37,7 @@ public class Error {
             Error.imprimir("Línea " + numeroLinea + ". " + mensaje, _programa);
         } else {
             StringBuilder sb = new StringBuilder();
-            
+
             sb.append("Error en macro ").append(ambito.macroAsociada().id())
                     .append(", línea ").append(numeroLinea)
                     .append(", definida en ").append(ambito.macroAsociada().definidaEn())
@@ -59,7 +59,7 @@ public class Error {
                     sb.append("   ");
                 }
                 sb.append("\\-Llamada desde macro ").append(idMacroPadre)
-                        .append(", línea").append(linea)
+                        .append(", línea ").append(linea)
                         .append(", definida en ").append(ficheroMacro)
                         .append(".\n");
 
@@ -316,40 +316,25 @@ public class Error {
      }
      */
     // Operaciones del modo flexible
-    public void deSumaValorNoUnidad() {
-        imprimir("Error 22: No se puede sumar un valor distinto de la unidad "
+    public void deOperacionValorNoUnidad(char operador) {
+        imprimir("Error 22: No se puede operar con un valor distinto de la unidad "
                 + "sin activar el modo flexible.", numeroLineaActual());
     }
 
-    public void deOperacionEntreVariables(char operador) {
-        String operacion;
-        switch (operador) {
-            case '+':
-                operacion = "la suma";
-                break;
+    public void deOperacionYAsignacionDiferente() {
+        imprimir("Error 2X: No se puede operar con una variable distinta a la "
+                + "variable destino de la asignación sin activar el modo flexible.",
+                numeroLineaActual());
+    }
 
-            case '-':
-                operacion = "la resta";
-                break;
+    public void deOperadorNoPermitido() {
+        imprimir("Error 3X: Operador no permitido sin activar el modo flexible.",
+                numeroLineaActual());
+    }
 
-            case '*':
-                operacion = "el producto";
-                break;
-
-            case '/':
-                operacion = "la división";
-                break;
-
-            case '%':
-                operacion = "el módulo";
-                break;
-
-            default:
-                operacion = "";
-        }
-
-        imprimir("Error 23: No se puede realizar " + operacion + " entre dos "
-                + "variables sin activar el modo flexible.",
+    public void deOperacionEntreVariables() {
+        imprimir("Error 23: No se puede realizar una operación entre dos variables "
+                + "sin activar el modo flexible.",
                 numeroLineaActual());
     }
 }
