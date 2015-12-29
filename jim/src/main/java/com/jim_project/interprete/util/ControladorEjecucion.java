@@ -49,6 +49,10 @@ public class ControladorEjecucion {
     public Ambito ambito() {
         return _ambito;
     }
+    
+    public void trazarAmbito(String traza) {
+        _traza.append(traza);
+    }
 
     public String traza() {
         return _traza.toString();
