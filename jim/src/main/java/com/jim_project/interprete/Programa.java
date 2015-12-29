@@ -25,7 +25,7 @@ public class Programa {
 
     public enum Estado {
 
-        OK, ERROR
+        OK, ERROR, NO_ARGS
     };
 
     public enum Objetivo {
@@ -43,7 +43,7 @@ public class Programa {
 
     private GestorAmbitos _gestorAmbitos;
     private GestorMacros _gestorMacros;
-
+/*
     public Programa(ArgumentosPrograma argumentos) {
         _argumentos = argumentos;
         _ficheroEnProceso = argumentos.fichero;
@@ -51,6 +51,21 @@ public class Programa {
         _error = new Error(this);
         _gestorAmbitos = new GestorAmbitos(this);
         _gestorMacros = new GestorMacros(this);
+    }
+    */
+    public Programa() {
+        _argumentos = null;
+        _ficheroEnProceso = null;
+        _estado = Estado.NO_ARGS;
+        _error = new Error(this);
+        _gestorAmbitos = new GestorAmbitos(this);
+        _gestorMacros = new GestorMacros(this);
+    }
+    
+    public void definirArgumentos(ArgumentosPrograma argumentos) {
+        _argumentos = argumentos;
+        _ficheroEnProceso = argumentos.fichero;
+        _estado = Estado.OK;
     }
     
     public RunnableFuture<String> worker() {
@@ -130,7 +145,7 @@ public class Programa {
         return _gestorMacros;
     }
     
-    public String iniciar() {
+    public String iniciar() throws Exception {
         if (estadoOk()) {
             limpiar();
             comprobarDirectoriosMacros();
@@ -156,6 +171,8 @@ public class Programa {
                     return ambito.expandir();
                 }
             }
+        } else if (_estado == Estado.NO_ARGS) {
+            throw new Exception("No se han especificado los argumentos del programa.");
         }
         
         return "";

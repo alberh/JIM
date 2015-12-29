@@ -35,6 +35,7 @@ public class MainWindow extends javax.swing.JFrame {
     private final File _ficheroTemporal = new File("jim.tmp");
     private boolean _hayCambios = false;
     private SwingWorker _worker;
+    private Programa _programa;
 
     /**
      * Creates new form MainWindow
@@ -63,6 +64,8 @@ public class MainWindow extends javax.swing.JFrame {
         menuProgramaPermitirMacros.setSelected(Configuracion.macrosPermitidas());
         //menuProgramaModoFlexible.setSelected(Configuracion.modoFlexible());
         menuProgramaSalidaDetallada.setSelected(Configuracion.salidaDetallada());
+
+        _programa = new Programa();
 
         MainWindow.bienvenida();
     }
@@ -559,13 +562,18 @@ public class MainWindow extends javax.swing.JFrame {
 
         if (ok) {
             bloquearInterfaz(true);
-            Programa programa = new Programa(argumentos);
+            _programa.definirArgumentos(argumentos);
 
             _worker = new SwingWorker<String, Object>() {
                 @Override
                 protected String doInBackground() {
-                    programa.worker(_worker);
-                    return programa.iniciar();
+                    _programa.worker(_worker);
+                    try {
+                        return _programa.iniciar();
+                    } catch (Exception ex) {
+                        System.err.println(ex.getMessage());
+                        return null;
+                    }
                 }
 
                 @Override
@@ -586,11 +594,11 @@ public class MainWindow extends javax.swing.JFrame {
                         System.out.println("Ejecución detenida manualmente");
                     }
 
-                    if (programa.estadoOk()) {
+                    if (_programa.estadoOk()) {
                         if (!isCancelled()) {
-                            System.out.println("Resultado: " + programa.resultado());
+                            System.out.println("Resultado: " + _programa.resultado());
                         }
-                        taTraza.setText(programa.traza());
+                        taTraza.setText(_programa.traza());
                     } else {
                         tabPanelSalida.setSelectedIndex(0);
                     }
@@ -613,15 +621,20 @@ public class MainWindow extends javax.swing.JFrame {
         //argumentos.modoFlexible = modoFlexible();
         argumentos.verbose = verbose();
         argumentos.objetivo = Programa.Objetivo.EXPANDIR;
-        Programa programa = new Programa(argumentos);
+        _programa.definirArgumentos(argumentos);
 
         bloquearInterfaz(true);
 
         _worker = new SwingWorker<String, Object>() {
             @Override
             protected String doInBackground() {
-                programa.worker(_worker);
-                return programa.iniciar();
+                _programa.worker(_worker);
+                try {
+                    return _programa.iniciar();
+                } catch (Exception ex) {
+                    System.err.println(ex.getMessage());
+                    return null;
+                }
             }
 
             @Override
@@ -632,7 +645,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                 try {
                     String resultado = get();
-                    if (programa.estadoOk()) {
+                    if (_programa.estadoOk()) {
                         taEditor.setText(resultado);
                         hayCambios();
                     }

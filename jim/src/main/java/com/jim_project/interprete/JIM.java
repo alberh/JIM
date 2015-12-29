@@ -21,9 +21,12 @@ import java.util.Scanner;
  */
 public class JIM {
 
+    private static Programa _programa;
+
     public static void main(String[] args) {
 
         Configuracion.cargar();
+        _programa = new Programa();
         args = new String[]{"asd.txt"};
 
         switch (args.length) {
@@ -162,33 +165,41 @@ public class JIM {
     }
 
     private static void iniciar(ArgumentosPrograma argumentos, boolean mostrarTraza) {
-        Programa programa = new Programa(argumentos);
-        programa.iniciar();
+        _programa.definirArgumentos(argumentos);
+        try {
+            _programa.iniciar();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
 
-        if (programa.estadoOk()) {
+        if (_programa.estadoOk()) {
             if (!mostrarTraza) {
-                if (programa.verbose()) {
+                if (_programa.verbose()) {
                     System.out.print("Resultado: ");
                 }
-                System.out.println(programa.resultado());
+                System.out.println(_programa.resultado());
             } else {
-                if (programa.verbose()) {
+                if (_programa.verbose()) {
                     System.out.println("Traza:");
                 }
-                System.out.println(programa.traza());
+                System.out.println(_programa.traza());
             }
         }
     }
 
     private static void iniciarExpansionMacros(ArgumentosPrograma argumentos) {
-        Programa programa = new Programa(argumentos);
-        String expansion = programa.iniciar();
+        _programa.definirArgumentos(argumentos);
 
-        if (programa.estadoOk()) {
-            if (programa.verbose()) {
-                System.out.println("Programa tras la expansión:");
+        try {
+            String expansion = _programa.iniciar();
+            if (_programa.estadoOk()) {
+                if (_programa.verbose()) {
+                    System.out.println("Programa tras la expansión:");
+                }
+                System.out.println(expansion);
             }
-            System.out.println(expansion);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
         }
     }
 
