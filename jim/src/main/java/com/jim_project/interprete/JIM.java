@@ -75,9 +75,11 @@ public class JIM {
                             case 't':
                                 mostrarTraza = true;
                                 break;
-                            case 'f':
-                                argsPrograma.modoFlexible = true;
-                                break;
+                            /*
+                             case 'f':
+                             argsPrograma.modoFlexible = true;
+                             break;
+                             */
                             case 'm':
                                 argsPrograma.macrosPermitidas = true;
                                 break;
@@ -199,10 +201,11 @@ public class JIM {
     private static void ayuda() {
         System.out.println("Uso:");
         System.out.println("java Jim fichero");
-        System.out.println("java Jim fichero modelo [t|f|m|v|e] [param1 [param2 [...]]]");
+        //System.out.println("java Jim fichero modelo [t|f|m|v|e] [param1 [param2 [...]]]");
+        System.out.println("java Jim fichero modelo [t|m|v|e] [param1 [param2 [...]]]");
         System.out.println();
         System.out.println("t: Muestra la traza del programa.");
-        System.out.println("f: Activa el modo flexible.");
+        //System.out.println("f: Activa el modo flexible.");
         System.out.println("m: Activa la ejecución de macros.");
         System.out.println("v: Hace la salida del programa más detallada.");
         System.out.println("e: Expande las macros del programa y muestra el código "
@@ -210,14 +213,15 @@ public class JIM {
                 + "los parámetros de entrada.");
         System.out.println();
         System.out.println("Ejemplos:");
-        System.out.println("\tjava Jim p1 l");
-        System.out.println("\tjava Jim p2 loop 1 2");
-        System.out.println("\tjava Jim p3 while tm 2 3 5");
+        System.out.println("\tjava JIM p1 l");
+        System.out.println("\tjava JIM p2 loop 1 2");
+        System.out.println("\tjava JIM p3 while tm 2 3 5");
         System.out.println();
         System.out.println("Para ejecutar el programa indicando sólo el "
                 + "fichero, debe especificar los argumentos de entrada en la "
                 + "primera línea del mismo mediante la siguiente notación:");
-        System.out.println("\t# args: modelo [t|f|m|v] [param1 [param2 [...]]]");
+        //System.out.println("\t# args: modelo [t|f|m|v] [param1 [param2 [...]]]");
+        System.out.println("\t# args: modelo [t|m|v] [param1 [param2 [...]]]");
         System.out.println("Si indica los argumentos en la llamada al programa, "
                 + "no se tendrán en cuenta los del fichero.");
     }

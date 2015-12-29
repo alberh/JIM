@@ -42,7 +42,7 @@ public abstract class Configuracion {
                     _propiedades.setProperty("rutaMacrosLoop", _propiedades.getProperty("rutaMacrosLoop", "macros/loop"));
                     _propiedades.setProperty("rutaMacrosWhile", _propiedades.getProperty("rutaMacrosWhile", "macros/while"));
                     _propiedades.setProperty("macrosPermitidas", _propiedades.getProperty("macrosPermitidas", "true"));
-                    _propiedades.setProperty("modoFlexible", _propiedades.getProperty("modoFlexible", "false"));
+                    //_propiedades.setProperty("modoFlexible", _propiedades.getProperty("modoFlexible", "false"));
                     _propiedades.setProperty("salidaDetallada", _propiedades.getProperty("salidaDetallada", "false"));
 
                     guardar(verbose);
@@ -77,7 +77,7 @@ public abstract class Configuracion {
             _propiedades.setProperty("rutaMacrosLoop", "macros/loop");
             _propiedades.setProperty("rutaMacrosWhile", "macros/while");
             _propiedades.setProperty("macrosPermitidas", "true");
-            _propiedades.setProperty("modoFlexible", "false");
+            //_propiedades.setProperty("modoFlexible", "false");
             _propiedades.setProperty("salidaDetallada", "false");
             _propiedades.store(fw, null);
 
@@ -199,11 +199,12 @@ public abstract class Configuracion {
     }
     
     public static boolean modoFlexible() {
-        return _propiedades.getProperty("modoFlexible").equalsIgnoreCase("true");
+        //return _propiedades.getProperty("modoFlexible").equalsIgnoreCase("true");
+        return false;
     }
     
     public static void modoFlexible(boolean b) {
-        _propiedades.setProperty("modoFlexible", b ? "true" : "false");
+        //_propiedades.setProperty("modoFlexible", b ? "true" : "false");
     }
     
     public static boolean salidaDetallada() {

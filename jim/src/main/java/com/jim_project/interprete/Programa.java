@@ -96,11 +96,11 @@ public class Programa {
     public Objetivo objetivo() {
         return _argumentos.objetivo;
     }
-
+/*
     public boolean modoFlexible() {
         return _argumentos.modoFlexible;
     }
-
+*/
     public boolean macrosPermitidas() {
         return _argumentos.macrosPermitidas;
     }

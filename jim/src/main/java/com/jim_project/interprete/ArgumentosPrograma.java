@@ -4,7 +4,7 @@ public class ArgumentosPrograma {
 
     public String fichero;
     public Modelo modelo;
-    public boolean modoFlexible;
+    //public boolean modoFlexible;
     public boolean macrosPermitidas;
     public boolean verbose;
     public String[] parametros;
@@ -13,7 +13,7 @@ public class ArgumentosPrograma {
     public ArgumentosPrograma() {
         fichero = null;
         modelo = null;
-        modoFlexible = false;
+        //modoFlexible = false;
         macrosPermitidas = false;
         verbose = false;
         parametros = null;

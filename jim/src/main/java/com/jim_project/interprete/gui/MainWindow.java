@@ -43,6 +43,8 @@ public class MainWindow extends javax.swing.JFrame {
         Configuracion.cargar();
         
         initComponents();
+        // Eliminar si hay que restaurar el modo flexible
+        menuPrograma.remove(menuProgramaModoFlexible);
         setTitle("JIM " + Configuracion.version());
 
         //System.out.println(System.getProperty("user.dir"));
@@ -59,7 +61,7 @@ public class MainWindow extends javax.swing.JFrame {
         cursor.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         menuProgramaPermitirMacros.setSelected(Configuracion.macrosPermitidas());
-        menuProgramaModoFlexible.setSelected(Configuracion.modoFlexible());
+        //menuProgramaModoFlexible.setSelected(Configuracion.modoFlexible());
         menuProgramaSalidaDetallada.setSelected(Configuracion.salidaDetallada());
 
         MainWindow.bienvenida();
@@ -480,7 +482,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_menuProgramaPermitirMacrosActionPerformed
 
     private void menuProgramaModoFlexibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaModoFlexibleActionPerformed
-        Configuracion.modoFlexible(menuProgramaModoFlexible.isSelected());
+        //Configuracion.modoFlexible(menuProgramaModoFlexible.isSelected());
     }//GEN-LAST:event_menuProgramaModoFlexibleActionPerformed
 
     private void menuProgramaSalidaDetalladaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaSalidaDetalladaActionPerformed
@@ -513,7 +515,8 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private boolean modoFlexible() {
-        return menuProgramaModoFlexible.isSelected();
+        //return menuProgramaModoFlexible.isSelected();
+        return false;
     }
 
     private boolean macrosPermitidas() {
@@ -533,7 +536,7 @@ public class MainWindow extends javax.swing.JFrame {
         argumentos.fichero = _ficheroAbierto.getAbsolutePath();
         argumentos.modelo = new Modelo(cadenaModelo);
         argumentos.macrosPermitidas = macrosPermitidas();
-        argumentos.modoFlexible = modoFlexible();
+        //argumentos.modoFlexible = modoFlexible();
         argumentos.verbose = verbose();
         argumentos.objetivo = Programa.Objetivo.EJECUTAR;
 

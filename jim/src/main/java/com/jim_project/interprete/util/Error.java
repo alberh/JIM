@@ -318,36 +318,37 @@ public class Error {
      }
      */
     // Operaciones del modo flexible
-    public void deOperacionValorNoUnidad(char operador) {
-        imprimir("Error 22: No se puede operar con un valor distinto de la unidad "
-                + "sin activar el modo flexible.", numeroLineaActual());
-    }
+    /*
+     public void deOperacionValorNoUnidad(char operador) {
+     imprimir("Error 22: No se puede operar con un valor distinto de la unidad "
+     + "sin activar el modo flexible.", numeroLineaActual());
+     }
 
-    public void deOperacionYAsignacionDiferente() {
-        imprimir("Error 2X: No se puede operar con una variable distinta a la "
-                + "variable destino de la asignación sin activar el modo flexible.",
-                numeroLineaActual());
-    }
+     public void deOperacionYAsignacionDiferente() {
+     imprimir("Error 2X: No se puede operar con una variable distinta a la "
+     + "variable destino de la asignación sin activar el modo flexible.",
+     numeroLineaActual());
+     }
 
-    public void deOperadorNoPermitido() {
-        imprimir("Error 3X: Operador no permitido sin activar el modo flexible.",
-                numeroLineaActual());
-    }
+     public void deOperadorNoPermitido() {
+     imprimir("Error 3X: Operador no permitido sin activar el modo flexible.",
+     numeroLineaActual());
+     }
 
-    public void deOperacionEntreVariables() {
-        imprimir("Error 23: No se puede realizar una operación entre dos variables "
-                + "sin activar el modo flexible.",
-                numeroLineaActual());
-    }
+     public void deOperacionEntreVariables() {
+     imprimir("Error 23: No se puede realizar una operación entre dos variables "
+     + "sin activar el modo flexible.",
+     numeroLineaActual());
+     }
 
-    public void deOperacionNoPermitida() {
-        imprimir("Error 2R: Operación no permitida sin activar el modo flexible.",
-                numeroLineaActual());
-    }
+     public void deOperacionNoPermitida() {
+     imprimir("Error 2R: Operación no permitida sin activar el modo flexible.",
+     numeroLineaActual());
+     }
 
-    public void deAsignacionNoPermitida() {
-        imprimir("Error 3R: Asignación no permitida sin activar el modo flexible.",
-                numeroLineaActual());
-    }
-    
+     public void deAsignacionNoPermitida() {
+     imprimir("Error 3R: Asignación no permitida sin activar el modo flexible.",
+     numeroLineaActual());
+     }
+     */
 }

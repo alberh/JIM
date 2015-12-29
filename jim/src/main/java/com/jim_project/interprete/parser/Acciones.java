@@ -54,7 +54,8 @@ public class Acciones {
                     // Comprobar que lo que se asigna no es ni un número,
                     // ni una variable distinta de la que está siendo asignada
                     if (esEntero(o) || !(new Variable(o.toString(), null).id().equals(_ultimaVariableAsignada.id()))) {
-                        error.deAsignacionNoPermitida();
+                        //error.deAsignacionNoPermitida();
+                        error.deLlamadasAMacroNoPermitidas();
                     }
                     break;
 
@@ -62,7 +63,8 @@ public class Acciones {
                 case WHILE:
                     // Comprobar que lo que se asigna sea una variable o el 0
                     if (!esCadena(o) && obtenerValor(o) != 0) {
-                        error.deAsignacionNoPermitida();
+                        //error.deAsignacionNoPermitida();
+                        error.deLlamadasAMacroNoPermitidas();
                     }
                     break;
 
@@ -72,17 +74,21 @@ public class Acciones {
     }
 
     public void incremento(Object lvalue) {
-        if (!_ambito.programa().modoFlexible()) {
-            _ambito.programa().error().deOperacionNoPermitida();
+        if (!_ambito.programa().macrosPermitidas()) {
+            //_ambito.programa().error().deOperacionNoPermitida();
+            //error.deLlamadasAMacroNoPermitidas();
+            _ambito.programa().error().deLlamadasAMacroNoPermitidas();
         }
 
         obtenerVariable(lvalue).incremento();
     }
 
     public void decremento(Object lvalue) {
-        if (!_ambito.programa().modoFlexible()
+        if (!_ambito.programa().macrosPermitidas()
                 && _ambito.programa().modelo().tipo() == Modelo.Tipo.L) {
-            _ambito.programa().error().deOperacionNoPermitida();
+            //_ambito.programa().error().deOperacionNoPermitida();
+            //error.deLlamadasAMacroNoPermitidas();
+            _ambito.programa().error().deLlamadasAMacroNoPermitidas();
         }
 
         obtenerVariable(lvalue).decremento();
@@ -142,7 +148,8 @@ public class Acciones {
             int valor1,
             int valor2) {
 
-        if (!_ambito.programa().modoFlexible()) {
+        if (!_ambito.programa().macrosPermitidas()) {
+            boolean hayError = false;
             Modelo modelo = _ambito.programa().modelo();
             com.jim_project.interprete.util.Error error = _ambito.programa().error();
             /*
@@ -179,19 +186,24 @@ public class Acciones {
                             if (esEntero(op2)) {
                                 // Comprobar que no se sume un valor distinto de 1
                                 if (valor2 != 1) {
-                                    error.deOperacionValorNoUnidad(operador);
+                                    //error.deOperacionValorNoUnidad(operador);
+                                    hayError = true;
                                 }
                             } else {
-                                error.deOperacionEntreVariables();
+                                //error.deOperacionEntreVariables();
+                                hayError = true;
                             }
                         } else {
-                            error.deOperacionYAsignacionDiferente();
+                            //error.deOperacionYAsignacionDiferente();
+                            hayError = true;
                         }
                     } else {
-                        error.deOperacionNoPermitida();
+                        //error.deOperacionNoPermitida();
+                        hayError = true;
                     }
                 } else {
-                    error.deOperadorNoPermitido();
+                    //error.deOperadorNoPermitido();
+                    hayError = true;
                 }
             } /*
              ==============
@@ -224,19 +236,24 @@ public class Acciones {
                             if (esEntero(op2)) {
                                 // Comprobar que no se sume un valor distinto de 1
                                 if (valor2 != 1) {
-                                    error.deOperacionValorNoUnidad(operador);
+                                    //error.deOperacionValorNoUnidad(operador);
+                                    hayError = true;
                                 }
                             } else {
-                                error.deOperacionEntreVariables();
+                                //error.deOperacionEntreVariables();
+                                hayError = true;
                             }
                         } else {
-                            error.deOperacionYAsignacionDiferente();
+                            //error.deOperacionYAsignacionDiferente();
+                            hayError = true;
                         }
                     } else {
-                        error.deOperacionNoPermitida();
+                        //error.deOperacionNoPermitida();
+                        hayError = true;
                     }
                 } else {
-                    error.deOperadorNoPermitido();
+                    //error.deOperadorNoPermitido();
+                    hayError = true;
                 }
             } /*
              ===============
@@ -270,20 +287,29 @@ public class Acciones {
                             if (esEntero(op2)) {
                                 // Comprobar que no se sume un valor distinto de 1
                                 if (valor2 != 1) {
-                                    error.deOperacionValorNoUnidad(operador);
+                                    //error.deOperacionValorNoUnidad(operador);
+                                    hayError = true;
                                 }
                             } else {
-                                error.deOperacionEntreVariables();
+                                //error.deOperacionEntreVariables();
+                                hayError = true;
                             }
                         } else {
-                            error.deOperacionYAsignacionDiferente();
+                            //error.deOperacionYAsignacionDiferente();
+                            hayError = true;
                         }
                     } else {
-                        error.deOperacionNoPermitida();
+                        //error.deOperacionNoPermitida();
+                        hayError = true;
                     }
                 } else {
-                    error.deOperadorNoPermitido();
+                    //error.deOperadorNoPermitido();
+                    hayError = true;
                 }
+            }
+            
+            if (hayError) {
+                error.deLlamadasAMacroNoPermitidas();
             }
         }
     }
