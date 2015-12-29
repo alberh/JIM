@@ -41,7 +41,7 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         Configuracion.cargar();
-        
+
         initComponents();
         // Eliminar si hay que restaurar el modo flexible
         menuPrograma.remove(menuProgramaModoFlexible);
@@ -557,11 +557,9 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
 
-        Programa programa;
         if (ok) {
-            programa = new Programa(argumentos);
-
             bloquearInterfaz(true);
+            Programa programa = new Programa(argumentos);
 
             _worker = new SwingWorker<String, Object>() {
                 @Override
@@ -849,12 +847,12 @@ public class MainWindow extends javax.swing.JFrame {
          */
         /* Create and display the form */
         /*
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainWindow().setVisible(true);
-            }
-        });
-        */
+         java.awt.EventQueue.invokeLater(new Runnable() {
+         public void run() {
+         new MainWindow().setVisible(true);
+         }
+         });
+         */
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

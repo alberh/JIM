@@ -49,7 +49,7 @@ public class ControladorEjecucion {
     public Ambito ambito() {
         return _ambito;
     }
-    
+
     public void trazarAmbito(String traza) {
         _traza.append(traza);
     }
@@ -134,9 +134,10 @@ public class ControladorEjecucion {
         }
         previo();
 
+        String expansion = null;
         ArrayList<LlamadaAMacro> llamadas
                 = new ArrayList(_ambito.gestorLlamadasAMacro().llamadasAMacro());
-        // llamadas.sort(new ComparadorLlamadasAMacro());
+
         if (_ambito.programa().verbose()) {
             if (!llamadas.isEmpty()) {
                 System.out.println("Expandiendo macros");
@@ -145,41 +146,46 @@ public class ControladorEjecucion {
             }
         }
 
-        String expansion = "";
-        ArrayList<String> lineas = new ArrayList(_lineas);
-        int incremento = 0;
+        if (!llamadas.isEmpty()) {
+            ArrayList<String> lineas = new ArrayList(_lineas);
+            int incremento = 0;
 
-        for (int i = 0; i < llamadas.size() && _programa.estadoOk(); ++i) {
-            LlamadaAMacro llamada = llamadas.get(i);
+            for (int i = 0; i < llamadas.size() && _programa.estadoOk(); ++i) {
+                LlamadaAMacro llamada = llamadas.get(i);
 
-            if (_ambito.programa().verbose()) {
-                System.out.println("   Expandiendo llamada a macro \"" + llamada.idMacro() + "\" en línea " + llamada.linea());
+                if (_ambito.programa().verbose()
+                        && (_programa.worker() == null || !_programa.worker().isCancelled())) {
+                    System.out.println("   Expandiendo llamada a macro \"" + llamada.idMacro() + "\" en línea " + llamada.linea());
+                }
+
+                llamada.linea(llamada.linea() + incremento);
+                String resultadoExpansion = _programa.gestorMacros().expandir(llamada);
+
+                if (resultadoExpansion != null) {
+                    ArrayList<String> lineasExpansion = new ArrayList<>(
+                            Arrays.asList(resultadoExpansion.split("[\n\r]+"))
+                    );
+
+                    lineas.remove(llamada.linea() - 1);
+                    lineas.addAll(llamada.linea() - 1, lineasExpansion);
+                    incremento += lineasExpansion.size() - 1;
+                }
+
+                if (_programa.worker() != null && _programa.worker().isCancelled()) {
+                    _programa.estado(Programa.Estado.ERROR);
+                }
             }
 
-            llamada.linea(llamada.linea() + incremento);
-            String resultadoExpansion = _programa.gestorMacros().expandir(llamada);
-
-            if (resultadoExpansion != null) {
-                ArrayList<String> lineasExpansion = new ArrayList<>(
-                        Arrays.asList(resultadoExpansion.split("[\n\r]+"))
+            if (_programa.estadoOk()) {
+                if (_programa.verbose()) {
+                    System.out.println("Expansión de macros finalizada.");
+                }
+                StringBuilder sb = new StringBuilder();
+                lineas.forEach(
+                        linea -> sb.append(linea).append("\n")
                 );
-
-                lineas.remove(llamada.linea() - 1);
-                lineas.addAll(llamada.linea() - 1, lineasExpansion);
-                incremento += lineasExpansion.size() - 1;
+                expansion = sb.toString();
             }
-
-            if (_programa.worker() != null && _programa.worker().isCancelled()) {
-                terminar();
-            }
-        }
-
-        if (_programa.estadoOk()) {
-            StringBuilder sb = new StringBuilder();
-            lineas.forEach(
-                    linea -> sb.append(linea).append("\n")
-            );
-            expansion = sb.toString();
         }
 
         return expansion;

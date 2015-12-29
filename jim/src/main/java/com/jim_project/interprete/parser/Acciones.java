@@ -346,7 +346,7 @@ public class Acciones {
             nuevoAmbito.iniciar();
             String traza = ",\nTraza de llamada a macro " + macro.id() + "\n"
                     + nuevoAmbito.controladorEjecucion().traza()
-                    .replaceAll("[\\[\\]]", "").replace(")(", "\n")
+                    .replaceAll("[\\[\\]]", "")
                     + "\nFin traza de llamada a macro " + macro.id();
             _ambito.controladorEjecucion().trazarAmbito(traza);
 
