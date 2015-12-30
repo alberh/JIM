@@ -108,7 +108,7 @@ public class MainWindow extends javax.swing.JFrame {
                 ++numeroLineas;
             }
         }
-        
+
         return numeroLineas;
     }
 
@@ -554,12 +554,13 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void tpEditorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tpEditorKeyTyped
         hayCambios();
-        
+
         if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
+            ++_numeroLineasAnterior;
             pintarNumerosDeLineas();
-        } else if(evt.getKeyChar() == KeyEvent.VK_BACK_SPACE
+        } else if (evt.getKeyChar() == KeyEvent.VK_BACK_SPACE
                 || evt.getKeyChar() == KeyEvent.VK_DELETE) {
-            int numeroLineas = numeroLineas() + 1;
+            int numeroLineas = numeroLineas();
             if (numeroLineas != _numeroLineasAnterior) {
                 _numeroLineasAnterior = numeroLineas;
                 pintarNumerosDeLineas();
