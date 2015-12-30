@@ -43,7 +43,7 @@ public abstract class Configuracion {
                     _propiedades.setProperty("rutaMacrosWhile", _propiedades.getProperty("rutaMacrosWhile", "macros/while"));
                     _propiedades.setProperty("macrosPermitidas", _propiedades.getProperty("macrosPermitidas", "true"));
                     //_propiedades.setProperty("modoFlexible", _propiedades.getProperty("modoFlexible", "false"));
-                    _propiedades.setProperty("salidaDetallada", _propiedades.getProperty("salidaDetallada", "false"));
+                    _propiedades.setProperty("salidaDetallada", _propiedades.getProperty("salidaDetallada", "true"));
 
                     guardar(verbose);
                 }
@@ -78,7 +78,7 @@ public abstract class Configuracion {
             _propiedades.setProperty("rutaMacrosWhile", "macros/while");
             _propiedades.setProperty("macrosPermitidas", "true");
             //_propiedades.setProperty("modoFlexible", "false");
-            _propiedades.setProperty("salidaDetallada", "false");
+            _propiedades.setProperty("salidaDetallada", "true");
             _propiedades.store(fw, null);
 
             if (verbose) {

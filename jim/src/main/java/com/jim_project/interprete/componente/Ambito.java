@@ -177,11 +177,4 @@ public class Ambito extends Componente {
             System.out.println(_gestorBucles);
         }
     }
-
-    public void limpiar() {
-        _gestorVariables.limpiar();
-        _gestorBucles.limpiar();
-        _gestorEtiquetas.limpiar();
-        _gestorLlamadasAMacro.limpiar();
-    }
 }

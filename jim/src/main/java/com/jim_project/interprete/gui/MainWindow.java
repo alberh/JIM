@@ -20,9 +20,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
-import javax.swing.text.Utilities;
 
 public class MainWindow extends javax.swing.JFrame {
 
@@ -560,6 +558,7 @@ public class MainWindow extends javax.swing.JFrame {
             pintarNumerosDeLineas();
         } else if (evt.getKeyChar() == KeyEvent.VK_BACK_SPACE
                 || evt.getKeyChar() == KeyEvent.VK_DELETE) {
+
             int numeroLineas = numeroLineas();
             if (numeroLineas != _numeroLineasAnterior) {
                 _numeroLineasAnterior = numeroLineas;
@@ -568,10 +567,6 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tpEditorKeyTyped
 
-    /* para el editor de turno
-     hayCambios();
-     pintarNumerosDeLineas(evt);
-     */
     private void comprobacionesPreviasAEjecucion() {
         taSalida.setText("");
         taTraza.setText("");

@@ -63,11 +63,6 @@ public class ControladorEjecucion {
     }
 
     public void iniciar(String[] parametros) {
-        // No es necesario ahora mismo puesto que el programa crea un nuevo
-        // ámbito cada vez que se realiza una ejecución, pero lo dejo para
-        // futuras optimizaciones
-        // _ambito.limpiar();
-
         Ambito ambitoRaiz = _programa.gestorAmbitos().ambitoRaiz();
         Ambito ambitoPadre = _programa.gestorAmbitos().ambitoPadre(_ambito.profundidad());
         String idMacro = "";
@@ -81,24 +76,7 @@ public class ControladorEjecucion {
             }
             lineaLlamada = ambitoPadre.controladorEjecucion().numeroLineaActual();
         }
-
-        /*
-         if (_ambito.programa().verbose()) {
-         if (_ambito == ambitoRaiz) {
-         System.out.println("Analizando el programa");
-         } else {
-         for (int i = 0; i < _ambito.profundidad() - 1; ++i) {
-         System.out.print("   ");
-         }
-         if (ambitoPadre != ambitoRaiz) {
-         System.out.print(ficheroMacro + ", macro \"" + idMacro + "\", línea " + lineaLlamada);
-         } else {
-         System.out.print("Línea " + lineaLlamada);
-         }
-         System.out.println(": Analizando macro \"" + _ambito.macroAsociada().id() + "\"");
-         }
-         }
-         */
+        
         previo();
 
         if (_programa.estadoOk()) {
@@ -237,13 +215,13 @@ public class ControladorEjecucion {
 
             do {
                 // Límite de tamaño a la traza
-                if (_traza.length() < 10000) {
+                //if (_traza.length() < 10000) {
                     if (instruccionesEjecutadas > 0) {
                         _traza.append(",")
                                 .append(System.getProperty("line.separator"));
                     }
                     _traza.append(_ambito.estadoMemoria());
-                }
+                //}
 
                 try {
                     lex.yyclose();

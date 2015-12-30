@@ -39,8 +39,13 @@ public class Acciones {
 
         int valor = obtenerValor(rvalue);
 
-        if (_ambito.programa().estadoOk() && valor > -1) {
-            obtenerVariable(lvalue).valor(valor);
+        if (_ambito.programa().estadoOk()) {
+            if (valor > -1) {
+                obtenerVariable(lvalue).valor(valor);
+            } else {
+                _ambito.programa().error().deMaximoEnteroSuperado();
+            }
+
         }
     }
 
@@ -106,6 +111,9 @@ public class Acciones {
             switch (operador) {
                 case '+':
                     resultado = v1 + v2;
+                    if (resultado < v1 || resultado < v2) {
+                        _ambito.programa().error().deMaximoEnteroSuperado();
+                    }
                     break;
 
                 case '-':
@@ -307,7 +315,7 @@ public class Acciones {
                     hayError = true;
                 }
             }
-            
+
             if (hayError) {
                 error.deLlamadasAMacroNoPermitidas();
             }

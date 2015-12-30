@@ -243,6 +243,11 @@ public class Error {
                 numeroLineaActual());
     }
 
+    public void deMaximoEnteroSuperado() {
+        imprimir("Error 7(: Se ha superado el valor máximo almacenable en una "
+                + "variable (" + Integer.MAX_VALUE + ").", numeroLineaActual());
+    }
+
     // Analizador léxico
     public void deCaracterNoReconocido(int n, String s) {
         imprimir("Error 17: Carácter '" + s + "' no reconocido.", n);

@@ -29,19 +29,19 @@ public class Variable extends Componente {
     public Tipo tipo() {
         return _tipo;
     }
-    
+
     public char tokenTipo() {
         switch (_tipo) {
             case ENTRADA:
                 return 'X';
-                
+
             case LOCAL:
                 return 'Z';
-                
+
             case SALIDA:
                 return 'Y';
         }
-        
+
         return '0';
     }
 
@@ -58,12 +58,14 @@ public class Variable extends Componente {
     }
 
     public void incremento() {
-        _valor++;
+        if (_valor < Integer.MAX_VALUE) {
+            ++_valor;
+        }
     }
 
     public void decremento() {
         if (_valor > 0) {
-            _valor--;
+            --_valor;
         }
     }
 
@@ -75,7 +77,7 @@ public class Variable extends Componente {
     /* Métodos auxiliares para la construcción
      */
     public static String normalizarID(String id) {
-       if (id != null) {
+        if (id != null) {
             id = id.toUpperCase();
             int len = id.length();
 
