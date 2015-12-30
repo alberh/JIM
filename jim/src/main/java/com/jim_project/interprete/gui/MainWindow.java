@@ -10,6 +10,8 @@ import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.Configuracion;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -43,10 +45,13 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         Configuracion.cargar();
 
+        // Preparativos de la interfaz
         initComponents();
+
         // Eliminar si hay que restaurar el modo flexible
         menuPrograma.remove(menuProgramaModoFlexible);
         setTitle("JIM " + Configuracion.version());
+        pintarNumerosDeLineas();
 
         //System.out.println(System.getProperty("user.dir"));
         ImageIcon img = cargarIcono("/iconos/bob.ico");
@@ -54,9 +59,17 @@ public class MainWindow extends javax.swing.JFrame {
             setIconImage(img.getImage());
         }
 
-        Consola.inicializar(taSalida, taSalida);
-        System.setOut(Consola.estandar());
-        System.setErr(Consola.errores());
+        scrollEditor.getVerticalScrollBar().addAdjustmentListener(
+                (AdjustmentEvent e) -> {
+                    //actualizarScrollNumerosLineas();
+                    int posicionScroll = scrollEditor.getVerticalScrollBar().getValue();
+                    scrollNumerosLineas.getVerticalScrollBar().setValue(posicionScroll);
+                }
+        );
+
+        Consola consola = new Consola(taSalida, taSalida);
+        System.setOut(consola.salidaEstandar());
+        System.setErr(consola.salidaErrores());
 
         DefaultCaret cursor = (DefaultCaret) taSalida.getCaret();
         cursor.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
@@ -111,8 +124,11 @@ public class MainWindow extends javax.swing.JFrame {
         jSeparator8 = new javax.swing.JToolBar.Separator();
         btnExpandirMacros = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        taEditor = new javax.swing.JTextArea();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        scrollNumerosLineas = new javax.swing.JScrollPane();
+        tpNumerosLineas = new javax.swing.JTextPane();
+        scrollEditor = new javax.swing.JScrollPane();
+        tpEditor = new javax.swing.JTextPane();
         tabPanelSalida = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         taSalida = new javax.swing.JTextArea();
@@ -252,17 +268,34 @@ public class MainWindow extends javax.swing.JFrame {
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setResizeWeight(0.7);
 
-        taEditor.setColumns(20);
-        taEditor.setRows(5);
-        taEditor.setText("y <- fiboL(x1)");
-        taEditor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                taEditorKeyPressed(evt);
+        jSplitPane2.setBorder(null);
+        jSplitPane2.setDividerSize(0);
+        jSplitPane2.setFocusable(false);
+
+        scrollNumerosLineas.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollNumerosLineas.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scrollNumerosLineas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        scrollNumerosLineas.setMinimumSize(new java.awt.Dimension(14, 22));
+        scrollNumerosLineas.setWheelScrollingEnabled(false);
+
+        tpNumerosLineas.setEditable(false);
+        tpNumerosLineas.setBackground(new java.awt.Color(240, 240, 240));
+        tpNumerosLineas.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 2, 0, 4));
+        scrollNumerosLineas.setViewportView(tpNumerosLineas);
+
+        jSplitPane2.setLeftComponent(scrollNumerosLineas);
+
+        tpEditor.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 1, 1, 0));
+        tpEditor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tpEditorKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(taEditor);
+        scrollEditor.setViewportView(tpEditor);
 
-        jSplitPane1.setLeftComponent(jScrollPane1);
+        jSplitPane2.setRightComponent(scrollEditor);
+
+        jSplitPane1.setTopComponent(jSplitPane2);
 
         taSalida.setEditable(false);
         taSalida.setColumns(20);
@@ -283,7 +316,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         tabPanelSalida.addTab("Traza", jScrollPane4);
 
-        jSplitPane1.setRightComponent(tabPanelSalida);
+        jSplitPane1.setBottomComponent(tabPanelSalida);
 
         menuArchivo.setText("Archivo");
 
@@ -452,10 +485,6 @@ public class MainWindow extends javax.swing.JFrame {
         nuevoFichero();
     }//GEN-LAST:event_btnNuevoFicheroActionPerformed
 
-    private void taEditorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taEditorKeyPressed
-        hayCambios();
-    }//GEN-LAST:event_taEditorKeyPressed
-
     private void menuArchivoGuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuArchivoGuardarComoActionPerformed
         guardarFicheroComo();
     }//GEN-LAST:event_menuArchivoGuardarComoActionPerformed
@@ -500,6 +529,15 @@ public class MainWindow extends javax.swing.JFrame {
         detenerPrograma();
     }//GEN-LAST:event_menuProgramaDetenerActionPerformed
 
+    private void tpEditorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tpEditorKeyTyped
+        hayCambios();
+        pintarNumerosDeLineas(evt);
+    }//GEN-LAST:event_tpEditorKeyTyped
+
+    /* para el editor de turno
+     hayCambios();
+     pintarNumerosDeLineas(evt);
+     */
     private void comprobacionesPreviasAEjecucion() {
         taSalida.setText("");
         taTraza.setText("");
@@ -646,8 +684,9 @@ public class MainWindow extends javax.swing.JFrame {
                 try {
                     String resultado = get();
                     if (_programa.estadoOk()) {
-                        taEditor.setText(resultado);
+                        tpEditor.setText(resultado);
                         hayCambios();
+                        pintarNumerosDeLineas();
                     }
                 } catch (ExecutionException ex) {
                     Error.deDesbordamientoDePila();
@@ -664,6 +703,13 @@ public class MainWindow extends javax.swing.JFrame {
         _worker.execute();
     }
 
+    private void detenerPrograma() {
+        if (_worker != null) {
+            _worker.cancel(false);
+            _worker = null;
+        }
+    }
+
     private void bloquearInterfaz(boolean b) {
         btnIniciarEjecucion.setEnabled(!b);
         menuProgramaIniciar.setEnabled(!b);
@@ -675,11 +721,27 @@ public class MainWindow extends javax.swing.JFrame {
         menuProgramaExpandirMacros.setEnabled(!b);
     }
 
-    private void detenerPrograma() {
-        if (_worker != null) {
-            _worker.cancel(false);
-            _worker = null;
+    private void pintarNumerosDeLineas() {
+        pintarNumerosDeLineas(null);
+    }
+
+    private void pintarNumerosDeLineas(KeyEvent tecla) {
+        // Se pintará como mínimo una línea más de las que haya
+        StringBuilder lineas = new StringBuilder();
+        String texto = tpEditor.getText();
+        int numeroLineas = 1;
+
+        for (int i = 0; i < texto.length(); ++i) {
+            if (texto.charAt(i) == '\n') {
+                ++numeroLineas;
+            }
         }
+
+        for (int i = 1; i <= numeroLineas; ++i) {
+            lineas.append(i).append("\n");
+        }
+
+        tpNumerosLineas.setText(lineas.toString());
     }
 
     private void hayCambios() {
@@ -751,22 +813,20 @@ public class MainWindow extends javax.swing.JFrame {
         int returnVal = _fc.showOpenDialog(MainWindow.this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            _ficheroAbierto = _fc.getSelectedFile();
-
-            taEditor.setText("");
-
-            this.setTitle(titulo() + " - " + _ficheroAbierto.getName());
-
             try (BufferedReader in = new BufferedReader(new FileReader(_ficheroAbierto))) {
-                String line = in.readLine();
-                while (line != null) {
-                    taEditor.append(line + "\n");
-                    line = in.readLine();
+                String linea = in.readLine();
+                StringBuilder sb = new StringBuilder();
+                while (linea != null) {
+                    sb.append(linea).append("\n");
+                    linea = in.readLine();
                 }
 
-                taEditor.setCaretPosition(0);
-                taEditor.requestFocus();
+                _ficheroAbierto = _fc.getSelectedFile();
+                setTitle(titulo() + " - " + _ficheroAbierto.getName());
 
+                tpEditor.setText(sb.toString());
+                tpEditor.setCaretPosition(0);
+                tpEditor.requestFocus();
             } catch (Exception ex) {
                 Error.alCargarProgramaGUI(_ficheroAbierto.getAbsolutePath());
             }
@@ -776,7 +836,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void guardarFichero() {
         if (_ficheroAbierto != null) {
             try (BufferedWriter out = new BufferedWriter(new FileWriter(_ficheroAbierto))) {
-                out.write(taEditor.getText());
+                out.write(tpEditor.getText());
                 hayCambios(false);
             } catch (Exception ex) {
                 if (_ficheroAbierto != _ficheroTemporal) {
@@ -822,8 +882,8 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         this.setTitle(titulo());
-        taEditor.setText("");
-        taEditor.requestFocus();
+        tpEditor.setText("");
+        tpEditor.requestFocus();
     }
 
     public static void main(String args[]) {
@@ -881,7 +941,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JToolBar.Separator jSeparator1;
@@ -893,6 +952,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator8;
     private javax.swing.JToolBar.Separator jSeparator9;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenuItem menuArchivoAbrir;
     private javax.swing.JMenuItem menuArchivoGuardar;
@@ -908,10 +968,13 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem menuProgramaModoFlexible;
     private javax.swing.JCheckBoxMenuItem menuProgramaPermitirMacros;
     private javax.swing.JCheckBoxMenuItem menuProgramaSalidaDetallada;
-    private javax.swing.JTextArea taEditor;
+    private javax.swing.JScrollPane scrollEditor;
+    private javax.swing.JScrollPane scrollNumerosLineas;
     private javax.swing.JTextArea taSalida;
     private javax.swing.JTextArea taTraza;
     private javax.swing.JTabbedPane tabPanelSalida;
     private javax.swing.JTextField tfEntradaPrograma;
+    private javax.swing.JTextPane tpEditor;
+    private javax.swing.JTextPane tpNumerosLineas;
     // End of variables declaration//GEN-END:variables
 }

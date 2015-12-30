@@ -187,7 +187,7 @@ public class GestorMacros extends GestorComponentes {
             expansion = expansion.replace(vAntigua, vNueva);
         }
 
-        expansion = "# Expansión de " + ficheroMacro + ", " + idMacro
+        expansion = "# Expansión de " + idMacro + " (" + ficheroMacro + ")"
                 + separador + asignaciones
                 + expansion;
 
