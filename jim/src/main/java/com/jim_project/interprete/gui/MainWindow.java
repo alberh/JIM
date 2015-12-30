@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.jim_project.interprete.gui;
 
 import com.jim_project.interprete.ArgumentosPrograma;
@@ -10,10 +5,8 @@ import com.jim_project.interprete.Modelo;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.Configuracion;
-import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,26 +15,15 @@ import java.io.FileWriter;
 import java.net.URL;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.Utilities;
 
-/**
- *
- * @author alber_000
- */
 public class MainWindow extends javax.swing.JFrame {
 
     private final JFileChooser _fc;
@@ -50,10 +32,8 @@ public class MainWindow extends javax.swing.JFrame {
     private File _ficheroAbierto;
     private boolean _hayCambios;
     private SwingWorker _worker;
+    private int _numeroLineasAnterior;
 
-    /**
-     * Creates new form MainWindow
-     */
     public MainWindow() {
         Configuracion.cargar();
 
@@ -63,6 +43,7 @@ public class MainWindow extends javax.swing.JFrame {
         _ficheroAbierto = null;
         _hayCambios = false;
         _worker = null;
+        _numeroLineasAnterior = 1;
 
         // Preparativos de la interfaz
         initComponents();
@@ -116,6 +97,19 @@ public class MainWindow extends javax.swing.JFrame {
         } else {
             return null;
         }
+    }
+
+    private int numeroLineas() {
+        String texto = tpEditor.getText();
+        int numeroLineas = 1;
+
+        for (int i = 0; i < texto.length(); ++i) {
+            if (texto.charAt(i) == '\n') {
+                ++numeroLineas;
+            }
+        }
+        
+        return numeroLineas;
     }
 
     public static void bienvenida() {
@@ -560,10 +554,16 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void tpEditorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tpEditorKeyTyped
         hayCambios();
-
-        if (evt.getKeyChar() == KeyEvent.VK_ENTER
-                || evt.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+        
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
             pintarNumerosDeLineas();
+        } else if(evt.getKeyChar() == KeyEvent.VK_BACK_SPACE
+                || evt.getKeyChar() == KeyEvent.VK_DELETE) {
+            int numeroLineas = numeroLineas() + 1;
+            if (numeroLineas != _numeroLineasAnterior) {
+                _numeroLineasAnterior = numeroLineas;
+                pintarNumerosDeLineas();
+            }
         }
     }//GEN-LAST:event_tpEditorKeyTyped
 
@@ -761,14 +761,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void pintarNumerosDeLineas(KeyEvent tecla) {
         // Se pintará como mínimo una línea más de las que haya
         StringBuilder lineas = new StringBuilder();
-        String texto = tpEditor.getText();
-        int numeroLineas = 1;
-
-        for (int i = 0; i < texto.length(); ++i) {
-            if (texto.charAt(i) == '\n') {
-                ++numeroLineas;
-            }
-        }
+        int numeroLineas = numeroLineas();
 
         for (int i = 1; i < numeroLineas; ++i) {
             lineas.append(i).append("\n");
