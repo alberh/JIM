@@ -87,7 +87,6 @@ public class Variable extends Componente {
                 return id;
             }
         } else {
-            Error.deIdentificadorDeVariableVacio();
             return "";
         }
     }
