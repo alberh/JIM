@@ -684,8 +684,8 @@ public class MainWindow extends javax.swing.JFrame {
         ArgumentosPrograma argumentos = new ArgumentosPrograma();
         argumentos.fichero = _ficheroAbierto.getAbsolutePath();
         argumentos.modelo = new Modelo(cadenaModelo);
-        //argumentos.macrosPermitidas = macrosPermitidas();
-        //argumentos.modoFlexible = modoFlexible();
+        argumentos.macrosPermitidas = true;
+        //argumentos.modoFlexible = true;
         argumentos.verbose = verbose();
         argumentos.objetivo = Programa.Objetivo.EXPANDIR;
         _programa.definirArgumentos(argumentos);
@@ -712,7 +712,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                 try {
                     String resultado = get();
-                    if (_programa.estadoOk()) {
+                    if (_programa.estadoOk() && resultado != null) {
                         tpEditor.setText(resultado);
                         hayCambios();
                         pintarNumerosDeLineas();

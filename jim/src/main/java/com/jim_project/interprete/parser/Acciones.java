@@ -43,9 +43,8 @@ public class Acciones {
             if (valor > -1) {
                 obtenerVariable(lvalue).valor(valor);
             } else {
-                _ambito.programa().error().deMaximoEnteroSuperado();
+                //_ambito.programa().error().deMaximoEnteroSuperado();
             }
-
         }
     }
 

@@ -163,7 +163,7 @@ public class GestorMacros extends GestorComponentes {
         // Insertar y reemplazar
         String vAntigua;
         String vNueva;
-        for (int i = variablesEntrada.size() - 1; i >= 0; --i) {
+        for (int i = 0; i < variablesEntrada.size(); ++i) {
             vAntigua = variablesEntrada.get(i);
             vNueva = reemplazosEntrada.get(vAntigua);
             
