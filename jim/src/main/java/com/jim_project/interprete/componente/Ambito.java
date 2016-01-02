@@ -120,9 +120,12 @@ public class Ambito extends Componente {
     public String estadoMemoria() {
         boolean comaAlFinal = false;
         StringBuilder sb = new StringBuilder();
-
-        sb.append("(").append(_controladorEjecucion.numeroLineaActual())
-                .append(", <");
+        int linea = _controladorEjecucion.numeroLineaActual();
+        if (linea == 0) {
+            linea = 1;
+        }
+        
+        sb.append("(").append(linea).append(", <");
 
         ArrayList<Variable> variables = _gestorVariables.variablesEntrada();
         if (variables.size() > 0) {

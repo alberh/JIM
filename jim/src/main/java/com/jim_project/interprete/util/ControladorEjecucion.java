@@ -47,11 +47,11 @@ public class ControladorEjecucion {
         // para que devuelva uno vacío si es el caso
         _traza = new StringBuilder();
     }
-    
+
     public int instruccionesEjecutadas() {
         return _instruccionesEjecutadas;
     }
-    
+
     public void sumarInstrucciones(int n) {
         if (n >= 0) {
             _instruccionesEjecutadas += n;
@@ -88,7 +88,7 @@ public class ControladorEjecucion {
             }
             lineaLlamada = ambitoPadre.controladorEjecucion().numeroLineaActual();
         }
-        
+
         previo();
 
         if (_programa.estadoOk()) {
@@ -108,7 +108,7 @@ public class ControladorEjecucion {
                     /* El mensaje 'Ejecutando macro ...' se hace una vez creado y
                      * puesto en marcha el nuevo ámbito asociado a tal macro.
                      * De ahí que se haga la siguiente comprobación.
-                    */
+                     */
                     if (ambitoPadre != ambitoRaiz) {
                         System.out.print(idMacro + ", línea " + (lineaLlamada - 1));
                     } else {
@@ -231,11 +231,11 @@ public class ControladorEjecucion {
             do {
                 // Límite de tamaño a la traza
                 //if (_traza.length() < 10000) {
-                    if (_instruccionesEjecutadas > 0) {
-                        _traza.append(",")
-                                .append(System.getProperty("line.separator"));
-                    }
-                    _traza.append(_ambito.estadoMemoria());
+                if (_instruccionesEjecutadas > 0) {
+                    _traza.append(",")
+                            .append(System.getProperty("line.separator"));
+                }
+                _traza.append(_ambito.estadoMemoria());
                 //}
 
                 try {
@@ -267,8 +267,10 @@ public class ControladorEjecucion {
             } while (!finalizado() && _programa.estadoOk());
         }
 
-        _traza.append(",")
-                .append(System.getProperty("line.separator"));
+        if (_instruccionesEjecutadas > 0) {
+            _traza.append(",")
+                    .append(System.getProperty("line.separator"));
+        }
         _traza.append(_ambito.estadoMemoria());
         _traza.append("]");
     }
