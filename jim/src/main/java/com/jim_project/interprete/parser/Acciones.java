@@ -338,15 +338,17 @@ public class Acciones {
             int nV = macro.variablesEntrada().size();
 
             if (nP != nV) {
-                _ambito.programa().error().enNumeroParametros(numeroLinea, idMacro.toString(), nV, nP);
+                _ambito.programa().error().enNumeroParametros(numeroLinea,
+                        idMacro.toString().toUpperCase(), nV, nP);
                 return;
             }
-            
-            // Limitar creación de ámbitos? Añadir parámetro a configuración?
-            if (_ambito.gestor().count() > 200) {
-                
-            }
 
+            // Limitar creación de ámbitos? Añadir parámetro a configuración?
+            /*
+             if (_ambito.gestor().count() > 200) {
+
+             }
+             */
             String[] parametros = new String[nP];
 
             for (int i = 0; i < nP; ++i) {
@@ -358,7 +360,7 @@ public class Acciones {
             nuevoAmbito.iniciar();
             String traza = ",\nTraza de llamada a macro " + macro.id() + "\n"
                     + nuevoAmbito.controladorEjecucion().traza()
-                    .replaceAll("[\\[\\]]", "")
+                    .replaceAll("[\\[\\]]", "").replace(")(", "),\n(")
                     + ",\nFin traza de llamada a macro " + macro.id();
             _ambito.controladorEjecucion().trazarAmbito(traza);
 

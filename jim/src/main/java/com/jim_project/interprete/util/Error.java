@@ -123,7 +123,7 @@ public class Error {
                 numeroLinea);
     }
 
-    public void enNumeroParametros(int numeroLinea ,String id,
+    public void enNumeroParametros(int numeroLinea, String id,
             int numVariablesEntrada, int numParametros) {
 
         imprimir("Error 8 : La macro " + id + " requiere "
@@ -193,11 +193,12 @@ public class Error {
         imprimir("Error 21: No se pudo obtener el índice de la variable "
                 + "\"" + v + "\"."); //, numeroLineaActual());
     }
-/*
-    public static void deIdentificadorDeVariableVacio() {
-        // imprimir("Error 24: Nombre de variable vacío.");
-    }
-*/
+    /*
+     public static void deIdentificadorDeVariableVacio() {
+     // imprimir("Error 24: Nombre de variable vacío.");
+     }
+     */
+
     public static void deTipoDeVariableNoValido(char tipo) {
         // Para después del refactor
         imprimir("Error 22: Tipo de variable '" + tipo + "' no válido.");
@@ -280,12 +281,12 @@ public class Error {
              case "end-of-file":
              imprimir("Error 19: No se esperaba el final de fichero.", numeroLinea);
              break;
+             
+             case "')'":
+             imprimir("Error 35: Cierre de llamada a macro no esperado.",
+             numeroLinea);
+             break;
              */
-            case "')'":
-                imprimir("Error 35: Cierre de llamada a macro no esperado.",
-                        numeroLinea);
-                break;
-
             default:
                 imprimir("Error 19: Error sintáctico.",
                         numeroLinea);

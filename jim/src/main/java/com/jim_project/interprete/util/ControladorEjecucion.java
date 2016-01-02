@@ -238,6 +238,10 @@ public class ControladorEjecucion {
                 _traza.append(_ambito.estadoMemoria());
                 //}
 
+                if (!linea.trim().isEmpty()) {
+                    ++_instruccionesEjecutadas;
+                }
+                
                 try {
                     lex.yyclose();
                 } catch (Exception ex) {
@@ -254,10 +258,7 @@ public class ControladorEjecucion {
                     _salto = false;
                 }
 
-                ++_instruccionesEjecutadas;
-
-                // Limpieza cada 1000 instrucciones ejecutadas
-                if (_instruccionesEjecutadas % 1000 == 0) {
+                if (_instruccionesEjecutadas % 250 == 0) {
                     Runtime.getRuntime().gc();
                 }
 

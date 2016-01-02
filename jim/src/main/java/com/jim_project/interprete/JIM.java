@@ -27,7 +27,9 @@ public class JIM {
     public static void main(String[] args) {
         _configuracion = new Configuracion().cargar();
         _programa = new Programa(_configuracion);
-        args = new String[]{"asd.txt"};
+        
+        // Para pruebas
+        //args = new String[]{"asd.txt"};
 
         switch (args.length) {
             case 0:
@@ -204,7 +206,7 @@ public class JIM {
     private static void bienvenida() {
         System.out.println("JIM - Intérprete de Modelos");
         System.out.println("Versión " + _configuracion.version());
-        System.out.println("Para ver la ayuda: java Jim --help");
+        System.out.println("Para ver la ayuda, utilice el argumento --help");
     }
 
     private static void ayuda() {
