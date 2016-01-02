@@ -7,7 +7,7 @@ import com.jim_project.interprete.componente.Macro;
 
 public class GestorAmbitos extends GestorComponentes {
 
-    private ArrayList<Ambito> _ambitos;
+    private final ArrayList<Ambito> _ambitos;
     private Ambito _ultimoAmbito;
 
     public GestorAmbitos(Programa programa) {
@@ -41,6 +41,10 @@ public class GestorAmbitos extends GestorComponentes {
             }
         }
     }
+    
+    public ArrayList<Ambito> ambitos() {
+        return _ambitos;
+    }
 
     public Ambito ambitoRaiz() {
         if (!_ambitos.isEmpty()) {
@@ -71,6 +75,7 @@ public class GestorAmbitos extends GestorComponentes {
         
     }
 
+    @Override
     public void limpiar() {
         _ambitos.clear();
         _ultimoAmbito = null;

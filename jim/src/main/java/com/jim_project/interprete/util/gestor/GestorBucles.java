@@ -66,6 +66,7 @@ public class GestorBucles extends GestorComponentes {
     /**
      * Borra todos los bucles creados.
      */
+    @Override
     public void limpiar() {
         _buclesLineaInicio.clear();
         _buclesLineaFin.clear();

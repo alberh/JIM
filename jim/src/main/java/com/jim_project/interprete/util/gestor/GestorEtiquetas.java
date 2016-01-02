@@ -62,6 +62,7 @@ public class GestorEtiquetas extends GestorComponentes {
     /**
      * Elimina todas las etiquetas.
      */
+    @Override
     public void limpiar() {
         _etiquetas.clear();
         _indiceUltimaA = 0;

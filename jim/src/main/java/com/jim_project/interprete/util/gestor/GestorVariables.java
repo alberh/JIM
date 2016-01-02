@@ -145,6 +145,7 @@ public class GestorVariables extends GestorComponentes {
         return _variableSalida;
     }
 
+    @Override
     public void limpiar() {
         _variablesEntrada.clear();
         _variablesLocales.clear();

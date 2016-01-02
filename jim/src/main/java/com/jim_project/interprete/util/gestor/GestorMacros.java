@@ -30,6 +30,7 @@ public class GestorMacros extends GestorComponentes {
         return _macros.get(id.toUpperCase());
     }
 
+    @Override
     public void limpiar() {
         _macros.clear();
     }

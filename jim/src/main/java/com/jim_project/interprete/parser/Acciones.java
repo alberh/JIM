@@ -341,6 +341,11 @@ public class Acciones {
                 _ambito.programa().error().enNumeroParametros(numeroLinea, idMacro.toString(), nV, nP);
                 return;
             }
+            
+            // Limitar creación de ámbitos? Añadir parámetro a configuración?
+            if (_ambito.gestor().count() > 200) {
+                
+            }
 
             String[] parametros = new String[nP];
 
