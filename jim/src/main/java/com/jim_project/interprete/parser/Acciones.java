@@ -338,6 +338,7 @@ public class Acciones {
             int nV = macro.variablesEntrada().size();
 
             if (nP != nV) {
+                int n = _ambito.controladorEjecucion().numeroLineaActual();
                 _ambito.programa().error().enNumeroParametros(numeroLinea, idMacro.toString(), nV, nP);
                 return;
             }
