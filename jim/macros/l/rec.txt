@@ -1,0 +1,106 @@
+# Macros/funciones primitivas recursivas
+defmacro sumaPRC # x1, x2
+	if x2 != 0 goto a
+	y <- x
+	goto e
+[a]	z <- x2 - 1
+	y <- sumaPRC(x1, z)
+	y++
+endmacro
+
+defmacro prodPRC # x1, x2
+	if x2 != 0 goto a
+	y <- 0
+	goto e
+[a] z <- x2 - 1
+	y <- prodPRC(x1, z)
+	y <- y + x1
+endmacro
+
+defmacro factPRC # x1
+	if x != 0 goto a
+	y <- 1
+	goto e
+[a] z <- x - 1
+	y <- factPRC(z)
+	y <- y * x
+endmacro
+
+defmacro potenciaPRC # x1, x2
+	if x2 != 0 goto a
+	y <- 1
+	goto e
+[a]	z <- x2 - 1
+	y <- potenciaPRC(x1, z)
+	y <- y * x1
+endmacro
+
+defmacro restaPRC # x1, x2
+	if x2 != 0 goto a
+	y <- x1
+	goto e
+[a]	z <- x2 - 1
+	y <- restaPRC(x1, z)
+	y--
+endmacro
+
+defmacro absPRC # x1, x2
+	z1 <- x1 - x2
+	z2 <- x2 - x1
+	y <- z1 + z2
+endmacro
+
+defmacro negaPRC # x1
+	y <- 1 - x
+endmacro
+
+defmacro igualPRC # x1, x2
+	z <- absPRC(x1, x2)
+	y <- negaPRC(z)
+endmacro
+
+defmacro menorIgualPRC # x1, x2
+	z <- x1 - x2
+	y <- negaPRC(z)
+endmacro
+
+defmacro andPRC # x1, x2
+	y <- x1 * x2
+endmacro
+
+defmacro orPRC # x1, x2
+	z1 <- negaPRC(x1)
+	z2 <- negaPRC(x2)
+	z3 <- andPRC(z1, z2)
+	y <- negaPRC(z3)
+endmacro
+
+defmacro divisorPRC # x1, x2
+	if x2 != 0 goto a
+	y <- 0
+	goto e
+[a]	z <- x2 % x1
+	if z != 0 goto e
+	y++
+endmacro
+
+defmacro primoPRC # x1
+		# si x <= 1
+		z <- x - 1
+		if z != 0 goto a1
+		goto e
+		# si x > 1
+[a1]	z1 <- x1
+		z2 <- 2
+[a2]	z3 <- divisorPRC(z2, x1)
+		if z3 != 0 goto a3
+		goto a4
+[a3]	z3 <- igualPRC(z2, x1)
+		if z3 != 0 goto a5
+		goto e
+[a4]	z1--
+		z2++
+		if z1 != 0 goto a2
+		goto e
+[a5]	y <- 1
+endmacro

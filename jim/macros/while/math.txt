@@ -1,0 +1,27 @@
+
+defmacro suma # x1, x2
+	Y <- X
+	Z <- X2
+	WHILE Z != 0
+		Y++
+		Z--
+	END
+endmacro
+
+defmacro producto # x1, x2
+	Y <- 0
+	Z <- X2
+	WHILE Z != 0
+		Y <- Y + X
+		Z--
+	END
+endmacro
+
+defmacro potencia # x1, x2
+	Y <- 1
+	Z <- X2
+	WHILE Z != 0
+		Y <- Y * X
+		Z--
+	END
+endmacro

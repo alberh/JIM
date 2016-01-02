@@ -1,3 +1,3 @@
-# args:	l fmv 2 3
+# args:	l mv 2 3
 
 y <- macroA(x1)

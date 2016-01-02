@@ -1,0 +1,63 @@
+# Macros para el modelo L basadas en los ejemplos del libro ... y otras
+
+defmacro suma # x1, x2
+		Y <- X1
+		Z <- X2
+	[B]	IF Z != 0 GOTO A
+		GOTO E
+	[A]	Z <- Z - 1
+		Y <- Y + 1
+		GOTO B
+endmacro
+
+defmacro producto # x1, x2
+		Z2 <- X2
+	[B]	IF Z2 != 0 GOTO A
+		GOTO E
+	[A]	Z2 <- Z2 - 1
+		Y <- Y + X1
+		GOTO B
+endmacro
+
+defmacro potencia # x1, x2
+		Y <- 1
+		Z2 <- X2
+	[B]	IF Z2 != 0 GOTO A
+		GOTO E
+	[A]	Z2 <- Z2 - 1
+		Y <- Y * X1
+		GOTO B
+endmacro
+
+defmacro restaParcial # x1, x2
+		Y <- X1
+		Z <- X2
+	[C]	IF Z != 0 GOTO A
+		GOTO E
+	[A]	IF Y != 0 GOTO B
+		GOTO A
+	[B]	Y <- Y - 1
+		Z <- Z - 1
+		GOTO C
+endmacro
+
+defmacro fibo # x1
+		# comprobar si se pide el primer elemento de la serie
+		z <- x1 - 1
+		if z != 0 goto a
+		y <- 0
+		goto e
+
+		# comprobar si se pide el segundo elemento
+[a]		z--
+		if z != 0 goto a2
+		y <- 1
+		goto e
+
+		# caso general
+[a2]	z <- x1 - 1
+		z2 <- fibo(z)
+		z--
+		z3 <- fibo(z)
+		y <- z2 + z3
+endmacro

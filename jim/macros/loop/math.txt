@@ -1,0 +1,21 @@
+
+defmacro suma # x1, x2
+	Y <- X
+	LOOP X2
+		Y <- Y + 1
+	END
+endmacro
+
+defmacro producto # x1, x2
+	Y <- 0
+	LOOP X2
+		Y <- Y + X
+	END
+endmacro
+
+defmacro potencia # x1, x2
+	Y <- 1
+	LOOP X2
+		Y <- Y * X
+	END
+endmacro

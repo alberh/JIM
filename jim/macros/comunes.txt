@@ -1,5 +1,5 @@
 
-# prueba definitiva expansión
+# macros para prueba expansión
 defmacro dieciseis
 z <- ocho()
 z2 <- ocho()
