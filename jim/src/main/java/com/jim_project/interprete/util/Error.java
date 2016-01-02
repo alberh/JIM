@@ -7,7 +7,7 @@ import com.jim_project.interprete.util.gestor.GestorAmbitos;
 
 public class Error {
 
-    private Programa _programa;
+    private final Programa _programa;
 
     public Error(Programa programa) {
         _programa = programa;
@@ -118,19 +118,17 @@ public class Error {
     }
 
     // Macro
-    public void deMacroNoDefinida(int n, String id) {
-        imprimir("Error 7: La macro \"" + id
-                + "\" no está definida en el modelo "
-                + _programa.nombreModelo() + ".",
-                n);
+    public void deMacroNoDefinida(int numeroLinea, String id) {
+        imprimir("Error 7: La macro " + id + " no ha sido definida.",
+                numeroLinea);
     }
 
-    public void enNumeroParametros(int n, String id,
+    public void enNumeroParametros(int numeroLinea ,String id,
             int numVariablesEntrada, int numParametros) {
 
-        imprimir("Error 8 : La macro \"" + id + "\" requiere "
+        imprimir("Error 8 : La macro " + id + " requiere "
                 + numVariablesEntrada + " parámetros de entrada y ha sido "
-                + "llamada con " + numParametros + ".", n);
+                + "llamada con " + numParametros + ".", numeroLinea);
     }
 
     public void deRecursividadEnMacros(int n, String id) {
@@ -270,7 +268,7 @@ public class Error {
     public void deTokenNoEsperado(int numeroLinea, String token, String descripcion) {
         switch (token) {
             case "IDMACRO":
-                imprimir("Error 33: Definición o llamada a macro no esperada.",
+                imprimir("Error 33: Identificador no reconocido.",
                         numeroLinea);
                 break;
 
@@ -289,9 +287,8 @@ public class Error {
                 break;
 
             default:
-                //imprimir("Error 19: No se esperaba el símbolo \"" + token
-                //        + "\"." /* + Descripción: " + descripcion */,
-                //        numeroLinea);
+                imprimir("Error 19: Error sintáctico.",
+                        numeroLinea);
                 break;
         }
     }

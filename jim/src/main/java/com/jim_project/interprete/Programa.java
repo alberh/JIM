@@ -33,16 +33,17 @@ public class Programa {
         EJECUTAR, EXPANDIR
     };
 
+    private final Configuracion _configuracion;
     private ArgumentosPrograma _argumentos;
     private RunnableFuture<String> _worker;
     
     private String _ficheroEnProceso;
     private ControladorEjecucion.Etapa _etapa;
-    private Error _error;
+    private final Error _error;
     private Estado _estado;
 
-    private GestorAmbitos _gestorAmbitos;
-    private GestorMacros _gestorMacros;
+    private final GestorAmbitos _gestorAmbitos;
+    private final GestorMacros _gestorMacros;
 /*
     public Programa(ArgumentosPrograma argumentos) {
         _argumentos = argumentos;
@@ -53,7 +54,8 @@ public class Programa {
         _gestorMacros = new GestorMacros(this);
     }
     */
-    public Programa() {
+    public Programa(Configuracion configuracion) {
+        _configuracion = configuracion;
         _argumentos = null;
         _ficheroEnProceso = null;
         _estado = Estado.NO_ARGS;
@@ -74,6 +76,10 @@ public class Programa {
     
     public void worker(RunnableFuture<String> worker) {
         _worker = worker;
+    }
+    
+    public Configuracion configuracion() {
+        return _configuracion;
     }
 
     public String ficheroEnProceso() {
@@ -226,7 +232,7 @@ public class Programa {
         }
 
         if (estadoOk()) {
-            procesarFicherosMacros(Configuracion.rutaMacros());
+            procesarFicherosMacros(_configuracion.rutaMacros());
         }
 
         if (estadoOk()) {
@@ -285,10 +291,10 @@ public class Programa {
          * ...loop/
          * ...while/
          */
-        comprobarDirectorio(new File(Configuracion.rutaMacros()));
-        comprobarDirectorio(new File(Configuracion.rutaMacrosL()));
-        comprobarDirectorio(new File(Configuracion.rutaMacrosLoop()));
-        comprobarDirectorio(new File(Configuracion.rutaMacrosWhile()));
+        comprobarDirectorio(new File(_configuracion.rutaMacros()));
+        comprobarDirectorio(new File(_configuracion.rutaMacrosL()));
+        comprobarDirectorio(new File(_configuracion.rutaMacrosLoop()));
+        comprobarDirectorio(new File(_configuracion.rutaMacrosWhile()));
     }
 
     private void comprobarDirectorio(File directorio) {

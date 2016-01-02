@@ -8,7 +8,7 @@ import com.jim_project.interprete.componente.Macro;
 
 public class Acciones {
 
-    protected Ambito _ambito;
+    protected final Ambito _ambito;
     protected Variable _ultimaVariableAsignada;
     protected boolean _ignorarComprobacionAsignacion;
 
@@ -329,6 +329,7 @@ public class Acciones {
         _ignorarComprobacionAsignacion = true;
         Macro macro = _ambito.programa().gestorMacros().obtenerMacro(idMacro.toString());
         int valor = 0;
+        int numeroLinea = _ambito.controladorEjecucion().numeroLineaActual();
 
         if (macro != null) {
             LlamadaAMacro llamada = _ambito.gestorLlamadasAMacro().obtenerLlamadaAMacro(idMacro.toString());
@@ -338,7 +339,7 @@ public class Acciones {
 
             if (nP != nV) {
                 int n = _ambito.controladorEjecucion().numeroLineaActual();
-                _ambito.programa().error().enNumeroParametros(n, idMacro.toString(), nV, nP);
+                _ambito.programa().error().enNumeroParametros(numeroLinea, idMacro.toString(), nV, nP);
                 return;
             }
 
@@ -354,14 +355,19 @@ public class Acciones {
             String traza = ",\nTraza de llamada a macro " + macro.id() + "\n"
                     + nuevoAmbito.controladorEjecucion().traza()
                     .replaceAll("[\\[\\]]", "")
-                    + "\nFin traza de llamada a macro " + macro.id();
+                    + ",\nFin traza de llamada a macro " + macro.id();
             _ambito.controladorEjecucion().trazarAmbito(traza);
 
             if (nuevoAmbito.programa().estadoOk()) {
                 valor = nuevoAmbito.resultado();
+                _ambito.controladorEjecucion().sumarInstrucciones(
+                        nuevoAmbito.controladorEjecucion().instruccionesEjecutadas()
+                );
             }
 
             _ambito.programa().gestorAmbitos().eliminarUltimoAmbito();
+        } else {
+            _ambito.programa().error().deMacroNoDefinida(numeroLinea, idMacro.toString().toUpperCase());
         }
 
         _ultimaVariableAsignada.valor(valor);

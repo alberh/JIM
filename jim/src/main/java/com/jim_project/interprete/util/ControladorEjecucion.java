@@ -25,6 +25,7 @@ public class ControladorEjecucion {
         CARGANDO_MACROS, ANALIZANDO, EXPANDIENDO_MACROS, EJECUTANDO
     };
 
+    private int _instruccionesEjecutadas;
     private Ambito _ambito;
     private Programa _programa;
 
@@ -39,11 +40,22 @@ public class ControladorEjecucion {
     //      _lineaActual = numeroLineas();
 
     public ControladorEjecucion(Ambito ambito, ArrayList<String> lineas) {
+        _instruccionesEjecutadas = 0;
         _ambito = ambito;
         _programa = _ambito.programa();
         _lineas = lineas;
         // para que devuelva uno vacío si es el caso
         _traza = new StringBuilder();
+    }
+    
+    public int instruccionesEjecutadas() {
+        return _instruccionesEjecutadas;
+    }
+    
+    public void sumarInstrucciones(int n) {
+        if (n >= 0) {
+            _instruccionesEjecutadas += n;
+        }
     }
 
     public Ambito ambito() {
@@ -93,8 +105,12 @@ public class ControladorEjecucion {
                     for (int i = 0; i < _ambito.profundidad() - 1; ++i) {
                         System.out.print("   ");
                     }
+                    /* El mensaje 'Ejecutando macro ...' se hace una vez creado y
+                     * puesto en marcha el nuevo ámbito asociado a tal macro.
+                     * De ahí que se haga la siguiente comprobación.
+                    */
                     if (ambitoPadre != ambitoRaiz) {
-                        System.out.print(idMacro + ", línea " + lineaLlamada);
+                        System.out.print(idMacro + ", línea " + (lineaLlamada - 1));
                     } else {
                         System.out.print("Línea " + lineaLlamada);
                     }
@@ -133,7 +149,7 @@ public class ControladorEjecucion {
 
                 if (_ambito.programa().verbose()
                         && (_programa.worker() == null || !_programa.worker().isCancelled())) {
-                    System.out.println("   Expandiendo llamada a macro \"" + llamada.idMacro() + "\" en línea " + llamada.linea());
+                    System.out.println("   Expandiendo llamada a macro " + llamada.idMacro() + " en línea " + llamada.linea());
                 }
 
                 llamada.linea(llamada.linea() + incremento);
@@ -201,12 +217,11 @@ public class ControladorEjecucion {
         if (tipoParser != Modelo.Tipo.PREVIO) {
             _etapa = Etapa.EJECUTANDO;
         }
-        // System.out.println("Etapa en ejecutar: " + _etapa);
 
         _traza = new StringBuilder("[");
         _lineaActual = 0;
         _salto = false;
-        int instruccionesEjecutadas = 0;
+        _instruccionesEjecutadas = 0;
 
         if (numeroLineas() > 0) {
             String linea = lineaSiguiente();
@@ -216,7 +231,7 @@ public class ControladorEjecucion {
             do {
                 // Límite de tamaño a la traza
                 //if (_traza.length() < 10000) {
-                    if (instruccionesEjecutadas > 0) {
+                    if (_instruccionesEjecutadas > 0) {
                         _traza.append(",")
                                 .append(System.getProperty("line.separator"));
                     }
@@ -239,10 +254,10 @@ public class ControladorEjecucion {
                     _salto = false;
                 }
 
-                ++instruccionesEjecutadas;
+                ++_instruccionesEjecutadas;
 
                 // Limpieza cada 1000 instrucciones ejecutadas
-                if (instruccionesEjecutadas % 1000 == 0) {
+                if (_instruccionesEjecutadas % 1000 == 0) {
                     Runtime.getRuntime().gc();
                 }
 

@@ -10,20 +10,25 @@ import java.io.IOException;
  * Clase encargada de gestionar la configuración del programa y su
  * almacenamiento en disco.
  */
-public abstract class Configuracion {
+public class Configuracion {
 
-    private final static Properties _propiedades = new Properties();
-    private final static String _version = "0.9";
+    private final Properties _propiedades;
+    private final String _version;
+
+    public Configuracion() {
+        _propiedades = new Properties();
+        _version = "1.0";
+    }
 
     /**
      * Carga la configuración del programa desde el fichero "jim.cfg". Si el
      * fichero no existe, lo crea.
      */
-    public static void cargar() {
-        cargar(false);
+    public Configuracion cargar() {
+        return cargar(false);
     }
 
-    public static void cargar(boolean verbose) {
+    public Configuracion cargar(boolean verbose) {
         File ficheroConfig = new File("jim.cfg");
         if (verbose) {
             System.out.println("Cargando configuración del programa.");
@@ -35,7 +40,8 @@ public abstract class Configuracion {
             try (FileReader fr = new FileReader(ficheroConfig)) {
                 _propiedades.load(fr);
 
-                if (_propiedades.stringPropertyNames().size() != 7) {
+                if (_propiedades.stringPropertyNames().size() != 6) {
+                    _propiedades.clear();
                     // Asigna las propiedades que no estén en el fichero de configuración
                     _propiedades.setProperty("rutaMacros", _propiedades.getProperty("rutaMacros", "macros"));
                     _propiedades.setProperty("rutaMacrosL", _propiedades.getProperty("rutaMacrosL", "macros/l"));
@@ -55,6 +61,8 @@ public abstract class Configuracion {
                 Error.alCargarConfiguracion(ficheroConfig.getAbsolutePath());
             }
         }
+        
+        return this;
     }
 
     /**
@@ -64,7 +72,7 @@ public abstract class Configuracion {
      * @param	ficheroConfig	El objeto File que hace referencia al fichero.
      * @see File
      */
-    private static void crearFicheroConfiguracion(File ficheroConfig, boolean verbose) {
+    private void crearFicheroConfiguracion(File ficheroConfig, boolean verbose) {
         if (verbose) {
             System.out.println("Creando fichero de configuración.");
         }
@@ -92,11 +100,11 @@ public abstract class Configuracion {
     /**
      * Almacena el fichero de configuración en el disco.
      */
-    public static void guardar(boolean verbose) {
+    public void guardar(boolean verbose) {
         if (verbose) {
             System.out.println("Guardando configuración.");
         }
-        
+
         File ficheroConfig = new File("jim.cfg");
 
         if (!ficheroConfig.exists()) {
@@ -116,7 +124,7 @@ public abstract class Configuracion {
      * @return	La ruta que apunta al directorio común.
      * @see String
      */
-    public static String rutaMacros() {
+    public String rutaMacros() {
         return _propiedades.getProperty("rutaMacros");
     }
 
@@ -126,7 +134,7 @@ public abstract class Configuracion {
      * @param	nuevaRuta	La ruta que apunta al directorio común.
      * @see String
      */
-    public static void rutaMacros(String nuevaRuta) {
+    public void rutaMacros(String nuevaRuta) {
         _propiedades.setProperty("rutaMacros", nuevaRuta);
     }
 
@@ -136,7 +144,7 @@ public abstract class Configuracion {
      * @return	La ruta que apunta al directorio del modelo L.
      * @see String
      */
-    public static String rutaMacrosL() {
+    public String rutaMacrosL() {
         return _propiedades.getProperty("rutaMacrosL");
     }
 
@@ -146,7 +154,7 @@ public abstract class Configuracion {
      * @param	nuevaRuta	La ruta que apunta al directorio del modelo L.
      * @see String
      */
-    public static void rutaMacrosL(String nuevaRuta) {
+    public void rutaMacrosL(String nuevaRuta) {
         _propiedades.setProperty("rutaMacrosL", nuevaRuta);
     }
 
@@ -156,7 +164,7 @@ public abstract class Configuracion {
      * @return	La ruta que apunta al directorio del modelo Loop.
      * @see String
      */
-    public static String rutaMacrosLoop() {
+    public String rutaMacrosLoop() {
         return _propiedades.getProperty("rutaMacrosLoop");
     }
 
@@ -166,7 +174,7 @@ public abstract class Configuracion {
      * @param	nuevaRuta	La ruta que apunta al directorio del modelo Loop.
      * @see String
      */
-    public static void rutaMacrosLoop(String nuevaRuta) {
+    public void rutaMacrosLoop(String nuevaRuta) {
         _propiedades.setProperty("rutaMacrosLoop", nuevaRuta);
     }
 
@@ -176,7 +184,7 @@ public abstract class Configuracion {
      * @return	La ruta que apunta al directorio del modelo While.
      * @see String
      */
-    public static String rutaMacrosWhile() {
+    public String rutaMacrosWhile() {
         return _propiedades.getProperty("rutaMacrosWhile");
     }
 
@@ -186,32 +194,32 @@ public abstract class Configuracion {
      * @param	nuevaRuta	La ruta que apunta al directorio del modelo While.
      * @see String
      */
-    public static void rutaMacrosWhile(String nuevaRuta) {
+    public void rutaMacrosWhile(String nuevaRuta) {
         _propiedades.setProperty("rutaMacrosWhile", nuevaRuta);
     }
-    
-    public static boolean macrosPermitidas() {
+
+    public boolean macrosPermitidas() {
         return _propiedades.getProperty("macrosPermitidas").equalsIgnoreCase("true");
     }
-    
-    public static void macrosPermitidas(boolean b) {
+
+    public void macrosPermitidas(boolean b) {
         _propiedades.setProperty("macrosPermitidas", b ? "true" : "false");
     }
-    
-    public static boolean modoFlexible() {
+
+    public boolean modoFlexible() {
         //return _propiedades.getProperty("modoFlexible").equalsIgnoreCase("true");
         return false;
     }
-    
-    public static void modoFlexible(boolean b) {
+
+    public void modoFlexible(boolean b) {
         //_propiedades.setProperty("modoFlexible", b ? "true" : "false");
     }
-    
-    public static boolean salidaDetallada() {
+
+    public boolean salidaDetallada() {
         return _propiedades.getProperty("salidaDetallada").equalsIgnoreCase("true");
     }
-    
-    public static void salidaDetallada(boolean b) {
+
+    public void salidaDetallada(boolean b) {
         _propiedades.setProperty("salidaDetallada", b ? "true" : "false");
     }
 
@@ -221,7 +229,7 @@ public abstract class Configuracion {
      * @return	Una cadena representando la versión del programa.
      * @see String
      */
-    public static String version() {
+    public String version() {
         return _version;
     }
 }

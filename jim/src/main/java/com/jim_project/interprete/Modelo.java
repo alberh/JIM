@@ -5,62 +5,64 @@ import com.jim_project.interprete.util.Error;
 
 public class Modelo {
 
+    private Configuracion _configuracion;
+
     public enum Tipo {
 
         PREVIO, L, LOOP, WHILE
     };
 
     private Tipo _tipo;
-    private String _ruta;
+    private final String _ruta;
 
-    public Modelo(String nombre) {
-        this(Modelo.obtenerTipo(nombre));
-    }
+    public Modelo(String nombre, Configuracion configuracion) {
+        _configuracion = configuracion;
 
-    public Modelo(Tipo tipo) {
-        _tipo = tipo;
-        _ruta = Modelo.obtenerRuta(_tipo);
+        if (_configuracion != null) {
+            switch (nombre.toUpperCase()) {
+                case "L":
+                    _tipo = Tipo.L;
+                    break;
+
+                case "LOOP":
+                    _tipo = Tipo.LOOP;
+                    break;
+
+                case "WHILE":
+                    _tipo = Tipo.WHILE;
+                    break;
+
+                default:
+                    Error.deModeloNoValido(nombre);
+                    _tipo = null;
+            }
+            switch (_tipo) {
+                case L:
+                    _ruta = _configuracion.rutaMacrosL();
+                    break;
+
+                case LOOP:
+                    _ruta = _configuracion.rutaMacrosLoop();
+                    break;
+
+                case WHILE:
+                    _ruta = _configuracion.rutaMacrosWhile();
+                    break;
+                    
+                default:
+                    _ruta = null;
+            }
+        } else {
+            _tipo = null;
+            _ruta = null;
+        }
     }
 
     public Tipo tipo() {
         return _tipo;
     }
-    
+
     public String ruta() {
         return _ruta;
-    }
-
-    // Métodos estáticos
-    private static Tipo obtenerTipo(String nombre) {
-        switch (nombre.toUpperCase()) {
-            case "L":
-                return Tipo.L;
-
-            case "LOOP":
-                return Tipo.LOOP;
-
-            case "WHILE":
-                return Tipo.WHILE;
-
-            default:
-                Error.deModeloNoValido(nombre);
-                return null;
-        }
-    }
-
-    private static String obtenerRuta(Tipo tipo) {
-        switch (tipo) {
-            case L:
-                return Configuracion.rutaMacrosL();
-
-            case LOOP:
-                return Configuracion.rutaMacrosLoop();
-
-            case WHILE:
-                return Configuracion.rutaMacrosWhile();
-
-            default:
-                return null;
-        }
     }
 }

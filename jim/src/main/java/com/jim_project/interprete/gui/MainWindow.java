@@ -24,6 +24,7 @@ import javax.swing.text.DefaultCaret;
 
 public class MainWindow extends javax.swing.JFrame {
 
+    private Configuracion _configuracion;
     private final JFileChooser _fc;
     private final File _ficheroTemporal;
     private final Programa _programa;
@@ -33,11 +34,11 @@ public class MainWindow extends javax.swing.JFrame {
     private int _numeroLineasAnterior;
 
     public MainWindow() {
-        Configuracion.cargar();
+        _configuracion = new Configuracion().cargar();
 
         _fc = new JFileChooser();
         _ficheroTemporal = new File("jim.tmp");
-        _programa = new Programa();
+        _programa = new Programa(_configuracion);
         _ficheroAbierto = null;
         _hayCambios = false;
         _worker = null;
@@ -49,7 +50,7 @@ public class MainWindow extends javax.swing.JFrame {
         // Eliminar si hay que restaurar el modo flexible
         menuPrograma.remove(menuProgramaModoFlexible);
 
-        setTitle("JIM " + Configuracion.version());
+        setTitle("JIM " + _configuracion.version());
         pintarNumerosDeLineas();
 
         //System.out.println(System.getProperty("user.dir"));
@@ -79,9 +80,9 @@ public class MainWindow extends javax.swing.JFrame {
         DefaultCaret cursor = (DefaultCaret) taSalida.getCaret();
         cursor.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-        menuProgramaPermitirMacros.setSelected(Configuracion.macrosPermitidas());
+        menuProgramaPermitirMacros.setSelected(_configuracion.macrosPermitidas());
         //menuProgramaModoFlexible.setSelected(Configuracion.modoFlexible());
-        menuProgramaSalidaDetallada.setSelected(Configuracion.salidaDetallada());
+        menuProgramaSalidaDetallada.setSelected(_configuracion.salidaDetallada());
 
         MainWindow.bienvenida();
         tpEditor.requestFocus();
@@ -531,7 +532,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_menuProgramaExpandirMacrosActionPerformed
 
     private void menuProgramaPermitirMacrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaPermitirMacrosActionPerformed
-        Configuracion.macrosPermitidas(menuProgramaPermitirMacros.isSelected());
+        _configuracion.macrosPermitidas(menuProgramaPermitirMacros.isSelected());
     }//GEN-LAST:event_menuProgramaPermitirMacrosActionPerformed
 
     private void menuProgramaModoFlexibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaModoFlexibleActionPerformed
@@ -539,7 +540,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_menuProgramaModoFlexibleActionPerformed
 
     private void menuProgramaSalidaDetalladaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaSalidaDetalladaActionPerformed
-        Configuracion.salidaDetallada(menuProgramaSalidaDetallada.isSelected());
+        _configuracion.salidaDetallada(menuProgramaSalidaDetallada.isSelected());
     }//GEN-LAST:event_menuProgramaSalidaDetalladaActionPerformed
 
     private void btnPararEjecucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPararEjecucionActionPerformed
@@ -552,18 +553,10 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void tpEditorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tpEditorKeyTyped
         hayCambios();
-
-        if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
-            ++_numeroLineasAnterior;
+        int numeroLineas = numeroLineas();
+        if (numeroLineas != _numeroLineasAnterior) {
+            _numeroLineasAnterior = numeroLineas;
             pintarNumerosDeLineas();
-        } else if (evt.getKeyChar() == KeyEvent.VK_BACK_SPACE
-                || evt.getKeyChar() == KeyEvent.VK_DELETE) {
-
-            int numeroLineas = numeroLineas();
-            if (numeroLineas != _numeroLineasAnterior) {
-                _numeroLineasAnterior = numeroLineas;
-                pintarNumerosDeLineas();
-            }
         }
     }//GEN-LAST:event_tpEditorKeyTyped
 
@@ -604,7 +597,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         ArgumentosPrograma argumentos = new ArgumentosPrograma();
         argumentos.fichero = _ficheroAbierto.getAbsolutePath();
-        argumentos.modelo = new Modelo(cadenaModelo);
+        argumentos.modelo = new Modelo(cadenaModelo, _configuracion);
         argumentos.macrosPermitidas = macrosPermitidas();
         //argumentos.modoFlexible = modoFlexible();
         argumentos.verbose = verbose();
@@ -663,7 +656,12 @@ public class MainWindow extends javax.swing.JFrame {
 
                     if (_programa.estadoOk()) {
                         if (!isCancelled()) {
+                            if (_programa.verbose()) {
+                                System.out.println();
+                            }
                             System.out.println("Resultado: " + _programa.resultado());
+                            int nI = _programa.gestorAmbitos().ambitoRaiz().controladorEjecucion().instruccionesEjecutadas();
+                            System.out.print("Instrucciones ejecutadas: " + nI);
                         }
                         taTraza.setText(_programa.traza());
                     } else {
@@ -683,7 +681,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         ArgumentosPrograma argumentos = new ArgumentosPrograma();
         argumentos.fichero = _ficheroAbierto.getAbsolutePath();
-        argumentos.modelo = new Modelo(cadenaModelo);
+        argumentos.modelo = new Modelo(cadenaModelo, _configuracion);
         argumentos.macrosPermitidas = true;
         //argumentos.modoFlexible = true;
         argumentos.verbose = verbose();
@@ -779,7 +777,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private String titulo() {
-        return "JIM " + Configuracion.version();
+        return "JIM " + _configuracion.version();
     }
 
     private String tituloYFichero() {
@@ -791,7 +789,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void salir() {
-        Configuracion.guardar(verbose());
+        _configuracion.guardar(verbose());
 
         if (_hayCambios) {
             int n = JOptionPane.showConfirmDialog(this,

@@ -22,11 +22,11 @@ import java.util.Scanner;
 public class JIM {
 
     private static Programa _programa;
+    private static Configuracion _configuracion;
 
     public static void main(String[] args) {
-
-        Configuracion.cargar();
-        _programa = new Programa();
+        _configuracion = new Configuracion().cargar();
+        _programa = new Programa(_configuracion);
         args = new String[]{"asd.txt"};
 
         switch (args.length) {
@@ -59,7 +59,7 @@ public class JIM {
         boolean mostrarTraza = false;
         ArgumentosPrograma argsPrograma = new ArgumentosPrograma();
         argsPrograma.fichero = args[0];
-        argsPrograma.modelo = new Modelo(args[1]);
+        argsPrograma.modelo = new Modelo(args[1], _configuracion);
         argsPrograma.objetivo = Programa.Objetivo.EJECUTAR;
 
         if (argsPrograma.modelo.tipo() != null) {
@@ -118,8 +118,6 @@ public class JIM {
             }
 
             if (ok) {
-                Configuracion.cargar();
-
                 if (argsPrograma.objetivo == Programa.Objetivo.EJECUTAR) {
                     iniciar(argsPrograma, mostrarTraza);
                 } else {
@@ -205,7 +203,7 @@ public class JIM {
 
     private static void bienvenida() {
         System.out.println("JIM - Intérprete de Modelos");
-        System.out.println("Versión " + Configuracion.version());
+        System.out.println("Versión " + _configuracion.version());
         System.out.println("Para ver la ayuda: java Jim --help");
     }
 
