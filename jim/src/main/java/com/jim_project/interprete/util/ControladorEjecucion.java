@@ -149,7 +149,7 @@ public class ControladorEjecucion {
 
                 if (_ambito.programa().verbose()
                         && (_programa.worker() == null || !_programa.worker().isCancelled())) {
-                    System.out.println("   Expandiendo llamada a macro " + llamada.idMacro() + " en línea " + llamada.linea());
+                    System.out.println("   Expandiendo llamada a macro " + llamada.id() + " en línea " + llamada.linea());
                 }
 
                 llamada.linea(llamada.linea() + incremento);

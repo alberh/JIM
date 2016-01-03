@@ -11,6 +11,14 @@ import com.jim_project.interprete.util.gestor.GestorLlamadasAMacro;
 import com.jim_project.interprete.util.gestor.GestorVariables;
 import java.util.Arrays;
 
+/**
+ * Clase que abstrae el concepto de ámbito de ejecución.
+ * Mantiene información sobre las variables, bucles, etiquetas y llamadas
+ * a macros que se dan en el ámbito que representa y se encarga de su gestión
+ * y puesta en ejecución.
+ * 
+ * @author Alberto García González
+ */
 public class Ambito extends Componente {
 
     private Programa _programa;

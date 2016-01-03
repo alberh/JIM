@@ -31,7 +31,7 @@ public class GestorLlamadasAMacro extends GestorComponentes {
 
     public LlamadaAMacro obtenerLlamadaAMacro(String idMacro) {
         for (LlamadaAMacro llamada : _llamadasAMacros) {
-            if (llamada.idMacro().equalsIgnoreCase(idMacro)
+            if (llamada.id().equalsIgnoreCase(idMacro)
                     && llamada.linea()
                     == _programa.gestorAmbitos().ambitoActual()
                     .controladorEjecucion().numeroLineaActual()) {

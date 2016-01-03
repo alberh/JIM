@@ -100,7 +100,7 @@ public class Macro extends Componente {
 
     public void nuevaLlamadaAMacro(String id) {
         LlamadaAMacro llm = new LlamadaAMacro(0, "", id);
-        _llamadasAMacros.add(llm.idMacro());
+        _llamadasAMacros.add(llm.id());
     }
 
     @Override

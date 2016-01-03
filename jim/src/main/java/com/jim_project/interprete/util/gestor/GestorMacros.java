@@ -78,7 +78,7 @@ public class GestorMacros extends GestorComponentes {
 
     public String expandir(LlamadaAMacro llamadaAMacro) {
         String separador = System.getProperty("line.separator");
-        String idMacro = llamadaAMacro.idMacro();
+        String idMacro = llamadaAMacro.id();
         String ficheroMacro;
         ArrayList<String> parametrosEntrada = llamadaAMacro.parametros();
         int numeroLinea = llamadaAMacro.linea();
@@ -110,7 +110,7 @@ public class GestorMacros extends GestorComponentes {
         // en la macro a expandir
         /*
          if (hayRecursividadEnMacros(macro)) {
-         _programa.error().deRecursividadEnMacros(numeroLinea, idMacro);
+         _programa.error().deRecursividadEnMacros(numeroLinea, id);
          return null;
          }
          */
