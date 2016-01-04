@@ -601,7 +601,7 @@ public class MainWindow extends javax.swing.JFrame {
         argumentos.macrosPermitidas = macrosPermitidas();
         //argumentos.modoFlexible = modoFlexible();
         argumentos.verbose = verbose();
-        argumentos.objetivo = Programa.Objetivo.EJECUTAR;
+        argumentos.objetivo = Programa.Objetivo.INTERPRETAR;
 
         boolean ok = true;
         if (!tfEntradaPrograma.getText().isEmpty()) {
@@ -622,7 +622,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         if (ok) {
             bloquearInterfaz(true);
-            _programa.definirArgumentos(argumentos);
+            _programa.argumentos(argumentos);
 
             _worker = new SwingWorker<String, Object>() {
                 @Override
@@ -686,7 +686,7 @@ public class MainWindow extends javax.swing.JFrame {
         //argumentos.modoFlexible = true;
         argumentos.verbose = verbose();
         argumentos.objetivo = Programa.Objetivo.EXPANDIR;
-        _programa.definirArgumentos(argumentos);
+        _programa.argumentos(argumentos);
 
         bloquearInterfaz(true);
 

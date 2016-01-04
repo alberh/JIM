@@ -6,31 +6,31 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-/* Cambio futuro: para las condicionales, definir en gramáticas las expresiones lógicas y permitir != N, N es un natural, menor que,
- * mayor que, etc...
-
- Apuntes cita con Salguero:
- Preparar memoria, importancia a diagramas.
- Resaltado de código en el editor
- Mirar plataforma Rodin
- Mirar licencias jflex y byacc/j. Pensar en licencia para el TFG.
- Planificación: tiempos memoria, diseño, programación, etc
- */
-/* java Jim fichero modelo [t|f|m|v] [param1 [param2 [...]]]
- *             0      1        2       2/3     3/4
+/**
+ * Clase principal de la aplicación en su versión para consola.
+ *
+ * @author Alberto García González
  */
 public class JIM {
 
     private static Programa _programa;
     private static Configuracion _configuracion;
 
+    /**
+     * Método de entrada de la aplicación.
+     *
+     * @param args Los argumentos del programa.
+     */
     public static void main(String[] args) {
         _configuracion = new Configuracion().cargar();
         _programa = new Programa(_configuracion);
-        
-        // Para pruebas
-        //args = new String[]{"asd.txt"};
 
+        // Para pruebas
+        // args = new String[]{"asd.txt"};
+
+        /* java Jim fichero modelo [t|m|v|e] [param1 [param2 [...]]]
+         *             0      1        2       2/3     3/4
+         */
         switch (args.length) {
             case 0:
                 bienvenida();
@@ -62,7 +62,7 @@ public class JIM {
         ArgumentosPrograma argsPrograma = new ArgumentosPrograma();
         argsPrograma.fichero = args[0];
         argsPrograma.modelo = new Modelo(args[1], _configuracion);
-        argsPrograma.objetivo = Programa.Objetivo.EJECUTAR;
+        argsPrograma.objetivo = Programa.Objetivo.INTERPRETAR;
 
         if (argsPrograma.modelo.tipo() != null) {
             boolean ok = true;
@@ -120,7 +120,7 @@ public class JIM {
             }
 
             if (ok) {
-                if (argsPrograma.objetivo == Programa.Objetivo.EJECUTAR) {
+                if (argsPrograma.objetivo == Programa.Objetivo.INTERPRETAR) {
                     iniciar(argsPrograma, mostrarTraza);
                 } else {
                     iniciarExpansionMacros(argsPrograma);
@@ -165,7 +165,7 @@ public class JIM {
     }
 
     private static void iniciar(ArgumentosPrograma argumentos, boolean mostrarTraza) {
-        _programa.definirArgumentos(argumentos);
+        _programa.argumentos(argumentos);
         try {
             _programa.iniciar();
         } catch (Exception ex) {
@@ -188,7 +188,7 @@ public class JIM {
     }
 
     private static void iniciarExpansionMacros(ArgumentosPrograma argumentos) {
-        _programa.definirArgumentos(argumentos);
+        _programa.argumentos(argumentos);
 
         try {
             String expansion = _programa.iniciar();
@@ -224,7 +224,7 @@ public class JIM {
                 + "los parámetros de entrada.");
         System.out.println();
         System.out.println("Ejemplos:");
-        System.out.println("\tjava JIM p1 l");
+        System.out.println("\tjava JIM p1");
         System.out.println("\tjava JIM p2 loop 1 2");
         System.out.println("\tjava JIM p3 while tm 2 3 5");
         System.out.println();
@@ -232,7 +232,7 @@ public class JIM {
                 + "fichero, debe especificar los argumentos de entrada en la "
                 + "primera línea del mismo mediante la siguiente notación:");
         //System.out.println("\t# args: modelo [t|f|m|v] [param1 [param2 [...]]]");
-        System.out.println("\t# args: modelo [t|m|v] [param1 [param2 [...]]]");
+        System.out.println("\t# args: modelo [t|m|v|e] [param1 [param2 [...]]]");
         System.out.println("Si indica los argumentos en la llamada al programa, "
                 + "no se tendrán en cuenta los del fichero.");
     }

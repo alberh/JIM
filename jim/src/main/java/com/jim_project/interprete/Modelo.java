@@ -39,8 +39,7 @@ public class Modelo {
     private final String _ruta;
 
     /**
-     * Constructor que recibe el nombre del modelo y una referencia a la {@link Configuracion}
-     * del programa.
+     * Constructor de clase.
      * @param nombre El nombre del modelo.
      * @param configuracion Una referencia a la configuración del programa.
      */
@@ -89,7 +88,8 @@ public class Modelo {
 
     /**
      * Devuelve el tipo del modelo.
-     * @return El tipo del modelo.
+     * @return El tipo del modelo, o {@code null} si el {@link Modelo} no se ha
+     * inicializado correctamente.
      */
     public Tipo tipo() {
         return _tipo;
@@ -98,7 +98,8 @@ public class Modelo {
     /**
      * Devuelve la ruta al directorio de macros asociado al modelo definida
      * en la {@link Configuracion}.
-     * @return La ruta al directorio de macros asociado al modelo.
+     * @return La ruta al directorio de macros asociado al modelo,
+     * o {@code null} si el {@link Modelo} no se ha inicializado correctamente.
      */
     public String ruta() {
         return _ruta;

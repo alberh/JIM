@@ -22,16 +22,16 @@ public class ControladorEjecucion {
     public enum Etapa {
 
         INICIANDO, CARGANDO_FICHERO, COMPROBANDO_DIRECTORIO_MACROS,
-        CARGANDO_MACROS, ANALIZANDO, EXPANDIENDO_MACROS, EJECUTANDO
+        CARGANDO_MACROS, ANALIZANDO, EXPANDIENDO_MACROS, INTERPRETANDO
     };
 
     private int _instruccionesEjecutadas;
-    private Ambito _ambito;
-    private Programa _programa;
+    private final Ambito _ambito;
+    private final Programa _programa;
 
     private Etapa _etapa;
 
-    private ArrayList<String> _lineas;
+    private final ArrayList<String> _lineas;
     private int _lineaActual;
     private boolean _salto;
 
@@ -215,7 +215,7 @@ public class ControladorEjecucion {
 
     private void ejecutar(Modelo.Tipo tipoParser) {
         if (tipoParser != Modelo.Tipo.PREVIO) {
-            _etapa = Etapa.EJECUTANDO;
+            _etapa = Etapa.INTERPRETANDO;
         }
 
         _traza = new StringBuilder("[");
