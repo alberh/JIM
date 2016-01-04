@@ -345,6 +345,7 @@ final static String yyrule[] = {
      _acciones = new LAcciones(_controladorEjecucion.ambito());
   }
 
+  @Override
   public int parse() {
     return this.yyparse();
   }
@@ -352,6 +353,7 @@ final static String yyrule[] = {
   /** esta función se invoca por el analizador cuando necesita el 
   *** siguiente token del analizador léxico
   **/
+  @Override
   protected int yylex () {
   int yyl_return = -1;
 
@@ -367,6 +369,7 @@ final static String yyrule[] = {
 
   /** invocada cuando se produce un error
   **/
+  @Override
   public void yyerror (String descripcion, int yystate, int token) {
     String nombreToken = yyname[token];
     _programa.error().deTokenNoEsperado(nombreToken, descripcion);

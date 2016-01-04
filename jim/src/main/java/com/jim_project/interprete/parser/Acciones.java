@@ -6,30 +6,71 @@ import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.LlamadaAMacro;
 import com.jim_project.interprete.componente.Macro;
 
+/**
+ * Clase que provee métodos que realizan las operaciones comunes a todos los
+ * modelos simulados.
+ * @author Alberto García González
+ */
 public class Acciones {
 
+    /**
+     * Referencia al ámbito sobre cuyos componentes serán realizadas las acciones.
+     */
     protected final Ambito _ambito;
+    /**
+     * Referencia a la última variable asignada.
+     * Útil para distintos tipos de asignaciones y comprobaciones.
+     */
     protected Variable _ultimaVariableAsignada;
+    /**
+     * Bandera que indica si se deben ignorar las comprobaciones que se harían
+     * sobre una asignación directa.
+     * Su uso es necesario para no realizar dichas comprobaciones cuando se asigna
+     * un valor que ha sido fruto de una operación binaria, en cuyo caso ya habrá
+     * pasado por las comprobaciones oportunas.
+     */
     protected boolean _ignorarComprobacionAsignacion;
 
+    /**
+     * Constructor de clase.
+     * @param ambito Referencia al ámbito sobre el que se debe operar.
+     */
     public Acciones(Ambito ambito) {
         _ambito = ambito;
         _ultimaVariableAsignada = null;
         _ignorarComprobacionAsignacion = false;
     }
 
+    /**
+     * Devuelve el ámbito asociado.
+     * @return El ámbito asociado.
+     */
     public Ambito ambito() {
         return _ambito;
     }
 
+    /**
+     * Devuelve una referencia a la última variable asignada.
+     * @return Una referencia a la última variable asignada.
+     */
     public Variable ultimaVariableAsignada() {
         return _ultimaVariableAsignada;
     }
 
+    /**
+     * Cambia la variable asignada.
+     * @param idVariable Referencia a la nueva variable asignada.
+     */
     public void variableAsignada(Object idVariable) {
         _ultimaVariableAsignada = obtenerVariable(idVariable);
     }
 
+    /**
+     * Asigna a una variable un valor constante o el valor de otra variable.
+     * @param lvalue El identificador de la variable que será asignada.
+     * @param rvalue El valor a asignar o el identificador de la variable
+     * a asignar.
+     */
     public void asignacion(Object lvalue, Object rvalue) {
         if (!_ignorarComprobacionAsignacion) {
             comprobarAsignacion(rvalue);
@@ -48,7 +89,13 @@ public class Acciones {
         }
     }
 
-    public void comprobarAsignacion(Object o) {
+    /**
+     * Si el uso de macros no está permitido, comprueba las limitaciones establecidas
+     * por cada modelo en la asignación.
+     * @param rvalue El valor a asignar o el identificador de la variable
+     * a asignar.
+     */
+    public void comprobarAsignacion(Object rvalue) {
         // Como con la instrucción GOTO L, 
         if (!_ambito.programa().macrosPermitidas()) {
             com.jim_project.interprete.util.Error error = _ambito.programa().error();
@@ -57,7 +104,7 @@ public class Acciones {
                 case L:
                     // Comprobar que lo que se asigna no es ni un número,
                     // ni una variable distinta de la que está siendo asignada
-                    if (esEntero(o) || !(new Variable(o.toString(), null).id().equals(_ultimaVariableAsignada.id()))) {
+                    if (esEntero(rvalue) || !(new Variable(rvalue.toString(), null).id().equals(_ultimaVariableAsignada.id()))) {
                         //error.deAsignacionNoPermitida();
                         error.deLlamadasAMacroNoPermitidas();
                     }
@@ -66,7 +113,7 @@ public class Acciones {
                 case LOOP:
                 case WHILE:
                     // Comprobar que lo que se asigna sea una variable o el 0
-                    if (!esCadena(o) && obtenerValor(o) != 0) {
+                    if (!esCadena(rvalue) && obtenerValor(rvalue) != 0) {
                         //error.deAsignacionNoPermitida();
                         error.deLlamadasAMacroNoPermitidas();
                     }
@@ -77,6 +124,10 @@ public class Acciones {
         }
     }
 
+    /**
+     * Realiza un incremento unitario en el valor de una variable.
+     * @param lvalue El identificador de la variable.
+     */
     public void incremento(Object lvalue) {
         if (!_ambito.programa().macrosPermitidas()) {
             //_ambito.programa().error().deOperacionNoPermitida();
@@ -87,6 +138,10 @@ public class Acciones {
         obtenerVariable(lvalue).incremento();
     }
 
+    /**
+     * Realiza un decremento unitario en el valor de una variable.
+     * @param lvalue El identificador de la variable.
+     */
     public void decremento(Object lvalue) {
         if (!_ambito.programa().macrosPermitidas()
                 && _ambito.programa().modelo().tipo() == Modelo.Tipo.L) {
@@ -98,6 +153,13 @@ public class Acciones {
         obtenerVariable(lvalue).decremento();
     }
 
+    /**
+     * Realiza una operación binaria.
+     * @param operador Indica el tipo de operación: '+', '-', '*', '/' y '%'.
+     * @param op1 El primer operando.
+     * @param op2 El segundo operando.
+     * @return El valor resultante de la operación.
+     */
     public int operacionBinaria(char operador, Object op1, Object op2) {
         int v1 = obtenerValor(op1);
         int v2 = obtenerValor(op2);
@@ -148,6 +210,15 @@ public class Acciones {
         return resultado;
     }
 
+    /**
+     * Si el uso de macros no está permitido, realiza las comprobaciones oportunas
+     * para restringir las operaciones binarias a lo permitido por cada modelo.
+     * @param operador Indica el tipo de operación: '+', '-', '*', '/' y '%'.
+     * @param op1 El primer operando.
+     * @param op2 El segundo operando.
+     * @param valor1 El valor del primero operando.
+     * @param valor2 El valor del segundo operando.
+     */
     private void comprobarOperacionBinaria(
             char operador,
             Object op1,
@@ -321,6 +392,10 @@ public class Acciones {
         }
     }
 
+    /**
+     * Crea un nuevo ámbito y lo lanza a ejecución.
+     * @param idMacro El identificador de la macro asociada al nuevo ámbito.
+     */
     public void llamadaAMacro(Object idMacro) {
         if (!_ambito.programa().macrosPermitidas()) {
             _ambito.programa().error().deLlamadasAMacroNoPermitidas();
@@ -342,13 +417,6 @@ public class Acciones {
                         idMacro.toString().toUpperCase(), nV, nP);
                 return;
             }
-
-            // Limitar creación de ámbitos? Añadir parámetro a configuración?
-            /*
-             if (_ambito.gestor().count() > 200) {
-
-             }
-             */
             String[] parametros = new String[nP];
 
             for (int i = 0; i < nP; ++i) {
@@ -379,11 +447,23 @@ public class Acciones {
         _ultimaVariableAsignada.valor(valor);
     }
 
+    
+    /**
+     * Devuelve una variable del gestor de variables del ámbito donde se
+     * ejecutan las acciones de esta clase.
+     * @param id El identificador de la variable.
+     * @return La variable con identificador {@code id}, si existe; {@code null} si no existe.
+     */
     protected Variable obtenerVariable(Object id) {
-        // tratamiento de errores
         return _ambito.gestorVariables().obtenerVariable(id.toString());
     }
 
+    /**
+     * Obtiene el valor de un objeto, suponiendo que dicho objeto sea un {@link Integer}
+     * o un {@link String} representando el identificador de una variable.
+     * @param o El objeto cuyo valor se desea recuperar.
+     * @return El valor de {@code o}.
+     */
     protected int obtenerValor(Object o) {
         int valor = 0;
 
@@ -402,11 +482,21 @@ public class Acciones {
         return valor;
     }
 
-    protected static boolean esEntero(Object o) {
-        return o instanceof Integer;
+    /**
+     * Comprueba si un objeto es de la subclase {@link Integer}.
+     * @param obj El objeto a comprobar.
+     * @return {@code true}, si {@code obj} es un {@link Integer}; {@code false}, si no lo es.
+     */
+    protected static boolean esEntero(Object obj) {
+        return obj instanceof Integer;
     }
 
-    protected static boolean esCadena(Object o) {
-        return o instanceof String;
+    /**
+     * Comprueba si un objeto es de la subclase {@link String}.
+     * @param obj El objeto a comprobar.
+     * @return {@code true}, si {@code obj} es un {@link String}; {@code false}, si no lo es.
+     */
+    protected static boolean esCadena(Object obj) {
+        return obj instanceof String;
     }
 }
