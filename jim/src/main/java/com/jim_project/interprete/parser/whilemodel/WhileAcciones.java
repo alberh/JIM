@@ -12,7 +12,7 @@ public class WhileAcciones extends Acciones {
     }
 
     public void abreBucle(Object idVariable, int lineaApertura) {
-        Bucle bucle = _ambito.bucles().obtenerBucleLineaInicio(lineaApertura);
+        Bucle bucle = _ambito.gestorBucles().obtenerBucleLineaInicio(lineaApertura);
         Variable variable = obtenerVariable(idVariable);
 
         if (variable.valor() == 0) {
@@ -21,7 +21,7 @@ public class WhileAcciones extends Acciones {
     }
 
     public void cierraBucle(int lineaCierre) {
-        Bucle bucle = _ambito.bucles().obtenerBucleLineaFin(lineaCierre);
+        Bucle bucle = _ambito.gestorBucles().obtenerBucleLineaFin(lineaCierre);
         _ambito.controladorEjecucion().salto(bucle.lineaInicio());
     }
 }

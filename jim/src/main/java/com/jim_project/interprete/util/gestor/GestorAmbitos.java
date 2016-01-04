@@ -17,14 +17,14 @@ public class GestorAmbitos extends GestorComponentes {
     }
 
     public Ambito nuevoAmbito(String[] parametrosEntrada, Macro macroAsociada, int profundidad) {
-        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, macroAsociada, profundidad, this);
+        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, macroAsociada, profundidad);
         _ambitos.add(_ultimoAmbito);
 
         return _ultimoAmbito;
     }
     
     public Ambito nuevoAmbito(String[] parametrosEntrada, ArrayList<String> lineas) {
-        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, lineas, this);
+        _ultimoAmbito = new Ambito(_programa, parametrosEntrada, lineas);
         _ambitos.add(_ultimoAmbito);
 
         return _ultimoAmbito;

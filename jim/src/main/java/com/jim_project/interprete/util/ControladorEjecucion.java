@@ -142,7 +142,7 @@ public class ControladorEjecucion {
 
         if (!llamadas.isEmpty()) {
             ArrayList<String> lineas = new ArrayList(_lineas);
-            int incremento = 0;
+            int desplazamiento = 0;
 
             for (int i = 0; i < llamadas.size() && _programa.estadoOk(); ++i) {
                 LlamadaAMacro llamada = llamadas.get(i);
@@ -152,17 +152,17 @@ public class ControladorEjecucion {
                     System.out.println("   Expandiendo llamada a macro " + llamada.id() + " en línea " + llamada.linea());
                 }
 
-                llamada.linea(llamada.linea() + incremento);
-                String resultadoExpansion = _programa.gestorMacros().expandir(llamada);
+                //llamada.linea(llamada.linea() + desplazamiento);
+                String resultadoExpansion = _programa.gestorMacros().expandir(llamada, desplazamiento);
 
                 if (resultadoExpansion != null) {
                     ArrayList<String> lineasExpansion = new ArrayList<>(
                             Arrays.asList(resultadoExpansion.split("[\n\r]+"))
                     );
 
-                    lineas.remove(llamada.linea() - 1);
-                    lineas.addAll(llamada.linea() - 1, lineasExpansion);
-                    incremento += lineasExpansion.size() - 1;
+                    lineas.remove(llamada.linea() + desplazamiento - 1);
+                    lineas.addAll(llamada.linea() + desplazamiento - 1, lineasExpansion);
+                    desplazamiento += lineasExpansion.size() - 1;
                 }
 
                 if (_programa.worker() != null && _programa.worker().isCancelled()) {
@@ -258,10 +258,6 @@ public class ControladorEjecucion {
                     _salto = false;
                 }
 
-                if (_instruccionesEjecutadas % 250 == 0) {
-                    Runtime.getRuntime().gc();
-                }
-
                 if (_programa.worker() != null && _programa.worker().isCancelled()) {
                     terminar();
                 }
@@ -336,7 +332,7 @@ public class ControladorEjecucion {
             // parseInt en un bloque try-catch.
             for (int i = 0; i < parametros.length; ++i) {
                 int valor = Integer.parseInt(parametros[i]);
-                _ambito.variables().nuevaVariable("X" + (i + 1), valor);
+                _ambito.gestorVariables().nuevaVariable("X" + (i + 1), valor);
             }
         } else {
             GestorAmbitos gestor = (GestorAmbitos) _ambito.gestor();
@@ -347,12 +343,12 @@ public class ControladorEjecucion {
                 try {
                     valor = Integer.parseInt(parametros[i]);
                 } catch (NumberFormatException ex) {
-                    Variable v = ambitoPadre.variables().obtenerVariable(parametros[i]);
+                    Variable v = ambitoPadre.gestorVariables().obtenerVariable(parametros[i]);
                     if (v != null) {
                         valor = v.valor();
                     }
                 }
-                _ambito.variables().nuevaVariable("X" + (i + 1), valor);
+                _ambito.gestorVariables().nuevaVariable("X" + (i + 1), valor);
             }
         }
     }

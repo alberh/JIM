@@ -76,12 +76,12 @@ public class GestorMacros extends GestorComponentes {
         return hayRecursividad;
     }
 
-    public String expandir(LlamadaAMacro llamadaAMacro) {
+    public String expandir(LlamadaAMacro llamadaAMacro, int desplazamiento) {
         String separador = System.getProperty("line.separator");
         String idMacro = llamadaAMacro.id();
         String ficheroMacro;
         ArrayList<String> parametrosEntrada = llamadaAMacro.parametros();
-        int numeroLinea = llamadaAMacro.linea();
+        int numeroLinea = llamadaAMacro.linea() + desplazamiento;
 
         String idVariableSalida = llamadaAMacro.idVariableSalida().toUpperCase();
         String asignaciones = idVariableSalida + " <- 0" + separador;
@@ -133,7 +133,7 @@ public class GestorMacros extends GestorComponentes {
         Variable vAuxiliar;
         for (int i = 0; i < variablesEntrada.size(); ++i) {
             String vAntigua = variablesEntrada.get(i).toUpperCase();
-            vAuxiliar = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL);
+            vAuxiliar = ambitoRaiz.gestorVariables().nuevaVariable(Variable.Tipo.LOCAL);
             String vNueva = vAuxiliar.tokenTipo() + "_" + vAuxiliar.indice();
             
             reemplazosEntrada.put(vAntigua, vNueva);
@@ -141,7 +141,7 @@ public class GestorMacros extends GestorComponentes {
 
         for (int i = 0; i < variablesLocales.size(); ++i) {
             String vAntigua = variablesLocales.get(i);
-            vAuxiliar = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL);
+            vAuxiliar = ambitoRaiz.gestorVariables().nuevaVariable(Variable.Tipo.LOCAL);
             String vNueva = vAuxiliar.tokenTipo() + "_" + vAuxiliar.indice();
             
             reemplazosLocales.put(vAntigua, vNueva);
@@ -152,13 +152,13 @@ public class GestorMacros extends GestorComponentes {
              */
             reemplazosEtiquetas = new HashMap<>();
             for (String etiqueta : etiquetas) {
-                Etiqueta eAuxiliar = ambitoRaiz.etiquetas().nuevaEtiqueta();
+                Etiqueta eAuxiliar = ambitoRaiz.gestorEtiquetas().nuevaEtiqueta();
                 String nuevaEtiqueta = eAuxiliar.grupo() + "_" + eAuxiliar.indice();
                 reemplazosEtiquetas.put(etiqueta, nuevaEtiqueta);
             }
         }
 
-        vAuxiliar = ambitoRaiz.variables().nuevaVariable(Variable.Tipo.LOCAL);
+        vAuxiliar = ambitoRaiz.gestorVariables().nuevaVariable(Variable.Tipo.LOCAL);
         variableSalidaLocal = "_" + vAuxiliar.tokenTipo() + "_" + vAuxiliar.indice() + "_";
 
         // Insertar y reemplazar
@@ -202,7 +202,7 @@ public class GestorMacros extends GestorComponentes {
 
             /* Reemplaza todas las etiquetas que son objetivo de un salto
              */
-            Etiqueta eAuxiliar = ambitoRaiz.etiquetas().nuevaEtiqueta();
+            Etiqueta eAuxiliar = ambitoRaiz.gestorEtiquetas().nuevaEtiqueta();
             String etiquetaSalida = eAuxiliar.grupo() + "_" + eAuxiliar.indice();
             for (String eAntigua : etiquetasSalto) {
                 if (reemplazosEtiquetas.containsKey(eAntigua)) {

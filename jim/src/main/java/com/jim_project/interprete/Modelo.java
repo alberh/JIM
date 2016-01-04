@@ -13,12 +13,26 @@ public class Modelo {
     private Configuracion _configuracion;
 
     /**
-     * Enumeración utilizada para distinguir los distintos modelos. El analizador previo
-     * se considera un modelo para facilitar el diseño del programa.
+     * Enumeración utilizada para distinguir los distintos modelos.
      */
     public enum Tipo {
 
-        PREVIO, L, LOOP, WHILE
+        /**
+         * El analizador previo se considera un modelo para facilitar el diseño del programa.
+         */
+        PREVIO,
+        /**
+         * Modelo L.
+         */
+        L,
+        /**
+         * Modelo Loop.
+         */
+        LOOP,
+        /**
+         * Modelo While.
+         */
+        WHILE
     };
 
     private Tipo _tipo;

@@ -10,20 +10,20 @@ public class PrevioAcciones extends Acciones {
     }
 
     public void definirVariable(Object idVariable) {
-        _ultimaVariableAsignada = _ambito.variables().nuevaVariable(idVariable.toString());
+        _ultimaVariableAsignada = _ambito.gestorVariables().nuevaVariable(idVariable.toString());
     }
 
     public void definirEtiqueta(Object idEtiqueta, Object numeroLinea) {
-        _ambito.etiquetas().nuevaEtiqueta(idEtiqueta.toString(),
+        _ambito.gestorEtiquetas().nuevaEtiqueta(idEtiqueta.toString(),
                 obtenerValor(numeroLinea));
     }
 
     public void definirInicioBucle(Object numeroLinea) {
-        _ambito.bucles().definirLineaInicio(obtenerValor(numeroLinea));
+        _ambito.gestorBucles().definirLineaInicio(obtenerValor(numeroLinea));
     }
 
     public void definirFinBucle(Object numeroLinea) {
-        _ambito.bucles().definirLineaFin(obtenerValor(numeroLinea));
+        _ambito.gestorBucles().definirLineaFin(obtenerValor(numeroLinea));
     }
     
     public void definirLlamadaAMacro(Object idMacro) {

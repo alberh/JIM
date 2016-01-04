@@ -381,7 +381,7 @@ public class Acciones {
 
     protected Variable obtenerVariable(Object id) {
         // tratamiento de errores
-        return _ambito.variables().obtenerVariable(id.toString());
+        return _ambito.gestorVariables().obtenerVariable(id.toString());
     }
 
     protected int obtenerValor(Object o) {
@@ -391,7 +391,7 @@ public class Acciones {
             valor = (Integer) o;
         } else {
             try {
-                valor = _ambito.variables().obtenerVariable((String) o).valor();
+                valor = _ambito.gestorVariables().obtenerVariable((String) o).valor();
             } catch (Exception ex) {
                 // Pequeño parche para que no asigne valor 0 tras una llamada
                 // a macro.

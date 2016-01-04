@@ -44,16 +44,7 @@ public class Programa {
 
     private final GestorAmbitos _gestorAmbitos;
     private final GestorMacros _gestorMacros;
-/*
-    public Programa(ArgumentosPrograma argumentos) {
-        _argumentos = argumentos;
-        _ficheroEnProceso = argumentos.fichero;
-        _estado = Estado.OK;
-        _error = new Error(this);
-        _gestorAmbitos = new GestorAmbitos(this);
-        _gestorMacros = new GestorMacros(this);
-    }
-    */
+    
     public Programa(Configuracion configuracion) {
         _configuracion = configuracion;
         _argumentos = null;

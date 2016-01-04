@@ -40,6 +40,6 @@ public class LAcciones extends Acciones {
 
     protected Etiqueta obtenerEtiqueta(Object id) {
         // tratamiento de errores
-        return _ambito.etiquetas().obtenerEtiqueta(id.toString());
+        return _ambito.gestorEtiquetas().obtenerEtiqueta(id.toString());
     }
 }
