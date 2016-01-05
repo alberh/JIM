@@ -7,27 +7,39 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Clase encargada de gestionar la configuración del programa y su
- * almacenamiento en disco.
+ * Clase que aporta métodos para almacenar físicamente y recuperar la
+ * configuración de la aplicación, así como para editar sus distintas
+ * propiedades.
  */
 public class Configuracion {
 
     private final Properties _propiedades;
     private final String _version;
 
+    /**
+     * Constructor de clase.
+     */
     public Configuracion() {
         _propiedades = new Properties();
         _version = "1.0";
     }
 
     /**
-     * Carga la configuración del programa desde el fichero "jim.cfg". Si el
-     * fichero no existe, lo crea.
+     * Tiene el mismo efecto que llamar a {@link Configuracion#cargar(false)}.
+     *
+     * @return Una referencia a este objeto.
      */
     public Configuracion cargar() {
         return cargar(false);
     }
 
+    /**
+     * Carga la configuración del programa desde el fichero "jim.cfg". Si el
+     * fichero no existe, lo crea.
+     *
+     * @param verbose Bandera que indica si la salida detallada está activada.
+     * @return Una referencia a este objeto.
+     */
     public Configuracion cargar(boolean verbose) {
         File ficheroConfig = new File("jim.cfg");
         if (verbose) {
@@ -66,11 +78,10 @@ public class Configuracion {
     }
 
     /**
-     * Crea el fichero de configuración en el disco y almacena la configuración
-     * por defecto.
+     * Crea el fichero "jim.cfg" y almacena la configuración.
      *
-     * @param	ficheroConfig	El objeto File que hace referencia al fichero.
-     * @see File
+     * @param ficheroConfig El fichero a crear.
+     * @param verbose Bandera que indica si la salida detallada está activada.
      */
     private void crearFicheroConfiguracion(File ficheroConfig, boolean verbose) {
         if (verbose) {
@@ -98,7 +109,9 @@ public class Configuracion {
     }
 
     /**
-     * Almacena el fichero de configuración en el disco.
+     * Almacena las propiedades en el fichero de configuración.
+     *
+     * @param verbose Bandera que indica si la salida detallada está activada.
      */
     public void guardar(boolean verbose) {
         if (verbose) {
@@ -121,18 +134,16 @@ public class Configuracion {
     /**
      * Devuelve la ruta al directorio de macros comunes.
      *
-     * @return	La ruta que apunta al directorio común.
-     * @see String
+     * @return La ruta al directorio de macros comunes.
      */
     public String rutaMacros() {
         return _propiedades.getProperty("rutaMacros");
     }
 
     /**
-     * Define la ruta al directorio de macros comunes.
+     * Cambia la ruta al directorio de macros comunes.
      *
-     * @param	nuevaRuta	La ruta que apunta al directorio común.
-     * @see String
+     * @param nuevaRuta La nueva ruta al directorio de macros comunes.
      */
     public void rutaMacros(String nuevaRuta) {
         _propiedades.setProperty("rutaMacros", nuevaRuta);
@@ -141,18 +152,16 @@ public class Configuracion {
     /**
      * Devuelve la ruta al directorio de macros del modelo L.
      *
-     * @return	La ruta que apunta al directorio del modelo L.
-     * @see String
+     * @return La ruta al directorio de macros del modelo L.
      */
     public String rutaMacrosL() {
         return _propiedades.getProperty("rutaMacrosL");
     }
 
     /**
-     * Define la ruta al directorio de macros del modelo L.
+     * Cambia la ruta al directorio de macros del modelo L.
      *
-     * @param	nuevaRuta	La ruta que apunta al directorio del modelo L.
-     * @see String
+     * @param nuevaRuta La nueva ruta al directorio de macros del modelo L.
      */
     public void rutaMacrosL(String nuevaRuta) {
         _propiedades.setProperty("rutaMacrosL", nuevaRuta);
@@ -161,18 +170,16 @@ public class Configuracion {
     /**
      * Devuelve la ruta al directorio de macros del modelo Loop.
      *
-     * @return	La ruta que apunta al directorio del modelo Loop.
-     * @see String
+     * @return La ruta al directorio de macros del modelo Loop.
      */
     public String rutaMacrosLoop() {
         return _propiedades.getProperty("rutaMacrosLoop");
     }
 
     /**
-     * Define la ruta al directorio de macros del modelo Loop.
+     * Cambia la ruta al directorio de macros del modelo Loop.
      *
-     * @param	nuevaRuta	La ruta que apunta al directorio del modelo Loop.
-     * @see String
+     * @param nuevaRuta La nueva ruta al directorio de macros del modelo Loop.
      */
     public void rutaMacrosLoop(String nuevaRuta) {
         _propiedades.setProperty("rutaMacrosLoop", nuevaRuta);
@@ -181,44 +188,67 @@ public class Configuracion {
     /**
      * Devuelve la ruta al directorio de macros del modelo While.
      *
-     * @return	La ruta que apunta al directorio del modelo While.
-     * @see String
+     * @return La ruta al directorio de macros del modelo While.
      */
     public String rutaMacrosWhile() {
         return _propiedades.getProperty("rutaMacrosWhile");
     }
 
     /**
-     * Define la ruta al directorio de macros del modelo While.
+     * Cambia la ruta al directorio de macros del modelo While.
      *
-     * @param	nuevaRuta	La ruta que apunta al directorio del modelo While.
-     * @see String
+     * @param nuevaRuta La nueva ruta al directorio de macros del modelo While.
      */
     public void rutaMacrosWhile(String nuevaRuta) {
         _propiedades.setProperty("rutaMacrosWhile", nuevaRuta);
     }
 
+    /**
+     * Indica si la ejecución de macros está permitida en el fichero de
+     * configuración.
+     *
+     * @return {@code true}, si las macros están permitidas; {@code false} en
+     * caso contrario.
+     */
     public boolean macrosPermitidas() {
         return _propiedades.getProperty("macrosPermitidas").equalsIgnoreCase("true");
     }
 
+    /**
+     * Cambia la opción de ejecución de macros en el fichero de configuración.
+     *
+     * @param b Indica si las macros estarán permitidas o no.
+     */
     public void macrosPermitidas(boolean b) {
         _propiedades.setProperty("macrosPermitidas", b ? "true" : "false");
     }
 
-    public boolean modoFlexible() {
-        //return _propiedades.getProperty("modoFlexible").equalsIgnoreCase("true");
-        return false;
-    }
+    /*
+     public boolean modoFlexible() {
+     //return _propiedades.getProperty("modoFlexible").equalsIgnoreCase("true");
+     return false;
+     }
 
-    public void modoFlexible(boolean b) {
-        //_propiedades.setProperty("modoFlexible", b ? "true" : "false");
-    }
-
+     public void modoFlexible(boolean b) {
+     //_propiedades.setProperty("modoFlexible", b ? "true" : "false");
+     }
+     */
+    /**
+     * Indica si la salida detallada está activada en el fichero de
+     * configuración.
+     *
+     * @return {@code true}, si la salida detallada está activada; {@code false}
+     * en caso contrario.
+     */
     public boolean salidaDetallada() {
         return _propiedades.getProperty("salidaDetallada").equalsIgnoreCase("true");
     }
 
+    /**
+     * Cambia la opción de salida detallada en el fichero de configuración.
+     *
+     * @param b Indica si la salida detallada estará activada o no.
+     */
     public void salidaDetallada(boolean b) {
         _propiedades.setProperty("salidaDetallada", b ? "true" : "false");
     }
@@ -226,8 +256,7 @@ public class Configuracion {
     /**
      * Devuelve la versión actual del programa.
      *
-     * @return	Una cadena representando la versión del programa.
-     * @see String
+     * @return Una cadena que contiene la versión del programa.
      */
     public String version() {
         return _version;

@@ -3,7 +3,7 @@ package com.jim_project.interprete.componente;
 import java.util.ArrayList;
 
 /**
- * Clase que abstrae el contepto de llamada a macro dentro del código del
+ * Clase que abstrae el concepto de llamada a macro dentro del código del
  * programa, manteniendo información sobre la línea en la que se encuentra la
  * llamada, sus parámetros de entrada y la variable a la que se asignará el
  * valor resultante.

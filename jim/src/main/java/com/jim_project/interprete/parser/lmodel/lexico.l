@@ -1,4 +1,3 @@
-
 package com.jim_project.interprete.parser.lmodel;
 
 import com.jim_project.interprete.parser.AnalizadorLexico;
@@ -11,20 +10,13 @@ import com.jim_project.interprete.parser.AnalizadorLexico;
 %extends AnalizadorLexico
 
 %{
-
   private LParser yyparser;
-
-  /** constructor del analizador sintáctico
-  *** acepta como parámetro el lector de caracteres a usar
-  **/
 
   public LLex(java.io.Reader r, LParser p) {
     this(r);
     yyparser = p;
   }
-
 %}
-
 
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]

@@ -1,14 +1,8 @@
-
 package com.jim_project.interprete.parser.analizadormacros;
 
 import com.jim_project.interprete.parser.AnalizadorLexico;
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.componente.Etiqueta;
-// Debido a conflicto con la clase Error del propio analizador,
-// se hace referencia a la clase Error especificando toda la jerarquía
-// de paquetes, en lugar de añadir el sigiente import.
-// import com.jim_project.interprete.Error;
-
 import java.lang.StringBuilder;
 
 %%
@@ -19,12 +13,7 @@ import java.lang.StringBuilder;
 %extends AnalizadorLexico
 
 %{
-
   private MacrosParser yyparser;
-
-  /** constructor del analizador sintáctico
-  *** acepta como parámetro el lector de caracteres a usar
-  **/
 
   public MacrosLex(java.io.Reader r, MacrosParser p) {
     this(r);
@@ -42,7 +31,6 @@ import java.lang.StringBuilder;
 
 %}
 
-
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 WhiteSpace     = [ \t\f]
@@ -55,7 +43,6 @@ InputVariable = [xX]([1-9]+[0-9]*)?
 LocalVariable = [zZ]([1-9]+[0-9]*)?
 OutputVariable = [yY]
 Variable = {InputVariable}|{LocalVariable}|{OutputVariable}
-
 Reserved = "if"|"IF"|"while"|"WHILE"|"loop"|"LOOP"|"end"|"END"
 
 %state CUERPO

@@ -5,10 +5,19 @@ import com.jim_project.interprete.Programa.Estado;
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.util.gestor.GestorAmbitos;
 
+/**
+ * Clase que ofrece una colección de métodos preparados para mostrar distintos
+ * mensajes de error dependiendo del contexto.
+ * @author Alberto García González
+ */
 public class Error {
 
     private final Programa _programa;
 
+    /**
+     * Constructor de clase.
+     * @param programa Referencia al programa en ejecución.
+     */
     public Error(Programa programa) {
         _programa = programa;
     }

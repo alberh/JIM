@@ -1,4 +1,3 @@
-
 package com.jim_project.interprete.parser.previo;
 
 import com.jim_project.interprete.parser.AnalizadorLexico;
@@ -11,12 +10,7 @@ import com.jim_project.interprete.parser.AnalizadorLexico;
 %extends AnalizadorLexico
 
 %{
-
   private PrevioParser yyparser;
-
-  /** constructor del analizador sintáctico
-  *** acepta como parámetro el lector de caracteres a usar
-  **/
 
   public PrevioLex(java.io.Reader r, PrevioParser p) {
     this(r);
@@ -25,9 +19,7 @@ import com.jim_project.interprete.parser.AnalizadorLexico;
   }
 
   private String contenido;
-
 %}
-
 
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]

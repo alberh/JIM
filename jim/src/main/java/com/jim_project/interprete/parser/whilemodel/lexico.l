@@ -1,4 +1,3 @@
-
 package com.jim_project.interprete.parser.whilemodel;
 
 import com.jim_project.interprete.parser.AnalizadorLexico;
@@ -11,21 +10,13 @@ import com.jim_project.interprete.parser.AnalizadorLexico;
 %extends AnalizadorLexico
 
 %{
-
   private WhileParser yyparser;
-
-  /** constructor del analizador sintáctico
-  *** acepta como parámetro el lector de caracteres a usar
-  **/
 
   public WhileLex(java.io.Reader r, WhileParser p) {
     this(r);
     yyparser = p;
   }
-  
-
 %}
-
 
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]

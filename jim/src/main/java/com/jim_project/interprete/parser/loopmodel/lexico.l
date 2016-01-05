@@ -1,4 +1,3 @@
-
 package com.jim_project.interprete.parser.loopmodel;
 
 import com.jim_project.interprete.parser.AnalizadorLexico;
@@ -11,21 +10,13 @@ import com.jim_project.interprete.parser.AnalizadorLexico;
 %extends AnalizadorLexico
 
 %{
-
   private LoopParser yyparser;
-
-  /** constructor del analizador sintáctico
-  *** acepta como parámetro el lector de caracteres a usar
-  **/
 
   public LoopLex(java.io.Reader r, LoopParser p) {
     this(r);
     yyparser = p;
   }
-  
-
 %}
-
 
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
