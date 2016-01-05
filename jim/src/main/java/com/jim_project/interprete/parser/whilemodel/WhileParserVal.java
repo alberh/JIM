@@ -5,72 +5,67 @@
 package com.jim_project.interprete.parser.whilemodel;
 
 /**
- * BYACC/J Semantic Value for parser: WhileParser
- * This class provides some of the functionality
- * of the yacc/C 'union' directive
+ * BYACC/J Semantic Value for parser: WhileParser This class provides some of
+ * the functionality of the yacc/C 'union' directive
  */
-public class WhileParserVal
-{
-/**
- * integer value of this 'union'
- */
-public int ival;
+public class WhileParserVal {
 
-/**
- * double value of this 'union'
- */
-public double dval;
+    /**
+     * integer value of this 'union'
+     */
+    public int ival;
 
-/**
- * string value of this 'union'
- */
-public String sval;
+    /**
+     * double value of this 'union'
+     */
+    public double dval;
 
-/**
- * object value of this 'union'
- */
-public Object obj;
+    /**
+     * string value of this 'union'
+     */
+    public String sval;
+
+    /**
+     * object value of this 'union'
+     */
+    public Object obj;
 
 //#############################################
 //## C O N S T R U C T O R S
 //#############################################
-/**
- * Initialize me without a value
- */
-public WhileParserVal()
-{
-}
-/**
- * Initialize me as an int
- */
-public WhileParserVal(int val)
-{
-  ival=val;
-}
+    /**
+     * Initialize me without a value
+     */
+    public WhileParserVal() {
+    }
 
-/**
- * Initialize me as a double
- */
-public WhileParserVal(double val)
-{
-  dval=val;
-}
+    /**
+     * Initialize me as an int
+     */
+    public WhileParserVal(int val) {
+        ival = val;
+    }
 
-/**
- * Initialize me as a string
- */
-public WhileParserVal(String val)
-{
-  sval=val;
-}
+    /**
+     * Initialize me as a double
+     */
+    public WhileParserVal(double val) {
+        dval = val;
+    }
 
-/**
- * Initialize me as an Object
- */
-public WhileParserVal(Object val)
-{
-  obj=val;
-}
+    /**
+     * Initialize me as a string
+     */
+    public WhileParserVal(String val) {
+        sval = val;
+    }
+
+    /**
+     * Initialize me as an Object
+     */
+    public WhileParserVal(Object val) {
+        obj = val;
+    }
 }//end class
 
 //#############################################

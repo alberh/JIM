@@ -8,7 +8,7 @@ public class GestorEtiquetas extends GestorComponentes {
 
     private HashMap<String, Etiqueta> _etiquetas;
     private int _indiceUltimaA;
-    
+
     public GestorEtiquetas(Ambito ambito) {
         super(ambito);
         _etiquetas = new HashMap<>();

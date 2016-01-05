@@ -32,7 +32,7 @@ public class ArgumentosPrograma {
      * Los parámetros de entrada del programa.
      */
     public String[] parametros;
-    
+
     /**
      * El objetivo final del programa: ejecutar o expandir el código.
      */

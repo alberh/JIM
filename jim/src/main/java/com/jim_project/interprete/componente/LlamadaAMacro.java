@@ -18,8 +18,10 @@ public class LlamadaAMacro extends Componente {
 
     /**
      * Constructor de clase.
+     *
      * @param linea La línea en la que se encuentra la llamada.
-     * @param idVariableSalida La variable a la que se asignará el resultado de la llamada.
+     * @param idVariableSalida La variable a la que se asignará el resultado de
+     * la llamada.
      * @param idMacro El identificador de la macro.
      */
     public LlamadaAMacro(int linea,
@@ -34,6 +36,7 @@ public class LlamadaAMacro extends Componente {
 
     /**
      * Devuelve el número de línea en el que se encuentra la llamada a macro.
+     *
      * @return El número de línea en el que se encuentra.
      */
     public int linea() {
@@ -42,6 +45,7 @@ public class LlamadaAMacro extends Componente {
 
     /**
      * Devuelve el identificador de la destino de la asignación de la llamada.
+     *
      * @return El identificador de la variable de salida.
      */
     public String idVariableSalida() {
@@ -50,6 +54,7 @@ public class LlamadaAMacro extends Componente {
 
     /**
      * Devuelve los parámetros de entrada de la llamada a macro.
+     *
      * @return Los parámetros de entrada.
      */
     public ArrayList<String> parametros() {

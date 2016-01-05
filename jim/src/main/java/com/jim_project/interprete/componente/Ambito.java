@@ -11,11 +11,10 @@ import com.jim_project.interprete.util.gestor.GestorVariables;
 import java.util.Arrays;
 
 /**
- * Clase que abstrae el concepto de ámbito de ejecución.
- * Mantiene información sobre las variables, bucles, etiquetas y llamadas
- * a macros que se dan en el ámbito que representa y se encarga de su gestión
- * y puesta en ejecución.
- * 
+ * Clase que abstrae el concepto de ámbito de ejecución. Mantiene información
+ * sobre las variables, bucles, etiquetas y llamadas a macros que se dan en el
+ * ámbito que representa y se encarga de su gestión y puesta en ejecución.
+ *
  * @author Alberto García González
  */
 public class Ambito extends Componente {
@@ -34,8 +33,9 @@ public class Ambito extends Componente {
 
     /**
      * Constructor de clase.
-     * @param programa Referencia al programa que contiene el {@link GestorAmbitos}
-     * al que pertenece este ámbito.
+     *
+     * @param programa Referencia al programa que contiene el
+     * {@link GestorAmbitos} al que pertenece este ámbito.
      * @param parametrosEntrada Los parámetros de entrada del ámbito.
      * @param macroAsociada La macro asociada al ámbito.
      * @param profundidad La profundidad del ámbito.
@@ -57,8 +57,9 @@ public class Ambito extends Componente {
 
     /**
      * Constructor de clase.
-     * @param programa Referencia al programa que contiene el {@link GestorAmbitos}
-     * al que pertenece este ámbito.
+     *
+     * @param programa Referencia al programa que contiene el
+     * {@link GestorAmbitos} al que pertenece este ámbito.
      * @param parametrosEntrada Los parámetros de entrada del ámbito.
      * @param lineas Las líneas del programa a ejecutar.
      */
@@ -90,6 +91,7 @@ public class Ambito extends Componente {
 
     /**
      * Devuelve una referencia al controlador de ejecución asociado al ámbito.
+     *
      * @return El {@link ControladorEjecucion} del ámbito.
      */
     public ControladorEjecucion controladorEjecucion() {
@@ -98,6 +100,7 @@ public class Ambito extends Componente {
 
     /**
      * Devuelve una referencia al gestor de variables del ámbito.
+     *
      * @return El {@link GestorVariables} del ámbito.
      */
     public GestorVariables gestorVariables() {
@@ -106,6 +109,7 @@ public class Ambito extends Componente {
 
     /**
      * Devuelve una referencia al gestor de bucles del ámbito.
+     *
      * @return El {@link GestorBucles} del ámbito.
      */
     public GestorBucles gestorBucles() {
@@ -114,6 +118,7 @@ public class Ambito extends Componente {
 
     /**
      * Devuelve una referencia al gestor de etiquetas del ámbito.
+     *
      * @return El {@link GestorEtiquetas} del ámbito.
      */
     public GestorEtiquetas gestorEtiquetas() {
@@ -122,6 +127,7 @@ public class Ambito extends Componente {
 
     /**
      * Devuelve una referencia al gestor de llamadas a macro del ámbito.
+     *
      * @return El {@link GestorLlamadasAMacro} del ámbito.
      */
     public GestorLlamadasAMacro gestorLlamadasAMacro() {
@@ -131,7 +137,9 @@ public class Ambito extends Componente {
     /**
      * Devuelve una referencia al programa al que pertenece el gestor de ámbitos
      * que contiene este ámbito.
-     * @return El {@link Programa} cuyo {@link GestorAmbitos} contiene este ámbito.
+     *
+     * @return El {@link Programa} cuyo {@link GestorAmbitos} contiene este
+     * ámbito.
      */
     public Programa programa() {
         return _programa;
@@ -139,6 +147,7 @@ public class Ambito extends Componente {
 
     /**
      * Devuelve los parámetros de entrada del ámbito.
+     *
      * @return Los parámetros de entrada del ámbito.
      */
     public String[] parametrosEntrada() {
@@ -147,15 +156,16 @@ public class Ambito extends Componente {
 
     /**
      * Devuelve la macro asociada al ámbito.
+     *
      * @return La macro asociada al ámbito.
      */
     public Macro macroAsociada() {
         return _macroAsociada;
     }
 
-    
     /**
      * Devuelve la profundad del ámbito.
+     *
      * @return La profundidad del ámbito.
      */
     public int profundidad() {
@@ -163,26 +173,31 @@ public class Ambito extends Componente {
     }
 
     /**
-     * Método bandera que sirve para comprobar si el ámbito tiene una macro asociada.
-     * Un ámbito tiene macro asociada si ha sido creado para representar el espacio de
-     * ejecución de una macro. En el caso del ámbito raíz, que ejecuta el código del
-     * programa, el ámbito no tiene macro asociada.
-     * @return true, si el ámbito tiene macro asociada; false, en caso contrario.
+     * Método bandera que sirve para comprobar si el ámbito tiene una macro
+     * asociada. Un ámbito tiene macro asociada si ha sido creado para
+     * representar el espacio de ejecución de una macro. En el caso del ámbito
+     * raíz, que ejecuta el código del programa, el ámbito no tiene macro
+     * asociada.
+     *
+     * @return true, si el ámbito tiene macro asociada; false, en caso
+     * contrario.
      */
     public boolean tieneMacroAsociada() {
         return _macroAsociada != null;
     }
 
     /**
-     * Pone en marcha la ejecución del ámbito a través de su {@link ControladorEjecucion}.
+     * Pone en marcha la ejecución del ámbito a través de su
+     * {@link ControladorEjecucion}.
      */
     public void iniciar() {
         _controladorEjecucion.iniciar(_parametrosEntrada);
     }
-    
+
     /**
-     * Expande las llamadas a macro del código o macro asociada al ámbito, haciendo
-     * uso de su {@link ControladorEjecucion}.
+     * Expande las llamadas a macro del código o macro asociada al ámbito,
+     * haciendo uso de su {@link ControladorEjecucion}.
+     *
      * @return El resultante tras la expansión de macros.
      */
     public String expandir() {
@@ -190,13 +205,16 @@ public class Ambito extends Componente {
     }
 
     /**
-     * Devuelve una cadena que representa el estado de la memoria del ámbito.
-     * La cadena de salida tiene la siguiente forma:<br/>
+     * Devuelve una cadena que representa el estado de la memoria del ámbito. La
+     * cadena de salida tiene la siguiente forma:<br/>
      * (K, &ltX<sub>1</sub> = V<sub>1</sub>, ..., X<sub>N</sub> = V<sub>N</sub>,
-     * Z<sub>1</sub> = V<sub>N+1</sub>, ..., Z<sub>M</sub> = V<sub>N+M</sub>, Y = V<sub>Y</sub>&gt),<br/>
-     * donde K el siguiente número de línea a ejecutar y cada una de las asignaciones
-     * de la serie representan el valor de cada variable de entrada,
-     * local y de salida en el momento en el que se realiza la consulta.
+     * Z<sub>1</sub> = V<sub>N+1</sub>, ..., Z<sub>M</sub> = V<sub>N+M</sub>, Y
+     * = V<sub>Y</sub>&gt),<br/>
+     * donde K el siguiente número de línea a ejecutar y cada una de las
+     * asignaciones de la serie representan el valor de cada variable de
+     * entrada, local y de salida en el momento en el que se realiza la
+     * consulta.
+     *
      * @return Una cadena que representa el estado de la memoria del ámbito.
      */
     public String estadoMemoria() {
@@ -206,7 +224,7 @@ public class Ambito extends Componente {
         if (linea == 0) {
             linea = 1;
         }
-        
+
         sb.append("(").append(linea).append(", <");
 
         ArrayList<Variable> variables = _gestorVariables.variablesEntrada();
@@ -251,6 +269,7 @@ public class Ambito extends Componente {
 
     /**
      * Devuelve el resultado almacenado en la variable de salida del ámbito.
+     *
      * @return El resultado del ámbito.
      */
     public int resultado() {
@@ -258,7 +277,8 @@ public class Ambito extends Componente {
     }
 
     /**
-     * Limpia todos los gestores del ámbito, dejándolo listo para ser reutilizado.
+     * Limpia todos los gestores del ámbito, dejándolo listo para ser
+     * reutilizado.
      */
     public void limpiar() {
         _gestorVariables.limpiar();

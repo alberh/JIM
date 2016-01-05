@@ -8,10 +8,11 @@ import com.jim_project.interprete.parser.analizadormacros.MacrosParser;
 /**
  * Clase abstracta que sirve como base para las clases de los analizadores
  * gramaticales generados por la herramenta byacc/j.
+ *
  * @author Alberto García González
  */
 public abstract class Parser {
-    
+
     /**
      * Referencia al analizador léxico con el que trabaja.
      */
@@ -28,11 +29,12 @@ public abstract class Parser {
      * Referencia al programa en ejecución.
      */
     protected Programa _programa;
-    
+
     /**
      * Constructor de clase, utilizado únicamente por {@link MacrosParser} antes
-     * de la creación de ningún ámbito, por lo que recibe una referencia al programa
-     * en ejecución.
+     * de la creación de ningún ámbito, por lo que recibe una referencia al
+     * programa en ejecución.
+     *
      * @param programa El programa en ejecución.
      */
     public Parser(Programa programa) {
@@ -40,11 +42,12 @@ public abstract class Parser {
         _controladorEjecucion = null;
         _ambito = null;
     }
-    
+
     /**
-     * Constructor de clase, utilizado por los parsers del analizador previo y los de
-     * los modelos. Recibe una referencia al controlador de ejecución que ha creado
-     * este parser.
+     * Constructor de clase, utilizado por los parsers del analizador previo y
+     * los de los modelos. Recibe una referencia al controlador de ejecución que
+     * ha creado este parser.
+     *
      * @param controladorEjecucion El controlador de ejecución que lo contiene.
      */
     public Parser(ControladorEjecucion controladorEjecucion) {
@@ -58,17 +61,19 @@ public abstract class Parser {
             _programa = null;
         }
     }
-    
+
     /**
      * Devuelve el analizador léxico asociado.
+     *
      * @return El analizador léxico asociado.
      */
     public AnalizadorLexico analizadorLexico() {
         return _analizadorLexico;
     }
-    
+
     /**
      * Devuelve el controlador de ejecución asociado.
+     *
      * @return El controlador de ejecución asociado.
      */
     public ControladorEjecucion controladorEjecucion() {
@@ -77,6 +82,7 @@ public abstract class Parser {
 
     /**
      * Devuelve el ámbito asociado.
+     *
      * @return El ámbito asociado.
      */
     public Ambito ambito() {
@@ -85,6 +91,7 @@ public abstract class Parser {
 
     /**
      * Devuelve el programa asociado.
+     *
      * @return El programa asociado.
      */
     public Programa programa() {
@@ -92,8 +99,10 @@ public abstract class Parser {
     }
 
     /**
-     * Método utilizado para hacer público el método {@code yyparse()}, que está marcado
-     * como protegido debido a que así está marcado en las clases generadas por byacc/j.
+     * Método utilizado para hacer público el método {@code yyparse()}, que está
+     * marcado como protegido debido a que así está marcado en las clases
+     * generadas por byacc/j.
+     *
      * @return El valor devuelto por {@link Parser#yylex()}.
      * @see Parser#yylex()
      */
@@ -101,12 +110,14 @@ public abstract class Parser {
 
     /**
      * Devuelve el siguiente tóken del analizador léxico.
+     *
      * @return El siguiente tóken del analizador léxico.
      */
     protected abstract int yylex();
 
     /**
      * Método utilizado para gestionar errores de forma detallada.
+     *
      * @param descripcion Descripción del error.
      * @param yystate Estado del autómata.
      * @param token Tóken leído.
@@ -115,6 +126,7 @@ public abstract class Parser {
 
     /**
      * Método utilizado para gestionar errores de forma general.
+     *
      * @param descripcion Descripción del error.
      */
     public void yyerror(String descripcion) {

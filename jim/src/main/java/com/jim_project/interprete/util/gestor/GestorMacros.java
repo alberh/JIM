@@ -128,7 +128,7 @@ public class GestorMacros extends GestorComponentes {
             String vAntigua = variablesEntrada.get(i).toUpperCase();
             vAuxiliar = ambitoRaiz.gestorVariables().nuevaVariable(Variable.Tipo.LOCAL);
             String vNueva = vAuxiliar.tokenTipo() + "_" + vAuxiliar.indice();
-            
+
             reemplazosEntrada.put(vAntigua, vNueva);
         }
 
@@ -136,7 +136,7 @@ public class GestorMacros extends GestorComponentes {
             String vAntigua = variablesLocales.get(i);
             vAuxiliar = ambitoRaiz.gestorVariables().nuevaVariable(Variable.Tipo.LOCAL);
             String vNueva = vAuxiliar.tokenTipo() + "_" + vAuxiliar.indice();
-            
+
             reemplazosLocales.put(vAntigua, vNueva);
         }
 
@@ -160,7 +160,7 @@ public class GestorMacros extends GestorComponentes {
         for (int i = 0; i < variablesEntrada.size(); ++i) {
             vAntigua = variablesEntrada.get(i);
             vNueva = reemplazosEntrada.get(vAntigua);
-            
+
             asignaciones += vNueva + " <- "
                     + parametrosEntrada.get(i).toUpperCase() + separador;
         }
@@ -221,7 +221,7 @@ public class GestorMacros extends GestorComponentes {
         expansion = expansion.replace("_", "");
         return expansion + "\n# Fin expansión de " + idMacro + separador;
     }
-    
+
     public void cargarMacros() {
         comprobarDirectoriosMacros();
         _programa.etapa(ControladorEjecucion.Etapa.CARGANDO_MACROS);
@@ -317,7 +317,7 @@ public class GestorMacros extends GestorComponentes {
             }
         }
     }
-    
+
     @Override
     public void limpiar() {
         _macros.clear();
@@ -332,7 +332,7 @@ public class GestorMacros extends GestorComponentes {
     public boolean vacio() {
         return _macros.isEmpty();
     }
-    
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

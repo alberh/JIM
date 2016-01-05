@@ -241,7 +241,7 @@ public class ControladorEjecucion {
                 if (!linea.trim().isEmpty()) {
                     ++_instruccionesEjecutadas;
                 }
-                
+
                 try {
                     lex.yyclose();
                 } catch (Exception ex) {

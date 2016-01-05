@@ -61,7 +61,7 @@ public class Configuracion {
                 Error.alCargarConfiguracion(ficheroConfig.getAbsolutePath());
             }
         }
-        
+
         return this;
     }
 

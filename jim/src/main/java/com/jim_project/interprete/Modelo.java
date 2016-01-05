@@ -4,8 +4,9 @@ import com.jim_project.interprete.util.Configuracion;
 import com.jim_project.interprete.util.Error;
 
 /**
- * Clase que abstrae el concepto de modelo de computación, almacenando información
- * sobre su tipo y la ruta al directorio de macros del modelo.
+ * Clase que abstrae el concepto de modelo de computación, almacenando
+ * información sobre su tipo y la ruta al directorio de macros del modelo.
+ *
  * @author Alberto García González
  */
 public class Modelo {
@@ -18,7 +19,8 @@ public class Modelo {
     public enum Tipo {
 
         /**
-         * El analizador previo se considera un modelo para facilitar el diseño del programa.
+         * El analizador previo se considera un modelo para facilitar el diseño
+         * del programa.
          */
         PREVIO,
         /**
@@ -40,6 +42,7 @@ public class Modelo {
 
     /**
      * Constructor de clase.
+     *
      * @param nombre El nombre del modelo.
      * @param configuracion Una referencia a la configuración del programa.
      */
@@ -76,7 +79,7 @@ public class Modelo {
                 case WHILE:
                     _ruta = _configuracion.rutaMacrosWhile();
                     break;
-                    
+
                 default:
                     _ruta = null;
             }
@@ -88,6 +91,7 @@ public class Modelo {
 
     /**
      * Devuelve el tipo del modelo.
+     *
      * @return El tipo del modelo, o {@code null} si el {@link Modelo} no se ha
      * inicializado correctamente.
      */
@@ -96,10 +100,11 @@ public class Modelo {
     }
 
     /**
-     * Devuelve la ruta al directorio de macros asociado al modelo definida
-     * en la {@link Configuracion}.
-     * @return La ruta al directorio de macros asociado al modelo,
-     * o {@code null} si el {@link Modelo} no se ha inicializado correctamente.
+     * Devuelve la ruta al directorio de macros asociado al modelo definida en
+     * la {@link Configuracion}.
+     *
+     * @return La ruta al directorio de macros asociado al modelo, o
+     * {@code null} si el {@link Modelo} no se ha inicializado correctamente.
      */
     public String ruta() {
         return _ruta;

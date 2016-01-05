@@ -4,8 +4,9 @@ import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.gestor.GestorVariables;
 
 /**
- * Clase que abstrae el concepto de variable del programa.
- * Mantiene información sobre su tipo, valor e íncide.
+ * Clase que abstrae el concepto de variable del programa. Mantiene información
+ * sobre su tipo, valor e íncide.
+ *
  * @author Alberto García González
  */
 public class Variable extends Componente {
@@ -35,6 +36,7 @@ public class Variable extends Componente {
 
     /**
      * Constructor de clase.
+     *
      * @param id El identificador de la variable.
      * @param gestorVariables Una referencia al gestor que la contiene.
      */
@@ -44,6 +46,7 @@ public class Variable extends Componente {
 
     /**
      * Constructor de clase.
+     *
      * @param id El identificador de la variable.
      * @param valor El valor de la variable.
      * @param gestorVariables Una referencia al gestor que la contiene.
@@ -52,7 +55,7 @@ public class Variable extends Componente {
         super(Variable.normalizarID(id), gestorVariables);
 
         _valor = valor;
-        
+
         char charTipo = _id.toUpperCase().charAt(0);
         switch (charTipo) {
             case 'X':
@@ -71,7 +74,7 @@ public class Variable extends Componente {
                 Error.deTipoDeVariableNoValido(charTipo);
                 _tipo = null;
         }
-        
+
         if (_id.equals("Y")) {
             _indice = 1;
         } else {
@@ -86,6 +89,7 @@ public class Variable extends Componente {
 
     /**
      * Devuelve el tipo de la variable.
+     *
      * @return El tipo de la variable.
      */
     public Tipo tipo() {
@@ -93,9 +97,10 @@ public class Variable extends Componente {
     }
 
     /**
-     * Devuelve el carácter que representa el tipo de la variable.
-     * Los posibles tipos son: 'X' para las variables de entrada, 'Z' para las
-     * locales e 'Y' para la variable de salida.
+     * Devuelve el carácter que representa el tipo de la variable. Los posibles
+     * tipos son: 'X' para las variables de entrada, 'Z' para las locales e 'Y'
+     * para la variable de salida.
+     *
      * @return El carácter que representa el tipo de la variable.
      */
     public char tokenTipo() {
@@ -115,6 +120,7 @@ public class Variable extends Componente {
 
     /**
      * Devuelve el índice de la variable.
+     *
      * @return El índice de la variable.
      */
     public int indice() {
@@ -123,6 +129,7 @@ public class Variable extends Componente {
 
     /**
      * Devuelve el valor de la variable.
+     *
      * @return El valor de la variable.
      */
     public int valor() {
@@ -130,8 +137,9 @@ public class Variable extends Componente {
     }
 
     /**
-     * Asigna un nuevo valor a la variable.
-     * Si nuevoValor es negativo, se le asignará el valor 0.
+     * Asigna un nuevo valor a la variable. Si nuevoValor es negativo, se le
+     * asignará el valor 0.
+     *
      * @param nuevoValor El nuevo valor de la variable.
      */
     public void valor(int nuevoValor) {
@@ -139,9 +147,9 @@ public class Variable extends Componente {
     }
 
     /**
-     * Realiza un incremento unitario sobre el valor de la variable.
-     * Si el valor de la variable alcanza el máximo permitido por un entero,
-     * no se modificará.
+     * Realiza un incremento unitario sobre el valor de la variable. Si el valor
+     * de la variable alcanza el máximo permitido por un entero, no se
+     * modificará.
      */
     public void incremento() {
         if (_valor < Integer.MAX_VALUE) {
@@ -150,8 +158,8 @@ public class Variable extends Componente {
     }
 
     /**
-     * Realiza un decremento unitario sobre el valor de la variable.
-     * Si el valor de la variable es 0, no se modificará.
+     * Realiza un decremento unitario sobre el valor de la variable. Si el valor
+     * de la variable es 0, no se modificará.
      */
     public void decremento() {
         if (_valor > 0) {
@@ -162,6 +170,7 @@ public class Variable extends Componente {
     /**
      * Devuelve una cadena que representa la variable mediante su identificador
      * y su valor.
+     *
      * @return Una cadena que representa la variable.
      */
     @Override
@@ -173,6 +182,7 @@ public class Variable extends Componente {
      * Método encargado de normalizar el identificador de una variable,
      * cambiando a mayúsculas su grupo y añadiendo el subíndice 1 cuando sea
      * necesario.
+     *
      * @param id El identificador de la variable.
      * @return El identificador normalizado.
      */

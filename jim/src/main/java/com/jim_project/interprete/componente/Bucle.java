@@ -3,10 +3,9 @@ package com.jim_project.interprete.componente;
 import com.jim_project.interprete.util.gestor.GestorBucles;
 
 /**
- * Clase que abstrae el concepto de bucle dentro del programa.
- * Se encarga de mantener la línea inicial y final del bucle,
- * así como un contador interno para facilitar la simulación de
- * los bucles del modelo Loop.
+ * Clase que abstrae el concepto de bucle dentro del programa. Se encarga de
+ * mantener la línea inicial y final del bucle, así como un contador interno
+ * para facilitar la simulación de los bucles del modelo Loop.
  */
 public class Bucle extends Componente {
 
@@ -16,9 +15,11 @@ public class Bucle extends Componente {
 
     /**
      * Constructor de clase.
+     *
      * @param lineaInicio El número de línea inicial del bucle.
      * @param lineaFin El número de línea final del bucle.
-     * @param gestorBucles Una referencia al gestor de bucles que contiene este bucle.
+     * @param gestorBucles Una referencia al gestor de bucles que contiene este
+     * bucle.
      */
     public Bucle(int lineaInicio, int lineaFin, GestorBucles gestorBucles) {
         super("[" + lineaInicio + ":" + lineaFin + "]", gestorBucles);
@@ -30,6 +31,7 @@ public class Bucle extends Componente {
 
     /**
      * Devuelve la línea inicial del bucle.
+     *
      * @return La línea inicial del bucle.
      */
     public int lineaInicio() {
@@ -38,6 +40,7 @@ public class Bucle extends Componente {
 
     /**
      * Devuelve la línea final del bucle.
+     *
      * @return La línea final del bucle.
      */
     public int lineaFin() {
@@ -46,6 +49,7 @@ public class Bucle extends Componente {
 
     /**
      * Devuelve el valor actual del contador del bucle.
+     *
      * @return El valor del contador del bucle.
      */
     public int contador() {
@@ -54,6 +58,7 @@ public class Bucle extends Componente {
 
     /**
      * Establece el valor del contador del bucle.
+     *
      * @param nuevoValor El nuevo valor para el contador del bucle.
      */
     public void contador(int nuevoValor) {
@@ -62,7 +67,9 @@ public class Bucle extends Componente {
 
     /**
      * Comprueba si el contador del bucle está siendo utilizado.
-     * @return true, si el contador del bucle ha sido inciado; false en caso contrario.
+     *
+     * @return true, si el contador del bucle ha sido inciado; false en caso
+     * contrario.
      */
     public boolean contadorEnUso() {
         return _contador != -1;
@@ -86,6 +93,7 @@ public class Bucle extends Componente {
 
     /**
      * Devuelve una cadena que representa este objeto según su identificador.
+     *
      * @return El identificador del bucle.
      */
     @Override

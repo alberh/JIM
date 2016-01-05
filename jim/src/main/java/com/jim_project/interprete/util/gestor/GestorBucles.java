@@ -10,17 +10,17 @@ public class GestorBucles extends GestorComponentes {
 
     private HashMap<Integer, Bucle> _buclesLineaInicio;
     private HashMap<Integer, Bucle> _buclesLineaFin;
-    
+
     private Stack<Integer> _lineasInicioBucles;
 
     public GestorBucles(Ambito ambito) {
         super(ambito);
-        
+
         _buclesLineaInicio = new HashMap<>();
         _buclesLineaFin = new HashMap<>();
         _lineasInicioBucles = new Stack<>();
     }
-    
+
     /**
      * Mantiene el número de línea indicado en memoria, representando el número
      * de línea inicial de un objeto Bucle que será creado más tarde, una vez se
@@ -41,7 +41,7 @@ public class GestorBucles extends GestorComponentes {
         if (!_lineasInicioBucles.empty()) {
             int lineaInicio = _lineasInicioBucles.pop();
             Bucle bucle = new Bucle(lineaInicio, lineaFin, this);
-            
+
             _buclesLineaInicio.put(lineaInicio, bucle);
             _buclesLineaFin.put(lineaFin, bucle);
         } else {

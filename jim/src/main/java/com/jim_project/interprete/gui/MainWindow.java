@@ -22,9 +22,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.text.DefaultCaret;
 
+/**
+ *
+ * @author Alberto García González
+ */
 public class MainWindow extends javax.swing.JFrame {
 
-    private Configuracion _configuracion;
+    private final Configuracion _configuracion;
     private final JFileChooser _fc;
     private final File _ficheroTemporal;
     private final Programa _programa;
@@ -33,6 +37,9 @@ public class MainWindow extends javax.swing.JFrame {
     private SwingWorker _worker;
     private int _numeroLineasAnterior;
 
+    /**
+     *
+     */
     public MainWindow() {
         _configuracion = new Configuracion().cargar();
 

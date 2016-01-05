@@ -18,7 +18,7 @@ public class LAcciones extends Acciones {
             saltoIncondicional(idEtiqueta, true);
         }
     }
-    
+
     public void saltoIncondicional(Object idEtiqueta) {
         saltoIncondicional(idEtiqueta, false);
     }
@@ -28,7 +28,7 @@ public class LAcciones extends Acciones {
         if (!vieneDeCondicion && !_ambito.programa().macrosPermitidas()) {
             _ambito.programa().error().deLlamadasAMacroNoPermitidas();
         }
-        
+
         Etiqueta et = obtenerEtiqueta(idEtiqueta);
 
         if (et == null) {

@@ -82,14 +82,16 @@ public class Programa {
 
     /**
      * Devuelve los argumentos del programa.
+     *
      * @return Los argumentos del programa.
      */
     public ArgumentosPrograma argumentos() {
         return _argumentos;
     }
-    
+
     /**
      * Define nuevos argumentos de entrada para el programa.
+     *
      * @param argumentos Los nuevos argumentos de entrada.
      */
     public void argumentos(ArgumentosPrograma argumentos) {
@@ -189,6 +191,7 @@ public class Programa {
 
     /**
      * Cambia la etapa del programa.
+     *
      * @param etapa La nueva etapa del programa.
      */
     public void etapa(ControladorEjecucion.Etapa etapa) {

@@ -6,7 +6,7 @@ import com.jim_project.interprete.parser.Acciones;
 import com.jim_project.interprete.componente.Ambito;
 
 public class WhileAcciones extends Acciones {
-    
+
     public WhileAcciones(Ambito ambito) {
         super(ambito);
     }

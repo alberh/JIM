@@ -22,14 +22,14 @@ public class GestorAmbitos extends GestorComponentes {
 
         return _ultimoAmbito;
     }
-    
+
     public Ambito nuevoAmbito(String[] parametrosEntrada, ArrayList<String> lineas) {
         _ultimoAmbito = new Ambito(_programa, parametrosEntrada, lineas);
         _ambitos.add(_ultimoAmbito);
 
         return _ultimoAmbito;
     }
-    
+
     public void eliminarUltimoAmbito() {
         if (!_ambitos.isEmpty()) {
             _ambitos.remove(_ultimoAmbito);
@@ -41,7 +41,7 @@ public class GestorAmbitos extends GestorComponentes {
             }
         }
     }
-    
+
     public ArrayList<Ambito> ambitos() {
         return _ambitos;
     }
@@ -53,7 +53,7 @@ public class GestorAmbitos extends GestorComponentes {
             return null;
         }
     }
-    
+
     public Ambito ambitoPadre(int profundidad) {
         if (profundidad > 0 && profundidad < _ambitos.size()) {
             return _ambitos.get(profundidad - 1);
@@ -65,14 +65,14 @@ public class GestorAmbitos extends GestorComponentes {
     public Ambito ambitoActual() {
         return _ultimoAmbito;
     }
-    
+
     public boolean ambitoActualEsRaiz() {
         if (_ultimoAmbito != null && !_ambitos.isEmpty()) {
             return _ultimoAmbito == _ambitos.get(0);
         } else {
             return false;
         }
-        
+
     }
 
     @Override

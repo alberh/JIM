@@ -6,8 +6,9 @@ import com.jim_project.interprete.util.gestor.GestorMacros;
 /**
  * Clase que abstrae el concepto de macro. Mantiene información sobre el fichero
  * en el que ha sido definida, su código y varias listas que almacenan los
- * identificadores de los componentes encontrados en la macro, para facilitar
- * su expansión en caso de ser necesario.
+ * identificadores de los componentes encontrados en la macro, para facilitar su
+ * expansión en caso de ser necesario.
+ *
  * @author Alberto García González
  */
 public class Macro extends Componente {
@@ -24,6 +25,7 @@ public class Macro extends Componente {
 
     /**
      * Constructor de clase.
+     *
      * @param id El identificador de la macro.
      * @param gestorMacros Una referencia al gestor de macros que la contiene.
      */
@@ -45,6 +47,7 @@ public class Macro extends Componente {
 
     /**
      * Devuelve la ruta al fichero en el que ha sido definida.
+     *
      * @return La ruta al fichero en el que ha sido definida.
      */
     public String definidaEn() {
@@ -53,6 +56,7 @@ public class Macro extends Componente {
 
     /**
      * Devuelve el cuerpo o código de la macro.
+     *
      * @return El cuerpo de la macro.
      */
     public String cuerpo() {
@@ -61,6 +65,7 @@ public class Macro extends Componente {
 
     /**
      * Define el cuerpo o código de la macro.
+     *
      * @param cuerpo El nuevo código de la macro.
      */
     public void cuerpo(String cuerpo) {
@@ -68,35 +73,43 @@ public class Macro extends Componente {
     }
 
     /**
-     * Devuelve la lista de identificadores de las variables de entrada utilizadas en la macro.
-     * @return La lista de identificadores de las variables de entrada utilizadas en la macro.
+     * Devuelve la lista de identificadores de las variables de entrada
+     * utilizadas en la macro.
+     *
+     * @return La lista de identificadores de las variables de entrada
+     * utilizadas en la macro.
      */
     public ArrayList<String> variablesEntrada() {
         return _variablesEntrada;
     }
 
     /**
-     * Devuelve la lista de identificadores de las variables locales utilizadas en la macro.
-     * @return La lista de identificadores de las variables locales utilizadas en la macro.
+     * Devuelve la lista de identificadores de las variables locales utilizadas
+     * en la macro.
+     *
+     * @return La lista de identificadores de las variables locales utilizadas
+     * en la macro.
      */
     public ArrayList<String> variablesLocales() {
         return _variablesLocales;
     }
 
     /**
-     * Devuelve la lista de identificadores de las etiquetas que indican una posición
-     * a la que se puede saltar en el cuerpo de la macro.
-     * @return La lista de identificadores de las etiquetas que indican una posición
-     * a la que se puede saltar.
+     * Devuelve la lista de identificadores de las etiquetas que indican una
+     * posición a la que se puede saltar en el cuerpo de la macro.
+     *
+     * @return La lista de identificadores de las etiquetas que indican una
+     * posición a la que se puede saltar.
      */
     public ArrayList<String> etiquetas() {
         return _etiquetas;
     }
 
     /**
-     * Devuelve la lista de identificadores de las etiquetas especificados en las
-     * distintas instrucciones de salto.
-     * @return La lista de identificadores de las etiquetas especificados en las
+     * Devuelve la lista de identificadores de las etiquetas especificados en
+     * las distintas instrucciones de salto.
+     *
+     * @return La lista de identificadores de las etiquetas especificadas en las
      * distintas instrucciones de salto.
      */
     public ArrayList<String> etiquetasSalto() {
@@ -104,10 +117,11 @@ public class Macro extends Componente {
     }
 
     /**
-     * Devuelve la lista de identificadores de las distintas llamadas a
-     * macro del cuerpo de la macro.
-     * @return La lista de identificadores de las distintas llamadas a
-     * macro del cuerpo de la macro.
+     * Devuelve la lista de identificadores de las distintas llamadas a macro
+     * del cuerpo de la macro.
+     *
+     * @return La lista de identificadores de las distintas llamadas a macro del
+     * cuerpo de la macro.
      */
     public ArrayList<String> llamadasAMacros() {
         return _llamadasAMacros;
@@ -115,6 +129,7 @@ public class Macro extends Componente {
 
     /**
      * Registra una nueva variable en la macro.
+     *
      * @param id El identificador de la macro.
      */
     public void nuevaVariable(String id) {
@@ -139,7 +154,9 @@ public class Macro extends Componente {
     }
 
     /**
-     * Registra una nueva etiqueta indicadora de una posición de salto en la macro.
+     * Registra una nueva etiqueta indicadora de una posición de salto en la
+     * macro.
+     *
      * @param id El identificador de la etiqueta.
      */
     public void nuevaEtiqueta(String id) {
@@ -150,7 +167,9 @@ public class Macro extends Componente {
     }
 
     /**
-     * Registra una nueva etiqueta especificada en una instrucción de salto en la macro.
+     * Registra una nueva etiqueta especificada en una instrucción de salto en
+     * la macro.
+     *
      * @param id El identificador de la etiqueta.
      */
     public void nuevaEtiquetaGoTo(String id) {
@@ -162,6 +181,7 @@ public class Macro extends Componente {
 
     /**
      * Registra una nueva llamada a macro en la macro.
+     *
      * @param id El identificador de la llamada a macro.
      */
     public void nuevaLlamadaAMacro(String id) {
@@ -170,8 +190,9 @@ public class Macro extends Componente {
     }
 
     /**
-     * Devuelve una cadena que representa la macro.
-     * Ésta contiene su identificador, su cuerpo y todos sus componentes.
+     * Devuelve una cadena que representa la macro. Ésta contiene su
+     * identificador, su cuerpo y todos sus componentes.
+     *
      * @return Una cadena que representa la macro y sus componentes.
      */
     @Override

@@ -25,7 +25,7 @@ public class PrevioAcciones extends Acciones {
     public void definirFinBucle(Object numeroLinea) {
         _ambito.gestorBucles().definirLineaFin(obtenerValor(numeroLinea));
     }
-    
+
     public void definirLlamadaAMacro(Object idMacro) {
         _ambito.gestorLlamadasAMacro().definirLlamadaAMacro(_ultimaVariableAsignada, idMacro);
     }

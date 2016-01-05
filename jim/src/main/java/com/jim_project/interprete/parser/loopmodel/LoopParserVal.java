@@ -5,72 +5,67 @@
 package com.jim_project.interprete.parser.loopmodel;
 
 /**
- * BYACC/J Semantic Value for parser: LoopParser
- * This class provides some of the functionality
- * of the yacc/C 'union' directive
+ * BYACC/J Semantic Value for parser: LoopParser This class provides some of the
+ * functionality of the yacc/C 'union' directive
  */
-public class LoopParserVal
-{
-/**
- * integer value of this 'union'
- */
-public int ival;
+public class LoopParserVal {
 
-/**
- * double value of this 'union'
- */
-public double dval;
+    /**
+     * integer value of this 'union'
+     */
+    public int ival;
 
-/**
- * string value of this 'union'
- */
-public String sval;
+    /**
+     * double value of this 'union'
+     */
+    public double dval;
 
-/**
- * object value of this 'union'
- */
-public Object obj;
+    /**
+     * string value of this 'union'
+     */
+    public String sval;
+
+    /**
+     * object value of this 'union'
+     */
+    public Object obj;
 
 //#############################################
 //## C O N S T R U C T O R S
 //#############################################
-/**
- * Initialize me without a value
- */
-public LoopParserVal()
-{
-}
-/**
- * Initialize me as an int
- */
-public LoopParserVal(int val)
-{
-  ival=val;
-}
+    /**
+     * Initialize me without a value
+     */
+    public LoopParserVal() {
+    }
 
-/**
- * Initialize me as a double
- */
-public LoopParserVal(double val)
-{
-  dval=val;
-}
+    /**
+     * Initialize me as an int
+     */
+    public LoopParserVal(int val) {
+        ival = val;
+    }
 
-/**
- * Initialize me as a string
- */
-public LoopParserVal(String val)
-{
-  sval=val;
-}
+    /**
+     * Initialize me as a double
+     */
+    public LoopParserVal(double val) {
+        dval = val;
+    }
 
-/**
- * Initialize me as an Object
- */
-public LoopParserVal(Object val)
-{
-  obj=val;
-}
+    /**
+     * Initialize me as a string
+     */
+    public LoopParserVal(String val) {
+        sval = val;
+    }
+
+    /**
+     * Initialize me as an Object
+     */
+    public LoopParserVal(Object val) {
+        obj = val;
+    }
 }//end class
 
 //#############################################
