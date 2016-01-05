@@ -14,7 +14,7 @@ public class Modelo {
     private Configuracion _configuracion;
 
     /**
-     * Enumeración utilizada para distinguir los distintos modelos.
+     * Define los distintos modelos.
      */
     public enum Tipo {
 

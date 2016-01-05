@@ -4,10 +4,12 @@ import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Programa.Estado;
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.util.gestor.GestorAmbitos;
+import java.util.concurrent.RunnableFuture;
 
 /**
  * Clase que ofrece una colección de métodos preparados para mostrar distintos
  * mensajes de error dependiendo del contexto.
+ *
  * @author Alberto García González
  */
 public class Error {
@@ -16,6 +18,7 @@ public class Error {
 
     /**
      * Constructor de clase.
+     *
      * @param programa Referencia al programa en ejecución.
      */
     public Error(Programa programa) {
@@ -74,11 +77,6 @@ public class Error {
 
                 ambito = ambitoPadre;
                 ambitoPadre = gA.ambitoPadre(ambito.profundidad());
-                /*
-                 puntos(ambito, sb);
-                 sb.append("Error en " + ambito.macroAsociada().id() + ", línea "
-                 + ambito.controladorEjecucion().numeroLineaActual());
-                 */
             }
 
             linea = gA.ambitoRaiz().controladorEjecucion().numeroLineaActual();
@@ -96,195 +94,344 @@ public class Error {
     }
 
     // Programa
-    public void alCargarPrograma(String f) {
-        imprimir("Error 0: No se pudo abrir el fichero \"" + f + "\".");
+    /**
+     * Error al cargar el programa.
+     *
+     * @param fichero El nombre del fichero.
+     */
+    public void alCargarPrograma(String fichero) {
+        imprimir("Error 0: No se pudo abrir el fichero \"" + fichero + "\".");
     }
 
-    public void alCargarMacros(String f) {
-        imprimir("Error 1: No se pudo leer el fichero de macros \"" + f + "\".");
+    /**
+     * Error al cargar macros.
+     *
+     * @param fichero El nombre del fichero.
+     */
+    public void alCargarMacros(String fichero) {
+        imprimir("Error 1: No se pudo leer el fichero de macros \"" + fichero + "\".");
     }
 
-    public void alComprobarDirectorio(String d) {
-        imprimir("Error 2: \"" + d + "\" no es un directorio.");
+    /**
+     * Error al comprobar directorio.
+     *
+     * @param directorio El nombre del directorio.
+     */
+    public void alComprobarDirectorio(String directorio) {
+        imprimir("Error 2: \"" + directorio + "\" no es un directorio.");
     }
 
-    public void alObtenerListaFicherosMacros(String d) {
+    /**
+     * Error al obtener la lista de ficheros de macros.
+     *
+     * @param directorio El nombre del directorio.
+     */
+    public void alObtenerListaFicherosMacros(String directorio) {
         imprimir("Error 3: No se pudo obtener la lista de ficheros de macros "
-                + "del directorio \"" + d + "\".");
+                + "del directorio \"" + directorio + "\".");
     }
 
+    /**
+     * Error al crear los directorios de macros.
+     */
     public void alCrearDirectoriosMacros() {
         imprimir("Error 4: No se pudieron crear los directorios de macros.");
     }
 
-    public void alComprobarAccesoDirectorio(String s) {
-        imprimir("Error 5: No se acceder al directorio \"" + s + "\".");
+    /**
+     * Error al comprobar el acceso a un directorio.
+     *
+     * @param directorio El nombre del directorio.
+     */
+    public void alComprobarAccesoDirectorio(String directorio) {
+        imprimir("Error 5: No se acceder al directorio \"" + directorio + "\".");
     }
 
+    /**
+     * Error de ejecución.
+     */
     public void deEjecucion() {
         imprimir("Error 6: Ocurrió algún error en el módulo intérprete durante"
                 + " la ejecución del programa.");
     }
 
     // Macro
+    /**
+     * Error de macro no definida.
+     *
+     * @param numeroLinea El número de línea del error.
+     * @param id El identificador de la macro.
+     */
     public void deMacroNoDefinida(int numeroLinea, String id) {
         imprimir("Error 7: La macro " + id + " no ha sido definida.",
                 numeroLinea);
     }
 
+    /**
+     * Error en el número de parámetros en una llamada a macro.
+     *
+     * @param numeroLinea El número de línea del error.
+     * @param id El identificador de la macro.
+     * @param numVariablesEntrada El número de variables de entrada de la macro.
+     * @param numParametros El número de parámetros con el que ha sido llamada
+     * la macro.
+     */
     public void enNumeroParametros(int numeroLinea, String id,
             int numVariablesEntrada, int numParametros) {
 
-        imprimir("Error 8 : La macro " + id + " requiere "
+        imprimir("Error 8: La macro " + id + " requiere "
                 + numVariablesEntrada + " parámetros de entrada y ha sido "
                 + "llamada con " + numParametros + ".", numeroLinea);
     }
 
-    public void deRecursividadEnMacros(int n, String id) {
-        imprimir("Error 9: No se ha podido expandir la macro \"" + id
-                + "\" porque contiene llamadas recursivas.",
-                n);
-    }
-
     // Main
+    /**
+     * Error de modelo no válido.
+     *
+     * @param modelo El identificador del modelo.
+     */
     public static void deModeloNoValido(String modelo) {
-        Error.imprimir("Error 10: No se pudo instanciar el modelo \"" + modelo + "\".");
+        Error.imprimir("Error 9: No se pudo instanciar el modelo \"" + modelo + "\".");
     }
 
-    public static void deParametrosNoIndicados() {
-        Error.imprimir("Error 11: Debe indicar al menos el modelo de computación "
-                + "para iniciar el programa.");
-    }
-
+    /**
+     * Error de parámetros no indicados en el fichero.
+     *
+     * @param fichero El nombre del fichero.
+     */
     public static void deParametrosNoIndicadosEnFichero(String fichero) {
-        Error.imprimir("Error 12: No se han encontrado argumentos suficientes "
+        Error.imprimir("Error 10: No se han encontrado argumentos suficientes "
                 + "en el fichero \"" + fichero + "\". "
                 + "Debe indicar al menos el modelo de computación.");
     }
 
+    /**
+     * Error de modificador no válido.
+     *
+     * @param modificador El carácter correspondiente al modificador.
+     */
     public static void deModificadorNoValido(char modificador) {
-        Error.imprimir("Error 13: Modificador " + modificador + " no válido.");
+        Error.imprimir("Error 11: Modificador " + modificador + " no válido.");
     }
 
+    /**
+     * Error de parámetro no válido.
+     *
+     * @param param El parámetro no válido.
+     */
     public static void deParametroNoValido(String param) {
-        Error.imprimir("Error 14: Parámetro " + param + " no válido. "
+        Error.imprimir("Error 12: Parámetro " + param + " no válido. "
                 + "Todos los parámetros de entrada del programa deben ser "
                 + "numéricos.");
     }
 
-    public static void deFicheroNoExistente(String f) {
-        Error.imprimir("Error 15: El fichero \"" + f + "\" no existe.");
+    /**
+     * Error de fichero no existente.
+     *
+     * @param fichero El nombre del fichero.
+     */
+    public static void deFicheroNoExistente(String fichero) {
+        Error.imprimir("Error 13: El fichero \"" + fichero + "\" no existe.");
     }
 
     // GUI
-    public static void alCargarProgramaGUI(String f) {
-        Error.imprimir("Error 16: No se pudo abrir el fichero \"" + f + "\".");
+    /**
+     * Error al cargar el programa desde la GUI.
+     *
+     * @param fichero El nombre del fichero.
+     */
+    public static void alCargarProgramaGUI(String fichero) {
+        Error.imprimir("Error 14: No se pudo abrir el fichero \"" + fichero + "\".");
     }
 
-    public static void alGuardarFichero(String f) {
-        Error.imprimir("Error 17: No se pudo guardar el fichero \"" + f + "\".");
+    /**
+     * Error al guardar un fichero desde la GUI.
+     *
+     * @param fichero El nombre del fichero.
+     */
+    public static void alGuardarFichero(String fichero) {
+        Error.imprimir("Error 15: No se pudo guardar el fichero \"" + fichero + "\".");
     }
 
+    /**
+     * Error al guardar el fichero temporal.
+     */
     public static void alGuardarFicheroTemporal() {
-        Error.imprimir("Error 18: No se pudo guardar el fichero temporal.");
+        Error.imprimir("Error 16: No se pudo guardar el fichero temporal.");
     }
 
+    /**
+     * Error de desbordamiento de pila.
+     */
     public static void deDesbordamientoDePila() {
-        Error.imprimir("Error 19: Desbordamiento de pila.");
+        Error.imprimir("Error 17: Desbordamiento de pila.");
     }
 
+    /**
+     * Error de {@link RunnableFuture} interrumpido.
+     */
     public static void deTrabajadorInterrumpido() {
-        Error.imprimir("Error 20: La ejecución finalizó de forma inesperada.");
+        Error.imprimir("Error 18: La ejecución finalizó de forma inesperada.");
     }
 
     // Variable
-    public static void alObtenerIndiceDeVariable(String v) {
-        imprimir("Error 21: No se pudo obtener el índice de la variable "
-                + "\"" + v + "\"."); //, numeroLineaActual());
-    }
-    /*
-     public static void deIdentificadorDeVariableVacio() {
-     // imprimir("Error 24: Nombre de variable vacío.");
-     }
+    /**
+     * Error al obtener el índice de una variable.
+     *
+     * @param variable El identificador de la variable.
      */
+    public void alObtenerIndiceDeVariable(String variable) {
+        imprimir("Error 19: No se pudo obtener el índice de la variable "
+                + "\"" + variable + "\".",
+                numeroLineaActual());
+    }
 
-    public static void deTipoDeVariableNoValido(char tipo) {
-        // Para después del refactor
-        imprimir("Error 22: Tipo de variable '" + tipo + "' no válido.");
-        // , numeroLineaActual());
+    /**
+     * Error de tipo de variable no válido.
+     *
+     * @param tipo El carácter identificativo del tipo de variable.
+     */
+    public void deTipoDeVariableNoValido(char tipo) {
+        imprimir("Error 20: Tipo de variable '" + tipo + "' no válido.",
+                numeroLineaActual());
     }
 
     // Bucle
-    public void alCerrarBucle(int linea) {
-        imprimir("Error 23: No se esperaba cierre de bucle en la línea "
+    /**
+     * Error al definir el cierre o final de un bucle.
+     *
+     * @param linea El número del cierre del bucle.
+     */
+    public void alDefinirCierreBucle(int linea) {
+        imprimir("Error 21: No se esperaba cierre de bucle en la línea "
                 + linea + ".");
     }
 
     // Etiqueta
+    /**
+     * Error de identificador de etiqueta vacío.
+     */
     public static void deIdentificadorDeEtiquetaVacio() {
-        imprimir("Error 24: Nombre de etiqueta vacío.");
+        imprimir("Error 22: Nombre de etiqueta vacío.");
     }
 
-    public void alObtenerIndiceDeEtiqueta(String e) {
-        imprimir("Error 25: No se pudo obtener el índice de la etiqueta "
-                + "\"" + e + "\".", numeroLineaActual());
-    }
-
-    // Configuración
-    public static void alCargarConfiguracion(String f) {
-        imprimir("Error 26: No se pudo cargar el fichero de configuración \""
-                + f + "\".");
-    }
-
-    public static void alCrearFicheroConfiguracion(String f) {
-        imprimir("Error 27: No se pudo crear el fichero de configuración \""
-                + f + "\".");
-    }
-
-    public static void alGuardarConfiguracion() {
-        imprimir("Error 28: No se pudo guardar la configuración.");
-    }
-
-    // Acciones
-    public void deLlamadasAMacroNoPermitidas() {
-        imprimir("Error 29: No se permite la ejecución de macros.",
+    /**
+     * Error al obtener el índice de una etiqueta.
+     *
+     * @param etiqueta El identificador de la etiqueta.
+     */
+    public void alObtenerIndiceDeEtiqueta(String etiqueta) {
+        imprimir("Error 23: No se pudo obtener el índice de la etiqueta "
+                + "\"" + etiqueta + "\".",
                 numeroLineaActual());
     }
 
+    // Configuración
+    /**
+     * Error al cargar la configuración.
+     *
+     * @param fichero El nombre del fichero de configuración.
+     */
+    public static void alCargarConfiguracion(String fichero) {
+        imprimir("Error 24: No se pudo cargar el fichero de configuración \""
+                + fichero + "\".");
+    }
+
+    /**
+     * Error al crear el fichero de configuración.
+     *
+     * @param fichero El nombre del fichero de configuración.
+     */
+    public static void alCrearFicheroConfiguracion(String fichero) {
+        imprimir("Error 25: No se pudo crear el fichero de configuración \""
+                + fichero + "\".");
+    }
+
+    /**
+     * Error al guardar la configuración.
+     */
+    public static void alGuardarConfiguracion() {
+        imprimir("Error 26: No se pudo guardar la configuración.");
+    }
+
+    // Acciones
+    /**
+     * Error de llamadas a macro no permitidas.
+     */
+    public void deLlamadasAMacroNoPermitidas() {
+        imprimir("Error 27: No se permite la ejecución de macros.",
+                numeroLineaActual());
+    }
+
+    /**
+     * Error de valor máximo de un entero superado.
+     */
     public void deMaximoEnteroSuperado() {
-        imprimir("Error 30: Se ha superado el valor máximo almacenable en una "
+        imprimir("Error 28: Se ha superado el valor máximo almacenable en una "
                 + "variable (" + Integer.MAX_VALUE + ").", numeroLineaActual());
     }
 
     // Analizador léxico
-    public void deCaracterNoReconocido(int n, String s) {
-        imprimir("Error 31: Carácter '" + s + "' no reconocido.", n);
+    /**
+     * Error de carácter no reconocido.
+     *
+     * @param linea El número de línea del error.
+     * @param caracter El carácter no reconocido.
+     */
+    public void deCaracterNoReconocido(int linea, String caracter) {
+        imprimir("Error 29: Carácter '" + caracter + "' no reconocido.", linea);
     }
 
-    public void deCaracterNoReconocido(String s) {
-        deCaracterNoReconocido(numeroLineaActual(), s);
+    /**
+     * Realiza una llamada a
+     * {@link Error#deCaracterNoReconocido(int, java.lang.String)} con el número
+     * de línea actual y usnado {@code caracter} como segundo argumento.
+     *
+     * @param caracter El carácter no reconocido.
+     * @see Error#deCaracterNoReconocido(int, java.lang.String)
+     */
+    public void deCaracterNoReconocido(String caracter) {
+        deCaracterNoReconocido(numeroLineaActual(), caracter);
     }
 
-    public void deDefinicionInterior(int numeroLinea) {
-        imprimir("Error 32: Las definiciones de macros "
-                + "no pueden ser anidadas.", numeroLinea);
+    /**
+     * Error de definición de macro interior.
+     *
+     * @param linea El número de línea del error.
+     */
+    public void deDefinicionInterior(int linea) {
+        imprimir("Error 30: Las definiciones de macros "
+                + "no pueden ser anidadas.", linea);
     }
 
     // Analizador sintáctico
+    /**
+     * Realiza una llamada a {@link Error#deTokenNoEsperado(int, java.lang.String, java.lang.String)
+     * con el número de línea actual, {@code token} y {@code descripcion}.
+     * @param token El tóken leído.
+     * @param descripcion La descripción del error.
+     */
     public void deTokenNoEsperado(String token, String descripcion) {
         deTokenNoEsperado(numeroLineaActual(), token, descripcion);
     }
 
-    public void deTokenNoEsperado(int numeroLinea, String token, String descripcion) {
+    /**
+     * Error de tóken no esperado.
+     * 
+     * @param linea El número de línea del error.
+     * @param token El tóken leído.
+     * @param descripcion La descripción del error.
+     */
+    public void deTokenNoEsperado(int linea, String token, String descripcion) {
         switch (token) {
             case "IDMACRO":
-                imprimir("Error 33: Identificador no reconocido.",
-                        numeroLinea);
+                imprimir("Error 31: Identificador no reconocido.",
+                        linea);
                 break;
 
             case "FLECHA":
-                imprimir("Error 34: Asignación no esperada.",
-                        numeroLinea);
+                imprimir("Error 32: Asignación no esperada.",
+                        linea);
                 break;
             /*
              case "end-of-file":
@@ -297,30 +444,34 @@ public class Error {
              break;
              */
             default:
-                imprimir("Error 19: Error sintáctico.",
-                        numeroLinea);
+                imprimir("Error 33: Error sintáctico.",
+                        linea);
                 break;
         }
     }
 
+    /**
+     * Error de tóken no esperado.
+     * @param descripcion La descripción del error.
+     */
     public void deTokenNoEsperado(String descripcion) {
-        deTokenNoEsperado(numeroLineaActual(), descripcion);
-    }
-
-    public void deTokenNoEsperado(int numeroLinea, String descripcion) {
-        /*
-         imprimir("Error 20: No se esperaba un símbolo. Descripción: "
-         + descripcion, numeroLinea);
-         */
         Error.estadoErroneo(_programa);
     }
 
+    /**
+     * Realiza una llamada a {@link Error#deESEnAnalizadorLexico(int)} con el
+     * número de línea actual.
+     */
     public void deESEnAnalizadorLexico() {
         deESEnAnalizadorLexico(numeroLineaActual());
     }
 
+    /**
+     * Error de entrada/salida en el analizador léxico.
+     * @param numeroLinea 
+     */
     public void deESEnAnalizadorLexico(int numeroLinea) {
-        imprimir("Error 36: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", numeroLinea);
+        imprimir("Error 34: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", numeroLinea);
     }
 
     // Operaciones

@@ -17,63 +17,97 @@ import com.jim_project.interprete.parser.whilemodel.WhileParser;
 import com.jim_project.interprete.util.gestor.GestorAmbitos;
 import java.util.Arrays;
 
+/**
+ * Clase encargada de mantener el flujo de ejecución mientras se interpreta el
+ * código de un ámbito.
+ *
+ * @author Alberto García González
+ */
 public class ControladorEjecucion {
-
-    public enum Etapa {
-
-        INICIANDO, CARGANDO_FICHERO, COMPROBANDO_DIRECTORIO_MACROS,
-        CARGANDO_MACROS, ANALIZANDO, EXPANDIENDO_MACROS, INTERPRETANDO
-    };
 
     private int _instruccionesEjecutadas;
     private final Ambito _ambito;
     private final Programa _programa;
-
-    private Etapa _etapa;
 
     private final ArrayList<String> _lineas;
     private int _lineaActual;
     private boolean _salto;
 
     private StringBuilder _traza;
-    // En cargar:
-    //      _lineaActual = numeroLineas();
 
+    /**
+     * Constructor de clase.
+     *
+     * @param ambito Referencia al ámbito que contiene este controlador de
+     * ejecución.
+     * @param lineas Lista de cadenas con el código del ámbito.
+     */
     public ControladorEjecucion(Ambito ambito, ArrayList<String> lineas) {
         _instruccionesEjecutadas = 0;
         _ambito = ambito;
         _programa = _ambito.programa();
         _lineas = lineas;
-        // para que devuelva uno vacío si es el caso
+        _lineaActual = _lineas.size();
+        _salto = false;
         _traza = new StringBuilder();
     }
 
+    /**
+     * Devuelve el número de instrucciones ejecutadas.
+     *
+     * @return El número de instrucciones ejecutadas.
+     */
     public int instruccionesEjecutadas() {
         return _instruccionesEjecutadas;
     }
 
+    /**
+     * Añade {@code n} al contador de instrucciones ejecutadas.
+     *
+     * @param n El valor a sumar al contador. Si {@code n} es menor que 0, no se
+     * realizará la suma.
+     */
     public void sumarInstrucciones(int n) {
         if (n >= 0) {
             _instruccionesEjecutadas += n;
         }
     }
 
+    /**
+     * Devuelve el ámbito que contiene a este controlador de ejecución.
+     *
+     * @return Referencia al ámbito que contiene a este controlador de
+     * ejecución.
+     */
     public Ambito ambito() {
         return _ambito;
     }
 
+    /**
+     * Concatena la traza que mantiene este controlador de ejecución con la
+     * traza de ámbitos hijos ya terminados.
+     *
+     * @param traza La traza a concatenar.
+     */
     public void trazarAmbito(String traza) {
         _traza.append(traza);
     }
 
+    /**
+     * Devuelve la traza de este controlador de ejecución.
+     *
+     * @return La traza de este controlador de ejecución.
+     */
     public String traza() {
         return _traza.toString();
     }
 
-    public Etapa etapa() {
-        return _etapa;
-    }
-
+    /**
+     * Pone en marcha el controlador de ejecución, asignando los parámetros a
+     * las variables de entrada del ámbito e interpretando el código asociado.
+     *
+     * @param parametros Los parámetros de entrada del ámbito.
+     */
     public void iniciar(String[] parametros) {
         Ambito ambitoRaiz = _programa.gestorAmbitos().ambitoRaiz();
         Ambito ambitoPadre = _programa.gestorAmbitos().ambitoPadre(_ambito.profundidad());
@@ -122,6 +156,12 @@ public class ControladorEjecucion {
         }
     }
 
+    /**
+     * Expande las llamadas a macro del ámbito asociado y devuelve una cadena
+     * con el código resultante tras la expansión.
+     *
+     * @return El código resultante tras la expansión.
+     */
     public String expandir() {
         if (_ambito.programa().verbose()) {
             System.out.println("Analizando el programa");
@@ -186,7 +226,6 @@ public class ControladorEjecucion {
     }
 
     private void previo() {
-        _etapa = Etapa.ANALIZANDO;
         if (_programa.estadoOk()) {
             ejecutar(Modelo.Tipo.PREVIO);
         }
@@ -214,10 +253,6 @@ public class ControladorEjecucion {
     }
 
     private void ejecutar(Modelo.Tipo tipoParser) {
-        if (tipoParser != Modelo.Tipo.PREVIO) {
-            _etapa = Etapa.INTERPRETANDO;
-        }
-
         _traza = new StringBuilder("[");
         _lineaActual = 0;
         _salto = false;
@@ -272,10 +307,20 @@ public class ControladorEjecucion {
         _traza.append("]");
     }
 
+    /**
+     * Devuelve el número de línea que está siendo interpretada.
+     *
+     * @return El número de línea que está siendo ejecutada.
+     */
     public int numeroLineaActual() {
         return _lineaActual;
     }
 
+    /**
+     * Cambia el número de línea a interpretar.
+     *
+     * @param n El nuevo número de línea.
+     */
     public void numeroLineaActual(int n) {
         if (lineaValida(n)) {
             _lineaActual = n;
@@ -284,15 +329,30 @@ public class ControladorEjecucion {
         }
     }
 
+    /**
+     * Devuelve la línea que está siendo ejecutada.
+     *
+     * @return La línea que está siendo ejecutada, o {@code null} si la ejecución
+     * ha finalizado.
+     */
     public String lineaActual() {
         return finalizado() ? null : _lineas.get(_lineaActual - 1);
     }
 
+    /**
+     * Avanza a la línea siguiente y la devuelve.
+     * @return La línea siguiente.
+     */
     public String lineaSiguiente() {
         numeroLineaActual(_lineaActual + 1);
         return lineaActual();
     }
 
+    /**
+     * Devuelve la n-ésima línea del código.
+     * @param n El número de linea a obtener.
+     * @return La línea del código.
+     */
     public String linea(int n) {
         if (lineaValida(n)) {
             return _lineas.get(n);
@@ -301,26 +361,54 @@ public class ControladorEjecucion {
         }
     }
 
+    /**
+     * Comprueba si un número de línea es válido. Un número de línea es válido
+     * si es mayor o igual a 1 y menor que el número de líneas + 1.
+     * @param numeroLinea El número de línea a comprobar.
+     * @return {@code true}, si el número es válido; {@code false}, en caso contrario.
+     */
     public boolean lineaValida(int numeroLinea) {
         return numeroLinea >= 1 && numeroLinea <= numeroLineas();
     }
 
+    /**
+     * Devuelve el número de líneas del código.
+     * @return El número de líneas del código.
+     */
     public int numeroLineas() {
         return _lineas.size();
     }
 
+    /**
+     * Devuelve las líneas del código.
+     * @return Las líneas del código.
+     */
     public ArrayList<String> lineas() {
         return _lineas;
     }
 
+    /**
+     * Detiene la ejecución del intérprete.
+     */
     public void terminar() {
         _lineaActual = numeroLineas() + 1;
     }
 
+    /**
+     * Comprueba si el programa ha finalizado.
+     * Se considera que el programa ha finalizado cuando el número de línea actual
+     * es mayor que el número de líneas.
+     * @return {@code true}, si el programa ha finalizado; {@code false}, en caso contrario.
+     */
     public boolean finalizado() {
         return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
     }
 
+    /**
+     * Cambia el número de línea actual al especificado e indica que se ha
+     * ejecutado una instrucción de salto.
+     * @param linea El número de línea al que saltar.
+     */
     public void salto(int linea) {
         numeroLineaActual(linea);
         _salto = true;

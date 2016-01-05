@@ -4,7 +4,6 @@ import com.jim_project.interprete.Programa.Objetivo;
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.util.Error;
 import com.jim_project.interprete.util.Configuracion;
-import com.jim_project.interprete.util.ControladorEjecucion;
 import java.io.File;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
@@ -37,8 +36,20 @@ public class Programa {
     };
 
     /**
-     * Define los objetivos posibles de haber creado e iniciado un
-     * {@link Programa}.
+     * Define las etapas del programa.
+     */
+    /*
+     public enum Etapa {
+
+     /**
+     * Etapa inicial, antes de la primera llamada al método {@link Programa#iniciar()}.
+     *
+     ESPERANDO, CARGANDO_FICHERO, COMPROBANDO_DIRECTORIO_MACROS,
+     CARGANDO_MACROS, ANALIZANDO, EXPANDIENDO_MACROS, INTERPRETANDO, TERMINADO
+     };
+     */
+    /**
+     * Define los posibles objetivos del programa. {@link Programa}.
      */
     public enum Objetivo {
 
@@ -57,7 +68,6 @@ public class Programa {
     private RunnableFuture<String> _worker;
 
     private String _ficheroEnProceso;
-    private ControladorEjecucion.Etapa _etapa;
     private final Error _error;
     private Estado _estado;
 
@@ -173,29 +183,6 @@ public class Programa {
      */
     public boolean estadoOk() {
         return _estado == Estado.OK;
-    }
-
-    /**
-     * Devuelve la etapa actual del programa.
-     *
-     * @return La etapa actual del programa.
-     * @see com.jim_project.interprete.util.ControladorEjecucion.Etapa
-     */
-    public ControladorEjecucion.Etapa etapa() {
-        if (_gestorAmbitos.count() <= 1) {
-            return _etapa;
-        } else {
-            return _gestorAmbitos.ambitoActual().controladorEjecucion().etapa();
-        }
-    }
-
-    /**
-     * Cambia la etapa del programa.
-     *
-     * @param etapa La nueva etapa del programa.
-     */
-    public void etapa(ControladorEjecucion.Etapa etapa) {
-        _etapa = etapa;
     }
 
     /**

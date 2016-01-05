@@ -45,7 +45,7 @@ public class GestorBucles extends GestorComponentes {
             _buclesLineaInicio.put(lineaInicio, bucle);
             _buclesLineaFin.put(lineaFin, bucle);
         } else {
-            _programa.error().alCerrarBucle(lineaFin);
+            _programa.error().alDefinirCierreBucle(lineaFin);
         }
     }
 

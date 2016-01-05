@@ -71,7 +71,7 @@ public class Variable extends Componente {
                 break;
 
             default:
-                Error.deTipoDeVariableNoValido(charTipo);
+                _gestor.ambito().programa().error().deTipoDeVariableNoValido(charTipo);
                 _tipo = null;
         }
 
@@ -82,7 +82,7 @@ public class Variable extends Componente {
                 _indice = Integer.parseInt(_id.substring(1));
             } catch (NumberFormatException ex) {
                 _indice = 0;
-                Error.alObtenerIndiceDeVariable(_id);
+                _gestor.ambito().programa().error().alObtenerIndiceDeVariable(_id);
             }
         }
     }

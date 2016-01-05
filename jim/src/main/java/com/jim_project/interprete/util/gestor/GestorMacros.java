@@ -224,7 +224,6 @@ public class GestorMacros extends GestorComponentes {
 
     public void cargarMacros() {
         comprobarDirectoriosMacros();
-        _programa.etapa(ControladorEjecucion.Etapa.CARGANDO_MACROS);
         if (_programa.argumentos().verbose) {
             System.out.println("Cargando macros");
         }
@@ -279,7 +278,6 @@ public class GestorMacros extends GestorComponentes {
     }
 
     private void comprobarDirectoriosMacros() {
-        _programa.etapa(ControladorEjecucion.Etapa.COMPROBANDO_DIRECTORIO_MACROS);
         if (_programa.argumentos().verbose) {
             System.out.println("Comprobando directorios de macros");
         }
