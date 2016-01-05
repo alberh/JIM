@@ -408,6 +408,7 @@ public class Error {
     /**
      * Realiza una llamada a {@link Error#deTokenNoEsperado(int, java.lang.String, java.lang.String)
      * con el número de línea actual, {@code token} y {@code descripcion}.
+     *
      * @param token El tóken leído.
      * @param descripcion La descripción del error.
      */
@@ -417,7 +418,7 @@ public class Error {
 
     /**
      * Error de tóken no esperado.
-     * 
+     *
      * @param linea El número de línea del error.
      * @param token El tóken leído.
      * @param descripcion La descripción del error.
@@ -452,6 +453,7 @@ public class Error {
 
     /**
      * Error de tóken no esperado.
+     *
      * @param descripcion La descripción del error.
      */
     public void deTokenNoEsperado(String descripcion) {
@@ -468,7 +470,8 @@ public class Error {
 
     /**
      * Error de entrada/salida en el analizador léxico.
-     * @param numeroLinea 
+     *
+     * @param numeroLinea
      */
     public void deESEnAnalizadorLexico(int numeroLinea) {
         imprimir("Error 34: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", numeroLinea);

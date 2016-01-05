@@ -4,11 +4,21 @@ import java.util.HashMap;
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.Etiqueta;
 
+/**
+ * Clase encargada de gestionar las etiquetas de un ámbito.
+ *
+ * @author Alberto García González
+ */
 public class GestorEtiquetas extends GestorComponentes {
 
-    private HashMap<String, Etiqueta> _etiquetas;
+    private final HashMap<String, Etiqueta> _etiquetas;
     private int _indiceUltimaA;
 
+    /**
+     * Constructor de clase.
+     *
+     * @param ambito Referencia al ámbito que contiene este gestor.
+     */
     public GestorEtiquetas(Ambito ambito) {
         super(ambito);
         _etiquetas = new HashMap<>();
@@ -16,7 +26,11 @@ public class GestorEtiquetas extends GestorComponentes {
     }
 
     /**
-     * Define una nueva etiqueta.
+     * Crea una nueva etiqueta y la añade al gestor.
+     *
+     * @param id El identificador de la etiqueta.
+     * @param linea El número de línea en el que está definida.
+     * @return Una referencia a la etiqueta recién creada.
      */
     public Etiqueta nuevaEtiqueta(String id, int linea) {
         Etiqueta et = new Etiqueta(id, linea, this);
@@ -35,8 +49,11 @@ public class GestorEtiquetas extends GestorComponentes {
     }
 
     /**
-     * Crea y devuelve una nueva etiqueta etiquetada como An, donde n es una
-     * unidad superior al mayor índice de cualquier etiqueta A creada.
+     * Crea una nueva etiqueta con grupo 'A' e índice igual a n + 1, siendo n
+     * igual al mayor índice de cualquier etiqueta del grupo 'A' almacenada en
+     * el gestor hasta el momento. La nueva etiqueta no es añadida al gestor.
+     *
+     * @return Una referencia a la etiqueta recién creada.
      */
     public Etiqueta nuevaEtiqueta() {
         ++_indiceUltimaA;
@@ -46,21 +63,18 @@ public class GestorEtiquetas extends GestorComponentes {
     }
 
     /**
-     * Obtiene una etiqueta previamente creada, según su identificador.
+     * Busca una etiqueta por su identificador.
+     *
+     * @param id El identificador de la etiqueta.
+     * @return Una referencia a la etiqueta buscada, si existe; {@code null} si
+     * no existe.
      */
     public Etiqueta obtenerEtiqueta(String id) {
         return _etiquetas.get(Etiqueta.normalizarID(id));
     }
 
     /**
-     * Devuelve el identificador de la última etiqueta A creada.
-     */
-    public String ultimaEtiqueta() {
-        return "A" + _indiceUltimaA;
-    }
-
-    /**
-     * Elimina todas las etiquetas.
+     * Elimina todas las etiquetas almacenadas en el gestor.
      */
     @Override
     public void limpiar() {
@@ -69,18 +83,21 @@ public class GestorEtiquetas extends GestorComponentes {
     }
 
     /**
-     * Imprime en pantalla todas las etiquetas.
+     * Devuelve el número de etiquetas almacenadas en el gestor.
+     *
+     * @return El número de etiquetas almacenadas en el gestor.
      */
-    @Override
-    public String toString() {
-        return _etiquetas + "\n";
-    }
-
     @Override
     public int count() {
         return _etiquetas.size();
     }
 
+    /**
+     * Comprueba si el gestor está vacío.
+     *
+     * @return {@code true}, si el gestor está vacío; {@code false}, si contiene
+     * alguna etiqueta.
+     */
     @Override
     public boolean vacio() {
         return _etiquetas.isEmpty();

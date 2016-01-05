@@ -10,7 +10,6 @@ import com.jim_project.interprete.componente.LlamadaAMacro;
 import com.jim_project.interprete.componente.Macro;
 import com.jim_project.interprete.componente.Variable;
 import com.jim_project.interprete.parser.analizadormacros.MacrosParser;
-import com.jim_project.interprete.util.ControladorEjecucion;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,15 +20,31 @@ import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Clase encargada de gestionar las macros cargadas en el programa.
+ *
+ * @author Alberto García González
+ */
 public class GestorMacros extends GestorComponentes {
 
-    private HashMap<String, Macro> _macros;
+    private final HashMap<String, Macro> _macros;
 
+    /**
+     * Constructor de clase.
+     *
+     * @param programa Referencia al programa en ejecución.
+     */
     public GestorMacros(Programa programa) {
         super(programa);
         _macros = new HashMap<>();
     }
 
+    /**
+     * Crea una nueva macro y la añade al gestor.
+     *
+     * @param id El identificador de la macro.
+     * @return Una referencia a la macro recién creada.
+     */
     public Macro nuevaMacro(String id) {
         Macro macro = new Macro(id, this);
         _macros.put(macro.id(), macro);
@@ -37,44 +52,31 @@ public class GestorMacros extends GestorComponentes {
         return macro;
     }
 
+    /**
+     * Busca una macro por su identificador.
+     *
+     * @param id El identificador de la macro.
+     * @return Una referencia a la macro buscada, o {@code null} en caso de no
+     * ser encontrada en el gestor.
+     */
     public Macro obtenerMacro(String id) {
         return _macros.get(id.toUpperCase());
     }
 
-    // Métodos estáticos
-    private boolean hayRecursividadEnMacros(Macro macro) {
-        return hayRecursividadEnMacros(macro, new ArrayList<>());
-    }
-
-    private boolean hayRecursividadEnMacros(Macro macro, ArrayList<String> marcas) {
-        String macroActual = macro.id();
-
-        if (marcas.contains(macroActual)) {
-            // se puede mejorar para que este método devuelva una lista
-            // de las macros que contienen recursividad (sería la lista marcas)
-            return true;
-        }
-        marcas.add(macroActual);
-
-        boolean hayRecursividad = false;
-        ArrayList<String> llamadas = macro.llamadasAMacros();
-
-        for (int i = 0; i < llamadas.size() && !hayRecursividad; ++i) {
-            Macro m = obtenerMacro(llamadas.get(i));
-            hayRecursividad = hayRecursividad || hayRecursividadEnMacros(m, marcas);
-        }
-        // si hay recursividad, no borrar
-        marcas.remove(macro.id());
-
-        return hayRecursividad;
-    }
-
-    public String expandir(LlamadaAMacro llamadaAMacro, int desplazamiento) {
+    /**
+     * Expande la llamada a macro indicada y devuelve el código resultante de su
+     * expansión.
+     *
+     * @param llamadaAMacro Referencia a la llamada a macro que será expandida.
+     * @return Una cadena con el código de la macro expandido, listo para ser
+     * insertado en el código desde el que ha sido llamada.
+     */
+    public String expandir(LlamadaAMacro llamadaAMacro) {
         String separador = System.getProperty("line.separator");
         String idMacro = llamadaAMacro.id();
         String ficheroMacro;
         ArrayList<String> parametrosEntrada = llamadaAMacro.parametros();
-        int numeroLinea = llamadaAMacro.linea() + desplazamiento;
+        int numeroLinea = llamadaAMacro.linea();// + desplazamiento;
 
         String idVariableSalida = llamadaAMacro.idVariableSalida().toUpperCase();
         String asignaciones = idVariableSalida + " <- 0" + separador;
@@ -222,6 +224,11 @@ public class GestorMacros extends GestorComponentes {
         return expansion + "\n# Fin expansión de " + idMacro + separador;
     }
 
+    /**
+     * Comprueba el directorio de macros comunes, los directorios de macros de
+     * cada modelo especificados en el fichero de configuración y carga en
+     * memoria todas las macros comunes y del modelo a simular.
+     */
     public void cargarMacros() {
         comprobarDirectoriosMacros();
         if (_programa.argumentos().verbose) {
@@ -316,31 +323,32 @@ public class GestorMacros extends GestorComponentes {
         }
     }
 
+    /**
+     * Elimina todas las macros almacenadas en el gestor.
+     */
     @Override
     public void limpiar() {
         _macros.clear();
     }
 
+    /**
+     * Devuelve el número de macros almacenado en el gestor.
+     *
+     * @return El número de macros almacenado en el gestor.
+     */
     @Override
     public int count() {
         return _macros.size();
     }
 
+    /**
+     * Comprueba si el gestor está vacío.
+     *
+     * @return {@code true}, si el gestor está vacío; {@code false}, si contiene
+     * alguna macro.
+     */
     @Override
     public boolean vacio() {
         return _macros.isEmpty();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        _macros.forEach(
-                (k, v) -> {
-                    sb.append(v);
-                }
-        );
-        sb.append("\n");
-
-        return sb.toString();
     }
 }

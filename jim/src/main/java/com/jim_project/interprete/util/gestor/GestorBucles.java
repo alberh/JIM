@@ -2,17 +2,25 @@ package com.jim_project.interprete.util.gestor;
 
 import java.util.HashMap;
 import java.util.Stack;
-import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.Bucle;
 
+/**
+ * Clase encargada de gestionar los bucles de un ámbito.
+ *
+ * @author Alberto García González
+ */
 public class GestorBucles extends GestorComponentes {
 
-    private HashMap<Integer, Bucle> _buclesLineaInicio;
-    private HashMap<Integer, Bucle> _buclesLineaFin;
+    private final HashMap<Integer, Bucle> _buclesLineaInicio;
+    private final HashMap<Integer, Bucle> _buclesLineaFin;
+    private final Stack<Integer> _lineasInicioBucles;
 
-    private Stack<Integer> _lineasInicioBucles;
-
+    /**
+     * Constructor de clase.
+     *
+     * @param ambito Referencia al ámbito al cual pertenece este gestor.
+     */
     public GestorBucles(Ambito ambito) {
         super(ambito);
 
@@ -22,49 +30,58 @@ public class GestorBucles extends GestorComponentes {
     }
 
     /**
-     * Mantiene el número de línea indicado en memoria, representando el número
-     * de línea inicial de un objeto Bucle que será creado más tarde, una vez se
-     * encuentre el número de línea de cierre y sea indicado con el método
-     * {@link #definirLineaFin(int) cerrar}.
+     * Comienza a definir un nuevo bucle dentro del gestor especificando su
+     * línea de inicio.
+     *
+     * @param linea El número de línea donde comienza el bucle en el código.
      */
-    public void definirLineaInicio(int lineaInicio) {
-        _lineasInicioBucles.push(lineaInicio);
+    public void definirLineaInicio(int linea) {
+        _lineasInicioBucles.push(linea);
     }
 
     /**
-     * Recupera la última línea de inicio de bucle indicada y crea un nuevo
-     * objeto Bucle representado por dicha línea de inicio y la línea de fin
-     * indicada por el parámetro lineaFin. El objeto creado es añadido a la
-     * colección de bucles.
+     * Termina la definición de un nuevo bucle en el gestor especificando su
+     * línea de cierre, creando finalmente el bucle y añadiéndolo al gestor.
+     *
+     * @param linea El número de línea donde termina el bucle en el código.
      */
-    public void definirLineaFin(int lineaFin) {
+    public void definirLineaFin(int linea) {
         if (!_lineasInicioBucles.empty()) {
             int lineaInicio = _lineasInicioBucles.pop();
-            Bucle bucle = new Bucle(lineaInicio, lineaFin, this);
+            Bucle bucle = new Bucle(lineaInicio, linea, this);
 
             _buclesLineaInicio.put(lineaInicio, bucle);
-            _buclesLineaFin.put(lineaFin, bucle);
+            _buclesLineaFin.put(linea, bucle);
         } else {
-            _programa.error().alDefinirCierreBucle(lineaFin);
+            _programa.error().alDefinirCierreBucle(linea);
         }
     }
 
     /**
-     * Devuelve el objeto Bucle que comience por la línea de inicio indicada.
+     * Busca un bucle en el gestor según su línea inicial.
+     *
+     * @param linea El número de línea de inicio del bucle.
+     * @return Una referencia al bucle que comienza en la línea {@code linea};
+     * {@code null} si no hay ningún bucle que comience en dicha línea.
      */
-    public Bucle obtenerBucleLineaInicio(int lineaInicio) {
-        return _buclesLineaInicio.get(lineaInicio);
+    public Bucle obtenerBucleLineaInicio(int linea) {
+        return _buclesLineaInicio.get(linea);
     }
 
     /**
-     * Devuelve el objeto Bucle que comience por la línea de fin indicada.
+     * Busca un bucle en el gestor según su línea final.
+     *
+     * @param linea El número de línea final del bucle.
+     * @return Una referencia al bucle que comienza en la línea {@code linea};
+     * {@code null} si no hay ningún bucle que termine en dicha línea.
      */
-    public Bucle obtenerBucleLineaFin(int lineaFin) {
-        return _buclesLineaFin.get(lineaFin);
+    public Bucle obtenerBucleLineaFin(int linea) {
+        return _buclesLineaFin.get(linea);
     }
 
     /**
-     * Borra todos los bucles creados.
+     * Elimina todos los bucles almacenados y las definiciones de bucles sin
+     * termianr.
      */
     @Override
     public void limpiar() {
@@ -74,20 +91,21 @@ public class GestorBucles extends GestorComponentes {
     }
 
     /**
-     * Devuelve una cadena con la representación de los bucles almacenados.
+     * Devuelve el número de bucles almacenados por el gestor.
+     *
+     * @return El número de bucles almacenados por el gestor.
      */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        _buclesLineaFin.forEach((k, v) -> sb.append(v).append("\n"));
-        return sb.toString();
-    }
-
     @Override
     public int count() {
         return _buclesLineaInicio.size();
     }
 
+    /**
+     * Comprueba si el gestor está vacío.
+     *
+     * @return {@code true}, si el gestor está vacío; {@code false}, si contiene
+     * algún bucle.
+     */
     @Override
     public boolean vacio() {
         return _buclesLineaInicio.isEmpty();

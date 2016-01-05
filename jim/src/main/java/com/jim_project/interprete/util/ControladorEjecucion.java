@@ -193,7 +193,7 @@ public class ControladorEjecucion {
                 }
 
                 //llamada.linea(llamada.linea() + desplazamiento);
-                String resultadoExpansion = _programa.gestorMacros().expandir(llamada, desplazamiento);
+                String resultadoExpansion = _programa.gestorMacros().expandir(llamada);
 
                 if (resultadoExpansion != null) {
                     ArrayList<String> lineasExpansion = new ArrayList<>(

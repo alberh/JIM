@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 /**
  * Clase que implementa un {@link Comparator} para poder comparar dos objetos {@link LlamadaAMacro}
- * según su número de línea a través del método {@link java.util.List#sort()}.
+ * según su número de línea a través del método {@link java.util.List#sort(java.util.Comparator)}.
  * @author Alberto García González
  */
 public class ComparadorLlamadasAMacro implements Comparator<LlamadaAMacro> {

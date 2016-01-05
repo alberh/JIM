@@ -14,15 +14,25 @@ class ComparadorVariables implements Comparator<Variable> {
     }
 }
 
+/**
+ * Clase encargada de gestionar las variables de un ámbito.
+ *
+ * @author Alberto García González
+ */
 public class GestorVariables extends GestorComponentes {
 
-    private HashMap<Integer, Variable> _variablesEntrada;
-    private HashMap<Integer, Variable> _variablesLocales;
-    private Variable _variableSalida;
+    private final HashMap<Integer, Variable> _variablesEntrada;
+    private final HashMap<Integer, Variable> _variablesLocales;
+    private final Variable _variableSalida;
 
     private int _mayorIndiceEntrada;
     private int _mayorIndiceLocal;
 
+    /**
+     * Constructor de clase.
+     *
+     * @param ambito Referencia al ámbito que contiene este gestor.
+     */
     public GestorVariables(Ambito ambito) {
         super(ambito);
 
@@ -34,10 +44,23 @@ public class GestorVariables extends GestorComponentes {
         _mayorIndiceLocal = 0;
     }
 
+    /**
+     * Crea una nueva variable con valor 0 y la añade al gestor.
+     *
+     * @param id El identificador de la variable.
+     * @return Una referencia a la variable recién creada.
+     */
     public Variable nuevaVariable(String id) {
         return nuevaVariable(id, 0);
     }
 
+    /**
+     * Crea una nueva variable con el valor indicado y la añade al gestor.
+     *
+     * @param id El identificador de la variable.
+     * @param valor El valor de la variable.
+     * @return Una referencia a la variable recién creada.
+     */
     public Variable nuevaVariable(String id, int valor) {
         Variable v = new Variable(id, valor, this);
         int indice = v.indice();
@@ -60,17 +83,34 @@ public class GestorVariables extends GestorComponentes {
                 break;
 
             case SALIDA:
-                _variableSalida = v;
+                _variableSalida.valor(v.valor());
                 break;
         }
 
         return v;
     }
 
+    /**
+     * Crea una nueva variable del tipo indicado, con valor 0 e índice = n+1,
+     * siendo n el mayor índice de una variable del mismo tipo almacenada en
+     * este gestor, y la añade al gestor.
+     *
+     * @param tipo El tipo de la variable.
+     * @return Una referencia a la variable recién creada.
+     */
     public Variable nuevaVariable(Variable.Tipo tipo) {
         return nuevaVariable(tipo, 0);
     }
 
+    /**
+     * Crea una nueva variable del tipo indicado y valor indicados e índice =
+     * n+1, siendo n el mayor índice de una variable del mismo tipo almacenada
+     * en este gestor, y la añade al gestor.
+     *
+     * @param tipo El tipo de la variable.
+     * @param valor El valor de la variable.
+     * @return Una referencia a la variable recién creada.
+     */
     public Variable nuevaVariable(Variable.Tipo tipo, int valor) {
         Variable variable = null;
 
@@ -97,6 +137,13 @@ public class GestorVariables extends GestorComponentes {
         return variable;
     }
 
+    /**
+     * Busca una variable por su identificador.
+     *
+     * @param id El identificador de la variable.
+     * @return Una referencia a la variable buscada, si se encuentra en el
+     * gestor; {@code null} si la variable no ha sido encontrada.
+     */
     public Variable obtenerVariable(String id) {
         Variable v = new Variable(id, this);
 
@@ -117,12 +164,22 @@ public class GestorVariables extends GestorComponentes {
         return v;
     }
 
+    /**
+     * Devuelve la lista de variables de entrada almacenadas en el gestor.
+     *
+     * @return La lista de variables de entrada almacenadas en el gestor.
+     */
     public ArrayList<Variable> variablesEntrada() {
         ArrayList<Variable> variables = new ArrayList<>(_variablesEntrada.values());
         variables.sort(new ComparadorVariables());
         return variables;
     }
 
+    /**
+     * Devuelve la lista de variables locales almacenadas en el gestor.
+     *
+     * @return La lista de variables locales almacenadas en el gestor.
+     */
     public ArrayList<Variable> variablesLocales() {
         ArrayList<Variable> variables = new ArrayList<>();
 
@@ -133,51 +190,44 @@ public class GestorVariables extends GestorComponentes {
         return variables;
     }
 
-    // Devuelve todas
-    /*
-     public ArrayList<Variable> variablesLocalesExp() {
-     ArrayList<Variable> variables = new ArrayList<>(_locales.values());
-     variables.sort(new ComparadorVariables());
-     return variables;
-     }
+    /**
+     * Devuelve la variable de salida del gestor.
+     *
+     * @return La variable de salida del gestor.
      */
     public Variable variableSalida() {
         return _variableSalida;
     }
 
+    /**
+     * Elimina todas las variables almacenadas en el gestor.
+     */
     @Override
     public void limpiar() {
         _variablesEntrada.clear();
         _variablesLocales.clear();
-        _variableSalida = new Variable("Y", this);
+        _variableSalida.valor(0);
 
         _mayorIndiceEntrada = 0;
         _mayorIndiceLocal = 0;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Variables de entrada").append("\n");
-        sb.append(_variablesEntrada).append("\n");
-        sb.append("\n");
-
-        sb.append("Variables locales").append("\n");
-        sb.append(_variablesLocales).append("\n");
-        sb.append("\n");
-
-        sb.append("Variable de salida").append("\n");
-        sb.append(_variableSalida).append("\n");
-        sb.append("\n");
-
-        return sb.toString();
-    }
-
+    /**
+     * Devuelve el número de variables almacenadas en el gestor.
+     *
+     * @return El número de variables almacenadas en el gestor.
+     */
     @Override
     public int count() {
         return _variablesEntrada.size() + _variablesLocales.size() + 1;
     }
 
+    /**
+     * Comprueba si el gestor está vacío.
+     *
+     * @return {@code true}, si el gestor está vacío; {@code false}, si contiene
+     * alguna variable.
+     */
     @Override
     public boolean vacio() {
         return false;
