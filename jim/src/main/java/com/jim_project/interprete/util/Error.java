@@ -452,15 +452,6 @@ public class Error {
     }
 
     /**
-     * Error de tóken no esperado.
-     *
-     * @param descripcion La descripción del error.
-     */
-    public void deTokenNoEsperado(String descripcion) {
-        Error.estadoErroneo(_programa);
-    }
-
-    /**
      * Realiza una llamada a {@link Error#deESEnAnalizadorLexico(int)} con el
      * número de línea actual.
      */

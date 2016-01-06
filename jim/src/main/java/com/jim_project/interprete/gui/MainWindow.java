@@ -17,12 +17,15 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.text.DefaultCaret;
 
 /**
+ * Clase que extiende {@link JFrame} para hacer de marco base para los
+ * componentes de la interfaz gráfica.
  *
  * @author Alberto García González
  */
@@ -38,7 +41,7 @@ public class MainWindow extends javax.swing.JFrame {
     private int _numeroLineasAnterior;
 
     /**
-     *
+     * Constructor de clase.
      */
     public MainWindow() {
         _configuracion = new Configuracion().cargar();
@@ -91,7 +94,7 @@ public class MainWindow extends javax.swing.JFrame {
         //menuProgramaModoFlexible.setSelected(Configuracion.modoFlexible());
         menuProgramaSalidaDetallada.setSelected(_configuracion.salidaDetallada());
 
-        MainWindow.bienvenida();
+        bienvenida();
         tpEditor.requestFocus();
     }
 
@@ -118,8 +121,11 @@ public class MainWindow extends javax.swing.JFrame {
         return numeroLineas;
     }
 
-    public static void bienvenida() {
-        //System.out.println("JIM " + Configuracion.version());
+    /**
+     * Muestra la bienvenida al programa en la pestaña de salida.
+     */
+    public void bienvenida() {
+        System.out.println("JIM " + _configuracion.version());
         //System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
         //System.out.println("Directorio actual: " + System.getProperty("user.dir"));
     }
@@ -912,48 +918,6 @@ public class MainWindow extends javax.swing.JFrame {
         this.setTitle(titulo());
         tpEditor.setText("");
         tpEditor.requestFocus();
-    }
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        /*
-         try {
-         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-         if ("Nimbus".equals(info.getName())) {
-         javax.swing.UIManager.setLookAndFeel(info.getClassName());
-         break;
-         }
-         }
-         } catch (ClassNotFoundException ex) {
-         java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-         } catch (InstantiationException ex) {
-         java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-         } catch (IllegalAccessException ex) {
-         java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-         java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-         }
-         //</editor-fold>
-         */
-
-        /*
-         // Para cargar el Look & Feel del sistema
-         try {
-         javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
-         } catch (Exception ex) {}
-         */
-        /* Create and display the form */
-        /*
-         java.awt.EventQueue.invokeLater(new Runnable() {
-         public void run() {
-         new MainWindow().setVisible(true);
-         }
-         });
-         */
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

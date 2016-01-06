@@ -29,6 +29,12 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
 
   private MacrosAcciones _acciones;
 
+  /**
+   * Constructor de clase.
+   *
+   * @param r Referencia al lector de entrada.
+   * @param programa Referencia al programa en ejecución.
+   */
   public MacrosParser(Reader r, Programa programa) {
     super(programa);
     _analizadorLexico = new MacrosLex(r, this);
@@ -36,6 +42,14 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
 	//yydebug = true;
   }
 
+   /**
+     * Método utilizado para hacer público el método {@code yyparse()}, que está
+     * marcado como protegido debido a que así está marcado en las clases
+     * generadas por byacc/j.
+     *
+     * @return El valor devuelto por {@link Parser#yylex()}.
+     * @see Parser#yylex()
+     */
   public int parse() {
     return this.yyparse();
   }

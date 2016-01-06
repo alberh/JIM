@@ -130,6 +130,6 @@ public abstract class Parser {
      * @param descripcion Descripción del error.
      */
     public void yyerror(String descripcion) {
-        _programa.error().deTokenNoEsperado(descripcion);
+        _programa.error().deTokenNoEsperado("", descripcion);
     }
 }
