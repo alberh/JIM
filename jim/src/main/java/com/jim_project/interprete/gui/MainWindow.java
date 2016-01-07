@@ -129,6 +129,17 @@ public class MainWindow extends javax.swing.JFrame {
         //System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
         //System.out.println("Directorio actual: " + System.getProperty("user.dir"));
     }
+    
+    /**
+     * Muestra información sobre la aplicación de escritorio.
+     */
+    public void acercaDe() {
+        taSalida.setText("");
+        System.out.println("JIM " + _configuracion.version());
+        System.out.println("Jim es un intérprete de los modelos de computación "
+                + "L, Loop y While escrito en Java 8 por Alberto García.");
+        System.out.println("Para más información, visita http://www.jim-project.com");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -175,7 +186,6 @@ public class MainWindow extends javax.swing.JFrame {
         menuArchivoGuardarComo = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         menuArchivoSalir = new javax.swing.JMenuItem();
-        menuEditar = new javax.swing.JMenu();
         menuPrograma = new javax.swing.JMenu();
         menuProgramaIniciar = new javax.swing.JMenuItem();
         menuProgramaDetener = new javax.swing.JMenuItem();
@@ -186,6 +196,7 @@ public class MainWindow extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         menuProgramaExpandirMacros = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
+        menuAyudaAcercaDe = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("JIM");
@@ -405,9 +416,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         barraMenu.add(menuArchivo);
 
-        menuEditar.setText("Editar");
-        barraMenu.add(menuEditar);
-
         menuPrograma.setText("Programa");
 
         menuProgramaIniciar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
@@ -470,6 +478,15 @@ public class MainWindow extends javax.swing.JFrame {
         barraMenu.add(menuPrograma);
 
         menuAyuda.setText("Ayuda");
+
+        menuAyudaAcercaDe.setText("Acerca de");
+        menuAyudaAcercaDe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAyudaAcercaDeActionPerformed(evt);
+            }
+        });
+        menuAyuda.add(menuAyudaAcercaDe);
+
         barraMenu.add(menuAyuda);
 
         setJMenuBar(barraMenu);
@@ -572,6 +589,10 @@ public class MainWindow extends javax.swing.JFrame {
             pintarNumerosDeLineas();
         }
     }//GEN-LAST:event_tpEditorKeyTyped
+
+    private void menuAyudaAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAyudaAcercaDeActionPerformed
+        acercaDe();
+    }//GEN-LAST:event_menuAyudaAcercaDeActionPerformed
 
     private void comprobacionesPreviasAEjecucion() {
         taSalida.setText("");
@@ -952,7 +973,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuArchivoNuevo;
     private javax.swing.JMenuItem menuArchivoSalir;
     private javax.swing.JMenu menuAyuda;
-    private javax.swing.JMenu menuEditar;
+    private javax.swing.JMenuItem menuAyudaAcercaDe;
     private javax.swing.JMenu menuPrograma;
     private javax.swing.JMenuItem menuProgramaDetener;
     private javax.swing.JMenuItem menuProgramaExpandirMacros;
