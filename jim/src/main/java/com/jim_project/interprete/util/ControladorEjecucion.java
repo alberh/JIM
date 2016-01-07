@@ -253,10 +253,13 @@ public class ControladorEjecucion {
     }
 
     private void ejecutar(Modelo.Tipo tipoParser) {
-        _traza = new StringBuilder("[");
         _lineaActual = 0;
         _salto = false;
         _instruccionesEjecutadas = 0;
+
+        if (_programa.argumentos().traza) {
+            _traza = new StringBuilder("[");
+        }
 
         if (numeroLineas() > 0) {
             String linea = lineaSiguiente();
@@ -266,11 +269,13 @@ public class ControladorEjecucion {
             do {
                 // Límite de tamaño a la traza
                 //if (_traza.length() < 10000) {
-                if (_instruccionesEjecutadas > 0) {
-                    _traza.append(",")
-                            .append(System.getProperty("line.separator"));
+                if (_programa.argumentos().traza) {
+                    if (_instruccionesEjecutadas > 0) {
+                        _traza.append(",")
+                                .append(System.getProperty("line.separator"));
+                    }
+                    _traza.append(_ambito.estadoMemoria());
                 }
-                _traza.append(_ambito.estadoMemoria());
                 //}
 
                 if (!linea.trim().isEmpty()) {
@@ -299,12 +304,14 @@ public class ControladorEjecucion {
             } while (!finalizado() && _programa.estadoOk());
         }
 
-        if (_instruccionesEjecutadas > 0) {
-            _traza.append(",")
-                    .append(System.getProperty("line.separator"));
+        if (_programa.argumentos().traza) {
+            if (_instruccionesEjecutadas > 0) {
+                _traza.append(",")
+                        .append(System.getProperty("line.separator"));
+            }
+            _traza.append(_ambito.estadoMemoria());
+            _traza.append("]");
         }
-        _traza.append(_ambito.estadoMemoria());
-        _traza.append("]");
     }
 
     /**
@@ -332,8 +339,8 @@ public class ControladorEjecucion {
     /**
      * Devuelve la línea que está siendo ejecutada.
      *
-     * @return La línea que está siendo ejecutada, o {@code null} si la ejecución
-     * ha finalizado.
+     * @return La línea que está siendo ejecutada, o {@code null} si la
+     * ejecución ha finalizado.
      */
     public String lineaActual() {
         return finalizado() ? null : _lineas.get(_lineaActual - 1);
@@ -341,6 +348,7 @@ public class ControladorEjecucion {
 
     /**
      * Avanza a la línea siguiente y la devuelve.
+     *
      * @return La línea siguiente.
      */
     public String lineaSiguiente() {
@@ -350,6 +358,7 @@ public class ControladorEjecucion {
 
     /**
      * Devuelve la n-ésima línea del código.
+     *
      * @param n El número de linea a obtener.
      * @return La línea del código.
      */
@@ -364,8 +373,10 @@ public class ControladorEjecucion {
     /**
      * Comprueba si un número de línea es válido. Un número de línea es válido
      * si es mayor o igual a 1 y menor que el número de líneas + 1.
+     *
      * @param numeroLinea El número de línea a comprobar.
-     * @return {@code true}, si el número es válido; {@code false}, en caso contrario.
+     * @return {@code true}, si el número es válido; {@code false}, en caso
+     * contrario.
      */
     public boolean lineaValida(int numeroLinea) {
         return numeroLinea >= 1 && numeroLinea <= numeroLineas();
@@ -373,6 +384,7 @@ public class ControladorEjecucion {
 
     /**
      * Devuelve el número de líneas del código.
+     *
      * @return El número de líneas del código.
      */
     public int numeroLineas() {
@@ -381,6 +393,7 @@ public class ControladorEjecucion {
 
     /**
      * Devuelve las líneas del código.
+     *
      * @return Las líneas del código.
      */
     public ArrayList<String> lineas() {
@@ -395,10 +408,12 @@ public class ControladorEjecucion {
     }
 
     /**
-     * Comprueba si el programa ha finalizado.
-     * Se considera que el programa ha finalizado cuando el número de línea actual
-     * es mayor que el número de líneas.
-     * @return {@code true}, si el programa ha finalizado; {@code false}, en caso contrario.
+     * Comprueba si el programa ha finalizado. Se considera que el programa ha
+     * finalizado cuando el número de línea actual es mayor que el número de
+     * líneas.
+     *
+     * @return {@code true}, si el programa ha finalizado; {@code false}, en
+     * caso contrario.
      */
     public boolean finalizado() {
         return numeroLineaActual() <= 0 || numeroLineaActual() > numeroLineas();
@@ -407,6 +422,7 @@ public class ControladorEjecucion {
     /**
      * Cambia el número de línea actual al especificado e indica que se ha
      * ejecutado una instrucción de salto.
+     *
      * @param linea El número de línea al que saltar.
      */
     public void salto(int linea) {

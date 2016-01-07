@@ -53,7 +53,7 @@ public class Configuracion {
             try (FileReader fr = new FileReader(ficheroConfig)) {
                 _propiedades.load(fr);
 
-                if (_propiedades.stringPropertyNames().size() != 6) {
+                if (_propiedades.stringPropertyNames().size() != 7) {
                     _propiedades.clear();
                     // Asigna las propiedades que no estén en el fichero de configuración
                     _propiedades.setProperty("rutaMacros", _propiedades.getProperty("rutaMacros", "macros"));
@@ -63,6 +63,7 @@ public class Configuracion {
                     _propiedades.setProperty("macrosPermitidas", _propiedades.getProperty("macrosPermitidas", "true"));
                     //_propiedades.setProperty("modoFlexible", _propiedades.getProperty("modoFlexible", "false"));
                     _propiedades.setProperty("salidaDetallada", _propiedades.getProperty("salidaDetallada", "true"));
+                    _propiedades.setProperty("trazarMacros", _propiedades.getProperty("trazarMacros", "true"));
 
                     guardar(verbose);
                 }
@@ -99,6 +100,7 @@ public class Configuracion {
             _propiedades.setProperty("macrosPermitidas", "true");
             //_propiedades.setProperty("modoFlexible", "false");
             _propiedades.setProperty("salidaDetallada", "true");
+            _propiedades.setProperty("trazarMacros", "true");
             _propiedades.store(fw, null);
 
             if (verbose) {
@@ -235,10 +237,10 @@ public class Configuracion {
      }
      */
     /**
-     * Indica si la salida detallada está activada en el fichero de
+     * Indica si la salida detallada está habilitada en el fichero de
      * configuración.
      *
-     * @return {@code true}, si la salida detallada está activada; {@code false}
+     * @return {@code true}, si la salida detallada está habilitada; {@code false}
      * en caso contrario.
      */
     public boolean salidaDetallada() {
@@ -248,10 +250,30 @@ public class Configuracion {
     /**
      * Cambia la opción de salida detallada en el fichero de configuración.
      *
-     * @param b Indica si la salida detallada estará activada o no.
+     * @param b Indica si la salida detallada estará habilitada o no.
      */
     public void salidaDetallada(boolean b) {
         _propiedades.setProperty("salidaDetallada", b ? "true" : "false");
+    }
+    
+    /**
+     * Comprueba si la traza de macros está habilitada en el fichero de
+     * configuración.
+     *
+     * @return {@code true}, si la traza de macros está habilitada; {@code false}
+     * en caso contrario.
+     */
+    public boolean trazarMacros() {
+        return _propiedades.getProperty("trazarMacros").equalsIgnoreCase("true");
+    }
+    
+    /**
+     * Cambia la opción de traza de macros en el fichero de configuración.
+     *
+     * @param b Indica si la traza de macros estará habilitada o no.
+     */
+    public void trazarMacros(boolean b) {
+        _propiedades.setProperty("trazarMacros", b ? "true" : "false");
     }
 
     /**

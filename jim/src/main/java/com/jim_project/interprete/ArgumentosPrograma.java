@@ -24,6 +24,16 @@ public class ArgumentosPrograma {
     public boolean macrosPermitidas;
 
     /**
+     * Bandera que indica si debe realizarse la traza de la ejecución.
+     */
+    public boolean traza;
+
+    /**
+     * Bandera que indica si deben trazarse las llamadas a macro.
+     */
+    public boolean trazarMacros;
+
+    /**
      * Bandera que indica si está activado el modo de salida detallada.
      */
     public boolean verbose;
@@ -46,6 +56,8 @@ public class ArgumentosPrograma {
         modelo = null;
         //modoFlexible = false;
         macrosPermitidas = false;
+        traza = false;
+        trazarMacros = false;
         verbose = false;
         parametros = null;
         objetivo = null;

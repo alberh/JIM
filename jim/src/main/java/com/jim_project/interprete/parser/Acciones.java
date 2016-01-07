@@ -440,11 +440,14 @@ public class Acciones {
             int profundidad = _ambito.profundidad() + 1;
             Ambito nuevoAmbito = _ambito.programa().gestorAmbitos().nuevoAmbito(parametros, macro, profundidad);
             nuevoAmbito.iniciar();
-            String traza = ",\nTraza de llamada a macro " + macro.id() + "\n"
-                    + nuevoAmbito.controladorEjecucion().traza()
-                    .replaceAll("[\\[\\]]", "").replace(")(", "),\n(")
-                    + ",\nFin traza de llamada a macro " + macro.id();
-            _ambito.controladorEjecucion().trazarAmbito(traza);
+            
+            if (_ambito.programa().argumentos().trazarMacros) {
+                String traza = ",\nTraza de llamada a macro " + macro.id() + "\n"
+                        + nuevoAmbito.controladorEjecucion().traza()
+                        .replaceAll("[\\[\\]]", "").replace(")(", "),\n(")
+                        + ",\nFin traza de llamada a macro " + macro.id();
+                _ambito.controladorEjecucion().trazarAmbito(traza);
+            }
 
             if (nuevoAmbito.programa().estadoOk()) {
                 valor = nuevoAmbito.resultado();

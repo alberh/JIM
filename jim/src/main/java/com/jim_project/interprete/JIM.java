@@ -26,7 +26,7 @@ public class JIM {
         _programa = new Programa(_configuracion);
 
         // Para pruebas
-        // args = new String[]{"asd.txt"};
+        args = new String[]{"asd.txt"};
 
         /* java Jim fichero modelo [t|m|v|e] [param1 [param2 [...]]]
          *             0      1        2       2/3     3/4
@@ -58,7 +58,6 @@ public class JIM {
 
     private static void prepararYLanzar(String[] args) {
         int numArgs = args.length;
-        boolean mostrarTraza = false;
         ArgumentosPrograma argsPrograma = new ArgumentosPrograma();
         argsPrograma.fichero = args[0];
         argsPrograma.modelo = new Modelo(args[1], _configuracion);
@@ -78,7 +77,12 @@ public class JIM {
                     for (int i = 0; i < cadenaMods.length(); ++i) {
                         switch (cadenaMods.charAt(i)) {
                             case 't':
-                                mostrarTraza = true;
+                                argsPrograma.traza = true;
+                                break;
+
+                            case 'T':
+                                argsPrograma.traza = true;
+                                argsPrograma.trazarMacros = true;
                                 break;
                             /*
                              case 'f':
@@ -121,7 +125,7 @@ public class JIM {
 
             if (ok) {
                 if (argsPrograma.objetivo == Programa.Objetivo.INTERPRETAR) {
-                    iniciar(argsPrograma, mostrarTraza);
+                    iniciar(argsPrograma);
                 } else {
                     iniciarExpansionMacros(argsPrograma);
                 }
@@ -164,7 +168,7 @@ public class JIM {
         return nuevosArgs;
     }
 
-    private static void iniciar(ArgumentosPrograma argumentos, boolean mostrarTraza) {
+    private static void iniciar(ArgumentosPrograma argumentos) {
         _programa.argumentos(argumentos);
         try {
             _programa.iniciar();
@@ -173,7 +177,7 @@ public class JIM {
         }
 
         if (_programa.estadoOk()) {
-            if (!mostrarTraza) {
+            if (!argumentos.traza) {
                 if (_programa.verbose()) {
                     System.out.print("Resultado: ");
                 }
@@ -216,6 +220,7 @@ public class JIM {
         System.out.println("java Jim fichero modelo [t|m|v|e] [param1 [param2 [...]]]");
         System.out.println();
         System.out.println("t: Muestra la traza del programa.");
+        System.out.println("T: Muestra la traza del programa, incluyendo las llamadas a macro.");
         //System.out.println("f: Activa el modo flexible.");
         System.out.println("m: Activa la ejecución de macros.");
         System.out.println("v: Hace la salida del programa más detallada.");

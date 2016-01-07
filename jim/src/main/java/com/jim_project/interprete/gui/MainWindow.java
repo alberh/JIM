@@ -93,8 +93,9 @@ public class MainWindow extends javax.swing.JFrame {
         menuProgramaPermitirMacros.setSelected(_configuracion.macrosPermitidas());
         //menuProgramaModoFlexible.setSelected(Configuracion.modoFlexible());
         menuProgramaSalidaDetallada.setSelected(_configuracion.salidaDetallada());
+        menuProgramaTrazarMacros.setSelected(_configuracion.trazarMacros());
 
-        bienvenida();
+        System.out.println("JIM " + _configuracion.version());
         tpEditor.requestFocus();
     }
 
@@ -121,15 +122,6 @@ public class MainWindow extends javax.swing.JFrame {
         return numeroLineas;
     }
 
-    /**
-     * Muestra la bienvenida al programa en la pestaña de salida.
-     */
-    public void bienvenida() {
-        System.out.println("JIM " + _configuracion.version());
-        //System.out.println("Intérprete de modelos de computación L, LOOP y WHILE");
-        //System.out.println("Directorio actual: " + System.getProperty("user.dir"));
-    }
-    
     /**
      * Muestra información sobre la aplicación de escritorio.
      */
@@ -193,6 +185,7 @@ public class MainWindow extends javax.swing.JFrame {
         menuProgramaPermitirMacros = new javax.swing.JCheckBoxMenuItem();
         menuProgramaModoFlexible = new javax.swing.JCheckBoxMenuItem();
         menuProgramaSalidaDetallada = new javax.swing.JCheckBoxMenuItem();
+        menuProgramaTrazarMacros = new javax.swing.JCheckBoxMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         menuProgramaExpandirMacros = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
@@ -464,6 +457,15 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         menuPrograma.add(menuProgramaSalidaDetallada);
+
+        menuProgramaTrazarMacros.setSelected(true);
+        menuProgramaTrazarMacros.setText("Trazar macros");
+        menuProgramaTrazarMacros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProgramaTrazarMacrosActionPerformed(evt);
+            }
+        });
+        menuPrograma.add(menuProgramaTrazarMacros);
         menuPrograma.add(jSeparator7);
 
         menuProgramaExpandirMacros.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
@@ -594,6 +596,10 @@ public class MainWindow extends javax.swing.JFrame {
         acercaDe();
     }//GEN-LAST:event_menuAyudaAcercaDeActionPerformed
 
+    private void menuProgramaTrazarMacrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProgramaTrazarMacrosActionPerformed
+        _configuracion.trazarMacros(menuProgramaTrazarMacros.isSelected());
+    }//GEN-LAST:event_menuProgramaTrazarMacrosActionPerformed
+
     private void comprobacionesPreviasAEjecucion() {
         taSalida.setText("");
         taTraza.setText("");
@@ -610,15 +616,12 @@ public class MainWindow extends javax.swing.JFrame {
             guardarFichero();
         }
     }
-
-    private boolean modoFlexible() {
-        //return menuProgramaModoFlexible.isSelected();
-        return false;
-    }
-
-    private boolean macrosPermitidas() {
-        return menuProgramaPermitirMacros.isSelected();
-    }
+    /*
+     private boolean modoFlexible() {
+     //return menuProgramaModoFlexible.isSelected();
+     return false;
+     }
+     */
 
     private boolean verbose() {
         return menuProgramaSalidaDetallada.isSelected();
@@ -632,7 +635,9 @@ public class MainWindow extends javax.swing.JFrame {
         ArgumentosPrograma argumentos = new ArgumentosPrograma();
         argumentos.fichero = _ficheroAbierto.getAbsolutePath();
         argumentos.modelo = new Modelo(cadenaModelo, _configuracion);
-        argumentos.macrosPermitidas = macrosPermitidas();
+        argumentos.macrosPermitidas = menuProgramaPermitirMacros.isSelected();
+        argumentos.traza = true;
+        argumentos.trazarMacros = menuProgramaTrazarMacros.isSelected();
         //argumentos.modoFlexible = modoFlexible();
         argumentos.verbose = verbose();
         argumentos.objetivo = Programa.Objetivo.INTERPRETAR;
@@ -981,6 +986,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem menuProgramaModoFlexible;
     private javax.swing.JCheckBoxMenuItem menuProgramaPermitirMacros;
     private javax.swing.JCheckBoxMenuItem menuProgramaSalidaDetallada;
+    private javax.swing.JCheckBoxMenuItem menuProgramaTrazarMacros;
     private javax.swing.JScrollPane scrollEditor;
     private javax.swing.JScrollPane scrollNumerosLineas;
     private javax.swing.JTextArea taSalida;
