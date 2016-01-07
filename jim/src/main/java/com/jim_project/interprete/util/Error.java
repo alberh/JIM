@@ -31,7 +31,7 @@ public class Error {
     }
 
     private static void imprimir(String mensaje, Programa programa) {
-        System.err.println(mensaje);
+        System.err.print(mensaje);
         Error.estadoErroneo(programa);
     }
 
@@ -42,50 +42,52 @@ public class Error {
     }
 
     private void imprimir(String mensaje, int numeroLinea) {
-        GestorAmbitos gA = _programa.gestorAmbitos();
-        Ambito ambito = gA.ambitoActual();
+        if (_programa.estadoOk()) {
+            GestorAmbitos gA = _programa.gestorAmbitos();
+            Ambito ambito = gA.ambitoActual();
 
-        if (ambito == gA.ambitoRaiz()) {
-            Error.imprimir("Línea " + numeroLinea + ". " + mensaje, _programa);
-        } else {
-            StringBuilder sb = new StringBuilder();
+            if (ambito == gA.ambitoRaiz()) {
+                Error.imprimir("Línea " + numeroLinea + ". " + mensaje, _programa);
+            } else {
+                StringBuilder sb = new StringBuilder();
 
-            sb.append("Error en macro ").append(ambito.macroAsociada().id())
-                    .append(", línea ").append(numeroLinea)
-                    .append(", definida en ").append(ambito.macroAsociada().definidaEn())
-                    .append(":\n")
-                    .append("   ").append(mensaje).append("\n");
+                sb.append("Error en macro ").append(ambito.macroAsociada().id())
+                        .append(", línea ").append(numeroLinea)
+                        .append(", definida en ").append(ambito.macroAsociada().definidaEn())
+                        .append(":\n")
+                        .append("   ").append(mensaje).append("\n");
 
-            Ambito ambitoPadre = gA.ambitoPadre(ambito.profundidad());
-            String idMacroPadre;
-            String ficheroMacro;
-            int profundidadBase = ambito.profundidad() + 1;
-            int linea;
-            while (ambitoPadre != gA.ambitoRaiz()) {
-                //puntos(ambito.profundidad(), sb);
-                idMacroPadre = ambitoPadre.macroAsociada().id();
-                ficheroMacro = ambitoPadre.macroAsociada().definidaEn();
-                linea = ambitoPadre.controladorEjecucion().numeroLineaActual();
+                Ambito ambitoPadre = gA.ambitoPadre(ambito.profundidad());
+                String idMacroPadre;
+                String ficheroMacro;
+                int profundidadBase = ambito.profundidad() + 1;
+                int linea;
+                while (ambitoPadre != gA.ambitoRaiz()) {
+                    //puntos(ambito.profundidad(), sb);
+                    idMacroPadre = ambitoPadre.macroAsociada().id();
+                    ficheroMacro = ambitoPadre.macroAsociada().definidaEn();
+                    linea = ambitoPadre.controladorEjecucion().numeroLineaActual();
 
+                    for (int i = 0; i < profundidadBase - ambito.profundidad(); ++i) {
+                        sb.append("   ");
+                    }
+                    sb.append("\\-Llamada desde macro ").append(idMacroPadre)
+                            .append(", línea ").append(linea)
+                            .append(", definida en ").append(ficheroMacro)
+                            .append(".\n");
+
+                    ambito = ambitoPadre;
+                    ambitoPadre = gA.ambitoPadre(ambito.profundidad());
+                }
+
+                linea = gA.ambitoRaiz().controladorEjecucion().numeroLineaActual();
                 for (int i = 0; i < profundidadBase - ambito.profundidad(); ++i) {
                     sb.append("   ");
                 }
-                sb.append("\\-Llamada desde macro ").append(idMacroPadre)
-                        .append(", línea ").append(linea)
-                        .append(", definida en ").append(ficheroMacro)
-                        .append(".\n");
+                sb.append("\\-Llamada desde línea ").append(linea).append(".");
 
-                ambito = ambitoPadre;
-                ambitoPadre = gA.ambitoPadre(ambito.profundidad());
+                Error.imprimir(sb.toString(), _programa);
             }
-
-            linea = gA.ambitoRaiz().controladorEjecucion().numeroLineaActual();
-            for (int i = 0; i < profundidadBase - ambito.profundidad(); ++i) {
-                sb.append("   ");
-            }
-            sb.append("\\-Llamada desde línea ").append(linea).append(".");
-
-            Error.imprimir(sb.toString(), _programa);
         }
     }
 
@@ -406,7 +408,8 @@ public class Error {
 
     // Analizador sintáctico
     /**
-     * Realiza una llamada a {@link Error#deTokenNoEsperado(int, java.lang.String, java.lang.String)}
+     * Realiza una llamada a
+     * {@link Error#deTokenNoEsperado(int, java.lang.String, java.lang.String)}
      * con el número de línea actual, {@code token} y {@code descripcion}.
      *
      * @param token El tóken leído.

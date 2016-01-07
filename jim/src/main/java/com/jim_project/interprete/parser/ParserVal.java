@@ -21,9 +21,6 @@ public class ParserVal {
      */
     public Object obj;
 
-//#############################################
-//## C O N S T R U C T O R S
-//#############################################
     /**
      * Initialize me without a value
      */
