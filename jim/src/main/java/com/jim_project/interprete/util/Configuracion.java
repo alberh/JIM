@@ -25,7 +25,7 @@ public class Configuracion {
     }
 
     /**
-     * Carga la configuración del programa desde el fichero "jim.cfg". Si el
+     * Carga la configuración del programa desde el fichero "jim.properties". Si el
      * fichero no existe, lo crea.
      *
      * @return Una referencia a este objeto.
@@ -35,14 +35,14 @@ public class Configuracion {
     }
 
     /**
-     * Carga la configuración del programa desde el fichero "jim.cfg". Si el
+     * Carga la configuración del programa desde el fichero "jim.properties". Si el
      * fichero no existe, lo crea.
      *
      * @param verbose Bandera que indica si la salida detallada está activada.
      * @return Una referencia a este objeto.
      */
     public Configuracion cargar(boolean verbose) {
-        File ficheroConfig = new File("jim.cfg");
+        File ficheroConfig = new File("jim.properties");
         if (verbose) {
             System.out.println("Cargando configuración del programa.");
         }
@@ -79,7 +79,7 @@ public class Configuracion {
     }
 
     /**
-     * Crea el fichero "jim.cfg" y almacena la configuración.
+     * Crea el fichero "jim.properties" y almacena la configuración.
      *
      * @param ficheroConfig El fichero a crear.
      * @param verbose Bandera que indica si la salida detallada está activada.
@@ -119,7 +119,7 @@ public class Configuracion {
             System.out.println("Guardando configuración.");
         }
 
-        File ficheroConfig = new File("jim.cfg");
+        File ficheroConfig = new File("jim.properties");
 
         if (!ficheroConfig.exists()) {
             crearFicheroConfiguracion(ficheroConfig, verbose);
