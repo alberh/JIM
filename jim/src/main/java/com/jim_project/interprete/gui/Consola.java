@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import javax.swing.JTextArea;
 
 /**
- * Clase utiliza dos {@link PrinStream} y dos {@link TextAreaOutputStream} para
+ * Clase utiliza dos {@link java.io.PrintStream} y dos {@link TextAreaOutputStream} para
  * facilitar el volcado de la salida estándar y de errores del sistema en elementos
  * de la interfaz gráfica.
  *

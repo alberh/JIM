@@ -15,6 +15,11 @@ import java.lang.StringBuilder;
 %{
   private MacrosParser yyparser;
 
+/**
+ * Constructor de clase.
+ * @param r Referencia al lector de entrada.
+ * @param p Referencia al analizador sintáctico.
+ */
   public MacrosLex(java.io.Reader r, MacrosParser p) {
     this(r);
     yyparser = p;
@@ -25,6 +30,9 @@ import java.lang.StringBuilder;
   private StringBuilder _contenido;
   private int _lineaActual;
 
+  /**
+   * Devuelve el número de línea actual.
+   */
   public int lineaActual() {
     return _lineaActual;
   }

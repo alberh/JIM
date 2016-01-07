@@ -406,7 +406,7 @@ public class Error {
 
     // Analizador sintáctico
     /**
-     * Realiza una llamada a {@link Error#deTokenNoEsperado(int, java.lang.String, java.lang.String)
+     * Realiza una llamada a {@link Error#deTokenNoEsperado(int, java.lang.String, java.lang.String)}
      * con el número de línea actual, {@code token} y {@code descripcion}.
      *
      * @param token El tóken leído.
@@ -462,7 +462,7 @@ public class Error {
     /**
      * Error de entrada/salida en el analizador léxico.
      *
-     * @param numeroLinea
+     * @param numeroLinea El número de línea del error.
      */
     public void deESEnAnalizadorLexico(int numeroLinea) {
         imprimir("Error 34: No se pudieron llevar a cabo operaciones de E/S en el analizador léxico.", numeroLinea);

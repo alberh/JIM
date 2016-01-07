@@ -39,17 +39,9 @@ simbolos :  VARIABLE { _acciones.nuevaVariable($1); } simbolos
     super(programa);
     _analizadorLexico = new MacrosLex(r, this);
     _acciones = new MacrosAcciones(programa);
-	//yydebug = true;
   }
 
-   /**
-     * Método utilizado para hacer público el método {@code yyparse()}, que está
-     * marcado como protegido debido a que así está marcado en las clases
-     * generadas por byacc/j.
-     *
-     * @return El valor devuelto por {@link Parser#yylex()}.
-     * @see Parser#yylex()
-     */
+  @Override
   public int parse() {
     return this.yyparse();
   }

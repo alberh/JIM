@@ -25,7 +25,8 @@ public class Configuracion {
     }
 
     /**
-     * Tiene el mismo efecto que llamar a {@link Configuracion#cargar(false)}.
+     * Carga la configuración del programa desde el fichero "jim.cfg". Si el
+     * fichero no existe, lo crea.
      *
      * @return Una referencia a este objeto.
      */

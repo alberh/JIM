@@ -1,7 +1,0 @@
-Datos makeparsers
-
-Ubicación ejecutable: /jim
-
-Ruta herramientas: /herramientras
-
-Ruta base parsers: /src/main/java/com/jim_project/interprete/parser

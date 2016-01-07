@@ -12,6 +12,11 @@ import com.jim_project.interprete.parser.AnalizadorLexico;
 %{
   private WhileParser yyparser;
 
+  /**
+   * Constructor de clase.
+   * @param r Referencia al lector de entrada.
+   * @param p Referencia al analizador sintáctico.
+   */
   public WhileLex(java.io.Reader r, WhileParser p) {
     this(r);
     yyparser = p;

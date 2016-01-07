@@ -206,10 +206,10 @@ public class Ambito extends Componente {
 
     /**
      * Devuelve una cadena que representa el estado de la memoria del ámbito. La
-     * cadena de salida tiene la siguiente forma:<br/>
-     * (K, &ltX<sub>1</sub> = V<sub>1</sub>, ..., X<sub>N</sub> = V<sub>N</sub>,
+     * cadena de salida tiene la siguiente forma:<br>
+     * (K, &lt;X<sub>1</sub> = V<sub>1</sub>, ..., X<sub>N</sub> = V<sub>N</sub>,
      * Z<sub>1</sub> = V<sub>N+1</sub>, ..., Z<sub>M</sub> = V<sub>N+M</sub>, Y
-     * = V<sub>Y</sub>&gt),<br/>
+     * = V<sub>Y</sub>&gt;),<br>
      * donde K el siguiente número de línea a ejecutar y cada una de las
      * asignaciones de la serie representan el valor de cada variable de
      * entrada, local y de salida en el momento en el que se realiza la

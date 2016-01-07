@@ -12,6 +12,11 @@ import com.jim_project.interprete.parser.AnalizadorLexico;
 %{
   private LoopParser yyparser;
 
+  /**
+   * Constructor de clase.
+   * @param r Referencia al lector de entrada.
+   * @param p Referencia al analizador sintáctico.
+   */
   public LoopLex(java.io.Reader r, LoopParser p) {
     this(r);
     yyparser = p;

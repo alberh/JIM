@@ -5,12 +5,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
-        <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/util/Configuracion.java</file>
-        <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/MacrosAcciones.java</file>
-        <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/componente/LlamadaAMacro.java</file>
+        <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/parser/whilemodel/makefile</file>
+        <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/build.gradle</file>
         <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/parser/Parser.java</file>
-        <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/parser/Acciones.java</file>
-        <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/Programa.java</file>
+        <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/JIMGui.java</file>
       </group>
     </open-files>
     <editor-bookmarks lastBookmarkId="0" xmlns="http://www.netbeans.org/ns/editor-bookmarks/2"/>
@@ -18,6 +16,7 @@
       <group>
         <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/parser/whilemodel/makefile</file>
         <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/build.gradle</file>
+        <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/parser/Parser.java</file>
         <file>file:/C:/Users/alber_000/Documents/NetBeansProjects/tfg-int-rpretes/jim/src/main/java/com/jim_project/interprete/JIMGui.java</file>
       </group>
     </open-files>

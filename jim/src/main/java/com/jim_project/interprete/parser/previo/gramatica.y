@@ -71,13 +71,19 @@ masParametrosMacro :  ',' parametros masParametrosMacro { ; }
 
   private PrevioAcciones _acciones;
 
+  /**
+   * Constructor de clase.
+   *
+   * @param r Referencia al lector de entrada.
+   * @param controladorEjecucion Referencia al controlador de ejecución en marcha.
+   */
   public PrevioParser(Reader r, ControladorEjecucion controladorEjecucion) {
         super(controladorEjecucion);
         _analizadorLexico = new PrevioLex(r, this);
         _acciones = new PrevioAcciones(_controladorEjecucion.ambito());
-	//yydebug = true;
   }
 
+  @Override
   public int parse() {
     return this.yyparse();
   }

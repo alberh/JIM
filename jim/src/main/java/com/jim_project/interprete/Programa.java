@@ -115,7 +115,7 @@ public class Programa {
      * interpretación o la expansión de macros cuando el programa ha sido
      * lanzado en segundo plano.
      *
-     * @return
+     * @return El {@link RunnableFuture} asociado.
      */
     public RunnableFuture<String> worker() {
         return _worker;
@@ -280,7 +280,7 @@ public class Programa {
      * interpretación del programa.
      *
      * @return Si el objetivo del programa es interpretar el código, devuelve
-     * una cadena vacía.<br/>
+     * una cadena vacía.<br>
      * Si el objetivo es expandir las llamadas a macros, devuelve el código
      * resultado de la expansión.
      * @throws Exception Cuando se llama a este método sin haber especificado

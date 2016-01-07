@@ -57,29 +57,35 @@ masParametrosMacro :  ',' operando { $$ = $2; } masParametrosMacro { $$ = new Wh
 
   private WhileAcciones _acciones;
 
+  /**
+   * Constructor de clase.
+   *
+   * @param r Referencia al lector de entrada.
+   * @param controladorEjecucion Referencia al controlador de ejecución en marcha.
+   */
   public WhileParser(Reader r, ControladorEjecucion controladorEjecucion) {
      super(controladorEjecucion);
      _analizadorLexico = new WhileLex(r, this);
      _acciones = new WhileAcciones(_controladorEjecucion.ambito());
-     //yydebug = true;
   }
 
+  @Override
   public int parse() {
     return this.yyparse();
   }
 
   @Override
   protected int yylex() {
-  int yyl_return = -1;
+    int yyl_return = -1;
 
-  try {
-    yylval = new WhileParserVal(0);
-    yyl_return = _analizadorLexico.yylex();
-  } catch (IOException e) {
-    _programa.error().deESEnAnalizadorLexico();
-  }
+    try {
+      yylval = new WhileParserVal(0);
+      yyl_return = _analizadorLexico.yylex();
+    } catch (IOException e) {
+      _programa.error().deESEnAnalizadorLexico();
+    }
 
-  return yyl_return;
+    return yyl_return;
   }
 
   @Override

@@ -12,13 +12,15 @@ import com.jim_project.interprete.parser.AnalizadorLexico;
 %{
   private PrevioParser yyparser;
 
+  /**
+   * Constructor de clase.
+   * @param r Referencia al lector de entrada.
+   * @param p Referencia al analizador sintáctico.
+   */
   public PrevioLex(java.io.Reader r, PrevioParser p) {
     this(r);
     yyparser = p;
-    contenido = "";
   }
-
-  private String contenido;
 %}
 
 LineTerminator = \r|\n|\r\n

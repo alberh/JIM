@@ -9,7 +9,7 @@ package com.jim_project.interprete.parser;
 public abstract class AnalizadorLexico {
 
     /**
-     * Reinicia el analizador y le asigna un nuevo {@link Reader} del que
+     * Reinicia el analizador y le asigna un nuevo {@link java.io.Reader} del que
      * obtener los caracteres.
      *
      * @param reader El nuevo lector de entrada.

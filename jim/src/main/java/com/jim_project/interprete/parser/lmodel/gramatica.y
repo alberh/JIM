@@ -62,28 +62,35 @@ masParametrosMacro :  ',' operando masParametrosMacro { $$ = new LParserVal(); }
 
   private LAcciones _acciones;
 
+  /**
+   * Constructor de clase.
+   *
+   * @param r Referencia al lector de entrada.
+   * @param controladorEjecucion Referencia al controlador de ejecución en marcha.
+   */
   public LParser(Reader r, ControladorEjecucion controladorEjecucion) {
      super(controladorEjecucion);
      _analizadorLexico = new LLex(r, this);
      _acciones = new LAcciones(_controladorEjecucion.ambito());
   }
 
+  @Override
   public int parse() {
     return this.yyparse();
   }
 
   @Override
   protected int yylex() {
-  int yyl_return = -1;
+    int yyl_return = -1;
 
-  try {
-    yylval = new LParserVal(0);
-    yyl_return = _analizadorLexico.yylex();
-  } catch (IOException e) {
-    _programa.error().deESEnAnalizadorLexico();
-  }
+    try {
+      yylval = new LParserVal(0);
+      yyl_return = _analizadorLexico.yylex();
+    } catch (IOException e) {
+      _programa.error().deESEnAnalizadorLexico();
+    }
 
-  return yyl_return;
+    return yyl_return;
   }
 
   @Override

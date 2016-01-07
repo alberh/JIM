@@ -50,29 +50,35 @@ masParametrosMacro :  ',' operando masParametrosMacro { $$ = new LoopParserVal()
   
   private LoopAcciones _acciones;
 
+  /**
+   * Constructor de clase.
+   *
+   * @param r Referencia al lector de entrada.
+   * @param controladorEjecucion Referencia al controlador de ejecución en marcha.
+   */
   public LoopParser(Reader r, ControladorEjecucion controladorEjecucion) {
      super(controladorEjecucion);
      _analizadorLexico = new LoopLex(r, this);
      _acciones = new LoopAcciones(_controladorEjecucion.ambito());
-     //yydebug = true;
   }
 
+  @Override
   public int parse() {
     return this.yyparse();
   }
 
   @Override
   protected int yylex() {
-  int yyl_return = -1;
+    int yyl_return = -1;
 
-  try {
-    yylval = new LoopParserVal(0);
-    yyl_return = _analizadorLexico.yylex();
-  } catch (IOException e) {
-    _programa.error().deESEnAnalizadorLexico();
-  }
+    try {
+      yylval = new LoopParserVal(0);
+      yyl_return = _analizadorLexico.yylex();
+    } catch (IOException e) {
+      _programa.error().deESEnAnalizadorLexico();
+    }
 
-  return yyl_return;
+    return yyl_return;
   }
 
   @Override

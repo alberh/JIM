@@ -12,6 +12,11 @@ import com.jim_project.interprete.parser.AnalizadorLexico;
 %{
   private LParser yyparser;
 
+  /**
+   * Constructor de clase.
+   * @param r Referencia al lector de entrada.
+   * @param p Referencia al analizador sintáctico.
+   */
   public LLex(java.io.Reader r, LParser p) {
     this(r);
     yyparser = p;
