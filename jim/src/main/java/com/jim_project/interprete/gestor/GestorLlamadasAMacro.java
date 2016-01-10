@@ -1,4 +1,4 @@
-package com.jim_project.interprete.util.gestor;
+package com.jim_project.interprete.gestor;
 
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.Etiqueta;

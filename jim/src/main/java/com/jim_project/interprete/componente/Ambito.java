@@ -3,11 +3,11 @@ package com.jim_project.interprete.componente;
 import com.jim_project.interprete.parser.ControladorEjecucion;
 import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
-import com.jim_project.interprete.util.gestor.GestorAmbitos;
-import com.jim_project.interprete.util.gestor.GestorEtiquetas;
-import com.jim_project.interprete.util.gestor.GestorBucles;
-import com.jim_project.interprete.util.gestor.GestorLlamadasAMacro;
-import com.jim_project.interprete.util.gestor.GestorVariables;
+import com.jim_project.interprete.gestor.GestorAmbitos;
+import com.jim_project.interprete.gestor.GestorEtiquetas;
+import com.jim_project.interprete.gestor.GestorBucles;
+import com.jim_project.interprete.gestor.GestorLlamadasAMacro;
+import com.jim_project.interprete.gestor.GestorVariables;
 import java.util.Arrays;
 
 /**

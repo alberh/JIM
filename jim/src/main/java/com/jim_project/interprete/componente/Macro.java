@@ -1,7 +1,7 @@
 package com.jim_project.interprete.componente;
 
 import java.util.ArrayList;
-import com.jim_project.interprete.util.gestor.GestorMacros;
+import com.jim_project.interprete.gestor.GestorMacros;
 
 /**
  * Clase que abstrae el concepto de macro. Mantiene información sobre el fichero

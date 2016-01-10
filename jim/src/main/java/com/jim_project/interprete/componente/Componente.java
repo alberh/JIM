@@ -1,6 +1,6 @@
 package com.jim_project.interprete.componente;
 
-import com.jim_project.interprete.util.gestor.GestorComponentes;
+import com.jim_project.interprete.gestor.GestorComponentes;
 
 /**
  * Clase abstracta que representa un componente del programa, como una variable,

@@ -3,7 +3,7 @@ package com.jim_project.interprete.util;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.Programa.Estado;
 import com.jim_project.interprete.componente.Ambito;
-import com.jim_project.interprete.util.gestor.GestorAmbitos;
+import com.jim_project.interprete.gestor.GestorAmbitos;
 import java.util.concurrent.RunnableFuture;
 
 /**

@@ -1,6 +1,6 @@
 package com.jim_project.interprete.componente;
 
-import com.jim_project.interprete.util.gestor.GestorBucles;
+import com.jim_project.interprete.gestor.GestorBucles;
 
 /**
  * Clase que abstrae el concepto de bucle dentro del programa. Se encarga de

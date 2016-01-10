@@ -8,8 +8,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import com.jim_project.interprete.util.gestor.GestorAmbitos;
-import com.jim_project.interprete.util.gestor.GestorMacros;
+import com.jim_project.interprete.gestor.GestorAmbitos;
+import com.jim_project.interprete.gestor.GestorMacros;
 import java.util.concurrent.RunnableFuture;
 
 /**

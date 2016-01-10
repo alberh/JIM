@@ -1,7 +1,7 @@
 package com.jim_project.interprete.componente;
 
 import com.jim_project.interprete.util.Error;
-import com.jim_project.interprete.util.gestor.GestorEtiquetas;
+import com.jim_project.interprete.gestor.GestorEtiquetas;
 
 /**
  * Clase que abstrae el concepto de etiqueta, almacenando información sobre su

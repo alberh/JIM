@@ -12,7 +12,7 @@ import com.jim_project.interprete.parser.lmodel.LParser;
 import com.jim_project.interprete.parser.loopmodel.LoopParser;
 import com.jim_project.interprete.parser.previo.PrevioParser;
 import com.jim_project.interprete.parser.whilemodel.WhileParser;
-import com.jim_project.interprete.util.gestor.GestorAmbitos;
+import com.jim_project.interprete.gestor.GestorAmbitos;
 import java.util.Arrays;
 
 /**

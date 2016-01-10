@@ -1,7 +1,7 @@
 package com.jim_project.interprete.componente;
 
 import com.jim_project.interprete.util.Error;
-import com.jim_project.interprete.util.gestor.GestorVariables;
+import com.jim_project.interprete.gestor.GestorVariables;
 
 /**
  * Clase que abstrae el concepto de variable del programa. Mantiene información
