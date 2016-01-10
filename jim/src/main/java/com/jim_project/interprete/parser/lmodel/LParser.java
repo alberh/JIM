@@ -22,8 +22,7 @@ package com.jim_project.interprete.parser.lmodel;
   import com.jim_project.interprete.*;
   import com.jim_project.interprete.componente.*;
   import com.jim_project.interprete.parser.*;
-  import com.jim_project.interprete.util.ControladorEjecucion;
-//#line 23 "LParser.java"
+//#line 22 "LParser.java"
 
 
 
@@ -335,7 +334,7 @@ final static String yyrule[] = {
 "masParametrosMacro :",
 };
 
-//#line 62 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 61 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 
   private LAcciones _acciones;
 
@@ -375,7 +374,7 @@ final static String yyrule[] = {
     String nombreToken = yyname[token];
     _programa.error().deTokenNoEsperado(nombreToken, descripcion);
   }
-//#line 305 "LParser.java"
+//#line 304 "LParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -530,114 +529,114 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 26 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 25 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 3:
-//#line 27 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 26 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 4:
-//#line 29 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 28 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 5:
-//#line 31 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 30 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = val_peek(1).sval; }
 break;
 case 6:
-//#line 32 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 31 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 7:
-//#line 34 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 33 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { _acciones.variableAsignada(val_peek(0).sval); }
 break;
 case 8:
-//#line 34 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 33 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { _acciones.asignacion(val_peek(3).sval, val_peek(0).obj); }
 break;
 case 9:
-//#line 35 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 34 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { _acciones.incremento(val_peek(1).sval); }
 break;
 case 10:
-//#line 36 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 35 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { _acciones.decremento(val_peek(1).sval); }
 break;
 case 11:
-//#line 37 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 36 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { _acciones.saltoCondicional(val_peek(3).sval, val_peek(0).sval); }
 break;
 case 12:
-//#line 38 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 37 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { _acciones.saltoIncondicional(val_peek(0).sval); }
 break;
 case 13:
-//#line 40 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 39 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 14:
-//#line 41 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 40 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 15:
-//#line 42 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 41 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 16:
-//#line 43 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 42 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { _acciones.llamadaAMacro(val_peek(0).sval); }
 break;
 case 17:
-//#line 43 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 42 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 18:
-//#line 45 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 44 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('+', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 19:
-//#line 46 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 45 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('-', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 20:
-//#line 47 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 46 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('*', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 21:
-//#line 48 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 47 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('/', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 22:
-//#line 49 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 48 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('%', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 23:
-//#line 51 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 50 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 24:
-//#line 52 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 51 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 25:
-//#line 54 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 53 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 26:
-//#line 55 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 54 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 27:
-//#line 57 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 56 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
 case 28:
-//#line 58 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
+//#line 57 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/lmodel/gramatica.y"
 { yyval.obj = new LParserVal(); }
 break;
-//#line 562 "LParser.java"
+//#line 561 "LParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

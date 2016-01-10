@@ -22,8 +22,7 @@ package com.jim_project.interprete.parser.analizadormacros;
   	import com.jim_project.interprete.*;
         import com.jim_project.interprete.componente.*;
   	import com.jim_project.interprete.parser.*;
-        import com.jim_project.interprete.util.ControladorEjecucion;
-//#line 23 "MacrosParser.java"
+//#line 22 "MacrosParser.java"
 
 
 
@@ -284,7 +283,7 @@ final static String yyrule[] = {
 "simbolos :",
 };
 
-//#line 29 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
+//#line 28 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
 
   private MacrosAcciones _acciones;
 
@@ -324,7 +323,7 @@ final static String yyrule[] = {
   	String nombreToken = yyname[token];
 	_programa.error().deTokenNoEsperado(((MacrosLex)_analizadorLexico).lineaActual(), nombreToken, descripcion);
   }
-//#line 254 "MacrosParser.java"
+//#line 253 "MacrosParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -479,30 +478,30 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 3:
-//#line 19 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
+//#line 18 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
 { _acciones.nuevaMacro(val_peek(0).sval); }
 break;
 case 4:
-//#line 19 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
+//#line 18 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
 { _acciones.cuerpo(val_peek(0).sval); }
 break;
 case 5:
-//#line 21 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
+//#line 20 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
 { _acciones.nuevaVariable(val_peek(0).sval); }
 break;
 case 7:
-//#line 22 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
+//#line 21 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
 { _acciones.nuevaLlamadaAMacro(val_peek(0).sval); }
 break;
 case 9:
-//#line 23 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
+//#line 22 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
 { _acciones.nuevaEtiqueta(val_peek(1).sval); }
 break;
 case 11:
-//#line 24 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
+//#line 23 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/analizadormacros/gramatica.y"
 { _acciones.nuevaEtiquetaSalto(val_peek(0).sval); }
 break;
-//#line 427 "MacrosParser.java"
+//#line 426 "MacrosParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

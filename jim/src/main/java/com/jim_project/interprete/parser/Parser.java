@@ -1,6 +1,5 @@
 package com.jim_project.interprete.parser;
 
-import com.jim_project.interprete.util.ControladorEjecucion;
 import com.jim_project.interprete.Programa;
 import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.parser.analizadormacros.MacrosParser;

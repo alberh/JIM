@@ -22,8 +22,7 @@ package com.jim_project.interprete.parser.whilemodel;
   import com.jim_project.interprete.*;
   import com.jim_project.interprete.componente.*;
   import com.jim_project.interprete.parser.*;
-  import com.jim_project.interprete.util.ControladorEjecucion;
-//#line 23 "WhileParser.java"
+//#line 22 "WhileParser.java"
 
 
 
@@ -333,7 +332,7 @@ final static String yyrule[] = {
 "masParametrosMacro :",
 };
 
-//#line 57 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 56 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 
   private WhileAcciones _acciones;
 
@@ -373,7 +372,7 @@ final static String yyrule[] = {
     String nombreToken = yyname[token];
     _programa.error().deTokenNoEsperado(nombreToken, descripcion);
   }
-//#line 303 "WhileParser.java"
+//#line 302 "WhileParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -528,110 +527,110 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 26 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 25 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 3:
-//#line 27 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 26 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
 case 4:
-//#line 29 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 28 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { _acciones.variableAsignada(val_peek(0).sval); }
 break;
 case 5:
-//#line 29 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 28 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { _acciones.asignacion(val_peek(3).sval, val_peek(0).obj); }
 break;
 case 6:
-//#line 30 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 29 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { _acciones.incremento(val_peek(1).sval); }
 break;
 case 7:
-//#line 31 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 30 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { _acciones.decremento(val_peek(1).sval); }
 break;
 case 8:
-//#line 32 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 31 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { _acciones.abreBucle(val_peek(1).sval, _controladorEjecucion.numeroLineaActual()); }
 break;
 case 9:
-//#line 33 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 32 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { _acciones.cierraBucle(_controladorEjecucion.numeroLineaActual()); }
 break;
 case 10:
-//#line 35 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 34 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 11:
-//#line 36 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 35 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 12:
-//#line 37 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 36 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 13:
-//#line 38 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 37 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { _acciones.llamadaAMacro(val_peek(0).sval); }
 break;
 case 14:
-//#line 38 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 37 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
 case 15:
-//#line 40 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 39 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('+', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 16:
-//#line 41 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 40 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('-', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 17:
-//#line 42 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 41 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('*', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 18:
-//#line 43 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 42 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('/', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 19:
-//#line 44 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 43 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.ival = _acciones.operacionBinaria('%', val_peek(2).obj, val_peek(0).obj); }
 break;
 case 20:
-//#line 46 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 45 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = val_peek(0).ival; }
 break;
 case 21:
-//#line 47 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 46 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = val_peek(0).sval; }
 break;
 case 22:
-//#line 49 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 48 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 {yyval.obj = val_peek(0).obj; }
 break;
 case 23:
-//#line 49 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 48 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
 case 24:
-//#line 50 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 49 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
 case 25:
-//#line 52 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 51 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 26:
-//#line 52 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 51 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
 case 27:
-//#line 53 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
+//#line 52 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/whilemodel/gramatica.y"
 { yyval.obj = new WhileParserVal(); }
 break;
-//#line 556 "WhileParser.java"
+//#line 555 "WhileParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

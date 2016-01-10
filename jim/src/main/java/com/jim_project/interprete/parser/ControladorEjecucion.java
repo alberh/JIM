@@ -1,15 +1,13 @@
-package com.jim_project.interprete.util;
+package com.jim_project.interprete.parser;
 
 import com.jim_project.interprete.Modelo;
-import com.jim_project.interprete.componente.Ambito;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import com.jim_project.interprete.Programa;
+import com.jim_project.interprete.componente.Ambito;
 import com.jim_project.interprete.componente.LlamadaAMacro;
 import com.jim_project.interprete.componente.Variable;
-import com.jim_project.interprete.parser.AnalizadorLexico;
-import com.jim_project.interprete.parser.Parser;
 import com.jim_project.interprete.parser.lmodel.LParser;
 import com.jim_project.interprete.parser.loopmodel.LoopParser;
 import com.jim_project.interprete.parser.previo.PrevioParser;

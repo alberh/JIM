@@ -5,7 +5,6 @@
 	import com.jim_project.interprete.util.*;
         import com.jim_project.interprete.componente.*;
 	import com.jim_project.interprete.parser.*;
-        import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
 // lista tokens por orden de prioridad

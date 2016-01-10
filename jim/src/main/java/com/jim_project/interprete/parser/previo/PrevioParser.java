@@ -23,8 +23,7 @@ package com.jim_project.interprete.parser.previo;
 	import com.jim_project.interprete.util.*;
         import com.jim_project.interprete.componente.*;
 	import com.jim_project.interprete.parser.*;
-        import com.jim_project.interprete.util.ControladorEjecucion;
-//#line 24 "PrevioParser.java"
+//#line 23 "PrevioParser.java"
 
 
 
@@ -351,7 +350,7 @@ final static String yyrule[] = {
 "masParametrosMacro :",
 };
 
-//#line 71 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 70 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 
   private PrevioAcciones _acciones;
 
@@ -391,7 +390,7 @@ final static String yyrule[] = {
   	String nombreToken = yyname[token];
   	_programa.error().deTokenNoEsperado(nombreToken, descripcion);
   }
-//#line 321 "PrevioParser.java"
+//#line 320 "PrevioParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -546,126 +545,126 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 29 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 28 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { yyval.sval = val_peek(0).sval; }
 break;
 case 3:
-//#line 30 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 29 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { yyval.sval = null; }
 break;
 case 4:
-//#line 32 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 31 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 5:
-//#line 34 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 33 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirEtiqueta(val_peek(1).sval, _controladorEjecucion.numeroLineaActual()); }
 break;
 case 6:
-//#line 35 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 34 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 7:
-//#line 37 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 36 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariable(val_peek(0).sval); }
 break;
 case 9:
-//#line 38 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 37 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariable(val_peek(1).sval); }
 break;
 case 10:
-//#line 39 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 38 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariable(val_peek(1).sval); }
 break;
 case 11:
-//#line 40 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 39 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariable(val_peek(3).sval); }
 break;
 case 12:
-//#line 41 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 40 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 13:
-//#line 42 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 41 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariable(val_peek(0).sval); _acciones.definirInicioBucle(_controladorEjecucion.numeroLineaActual()); }
 break;
 case 14:
-//#line 43 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 42 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariable(val_peek(1).sval); _acciones.definirInicioBucle(_controladorEjecucion.numeroLineaActual()); }
 break;
 case 15:
-//#line 44 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 43 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirFinBucle(_controladorEjecucion.numeroLineaActual()); }
 break;
 case 16:
-//#line 46 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 45 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariable(val_peek(0).sval); }
 break;
 case 17:
-//#line 47 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 46 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 18:
-//#line 48 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 47 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 19:
-//#line 49 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 48 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirLlamadaAMacro(val_peek(0).sval); }
 break;
 case 21:
-//#line 51 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 50 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 22:
-//#line 52 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 51 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 23:
-//#line 53 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 52 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 24:
-//#line 54 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 53 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 25:
-//#line 55 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 54 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 26:
-//#line 57 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 56 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 27:
-//#line 58 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 57 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariable(val_peek(0).sval); }
 break;
 case 28:
-//#line 60 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 59 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariableEntradaMacro(val_peek(0).sval); }
 break;
 case 29:
-//#line 61 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 60 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { _acciones.definirVariable(val_peek(0).sval); _acciones.definirVariableEntradaMacro(val_peek(0).sval); }
 break;
 case 30:
-//#line 63 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 62 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 31:
-//#line 64 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 63 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 32:
-//#line 66 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 65 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
 case 33:
-//#line 67 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
+//#line 66 "C:\Users\alber_000\Documents\NetBeansProjects\tfg-int-rpretes\jim/src/main/java/com/jim_project/interprete/parser/previo/gramatica.y"
 { ; }
 break;
-//#line 590 "PrevioParser.java"
+//#line 589 "PrevioParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

@@ -4,7 +4,6 @@
   import com.jim_project.interprete.*;
   import com.jim_project.interprete.componente.*;
   import com.jim_project.interprete.parser.*;
-  import com.jim_project.interprete.util.ControladorEjecucion;
 %}
 
 %token FLECHA
