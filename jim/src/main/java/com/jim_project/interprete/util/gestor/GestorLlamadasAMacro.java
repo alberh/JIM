@@ -1,6 +1,7 @@
 package com.jim_project.interprete.util.gestor;
 
 import com.jim_project.interprete.componente.Ambito;
+import com.jim_project.interprete.componente.Etiqueta;
 import com.jim_project.interprete.componente.LlamadaAMacro;
 import com.jim_project.interprete.componente.Variable;
 import java.util.ArrayList;
@@ -33,13 +34,28 @@ public class GestorLlamadasAMacro extends GestorComponentes {
      *
      * @param ultimaVariableAsignada La última variable sobre la que ha sido
      * asignado algún valor.
+     * @param ultimaEtiquetaEncontrada La última etiqueta encontrada en el código.
      * @param idMacro El identificador de la macro objetivo de la llamada.
      */
-    public void definirLlamadaAMacro(Variable ultimaVariableAsignada, Object idMacro) {
+    public void definirLlamadaAMacro(
+            Variable ultimaVariableAsignada,
+            Etiqueta ultimaEtiquetaEncontrada,
+            Object idMacro) {
+        
         int linea = _ambito.controladorEjecucion().numeroLineaActual();
+        String idEtiqueta;
+        if (ultimaEtiquetaEncontrada != null) {
+            idEtiqueta = ultimaEtiquetaEncontrada.id();
+        } else {
+            idEtiqueta = null;
+        }
 
-        _ultimaLlamadaAMacro
-                = new LlamadaAMacro(linea, ultimaVariableAsignada.id(), idMacro.toString());
+        _ultimaLlamadaAMacro = new LlamadaAMacro(
+                linea,
+                ultimaVariableAsignada.id(),
+                idEtiqueta,
+                idMacro.toString()
+        );
         _llamadasAMacros.add(_ultimaLlamadaAMacro);
     }
 

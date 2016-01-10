@@ -12,6 +12,17 @@ import com.jim_project.interprete.util.gestor.GestorAmbitos;
 import com.jim_project.interprete.util.gestor.GestorMacros;
 import java.util.concurrent.RunnableFuture;
 
+/**
+ * Clase que abstrae el concepto de programa a ejecutar, ententiendo por programa
+ * al conjunto que forman fichero de texto con el código a interpretar,
+ * el modelo de computación a simular y sus argumentos de entrada.
+ * <br><br>
+ * Provee métodos que sirven de interfaz con los distintos componentes del programa,
+ * como sus gestores, su estado y el fichero en ejecución, a la vez que se encarga
+ * de poner en marcha las distintas funcionalidades del sistema.
+ * 
+ * @author Alberto García González
+ */
 public class Programa {
 
     /**

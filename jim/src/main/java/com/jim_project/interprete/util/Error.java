@@ -381,7 +381,8 @@ public class Error {
      * @param caracter El carácter no reconocido.
      */
     public void deCaracterNoReconocido(int linea, String caracter) {
-        imprimir("Error 29: Carácter '" + caracter + "' no reconocido.", linea);
+        //imprimir("Error 29: Carácter '" + caracter + "' no reconocido.", linea);
+        imprimir("Error 29: Error sintáctico.", linea);
     }
 
     /**

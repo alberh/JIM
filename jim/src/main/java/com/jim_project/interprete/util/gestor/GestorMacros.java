@@ -79,6 +79,13 @@ public class GestorMacros extends GestorComponentes {
         int numeroLinea = llamadaAMacro.linea();// + desplazamiento;
 
         String idVariableSalida = llamadaAMacro.idVariableSalida().toUpperCase();
+        String idEtiqueta = llamadaAMacro.idEtiqueta();
+        if (programa().modelo().tipo() == Modelo.Tipo.L
+                && idEtiqueta != null) {
+            idEtiqueta = "[" + idEtiqueta + "]\t";
+        } else {
+            idEtiqueta = "";
+        }
         String asignaciones = idVariableSalida + " <- 0" + separador;
 
         Macro macro = obtenerMacro(idMacro);
@@ -183,10 +190,6 @@ public class GestorMacros extends GestorComponentes {
             expansion = expansion.replace(vAntigua, vNueva);
         }
 
-        expansion = "# Expansión de " + idMacro + " (" + ficheroMacro + ")"
-                + separador + asignaciones
-                + expansion;
-
         if (reemplazosEtiquetas != null) {
             /* Reempaza las etiquetas que indican un objetivo de salto
              */
@@ -220,6 +223,9 @@ public class GestorMacros extends GestorComponentes {
             expansion = expansion + idVariableSalida + " <- " + variableSalidaLocal;
         }
 
+        expansion = "# Expansión de " + idMacro + " (" + ficheroMacro + ")"
+                + separador + idEtiqueta + asignaciones
+                + expansion;
         expansion = expansion.replace("_", "");
         return expansion + "\n# Fin expansión de " + idMacro + separador;
     }

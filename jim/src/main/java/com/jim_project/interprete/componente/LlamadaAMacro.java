@@ -14,6 +14,7 @@ public class LlamadaAMacro extends Componente {
 
     private final int _linea;
     private final String _idVariableSalida;
+    private final String _idEtiqueta;
     private final ArrayList<String> _parametros;
 
     /**
@@ -22,15 +23,18 @@ public class LlamadaAMacro extends Componente {
      * @param linea La línea en la que se encuentra la llamada.
      * @param idVariableSalida La variable a la que se asignará el resultado de
      * la llamada.
+     * @param idEtiqueta El identificador de la etiqueta, en el caso de haberla.
      * @param idMacro El identificador de la macro.
      */
     public LlamadaAMacro(int linea,
             String idVariableSalida,
+            String idEtiqueta,
             String idMacro) {
 
         super(idMacro.toUpperCase(), null);
         _linea = linea;
         _idVariableSalida = idVariableSalida;
+        _idEtiqueta = idEtiqueta;
         _parametros = new ArrayList<>();
     }
 
@@ -44,12 +48,24 @@ public class LlamadaAMacro extends Componente {
     }
 
     /**
-     * Devuelve el identificador de la destino de la asignación de la llamada.
+     * Devuelve el identificador de la variable destino de la asignación de la
+     * llamada.
      *
      * @return El identificador de la variable de salida.
      */
     public String idVariableSalida() {
         return _idVariableSalida;
+    }
+
+    /**
+     * Devuelve el identificador de la etiqueta de la línea en la que se
+     * encuentra la llamada a macro, si la hubiera.
+     *
+     * @return El identificador de la etiqueta, o {@code null} si no existe tal
+     * etiqueta.
+     */
+    public String idEtiqueta() {
+        return _idEtiqueta;
     }
 
     /**

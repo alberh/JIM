@@ -26,9 +26,9 @@ public class JIM {
         _programa = new Programa(_configuracion);
 
         // Para pruebas
-        args = new String[]{"asd.txt"};
+        // args = new String[]{"asd.txt"};
 
-        /* java Jim fichero modelo [t|m|v|e] [param1 [param2 [...]]]
+        /* java Jim fichero modelo [t|T|m|v|e] [param1 [param2 [...]]]
          *             0      1        2       2/3     3/4
          */
         switch (args.length) {
@@ -217,7 +217,7 @@ public class JIM {
         System.out.println("Uso:");
         System.out.println("java Jim fichero");
         //System.out.println("java Jim fichero modelo [t|f|m|v|e] [param1 [param2 [...]]]");
-        System.out.println("java Jim fichero modelo [t|m|v|e] [param1 [param2 [...]]]");
+        System.out.println("java Jim fichero modelo [t|T|m|v|e] [param1 [param2 [...]]]");
         System.out.println();
         System.out.println("t: Muestra la traza del programa.");
         System.out.println("T: Muestra la traza del programa, incluyendo las llamadas a macro.");
@@ -237,7 +237,7 @@ public class JIM {
                 + "fichero, debe especificar los argumentos de entrada en la "
                 + "primera línea del mismo mediante la siguiente notación:");
         //System.out.println("\t# args: modelo [t|f|m|v] [param1 [param2 [...]]]");
-        System.out.println("\t# args: modelo [t|m|v|e] [param1 [param2 [...]]]");
+        System.out.println("\t# args: modelo [t|T|m|v|e] [param1 [param2 [...]]]");
         System.out.println("Si indica los argumentos en la llamada al programa, "
                 + "no se tendrán en cuenta los del fichero.");
     }

@@ -185,7 +185,7 @@ public class Macro extends Componente {
      * @param id El identificador de la llamada a macro.
      */
     public void nuevaLlamadaAMacro(String id) {
-        LlamadaAMacro llm = new LlamadaAMacro(0, "", id);
+        LlamadaAMacro llm = new LlamadaAMacro(0, "", "", id);
         _llamadasAMacros.add(llm.id());
     }
 

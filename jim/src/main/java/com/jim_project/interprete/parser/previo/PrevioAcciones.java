@@ -2,6 +2,7 @@ package com.jim_project.interprete.parser.previo;
 
 import com.jim_project.interprete.parser.Acciones;
 import com.jim_project.interprete.componente.Ambito;
+import com.jim_project.interprete.componente.Etiqueta;
 
 /**
  * Clase que aporta métodos para realizar las operaciones únicas del analizador
@@ -10,6 +11,8 @@ import com.jim_project.interprete.componente.Ambito;
  * @author Alberto García González
  */
 public class PrevioAcciones extends Acciones {
+
+    private Etiqueta _ultimaEtiquetaEncontrada;
 
     /**
      * Constructor de clase.
@@ -39,8 +42,11 @@ public class PrevioAcciones extends Acciones {
      * etiqueta.
      */
     public void definirEtiqueta(Object idEtiqueta, Object numeroLinea) {
-        _ambito.gestorEtiquetas().nuevaEtiqueta(idEtiqueta.toString(),
-                obtenerValor(numeroLinea));
+        _ultimaEtiquetaEncontrada
+                = _ambito.gestorEtiquetas().nuevaEtiqueta(
+                        idEtiqueta.toString(),
+                        obtenerValor(numeroLinea)
+                );
     }
 
     /**
@@ -70,7 +76,14 @@ public class PrevioAcciones extends Acciones {
      * @param idMacro El identificador de la macro objetivo de la llamada.
      */
     public void definirLlamadaAMacro(Object idMacro) {
-        _ambito.gestorLlamadasAMacro().definirLlamadaAMacro(_ultimaVariableAsignada, idMacro);
+        if (_ultimaEtiquetaEncontrada != null
+                && _ultimaEtiquetaEncontrada.linea() != _ambito.controladorEjecucion().numeroLineaActual()) {
+            _ultimaEtiquetaEncontrada = null;
+        }
+
+        _ambito.gestorLlamadasAMacro().definirLlamadaAMacro(
+                _ultimaVariableAsignada, _ultimaEtiquetaEncontrada, idMacro
+        );
     }
 
     /**
