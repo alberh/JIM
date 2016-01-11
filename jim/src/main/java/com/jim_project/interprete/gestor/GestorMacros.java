@@ -74,7 +74,6 @@ public class GestorMacros extends GestorComponentes {
     public String expandir(LlamadaAMacro llamadaAMacro) {
         String separador = System.getProperty("line.separator");
         String idMacro = llamadaAMacro.id();
-        String ficheroMacro;
         ArrayList<String> parametrosEntrada = llamadaAMacro.parametros();
         int numeroLinea = llamadaAMacro.linea();// + desplazamiento;
 
@@ -86,7 +85,6 @@ public class GestorMacros extends GestorComponentes {
         } else {
             idEtiqueta = "";
         }
-        String asignaciones = idVariableSalida + " <- 0" + separador;
 
         Macro macro = obtenerMacro(idMacro);
 
@@ -94,7 +92,7 @@ public class GestorMacros extends GestorComponentes {
             _programa.error().deMacroNoDefinida(numeroLinea, idMacro);
             return null;
         }
-        ficheroMacro = macro.definidaEn();
+        String ficheroMacro = macro.definidaEn();
 
         // Añadir comprobación del número de parámetros (nP)
         //  - Permitir llamadas con 0 a Nv parámetros, siendo Nv
@@ -164,6 +162,8 @@ public class GestorMacros extends GestorComponentes {
         variableSalidaLocal = "_" + vAuxiliar.tokenTipo() + "_" + vAuxiliar.indice() + "_";
 
         // Insertar y reemplazar
+        String asignaciones = idVariableSalida + " <- 0" + separador;
+        
         String vAntigua;
         String vNueva;
         for (int i = 0; i < variablesEntrada.size(); ++i) {

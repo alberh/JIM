@@ -71,15 +71,6 @@ public class GestorAmbitos extends GestorComponentes {
     }
 
     /**
-     * Devuelve la lista de ámbitos.
-     *
-     * @return La lista de ámbitos.
-     */
-    public ArrayList<Ambito> ambitos() {
-        return _ambitos;
-    }
-
-    /**
      * Devuelva una referencia al ámbito raíz.
      *
      * @return Una referencia al ámbito raíz.

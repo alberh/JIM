@@ -23,13 +23,13 @@ import java.util.Arrays;
  */
 public class ControladorEjecucion {
 
-    private int _instruccionesEjecutadas;
     private final Ambito _ambito;
     private final Programa _programa;
 
     private final ArrayList<String> _lineas;
     private int _lineaActual;
     private boolean _salto;
+    private int _instruccionesEjecutadas;
 
     private StringBuilder _traza;
 
@@ -41,12 +41,12 @@ public class ControladorEjecucion {
      * @param lineas Lista de cadenas con el código del ámbito.
      */
     public ControladorEjecucion(Ambito ambito, ArrayList<String> lineas) {
-        _instruccionesEjecutadas = 0;
         _ambito = ambito;
         _programa = _ambito.programa();
         _lineas = lineas;
         _lineaActual = _lineas.size();
         _salto = false;
+        _instruccionesEjecutadas = 0;
         _traza = new StringBuilder();
     }
 
