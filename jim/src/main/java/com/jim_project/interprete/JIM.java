@@ -215,9 +215,9 @@ public class JIM {
 
     private static void ayuda() {
         System.out.println("Uso:");
-        System.out.println("java Jim fichero");
+        System.out.println("java -jar JIM.jar fichero");
         //System.out.println("java Jim fichero modelo [t|f|m|v|e] [param1 [param2 [...]]]");
-        System.out.println("java Jim fichero modelo [t|T|m|v|e] [param1 [param2 [...]]]");
+        System.out.println("java -jar JIM.jar fichero modelo [t|T|m|v|e] [param1 [param2 [...]]]");
         System.out.println();
         System.out.println("t: Muestra la traza del programa.");
         System.out.println("T: Muestra la traza del programa, incluyendo las llamadas a macro.");
@@ -229,9 +229,9 @@ public class JIM {
                 + "los parámetros de entrada.");
         System.out.println();
         System.out.println("Ejemplos:");
-        System.out.println("\tjava JIM p1");
-        System.out.println("\tjava JIM p2 loop 1 2");
-        System.out.println("\tjava JIM p3 while tm 2 3 5");
+        System.out.println("\tjava -jar JIM.jar p1");
+        System.out.println("\tjava -jar JIM.jar p2 loop 1 2");
+        System.out.println("\tjava -jar JIM.jar p3 while tm 2 3 5");
         System.out.println();
         System.out.println("Para ejecutar el programa indicando sólo el "
                 + "fichero, debe especificar los argumentos de entrada en la "

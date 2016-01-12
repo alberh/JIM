@@ -7,12 +7,12 @@ import com.jim_project.interprete.componente.LlamadaAMacro;
 import com.jim_project.interprete.componente.Macro;
 
 /**
- * Clase que provee métodos que realizan las operaciones comunes a todos los
- * modelos simulados.
+ * Clase abstracta que provee métodos que realizan las operaciones comunes a
+ * todos los modelos simulados.
  *
  * @author Alberto García González
  */
-public class Acciones {
+public abstract class Acciones {
 
     /**
      * Referencia al ámbito sobre cuyos componentes serán realizadas las
@@ -440,7 +440,7 @@ public class Acciones {
             int profundidad = _ambito.profundidad() + 1;
             Ambito nuevoAmbito = _ambito.programa().gestorAmbitos().nuevoAmbito(parametros, macro, profundidad);
             nuevoAmbito.iniciar();
-            
+
             if (_ambito.programa().argumentos().trazarMacros) {
                 String traza = ",\nTraza de llamada a macro " + macro.id() + "\n"
                         + nuevoAmbito.controladorEjecucion().traza()

@@ -449,7 +449,7 @@ public class Error {
              break;
              */
             default:
-                imprimir("Error 33: Error sintáctico.",
+                imprimir("Error 29: Error sintáctico.",
                         linea);
                 break;
         }
