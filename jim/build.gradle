@@ -40,9 +40,7 @@ dependencies {
 jar {
     manifest.attributes "Main-Class": clasePrincipal()
 }
-
-// Pruebas integrar llamada a generarparsers.jar
-
+/*
 task compileParsers {
     javaexec { 
         main="-jar";
@@ -51,5 +49,5 @@ task compileParsers {
         ]
     }
 }
-
+*/
 // compileJava.dependsOn compileParsers

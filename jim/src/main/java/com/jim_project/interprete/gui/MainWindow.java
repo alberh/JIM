@@ -873,6 +873,7 @@ public class MainWindow extends javax.swing.JFrame {
         int returnVal = _fc.showOpenDialog(MainWindow.this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            _ficheroAbierto = _fc.getSelectedFile();
             try (BufferedReader in = new BufferedReader(new FileReader(_ficheroAbierto))) {
                 String linea = in.readLine();
                 StringBuilder sb = new StringBuilder();
@@ -881,7 +882,6 @@ public class MainWindow extends javax.swing.JFrame {
                     linea = in.readLine();
                 }
 
-                _ficheroAbierto = _fc.getSelectedFile();
                 setTitle(titulo() + " - " + _ficheroAbierto.getName());
 
                 tpEditor.setText(sb.toString());

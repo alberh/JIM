@@ -25,9 +25,6 @@ public class JIM {
         _configuracion = new Configuracion().cargar();
         _programa = new Programa(_configuracion);
 
-        // Para pruebas
-        // args = new String[]{"asd.txt"};
-
         /* java Jim fichero modelo [t|T|m|v|e] [param1 [param2 [...]]]
          *             0      1        2       2/3     3/4
          */
