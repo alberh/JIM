@@ -1,6 +1,0 @@
-[A]	X1--
-Y++
-IF X1 != 0 GOTO A1
-[A2] X2 <- X2 - 1
-Y <- Y + 1
-IF X2 != 0 GOTO A2
